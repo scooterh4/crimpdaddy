@@ -11,7 +11,7 @@ interface FormProps {
 
 function Login(props: FormProps) {
   const { title, setEmail, setPassword, handleAction } = props
-  const isLogin = title == "Login"
+  const isLogin = title === "Login"
 
   return (
     <>
