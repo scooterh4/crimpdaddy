@@ -4,46 +4,54 @@ import { auth } from '../firebase'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Card, CardActions, CardContent, FormControl, TextField } from '@mui/material'
 
-function Login() {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const isLogin = useLocation().pathname.includes('login') || useLocation().pathname == '/'
+interface FormProps {
+  title: string,
+  setEmail: React.Dispatch<React.SetStateAction<string>>,
+  setPassword: React.Dispatch<React.SetStateAction<string>>,
+  handleAction(e:any): void
+}
 
-  const onLogin = (e: any) => {
-    e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        navigate("/home")
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-      })
-  }
+function Login(props: FormProps) {
+  const { title, setEmail, setPassword, handleAction } = props
+  const isLogin = title == "Login"
+  // const navigate = useNavigate()
+  // const [email, setEmail] = useState('')
+  // const [password, setPassword] = useState('')
 
-  const onCreateUser = async (e: any) => {
-    e.preventDefault()
+  // const onLogin = (e: any) => {
+  //   e.preventDefault();
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       navigate("/dashboard")
+  //       console.log(user);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode, errorMessage)
+  //     })
+  // }
+
+  // const onCreateUser = async (e: any) => {
+  //   e.preventDefault()
     
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/login")
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // ..
-      });
-  }
+  //   await createUserWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       console.log(user);
+  //       navigate("/login")
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode, errorMessage);
+  //       // ..
+  //     });
+  // }
 
   return (
     <>
@@ -54,7 +62,6 @@ function Login() {
               <FormControl>
                 <TextField
                   placeholder='Email'
-                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   sx={{ width: 300 }}
@@ -62,7 +69,6 @@ function Login() {
                 <TextField
                   type='password'
                   placeholder='Password'
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
@@ -73,9 +79,9 @@ function Login() {
             <CardActions>
               <Button 
                 variant="contained" 
-                onClick={ isLogin ? onLogin : onCreateUser }
+                onClick={ handleAction }
               >
-                { isLogin ? "Login" : 'Sign up'}
+                { title }
               </Button>
             </CardActions>
           </div>
@@ -90,7 +96,7 @@ function Login() {
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <NavLink to={ isLogin ? "/signup" : "/login" }>
-          { isLogin ? 'Sign up' : 'Sign in'}
+          { isLogin ? 'Sign up' : 'Login' }
         </NavLink>
       </div>
     </>
