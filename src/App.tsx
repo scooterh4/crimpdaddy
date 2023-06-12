@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from './firebase' 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -65,7 +65,6 @@ function App() {
 
   return (
     <>
-      <ToastContainer position='top-center' />
       <Routes>
         <Route path="/" 
               element={
