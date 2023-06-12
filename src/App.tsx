@@ -22,13 +22,13 @@ function App() {
   }, [])
   
   const handleAction = (actionId: number) => {
+    // Login
     if (actionId === 1) {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        sessionStorage.setItem('Auth Token', user.refreshToken)
+        // console.log(userCredential.user)
+        sessionStorage.setItem('Auth Token', userCredential.user.refreshToken)
         navigate("/dashboard")
-        console.log(user);
       })
       .catch((error) => {
         if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
@@ -43,11 +43,13 @@ function App() {
         }
       })
     }
+    // Register / signup
     else if (actionId === 2) {
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
+        // console.log(userCredential.user)
         navigate("/login")
+        toast.success('Registration successful! Please login with your credentials')
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
