@@ -1,57 +1,17 @@
-import React, { useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase'
-import { NavLink, useNavigate, useLocation } from 'react-router-dom'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { Button, Card, CardActions, CardContent, FormControl, TextField } from '@mui/material'
 
 interface FormProps {
   title: string,
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   setPassword: React.Dispatch<React.SetStateAction<string>>,
-  handleAction(e:any): void
+  handleAction: () => void
 }
 
 function Login(props: FormProps) {
   const { title, setEmail, setPassword, handleAction } = props
   const isLogin = title == "Login"
-  // const navigate = useNavigate()
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
-
-  // const onLogin = (e: any) => {
-  //   e.preventDefault();
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-  //       navigate("/dashboard")
-  //       console.log(user);
-  //     })
-  //     .catch((error) => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       console.log(errorCode, errorMessage)
-  //     })
-  // }
-
-  // const onCreateUser = async (e: any) => {
-  //   e.preventDefault()
-    
-  //   await createUserWithEmailAndPassword(auth, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-  //       console.log(user);
-  //       navigate("/login")
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       console.log(errorCode, errorMessage);
-  //       // ..
-  //     });
-  // }
 
   return (
     <>
@@ -79,7 +39,7 @@ function Login(props: FormProps) {
             <CardActions>
               <Button 
                 variant="contained" 
-                onClick={ handleAction }
+                onClick={ () => handleAction() }
               >
                 { title }
               </Button>
