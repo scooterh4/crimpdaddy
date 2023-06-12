@@ -5,6 +5,8 @@ import { Routes, Route } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from './firebase' 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [email, setEmail] = useState('')
@@ -23,64 +25,74 @@ function App() {
     if (actionId === 1) {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         sessionStorage.setItem('Auth Token', user.refreshToken)
         navigate("/dashboard")
         console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
+        if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+          toast.error('Please check your login credentials')
+        } 
+        else if (error.code === 'auth/invalid-email') {
+          toast.error('The email given does not have an account. Please sign up first')
+        } 
+        else {
+          toast.error('Uh oh! An unexpected error occurred')
+          console.log(error.code, error.message)
+        }
       })
     }
     else if (actionId === 2) {
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        //const user = userCredential.user;
         console.log(userCredential.user);
         navigate("/login")
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // ..
+        if (error.code === 'auth/email-already-in-use') {
+          toast.error('Email already in use')
+        }
+        else {
+          toast.error('Uh oh! An unexpected error occurred')
+          console.log(error.code, error.message);
+        }
       });
     }
   }
 
   return (
-    <Routes>
-      <Route path="/" 
-            element={
-              <Form title="Login" 
-                    setEmail={setEmail} 
-                    setPassword={setPassword} 
-                    handleAction={() => handleAction(1)} />
-            } 
-      />
-      <Route path="/login" 
-            element={
-              <Form title="Login" 
-                    setEmail={setEmail} 
-                    setPassword={setPassword} 
-                    handleAction={() => handleAction(1)} />
-            } 
-      />
-      <Route path="/signup"
-            element={
-              <Form title="Sign up" 
-                    setEmail={setEmail} 
-                    setPassword={setPassword} 
-                    handleAction={() => handleAction(2)} />
-            } 
-      />
-      <Route path="/dashboard" 
-            element={ <Dashboard/> } />
-    </Routes>
+    <>
+      <ToastContainer position='top-center' />
+      <Routes>
+        <Route path="/" 
+              element={
+                <Form title="Login" 
+                      setEmail={setEmail} 
+                      setPassword={setPassword} 
+                      handleAction={() => handleAction(1)} />
+              } 
+        />
+        <Route path="/login" 
+              element={
+                <Form title="Login" 
+                      setEmail={setEmail} 
+                      setPassword={setPassword} 
+                      handleAction={() => handleAction(1)} />
+              } 
+        />
+        <Route path="/signup"
+              element={
+                <Form title="Sign up" 
+                      setEmail={setEmail} 
+                      setPassword={setPassword} 
+                      handleAction={() => handleAction(2)} />
+              } 
+        />
+        <Route path="/dashboard" 
+              element={ <Dashboard/> } />
+      </Routes>
+    </>
   );
 }
 
