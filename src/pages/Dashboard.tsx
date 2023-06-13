@@ -2,35 +2,34 @@ import React, { useEffect } from 'react';
 import { signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
- 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+
 const Home = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token');
-
-    if (authToken) {
-      navigate('/dashboard');
-    } else {
-      navigate('/login');
-    }
-  }, [])
 
   const handleLogout = () => {               
     signOut(auth).then(() => {
       sessionStorage.removeItem('Auth Token')
-      navigate("/");
-      console.log("Signed out successfully")
+
+      toast.success('Goodbye!', 
+        { toastId: 'logoutSuccess'}
+      )
+
+      navigate("/")
     }).catch((error) => {
-    // An error happened.
+      console.log(error.code, error.message)
     });
   }
-  
+
   return(
     <>
         <h1>
-          Crimpdaddy
+          Wagwan 
         </h1>
+        <h2>
+          Welcome to Crimpdaddy
+        </h2>
 
         <div>
           <button onClick={ handleLogout }>

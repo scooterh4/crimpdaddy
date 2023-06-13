@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Form from './components/Form'
+import ProtectedRoute, { ProtectedRouteProps } from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import { Routes, Route } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -12,21 +13,18 @@ function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const authToken = sessionStorage.getItem('Auth Token');
 
-  useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token')
-
-    if (authToken) {
-      navigate('/dashboard')
-    }
-  }, [])
+  const defaultProtectedRouteProps: Omit<ProtectedRouteProps, 'outlet'> = {
+    isAuthenticated: !!authToken,
+    authenticationPath: '/login',
+  };
   
+  // Login / sign up functionality
   const handleAction = (actionId: number) => {
-    // Login
     if (actionId === 1) {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // console.log(userCredential.user)
         sessionStorage.setItem('Auth Token', userCredential.user.refreshToken)
         navigate("/dashboard")
       })
@@ -43,11 +41,9 @@ function App() {
         }
       })
     }
-    // Register / signup
     else if (actionId === 2) {
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // console.log(userCredential.user)
         navigate("/login")
         toast.success('Registration successful! Please login with your credentials')
       })
@@ -90,8 +86,12 @@ function App() {
                       handleAction={() => handleAction(2)} />
               } 
         />
-        <Route path="/dashboard" 
-              element={ <Dashboard/> } />
+        <Route path='dashboard' 
+              element={
+                <ProtectedRoute {...defaultProtectedRouteProps} 
+                                outlet= {<Dashboard />} 
+                />} 
+        />
       </Routes>
     </>
   );
