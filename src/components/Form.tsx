@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Button, Card, CardActions, CardContent, FormControl, TextField } from '@mui/material'
+import { Button, Card, CardContent, FormControl, TextField } from '@mui/material'
 
 interface FormProps {
   title: string,
@@ -13,6 +13,12 @@ function Login(props: FormProps) {
   const { title, setEmail, setPassword, handleAction } = props
   const isLogin = title === "Login"
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleAction()
+    }
+  }
+
   return (
     <>
       <div style={{ minHeight: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -20,30 +26,24 @@ function Login(props: FormProps) {
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <CardContent>
               <FormControl>
-                <TextField
-                  placeholder='Email'
+                <TextField 
+                  required 
+                  placeholder='Email' 
+                  sx={{ width: 300 }} 
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                  sx={{ width: 300 }}
                 />
-                <TextField
-                  type='password'
+                <TextField 
+                  required  
                   placeholder='Password'
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  type='password'
+                  onChange={(e) => setPassword(e.target.value)} 
+                  onKeyDown={handleKeyDown}
                 />
+                <Button variant="contained" type='submit' onClick={() => handleAction()}>
+                  { title }
+                </Button>
               </FormControl>
             </CardContent>
-            </div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <CardActions>
-              <Button 
-                variant="contained" 
-                onClick={ () => handleAction() }
-              >
-                { title }
-              </Button>
-            </CardActions>
           </div>
         </Card>
       </div>

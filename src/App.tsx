@@ -35,6 +35,9 @@ function App() {
         else if (error.code === 'auth/invalid-email') {
           toast.error('The email given does not have an account. Please sign up first')
         } 
+        else if (error.code === 'auth/missing-password') {
+          toast.error('You forgot to enter your password silly!')
+        }
         else {
           toast.error('Uh oh! An unexpected error occurred')
           console.log(error.code, error.message)
