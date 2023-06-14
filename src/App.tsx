@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Form from './components/Form'
+import Landing from './pages/Landing'
 import ProtectedRoute, { ProtectedRouteProps } from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import { Routes, Route } from 'react-router-dom'
@@ -69,10 +70,7 @@ function App() {
       <Routes>
         <Route path="/" 
               element={
-                <Form title="Login" 
-                      setEmail={setEmail} 
-                      setPassword={setPassword} 
-                      handleAction={() => handleAction(1)} />
+                <Landing />
               } 
         />
         <Route path="/login" 
