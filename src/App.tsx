@@ -6,8 +6,10 @@ import { Routes, Route } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from './firebase' 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import image from './images/quickdraws-unsplash.jpg'
+
 
 function App() {
   const [email, setEmail] = useState('')
