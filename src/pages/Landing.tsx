@@ -33,7 +33,9 @@ function Landing() {
 
         <div
           style={{
-            backgroundColor: "#F0F0F099",
+            backgroundColor: "#FFFFFF66",
+            backdropFilter: "blur(5px) saturate(140%)",
+            boxShadow: "0px 25px 5px 0px rgba(0, 0, 0, 0.75)",
             borderRadius: 24,
             zIndex: 1,
             margin: "0 auto",
@@ -49,7 +51,7 @@ function Landing() {
               Log your climbs
             </Typography>
           </Box>
-          <Box style={{ display: "block", marginBottom: 24 }}>
+          <Box style={{ display: "block", marginBottom: 30 }}>
             <Typography variant="h2" fontFamily={"poppins"}>
               Track your progress
             </Typography>
@@ -58,7 +60,7 @@ function Landing() {
           <Button
             variant="contained"
             size="large"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/signin")}
             style={{ backgroundColor: "black", color: "white" }}
           >
             Login
