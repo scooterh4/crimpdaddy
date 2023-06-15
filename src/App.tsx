@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Form from './components/Form'
+import Form from './components/Signin'
 import Landing from './pages/Landing'
 import ProtectedRoute, { ProtectedRouteProps } from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
@@ -9,7 +9,6 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'fire
 import { auth } from './firebase' 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import image from './images/quickdraws-unsplash.jpg'
 
 
 function App() {
