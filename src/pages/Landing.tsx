@@ -63,7 +63,7 @@ function Landing() {
             onClick={() => navigate("/signin")}
             style={{ backgroundColor: "black", color: "white" }}
           >
-            Login
+            Sign in
           </Button>
         </div>
       </Box>
