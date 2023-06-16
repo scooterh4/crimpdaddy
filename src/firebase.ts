@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
-// import { getFirestore } from 'firebase/database/dist/firestore'
+import { getFirestore } from 'firebase/firestore'
 
 // TODO need to setup get these variables out of the env file
 // i.e. process.env.REACT_APP_FIREBASE_MEASUREMENT_ID 
@@ -14,6 +14,6 @@ const app = initializeApp({
   measurementId: "G-2MR09LRHZW"
 });
 
-// export const firestore = getFirestore(app)
+export const db = getFirestore(app)
 export const auth = getAuth(app)
 export default app
