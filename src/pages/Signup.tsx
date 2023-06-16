@@ -1,18 +1,25 @@
-import React from "react";
-import { Avatar, Box, Container, Typography } from "@mui/material";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { TextField } from "@mui/material";
-import { Grid } from "@mui/material";
-import { Button } from "@mui/material";
+import React, { useState } from "react";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useState } from "react";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
 
   function Submit() {
@@ -22,6 +29,16 @@ function Signup() {
         toast.success(
           "Registration successful! Please login with your credentials"
         );
+
+        try {
+          const docRef = addDoc(collection(db, "users"), {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+          });
+        } catch (e) {
+          console.log("Error adding the user data", e);
+        }
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
@@ -58,7 +75,7 @@ function Signup() {
           </Typography>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              {/* <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
@@ -67,6 +84,7 @@ function Signup() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange = {(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -77,8 +95,9 @@ function Signup() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange = {(e) => setLastName(e.target.value)}
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
