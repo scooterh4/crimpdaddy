@@ -1,23 +1,22 @@
-import React from 'react'
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export type ProtectedRouteProps = {
-  isAuthenticated: boolean;
   authenticationPath: string;
   outlet: JSX.Element;
 };
 
-function ProtectedRoute({isAuthenticated, authenticationPath, outlet}: ProtectedRouteProps) {
-  if(isAuthenticated) {
+function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
+  const isAuthenticated = !!sessionStorage.getItem("Auth Token");
+
+  if (isAuthenticated) {
     return outlet;
   } else {
-    toast.error('Nice try! Please login first', 
-      { toastId:'niceTry' }
-    )
+    toast.error("Nice try! Please login first", { toastId: "niceTry" });
 
-    return <Navigate to={{ pathname: authenticationPath }} />
+    return <Navigate to={{ pathname: authenticationPath }} />;
   }
-};
+}
 
 export default ProtectedRoute;
