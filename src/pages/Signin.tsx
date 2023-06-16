@@ -4,10 +4,7 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   Container,
-  CssBaseline,
-  FormControlLabel,
   Grid,
   TextField,
   Typography,
@@ -18,20 +15,10 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// interface FormProps {
-//   title: string;
-//   setEmail: React.Dispatch<React.SetStateAction<string>>;
-//   setPassword: React.Dispatch<React.SetStateAction<string>>;
-//   handleAction: () => void;
-// }
-
-// props: FormProps
 function Signin() {
-  // const { title, setEmail, setPassword, handleAction } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const authToken = sessionStorage.getItem("Auth Token");
 
   function Submit() {
     signInWithEmailAndPassword(auth, email, password)
@@ -67,7 +54,6 @@ function Signin() {
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
