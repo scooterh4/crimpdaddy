@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
 import {
   Avatar,
   Box,
@@ -8,48 +8,48 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+} from "@mui/material"
+import LockIcon from "@mui/icons-material/Lock"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../firebase"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 function Signin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   function Submit() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        sessionStorage.setItem("Auth Token", userCredential.user.refreshToken);
-        navigate("/dashboard");
+        sessionStorage.setItem("Auth Token", userCredential.user.refreshToken)
+        navigate("/dashboard")
       })
       .catch((error) => {
         if (
           error.code === "auth/wrong-password" ||
           error.code === "auth/user-not-found"
         ) {
-          toast.error("Please check your login credentials");
+          toast.error("Please check your login credentials")
         } else if (error.code === "auth/invalid-email") {
           toast.error(
             "The email given does not have an account. Please sign up first"
-          );
+          )
         } else if (error.code === "auth/missing-password") {
-          toast.error("You forgot to enter your password silly!");
+          toast.error("You forgot to enter your password silly!")
         } else {
-          toast.error("Uh oh! An unexpected error occurred");
-          console.log(error.code, error.message);
+          toast.error("Uh oh! An unexpected error occurred")
+          console.log(error.code, error.message)
         }
-      });
+      })
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      Submit();
+      Submit()
     }
-  };
+  }
 
   return (
     <>
@@ -113,7 +113,7 @@ function Signin() {
         </Box>
       </Container>
     </>
-  );
+  )
 }
 
-export default Signin;
+export default Signin
