@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import {
   Avatar,
   Box,
@@ -30,14 +30,16 @@ function Signup() {
           "Registration successful! Please login with your credentials"
         );
 
+        const users = collection(db, "users");
+
         try {
-          const docRef = addDoc(collection(db, "users"), {
+          setDoc(doc(users, userCredential.user.uid), {
             firstName: firstName,
             lastName: lastName,
             email: email,
           });
         } catch (e) {
-          console.log("Error adding the user data", e);
+          console.log("Error adding user data", e);
         }
       })
       .catch((error) => {
@@ -84,7 +86,7 @@ function Signup() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange = {(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -95,7 +97,7 @@ function Signup() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange = {(e) => setLastName(e.target.value)}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
