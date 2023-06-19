@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { signOut } from "firebase/auth"
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
