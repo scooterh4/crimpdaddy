@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { auth, db } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import React, { useState } from "react"
+import { auth, db } from "../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { collection, doc, setDoc } from "firebase/firestore"
 import {
   Avatar,
   Box,
@@ -10,53 +10,53 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify";
+} from "@mui/material"
+import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import { useNavigate, Link } from "react-router-dom"
+import { toast } from "react-toastify"
 
 function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const navigate = useNavigate()
 
   function Submit() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigate("/signin");
+        navigate("/signin")
         toast.success(
           "Registration successful! Please login with your credentials"
-        );
+        )
 
-        const users = collection(db, "users");
+        const users = collection(db, "users")
 
         try {
           setDoc(doc(users, userCredential.user.uid), {
             firstName: firstName,
             lastName: lastName,
             email: email,
-          });
+          })
         } catch (e) {
-          console.log("Error adding user data", e);
+          console.log("Error adding user data", e)
         }
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
-          toast.error("Email already in use");
+          toast.error("Email already in use")
         } else {
-          toast.error("Uh oh! An unexpected error occurred");
-          console.log(error.code, error.message);
+          toast.error("Uh oh! An unexpected error occurred")
+          console.log(error.code, error.message)
         }
-      });
+      })
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      Submit();
+      Submit()
     }
-  };
+  }
 
   return (
     <>
@@ -143,7 +143,7 @@ function Signup() {
         </Box>
       </Container>
     </>
-  );
+  )
 }
 
-export default Signup;
+export default Signup
