@@ -44,7 +44,7 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
 
     return outlet
   } else {
-    toast.error("Nice try! Please login first", { toastId: "niceTry" })
+    // toast.error("Nice try! Please login first", { toastId: "niceTry" })
 
     return <Navigate to={{ pathname: authenticationPath }} />
   }

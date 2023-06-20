@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { MouseEventHandler, useContext, useState } from "react"
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
@@ -11,15 +11,14 @@ const Home = () => {
   const { user, updateUser } = useContext(UserContext)
   const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault
+    console.log("Event")
     signOut(auth)
       .then(() => {
         sessionStorage.removeItem("Auth Token")
         updateUser(null)
-
         toast.success("Goodbye!", { toastId: "logoutSuccess" })
-
-        navigate("/")
       })
       .catch((error) => {
         console.log(error.code, error.message)
