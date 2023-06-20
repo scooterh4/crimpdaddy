@@ -1,7 +1,7 @@
-import React, { MouseEventHandler, useContext, useState } from "react"
-import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
+import React, { useContext } from "react"
+import { signOut } from "firebase/auth"
 import { auth } from "../firebase"
-import { useNavigate } from "react-router-dom"
+//import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Typography } from "@mui/material"
@@ -9,7 +9,7 @@ import { UserContext } from "../Context"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault
