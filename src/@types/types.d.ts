@@ -1,4 +1,4 @@
-export type CdUser = {
+export type AppUser = {
   id: string
   firstName: string
   lastName: string

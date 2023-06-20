@@ -1,13 +1,13 @@
 import { db } from "../firebase"
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore"
-import { CdUser } from "../models/types"
+import { AppUser } from "../@types/types"
 
 const collectionName = "users"
 
 // retrieve all users
-export const allUsers = async (): Promise<Array<CdUser>> => {
+export const allUsers = async (): Promise<Array<AppUser>> => {
   const snapshot = collection(db, collectionName)
-  let data: Array<CdUser> = []
+  let data: Array<AppUser> = []
 
   try {
     onSnapshot(snapshot, (querySnapshot) => {
@@ -25,13 +25,13 @@ export const allUsers = async (): Promise<Array<CdUser>> => {
     console.log("Error retreiving all users: ", error)
   }
 
-  return data as Array<CdUser>
+  return data as Array<AppUser>
 }
 
 // retrieve a user by id
-export const usersById = async (propId: string): Promise<CdUser> => {
+export const usersById = async (propId: string): Promise<AppUser> => {
   const docRef = doc(db, collectionName, propId)
-  let data: CdUser = {} as CdUser
+  let data: AppUser = {} as AppUser
 
   try {
     const docSnap = await getDoc(docRef)

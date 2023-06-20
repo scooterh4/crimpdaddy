@@ -1,30 +1,15 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Typography } from "@mui/material"
-import { usersById } from "../db/user_service"
-import { CdUser } from "../models/types"
+import { UserContext } from "../Context"
 
 const Home = () => {
+  const { user } = useContext(UserContext)
   const navigate = useNavigate()
-  const [userId, setUserId] = useState<string>("")
-  const [userData, setUserData] = useState<CdUser | null>(null)
-
-  if (!userId && auth.currentUser) {
-    setUserId(auth.currentUser.uid)
-  }
-
-  if (userId && userData === null) {
-    usersById(userId).then((data) => {
-      console.log("UsersById data: ", data)
-      setUserData(data)
-    })
-  }
-
-  console.log("userData", userData)
 
   const handleLogout = () => {
     signOut(auth)
@@ -50,7 +35,7 @@ const Home = () => {
         }}
       >
         <Typography variant="h1" component="div" gutterBottom>
-          {userData ? "Hello " + userData.firstName : "Hello"}
+          {user ? "Hello " + user.firstName : "Hello"}
         </Typography>
       </div>
 

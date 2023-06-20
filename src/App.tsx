@@ -6,26 +6,19 @@ import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
-import {
-  Routes,
-  Route,
-  BrowserRouter as Router,
-  useNavigate,
-} from "react-router-dom"
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
-import { Context } from "./Context"
 import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
+import { UserContextProvider } from "./Context"
 
-function App() {
-  const [user, setUser] = useState("")
+const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
     authenticationPath: "/signin",
   }
 
   return (
-    <div>
-      {/* <Context.Provider value={{ user, setUser }}> */}
+    <UserContextProvider>
       <CssBaseline />
       <ToastContainer position="top-center" />
       <Router>
@@ -44,8 +37,7 @@ function App() {
           />
         </Routes>
       </Router>
-      {/* </Context.Provider> */}
-    </div>
+    </UserContextProvider>
   )
 }
 

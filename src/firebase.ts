@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { getAuth } from "firebase/auth"
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 // TODO need to setup get these variables out of the env file
@@ -14,6 +14,14 @@ const app = initializeApp({
   measurementId: "G-2MR09LRHZW",
 })
 
+const authentication = getAuth(app)
+
+setPersistence(authentication, browserLocalPersistence)
+  .then(() => {})
+  .catch((error) => {
+    console.log("Error setting auth persistence:", error.message)
+  })
+
+export const auth = authentication
 export const db = getFirestore(app)
-export const auth = getAuth(app)
 export default app
