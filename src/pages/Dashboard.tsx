@@ -6,14 +6,13 @@ import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Typography } from "@mui/material"
 import { UserContext } from "../Context"
+import Loading from "../components/Loading"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
-  //const navigate = useNavigate()
+  const isLoading = !user
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault
-    console.log("Event")
     signOut(auth)
       .then(() => {
         sessionStorage.removeItem("Auth Token")
@@ -25,7 +24,9 @@ const Home = () => {
       })
   }
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <div
         style={{

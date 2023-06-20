@@ -29,6 +29,7 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
     }
   })
 
+  // Normal sign in case
   if (isAuthenticated) {
     // Normal sign in case
     if (!user && auth.currentUser) {
