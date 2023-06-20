@@ -8,13 +8,14 @@ import { Button, Typography } from "@mui/material"
 import { UserContext } from "../Context"
 
 const Home = () => {
-  const { user } = useContext(UserContext)
+  const { user, updateUser } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
         sessionStorage.removeItem("Auth Token")
+        updateUser(null)
 
         toast.success("Goodbye!", { toastId: "logoutSuccess" })
 

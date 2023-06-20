@@ -3,7 +3,7 @@ import { AppUser } from "./@types/types"
 
 interface IUserContext {
   user: AppUser | null
-  updateUser: (newUser: AppUser) => void
+  updateUser: (newUser: AppUser | null) => void
 }
 
 const defaultState: IUserContext = {
@@ -19,8 +19,7 @@ export const UserContextProvider = ({
   children: React.ReactNode
 }) => {
   const [user, setUser] = useState<AppUser | null>(null)
-
-  const updateUser = (saveUser: AppUser) => {
+  const updateUser = (saveUser: AppUser | null) => {
     setUser(saveUser)
   }
 
