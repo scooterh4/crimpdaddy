@@ -36,7 +36,7 @@ const Home = () => {
         }}
       >
         <Typography variant="h1" component="div" gutterBottom>
-          {user ? "Hello " + user.firstName : "Hello"}
+          {user ? user.email : ""}
         </Typography>
       </div>
 
