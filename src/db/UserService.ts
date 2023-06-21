@@ -14,8 +14,6 @@ export const allUsers = async (): Promise<Array<AppUser>> => {
       querySnapshot.docs.map((doc) => {
         data.push({
           id: doc.id,
-          firstName: "",
-          lastName: "",
           email: "",
           ...doc.data(),
         })
@@ -39,8 +37,6 @@ export const usersById = async (propId: string): Promise<AppUser> => {
     if (docSnap.exists()) {
       data = {
         id: propId,
-        firstName: "",
-        lastName: "",
         email: "",
         ...docSnap.data(),
       }
