@@ -18,8 +18,6 @@ import { toast } from "react-toastify"
 function Signup() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
   const navigate = useNavigate()
 
   function Submit() {
@@ -29,18 +27,6 @@ function Signup() {
         toast.success(
           "Registration successful! Please login with your credentials"
         )
-
-        const users = collection(db, "users")
-
-        try {
-          setDoc(doc(users, userCredential.user.uid), {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-          })
-        } catch (e) {
-          console.log("Error adding user data", e)
-        }
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
@@ -76,8 +62,6 @@ function Signup() {
             Sign up
           </Typography>
           <Box sx={{ mt: 3 }}>
-            {/* <Grid container spacing={2}> */}
-            {/* <Grid item xs={12}> */}
             <TextField
               margin="normal"
               required
@@ -88,8 +72,6 @@ function Signup() {
               autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            {/* </Grid>
-              <Grid item xs={12}> */}
             <TextField
               margin="normal"
               required
@@ -102,8 +84,6 @@ function Signup() {
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            {/* </Grid> */}
-            {/* </Grid> */}
             <Button
               type="submit"
               fullWidth
