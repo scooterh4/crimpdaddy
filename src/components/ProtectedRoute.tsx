@@ -22,6 +22,7 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
 
         // user refreshed the page
         if (persistedUser && !user) {
+          console.log(persistedUser.uid)
           updateUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",
