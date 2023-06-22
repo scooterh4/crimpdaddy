@@ -9,6 +9,7 @@ import {
   Select,
   Typography,
 } from "@mui/material"
+import { ATTEMPT_TYPES, BOULDER_GRADES, CLIMB_TYPES } from "../constants"
 
 const style = {
   position: "absolute" as "absolute",
@@ -23,22 +24,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 }
-
-const climbTypes = ["Boulder", "Lead", "Top Rope"]
-const boulderGrades = [
-  "V0",
-  "V1",
-  "V2",
-  "V3",
-  "V4",
-  "V5",
-  "V6",
-  "V7",
-  "V8",
-  "V9",
-  "V10",
-]
-const attempts = ["Onsight", "Flash", "Redpoint", "Hang", "Failed"]
 
 export type LogModalProps = {
   open: boolean
@@ -55,6 +40,9 @@ function LogModal({ open, handleClose }: LogModalProps) {
     console.log("Submitted!")
     console.log("Form data:", climbType, grade, attempt)
     handleClose()
+    setClimbType("")
+    setGrade("")
+    setAttempt("")
   }
 
   return (
@@ -73,7 +61,7 @@ function LogModal({ open, handleClose }: LogModalProps) {
                 value={climbType}
                 onChange={(e) => setClimbType(e.target.value)}
               >
-                {climbTypes.map((type, index) => (
+                {CLIMB_TYPES.map((type, index) => (
                   <MenuItem key={index} value={type}>
                     {type}
                   </MenuItem>
@@ -83,7 +71,7 @@ function LogModal({ open, handleClose }: LogModalProps) {
             <FormControl fullWidth margin="normal">
               <InputLabel>Grade</InputLabel>
               <Select value={grade} onChange={(e) => setGrade(e.target.value)}>
-                {boulderGrades.map((grade, index) => (
+                {BOULDER_GRADES.map((grade, index) => (
                   <MenuItem key={index} value={grade}>
                     {grade}
                   </MenuItem>
@@ -96,7 +84,7 @@ function LogModal({ open, handleClose }: LogModalProps) {
                 value={attempt}
                 onChange={(e) => setAttempt(e.target.value)}
               >
-                {attempts.map((attempt, index) => (
+                {ATTEMPT_TYPES.map((attempt, index) => (
                   <MenuItem key={index} value={attempt}>
                     {attempt}
                   </MenuItem>
