@@ -52,18 +52,6 @@ const Home = () => {
         }}
       >
         <Typography variant="h1" component="div" gutterBottom>
-          {user ? user.email : ""}
-        </Typography>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h3" component="div" gutterBottom>
           Welcome to Crimpdaddy
         </Typography>
       </div>
