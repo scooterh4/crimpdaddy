@@ -7,13 +7,20 @@ import "react-toastify/dist/ReactToastify.css"
 import { Button, Typography } from "@mui/material"
 import { UserContext } from "../Context"
 import Loading from "../components/Loading"
-import LogModal from "../components/LogModal"
+import PickClimbType from "../components/PickClimbTypeDialog"
+import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
-  const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const [openClimbTypeSelector, setClimbTypeSelector] = React.useState(false)
+  const handleClimbTypeSelectorOpen = () => setClimbTypeSelector(true)
+  const handleClimbTypeSelectorClose = () => setClimbTypeSelector(false)
+
+  const [openDetails, setDetailsOpen] = React.useState(false)
+  const [climbType, setClimbType] = React.useState(0)
+  const handleDetailsOpen = () => setDetailsOpen(true)
+  const handleDetailsClose = () => setDetailsOpen(false)
+
   const isLoading = !user
 
   const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,6 +33,11 @@ const Home = () => {
       .catch((error) => {
         console.log(error.code, error.message)
       })
+  }
+
+  function handleSubmitClimbType() {
+    setClimbTypeSelector(false)
+    handleDetailsOpen()
   }
 
   return isLoading ? (
@@ -64,10 +76,20 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <Button variant="contained" onClick={handleOpen}>
+        <Button variant="contained" onClick={handleClimbTypeSelectorOpen}>
           Log a climb
         </Button>
-        <LogModal open={open} handleClose={handleClose} />
+        <PickClimbType
+          open={openClimbTypeSelector}
+          handleClose={handleClimbTypeSelectorClose}
+          setClimbType={setClimbType}
+          handleSubmitClimbType={handleSubmitClimbType}
+        />
+        <ClimbDetailsDialog
+          climbType={climbType}
+          open={openDetails}
+          handleClose={handleDetailsClose}
+        />
       </div>
 
       <div
