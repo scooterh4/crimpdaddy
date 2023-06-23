@@ -1,14 +1,11 @@
 import React, { useContext } from "react"
-import { signOut } from "firebase/auth"
-import { auth } from "../firebase"
-//import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Typography } from "@mui/material"
 import { UserContext } from "../Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
+import Toolbar from "../components/ToolBar"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -23,18 +20,6 @@ const Home = () => {
 
   const isLoading = !user
 
-  const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
-    signOut(auth)
-      .then(() => {
-        sessionStorage.removeItem("Auth Token")
-        updateUser(null)
-        toast.success("Goodbye!", { toastId: "logoutSuccess" })
-      })
-      .catch((error) => {
-        console.log(error.code, error.message)
-      })
-  }
-
   function handleSubmitClimbType() {
     setClimbTypeSelector(false)
     handleDetailsOpen()
@@ -44,6 +29,7 @@ const Home = () => {
     <Loading />
   ) : (
     <>
+      <Toolbar updateUser={updateUser} />
       <div
         style={{
           display: "flex",
@@ -78,18 +64,6 @@ const Home = () => {
           open={openDetails}
           handleClose={handleDetailsClose}
         />
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button variant="contained" onClick={handleLogout}>
-          Logout
-        </Button>
       </div>
     </>
   )
