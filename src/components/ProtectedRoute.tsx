@@ -18,8 +18,6 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
     const unsubscribe: Unsubscribe = onAuthStateChanged(
       auth,
       (persistedUser) => {
-        console.log("Flapjacks")
-
         // user refreshed the page
         if (persistedUser && !user) {
           console.log(persistedUser.uid)
