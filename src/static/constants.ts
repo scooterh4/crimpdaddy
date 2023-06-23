@@ -1,6 +1,16 @@
-export const CLIMB_TYPES = ["Boulder", "Lead", "Top Rope"]
+export enum CLIMB_TYPES {
+  Boulder,
+  Sport,
+  Trad,
+}
 
-export const ATTEMPT_TYPES = ["Onsight", "Flash", "Redpoint", "Hang", "Failed"]
+export enum GYM_CLIMB_TYPES {
+  Boulder,
+  Lead,
+  TopRope,
+}
+
+export const ATTEMPT_TYPES = ["Onsight", "Flash", "Redpoint", "Hang", "Attempt"]
 
 export const BOULDER_GRADES = [
   "V0",

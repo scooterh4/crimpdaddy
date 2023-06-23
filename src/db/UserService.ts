@@ -1,6 +1,6 @@
 import { db } from "../firebase"
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore"
-import { AppUser } from "../types"
+import { AppUser } from "../static/types"
 
 const collectionName = "users"
 

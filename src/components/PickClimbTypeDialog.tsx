@@ -1,33 +1,12 @@
-import React, { useState } from "react"
+import React from "react"
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from "@mui/material"
-import { CLIMB_TYPES } from "../constants"
-
-enum ClimbType {
-  Sport,
-  Boulder,
-}
-
-const style = {
-  position: "absolute" as "absolute",
-  borderRadius: 6,
-  color: "black",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-}
+import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../static/constants"
 
 export type ClimbTypeProps = {
   open: boolean
@@ -43,12 +22,12 @@ function PickClimbType({
   handleSubmitClimbType,
 }: ClimbTypeProps) {
   function selectBoulder() {
-    setClimbType(ClimbType.Boulder)
+    setClimbType(CLIMB_TYPES.Boulder)
     handleSubmitClimbType()
   }
 
   function selectSport() {
-    setClimbType(ClimbType.Sport)
+    setClimbType(CLIMB_TYPES.Sport)
     handleSubmitClimbType()
   }
 
@@ -64,7 +43,7 @@ function PickClimbType({
             type="submit"
             sx={{ marginTop: 2 }}
           >
-            Lead
+            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]}
           </Button>
           <Button
             onClick={selectSport}
@@ -73,7 +52,7 @@ function PickClimbType({
             type="submit"
             sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
           >
-            Top rope
+            Top Rope
           </Button>
           <Button
             onClick={selectBoulder}
@@ -82,7 +61,7 @@ function PickClimbType({
             type="submit"
             sx={{ marginTop: 2 }}
           >
-            Boulder
+            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]}
           </Button>
         </DialogContent>
         <DialogActions>
