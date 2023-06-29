@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material"
-import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../static/constants"
+import { GYM_CLIMB_TYPES } from "../static/constants"
 
 export type ClimbTypeProps = {
   open: boolean
@@ -21,13 +21,19 @@ function PickClimbType({
   setClimbType,
   handleSubmitClimbType,
 }: ClimbTypeProps) {
-  function selectBoulder() {
-    setClimbType(CLIMB_TYPES.Boulder)
-    handleSubmitClimbType()
-  }
+  function selectClimbType(climbType: number) {
+    switch (climbType) {
+      case GYM_CLIMB_TYPES.Boulder:
+        setClimbType(GYM_CLIMB_TYPES.Boulder)
+        break
+      case GYM_CLIMB_TYPES.Lead:
+        setClimbType(GYM_CLIMB_TYPES.Lead)
+        break
+      case GYM_CLIMB_TYPES.TopRope:
+        setClimbType(GYM_CLIMB_TYPES.TopRope)
+        break
+    }
 
-  function selectSport() {
-    setClimbType(CLIMB_TYPES.Sport)
     handleSubmitClimbType()
   }
 
@@ -37,7 +43,7 @@ function PickClimbType({
         <DialogTitle>What kind of climb?</DialogTitle>
         <DialogContent>
           <Button
-            onClick={selectSport}
+            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Lead)}
             variant="contained"
             color="primary"
             type="submit"
@@ -46,7 +52,7 @@ function PickClimbType({
             {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]}
           </Button>
           <Button
-            onClick={selectSport}
+            onClick={() => selectClimbType(GYM_CLIMB_TYPES.TopRope)}
             variant="contained"
             color="primary"
             type="submit"
@@ -55,7 +61,7 @@ function PickClimbType({
             Top Rope
           </Button>
           <Button
-            onClick={selectBoulder}
+            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Boulder)}
             variant="contained"
             color="primary"
             type="submit"
