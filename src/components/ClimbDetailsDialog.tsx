@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import {
   Button,
   Dialog,
@@ -15,8 +15,11 @@ import {
   TICK_TYPES,
   BOULDER_GRADES,
   INDOOR_SPORT_GRADES,
-  CLIMB_TYPES,
+  GYM_CLIMB_TYPES,
 } from "../static/constants"
+import { LogClimb } from "../db/ClimbLogService"
+import { UserContext } from "../Context"
+
 export type LogModalProps = {
   open: boolean
   handleClose: () => void
@@ -24,11 +27,12 @@ export type LogModalProps = {
 }
 
 function LogModal({ open, handleClose, climbType }: LogModalProps) {
+  const { user } = useContext(UserContext)
   const [grade, setGrade] = useState("")
   const [tick, setTick] = useState("")
   const [attempts, setAttempts] = useState<number | string>("")
   const grades =
-    climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
+    climbType === GYM_CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
   const [gradeError, setGradeError] = useState(false)
   const [tickError, setTickError] = useState(false)
@@ -67,9 +71,19 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
       console.log("Submitted!")
       console.log("Form data:", climbType, grade, tick, attempts)
       handleClose()
+      logClimb()
       resetForm()
     } else {
       console.log("Error!")
+    }
+  }
+
+  function logClimb() {
+    if (user) {
+      LogClimb(user.id, climbType, grade, tick, attempts).then((res) => {
+        console.log("Wagwan bruH!")
+        console.log(res)
+      })
     }
   }
 
