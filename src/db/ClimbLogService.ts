@@ -16,8 +16,6 @@ export const LogClimb = async (
   const dateTime = new Date()
   const collectionPath = `/${collectionName}/${userId}/${dateTime.getFullYear()}/indoor/climbs`
 
-  console.log(dateTime.getUTCDate)
-
   const climbData = {
     ClimbType: GYM_CLIMB_TYPES[climbType],
     Grade: grade,
