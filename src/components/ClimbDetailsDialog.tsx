@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -29,20 +30,59 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
   const grades =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
-  function handleSubmit() {
-    // event.preventDefault()
-    console.log("Submitted!")
-    console.log("Form data:", climbType, grade, tick, attempts)
-    handleClose()
+  const [gradeError, setGradeError] = useState(false)
+  const [tickError, setTickError] = useState(false)
+  const [attemptError, setAttemptError] = useState(false)
+
+  function validateForm() {
+    let hasError = false
+
+    if (!grade) {
+      setGradeError(true)
+      hasError = true
+    }
+    if (!tick) {
+      setTickError(true)
+      hasError = true
+    }
+    if (!attempts) {
+      setAttemptError(true)
+      hasError = true
+    }
+
+    return hasError
+  }
+
+  function resetForm() {
     setGrade("")
     setTick("")
+    setAttempts("")
+    setGradeError(false)
+    setTickError(false)
+    setAttemptError(false)
+  }
+
+  function handleSubmit() {
+    if (!validateForm()) {
+      console.log("Submitted!")
+      console.log("Form data:", climbType, grade, tick, attempts)
+      handleClose()
+      resetForm()
+    } else {
+      console.log("Error!")
+    }
+  }
+
+  function handleCancel() {
+    handleClose()
+    resetForm()
   }
 
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" error={gradeError}>
             <InputLabel>Grade</InputLabel>
             <Select
               label="Grade"
@@ -55,8 +95,9 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
                 </MenuItem>
               ))}
             </Select>
+            {gradeError && <FormHelperText>This is required!</FormHelperText>}
           </FormControl>
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="normal" error={tickError}>
             <InputLabel>Tick</InputLabel>
             <Select
               label="Tick"
@@ -69,6 +110,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
                 </MenuItem>
               ))}
             </Select>
+            {tickError && <FormHelperText>This is required!</FormHelperText>}
           </FormControl>
           <FormControl fullWidth margin="normal">
             <TextField
@@ -81,9 +123,13 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
                 )
               }
               type="number"
+              error={attemptError}
             >
               {attempts}
             </TextField>
+            {attemptError && (
+              <FormHelperText error>This is required!</FormHelperText>
+            )}
           </FormControl>
         </DialogContent>
         <DialogActions>
@@ -96,7 +142,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
           >
             Submit
           </Button>
-          <Button variant="text" color="error" onClick={handleClose}>
+          <Button variant="text" color="error" onClick={handleCancel}>
             Cancel
           </Button>
         </DialogActions>
