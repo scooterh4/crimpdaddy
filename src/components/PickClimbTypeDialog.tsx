@@ -65,7 +65,9 @@ function PickClimbType({
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button variant="text" color="error" onClick={handleClose}>
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
     </>
