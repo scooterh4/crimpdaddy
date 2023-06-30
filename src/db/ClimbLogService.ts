@@ -1,6 +1,5 @@
-import { get } from "http"
 import { db } from "../firebase"
-import { collection, doc, getDoc, addDoc, onSnapshot } from "firebase/firestore"
+import { collection, doc, getDoc, addDoc, setDoc } from "firebase/firestore"
 import { GYM_CLIMB_TYPES } from "../static/constants"
 
 const collectionName = "climbingLogs"
@@ -25,30 +24,29 @@ export const LogClimb = async (
   }
 
   try {
-    const userDoc = addDoc(collection(db, collectionPath), climbData).then(
-      (doc) => {
-        console.log("Document written with ID: ", doc.id)
+    const userDoc = doc(db, `/${collectionName}/${userId}`)
+
+    // Check whether the user doc exists, if not, create it
+    await getDoc(userDoc).then((document) => {
+      if (!document.exists()) {
+        const addUser = doc(db, `${collectionName}`, userId)
+
+        setDoc(addUser, { userId: userId }).then(() => {
+          console.log("User doc created for user: ", userId)
+
+          addDoc(collection(db, collectionPath), climbData).then((res) => {
+            console.log("Document written with ID: ", res.id)
+          })
+        })
+      } else {
+        // user doc exists, so just add the climb
+        addDoc(collection(db, collectionPath), climbData).then((res) => {
+          console.log("Document written with ID: ", res.id)
+        })
       }
-    )
+    })
   } catch (error) {
     console.log("Error retreiving all users: ", error)
   }
-
-  // let data: Array<AppUser> = []
-
-  // try {
-  //   onSnapshot(snapshot, (querySnapshot) => {
-  //     querySnapshot.docs.map((doc) => {
-  //       data.push({
-  //         id: doc.id,
-  //         email: "",
-  //         ...doc.data(),
-  //       })
-  //     })
-  //   })
-  // } catch (error) {
-  //   console.log("Error retreiving all users: ", error)
-  // }
-
   return "Success"
 }

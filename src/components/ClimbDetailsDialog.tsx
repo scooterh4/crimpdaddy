@@ -81,7 +81,6 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
   function logClimb() {
     if (user) {
       LogClimb(user.id, climbType, grade, tick, attempts).then((res) => {
-        console.log("Wagwan bruH!")
         console.log(res)
       })
     }
