@@ -19,6 +19,7 @@ import {
 } from "../static/constants"
 import { LogClimb } from "../db/ClimbLogService"
 import { UserContext } from "../Context"
+import { ClimbLog } from "../static/types"
 
 export type LogModalProps = {
   open: boolean
@@ -80,7 +81,16 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
 
   function logClimb() {
     if (user) {
-      LogClimb(user.id, climbType, grade, tick, attempts).then((res) => {
+      const climbData: ClimbLog = {
+        UserId: user.id,
+        ClimbType: GYM_CLIMB_TYPES[climbType],
+        Grade: grade,
+        Tick: tick,
+        Attempts: parseInt(attempts.toString()),
+        DateTime: new Date(),
+      }
+
+      LogClimb(climbData).then((res) => {
         console.log(res)
       })
     }

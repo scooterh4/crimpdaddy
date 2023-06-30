@@ -1,38 +1,25 @@
 import { db } from "../firebase"
 import { collection, doc, getDoc, addDoc, setDoc } from "firebase/firestore"
-import { GYM_CLIMB_TYPES } from "../static/constants"
+import { ClimbLog } from "../static/types"
 
 const collectionName = "climbingLogs"
 
 // log an indoor climb
-export const LogClimb = async (
-  userId: string,
-  climbType: number,
-  grade: string,
-  tick: string,
-  attempts: string | number
-): Promise<string> => {
-  const dateTime = new Date()
-  const collectionPath = `/${collectionName}/${userId}/${dateTime.getFullYear()}/indoor/climbs`
-
-  const climbData = {
-    ClimbType: GYM_CLIMB_TYPES[climbType],
-    Grade: grade,
-    Tick: tick,
-    Attempts: attempts,
-    DateTime: dateTime,
-  }
+export const LogClimb = async (climbData: ClimbLog): Promise<string> => {
+  const collectionPath = `/${collectionName}/${
+    climbData.UserId
+  }/${climbData.DateTime.getFullYear()}/indoor/climbs`
 
   try {
-    const userDoc = doc(db, `/${collectionName}/${userId}`)
+    const userDoc = doc(db, `/${collectionName}/${climbData.UserId}`)
 
     // Check whether the user doc exists, if not, create it
     await getDoc(userDoc).then((document) => {
       if (!document.exists()) {
-        const addUser = doc(db, `${collectionName}`, userId)
+        const addUser = doc(db, `${collectionName}`, climbData.UserId)
 
-        setDoc(addUser, { userId: userId }).then(() => {
-          console.log("User doc created for user: ", userId)
+        setDoc(addUser, { userId: climbData.UserId }).then(() => {
+          console.log("User doc created for user: ", climbData.UserId)
 
           addDoc(collection(db, collectionPath), climbData).then((res) => {
             console.log("Document written with ID: ", res.id)
