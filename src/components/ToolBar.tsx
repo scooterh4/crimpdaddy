@@ -1,5 +1,14 @@
 import React from "react"
-import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar } from "@mui/material"
+import {
+  AppBar,
+  Box,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { AccountCircle } from "@mui/icons-material"
 import { signOut } from "firebase/auth"
@@ -8,10 +17,11 @@ import { AppUser } from "../static/types"
 import { toast } from "react-toastify"
 
 type ToolBarProps = {
+  user: AppUser | null
   updateUser: (newUser: AppUser | null) => void
 }
 
-function ToolBar({ updateUser }: ToolBarProps) {
+function ToolBar({ user, updateUser }: ToolBarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -37,49 +47,55 @@ function ToolBar({ updateUser }: ToolBarProps) {
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          {/* <MenuIcon /> */}
-        </IconButton>
+      <Container maxWidth="xl">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
 
-        {/* Best way I can space the user icon to the right */}
-        <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1, textAlign: "center" }}>
+            {user && (
+              <Typography variant="h6" component="div">
+                {user.email}
+              </Typography>
+            )}
+          </Box>
 
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </Menu>
-      </Toolbar>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </Toolbar>
+      </Container>
     </AppBar>
   )
 }

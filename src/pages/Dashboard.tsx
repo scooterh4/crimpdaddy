@@ -29,7 +29,7 @@ const Home = () => {
     <Loading />
   ) : (
     <>
-      <Toolbar updateUser={updateUser} />
+      <Toolbar user={user} updateUser={updateUser} />
       <div
         style={{
           display: "flex",
