@@ -37,8 +37,13 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h1" component="div" gutterBottom>
-          Welcome to Crimpdaddy
+        <Typography
+          variant="h1"
+          component="div"
+          gutterBottom
+          sx={{ textAlign: "center", marginTop: "1rem" }}
+        >
+          Welcome
         </Typography>
       </div>
 
