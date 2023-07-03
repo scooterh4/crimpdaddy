@@ -1,5 +1,12 @@
 import { db } from "../firebase"
-import { collection, doc, getDoc, addDoc, setDoc } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+  setDoc,
+  getDocs,
+} from "firebase/firestore"
 import { ClimbLog } from "../static/types"
 
 const collectionName = "climbingLogs"
@@ -36,4 +43,23 @@ export const LogClimb = async (climbData: ClimbLog): Promise<string> => {
     console.log("Error retreiving all users: ", error)
   }
   return "Success"
+}
+
+// get all climbs for a user
+export const GetClimbsByUser = async (userId: string): Promise<ClimbLog[]> => {
+  const result: ClimbLog[] = []
+  const year = new Date().getFullYear()
+  const collectionPath = `/${collectionName}/${userId}/${year}/indoor/climbs`
+
+  try {
+    const querySnapshot = await getDocs(collection(db, collectionPath))
+
+    querySnapshot.forEach((doc) => {
+      result.push(doc.data() as ClimbLog)
+    })
+  } catch (error) {
+    console.log("Error retreiving all users: ", error)
+  }
+
+  return result as ClimbLog[]
 }
