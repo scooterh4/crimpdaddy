@@ -140,13 +140,16 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
               variant="outlined"
               label="Number of attempts"
               value={attempts}
+              type="number"
+              error={attemptError}
+              InputProps={{
+                inputProps: { min: 0 },
+              }}
               onChange={(e) =>
                 setAttempts(
                   e.target.value !== "" ? parseInt(e.target.value) : ""
                 )
               }
-              type="number"
-              error={attemptError}
             >
               {attempts}
             </TextField>
