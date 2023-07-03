@@ -6,6 +6,7 @@ import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
+import GradeGraph from "../components/GradeGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -69,6 +70,16 @@ const Home = () => {
           open={openDetails}
           handleClose={handleDetailsClose}
         />
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <GradeGraph />
       </div>
     </>
   )
