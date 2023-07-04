@@ -6,7 +6,7 @@ import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
-import GradeGraph from "../components/GradeGraph"
+import GradeGraphWrapper from "../components/GradeGraphWrapper"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -79,7 +79,7 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <GradeGraph />
+        <GradeGraphWrapper />
       </div>
     </>
   )

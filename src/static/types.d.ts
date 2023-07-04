@@ -11,3 +11,9 @@ export type ClimbLog = {
   Attempts: number
   DateTime: Date
 }
+
+export type ClimbGraphData = {
+  Grade: string
+  Attempts: number
+  Flash: number
+}
