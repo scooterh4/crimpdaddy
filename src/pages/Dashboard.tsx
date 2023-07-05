@@ -65,7 +65,9 @@ const Home = () => {
           handleClose={handleDetailsClose}
         />
 
-        <GradeGraphWrapper />
+        <Grid container direction="row" marginLeft={{ xs: -26, sm: 0 }}>
+          <GradeGraphWrapper />
+        </Grid>
       </Grid>
     </>
   )

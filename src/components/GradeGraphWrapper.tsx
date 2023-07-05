@@ -138,11 +138,11 @@ const GradeGraphWrapper = () => {
   return (
     <>
       {climbingData.length > 0 && (
-        <Grid container direction="row" sx={{ mt: 5 }}>
+        <>
           <GradeGraph climbType="Boulder" graphData={graphData.boulderData} />
           <GradeGraph climbType="Lead" graphData={graphData.leadData} />
           <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
-        </Grid>
+        </>
       )}
       {/* <Grid
         container

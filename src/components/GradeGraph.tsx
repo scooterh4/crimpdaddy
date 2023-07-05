@@ -17,8 +17,8 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
         sx={{
           display: "flex",
           justifyContent: "left",
-          alignItems: "center",
-          marginLeft: "10.5rem",
+          mt: 5,
+          ml: 19,
         }}
       >
         {climbType}
@@ -29,15 +29,15 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
         height={300}
         data={graphData}
         barSize={100}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
       >
         <XAxis type="number" />
-        <YAxis type="category" dataKey="Grade" width={150} tickLine={false} />
+        <YAxis
+          type="category"
+          dataKey="Grade"
+          width={150}
+          tickLine={false}
+          fontSize={12}
+        />
         <Tooltip />
         <CartesianGrid strokeDasharray="0 0" />
         <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
