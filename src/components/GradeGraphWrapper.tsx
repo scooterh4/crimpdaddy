@@ -20,7 +20,7 @@ const GradeGraphWrapper = () => {
 
   useEffect(() => {
     if (climbingData.length > 0) {
-      assembleGraphData()
+      formatClimbingData()
     }
   }, [climbingData])
 
@@ -31,7 +31,7 @@ const GradeGraphWrapper = () => {
     })
   }
 
-  function assembleGraphData() {
+  function formatClimbingData() {
     const boulderGrades = new Array<string>()
     const boulderGradeAttemptMap = new Map<string, number>()
     const boulderGraphData = new Array<ClimbGraphData>()
@@ -49,39 +49,15 @@ const GradeGraphWrapper = () => {
     climbingData.forEach((climb) => {
       switch (climb.ClimbType) {
         case "Boulder":
-          if (boulderGradeAttemptMap.has(climb.Grade)) {
-            boulderGradeAttemptMap.set(
-              climb.Grade,
-              (boulderGradeAttemptMap.get(climb.Grade) || 0) + climb.Attempts
-            )
-          } else {
-            boulderGrades.push(climb.Grade)
-            boulderGradeAttemptMap.set(climb.Grade, climb.Attempts)
-          }
+          addGradeData(climb, boulderGradeAttemptMap, boulderGrades)
           break
 
         case "Lead":
-          if (leadGradeAttemptMap.has(climb.Grade)) {
-            leadGradeAttemptMap.set(
-              climb.Grade,
-              (leadGradeAttemptMap.get(climb.Grade) || 0) + climb.Attempts
-            )
-          } else {
-            leadGrades.push(climb.Grade)
-            leadGradeAttemptMap.set(climb.Grade, climb.Attempts)
-          }
+          addGradeData(climb, leadGradeAttemptMap, leadGrades)
           break
 
         case "TopRope":
-          if (trGradeAttemptMap.has(climb.Grade)) {
-            trGradeAttemptMap.set(
-              climb.Grade,
-              (trGradeAttemptMap.get(climb.Grade) || 0) + climb.Attempts
-            )
-          } else {
-            trGrades.push(climb.Grade)
-            trGradeAttemptMap.set(climb.Grade, climb.Attempts)
-          }
+          addGradeData(climb, trGradeAttemptMap, trGrades)
           break
 
         default:
@@ -106,31 +82,44 @@ const GradeGraphWrapper = () => {
       return 0
     })
 
-    boulderGrades.forEach((gr) => {
-      boulderGraphData.push({
-        Grade: gr,
-        Attempts: boulderGradeAttemptMap.get(gr) || 0,
-        Flash: 1,
-      })
-    })
-    leadGrades.forEach((gr) => {
-      leadGraphData.push({
-        Grade: gr,
-        Attempts: leadGradeAttemptMap.get(gr) || 0,
-        Flash: 1,
-      })
-    })
-    trGrades.forEach((gr) => {
-      trGraphData.push({
-        Grade: gr,
-        Attempts: trGradeAttemptMap.get(gr) || 0,
-        Flash: 1,
-      })
-    })
+    asssembleGraphData(boulderGrades, boulderGradeAttemptMap, boulderGraphData)
+    asssembleGraphData(leadGrades, leadGradeAttemptMap, leadGraphData)
+    asssembleGraphData(trGrades, trGradeAttemptMap, trGraphData)
 
     setBoulderData(boulderGraphData)
     setLeadData(leadGraphData)
     setTrData(trGraphData)
+  }
+
+  // Helper functions
+  function addGradeData(
+    climb: ClimbLog,
+    gradeAttemptMap: Map<string, number>,
+    gradeArray: Array<string>
+  ) {
+    if (gradeAttemptMap.has(climb.Grade)) {
+      gradeAttemptMap.set(
+        climb.Grade,
+        (gradeAttemptMap.get(climb.Grade) || 0) + climb.Attempts
+      )
+    } else {
+      gradeArray.push(climb.Grade)
+      gradeAttemptMap.set(climb.Grade, climb.Attempts)
+    }
+  }
+
+  function asssembleGraphData(
+    gradesArray: Array<string>,
+    gradeAttemptMap: Map<string, number>,
+    graphData: Array<ClimbGraphData>
+  ) {
+    gradesArray.forEach((gr) => {
+      graphData.push({
+        Grade: gr,
+        Attempts: gradeAttemptMap.get(gr) || 0,
+        Flash: 1,
+      })
+    })
   }
 
   return (
@@ -142,25 +131,25 @@ const GradeGraphWrapper = () => {
           <GradeGraph climbType="Top Rope" graphData={trData} />
         </Grid>
       )}
-      {/* <Grid
-          container
-          direction="row"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {climbingData.map((climb) => (
-            <div key={Math.random()} style={{ margin: 2 }}>
-              <p>Climb Type: {climb.ClimbType}</p>
-              <p>Grade: {climb.Grade}</p>
-              <p>Attempts: {climb.Attempts}</p>
-              <p>Tick: {climb.Tick}</p>
-              <p>Date: {climb.DateTime}</p>
-            </div>
-          ))}
-        </Grid> */}
+      <Grid
+        container
+        direction="row"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {climbingData.map((climb) => (
+          <div key={Math.random()} style={{ margin: 2 }}>
+            <p>Climb Type: {climb.ClimbType}</p>
+            <p>Grade: {climb.Grade}</p>
+            <p>Attempts: {climb.Attempts}</p>
+            <p>Tick: {climb.Tick}</p>
+            {/* <p>Date: {climb.DateTime.toDateString()}</p> */}
+          </div>
+        ))}
+      </Grid>
     </>
   )
 }
