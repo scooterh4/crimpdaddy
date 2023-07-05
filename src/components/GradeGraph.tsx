@@ -48,8 +48,10 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
         <Tooltip />
         <Legend />
         <CartesianGrid strokeDasharray="0 0" />
-        <Bar dataKey="Attempts" stackId="a" fill="#8884d8" />
-        {/* <Bar dataKey="Flash" stackId="a" fill="#82ca9d" /> */}
+        <Bar dataKey="Onsight" stackId="a" fill="#16BA6F" />
+        <Bar dataKey="Flash" stackId="a" fill="#FFC733" />
+        <Bar dataKey="Redpoint" stackId="a" fill="#FF4633" />
+        <Bar dataKey="Attempts" stackId="a" fill="#C4C4C4" />
       </BarChart>
     </div>
   )

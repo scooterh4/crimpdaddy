@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { GetClimbsByUser } from "../db/ClimbLogService"
 import { UserContext } from "../Context"
-import { ClimbLog, ClimbGraphData } from "../static/types"
+import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import { Grid } from "@mui/material"
 import GradeGraph from "./GradeGraph"
 import { INDOOR_SPORT_GRADES } from "../static/constants"
@@ -31,9 +31,9 @@ const GradeGraphWrapper = () => {
   }, [climbingData])
 
   function formatClimbingData() {
-    const boulderGradeAttemptMap = new Map<string, number>()
-    const leadGradeAttemptMap = new Map<string, number>()
-    const trGradeAttemptMap = new Map<string, number>()
+    const boulderGradeAttemptMap = new Map<string, TickTypes>()
+    const leadGradeAttemptMap = new Map<string, TickTypes>()
+    const trGradeAttemptMap = new Map<string, TickTypes>()
 
     climbingData.forEach((climb) => {
       const gradeAttemptMap =
@@ -80,20 +80,59 @@ const GradeGraphWrapper = () => {
     }
   }
 
-  function addGradeData(climb: ClimbLog, gradeAttemptMap: Map<string, number>) {
-    const attempts = gradeAttemptMap.get(climb.Grade) || 0
-    gradeAttemptMap.set(climb.Grade, attempts + climb.Attempts)
+  function addGradeData(
+    climb: ClimbLog,
+    gradeAttemptMap: Map<string, TickTypes>
+  ) {
+    const ticks = gradeAttemptMap.get(climb.Grade) || {
+      Onsight: 0,
+      Flash: 0,
+      Redpoint: 0,
+      Attempts: 0,
+    }
+
+    switch (climb.Tick) {
+      case "Onsight":
+        ticks.Onsight += 1
+        break
+      case "Flash":
+        ticks.Flash += 1
+        break
+      case "Redpoint":
+        ticks.Redpoint += 1
+        break
+      default:
+        break
+    }
+
+    ticks.Attempts += climb.Attempts > 1 ? climb.Attempts - 1 : 0
+    gradeAttemptMap.set(climb.Grade, ticks)
   }
 
   function assembleGraphData(
     gradesArray: string[],
-    gradeAttemptMap: Map<string, number>
+    gradeAttemptMap: Map<string, TickTypes>
   ): ClimbGraphData[] {
-    return gradesArray.map((grade) => ({
-      Grade: grade,
-      Attempts: gradeAttemptMap.get(grade) || 0,
-      Flash: 1,
-    }))
+    const graphData: ClimbGraphData[] = []
+
+    gradesArray.forEach((grade) => {
+      const ticks: TickTypes = gradeAttemptMap.get(grade) || {
+        Onsight: 0,
+        Flash: 0,
+        Redpoint: 0,
+        Attempts: 0,
+      }
+
+      graphData.push({
+        Grade: grade,
+        Onsight: ticks.Onsight,
+        Flash: ticks.Flash,
+        Redpoint: ticks.Redpoint,
+        Attempts: ticks.Attempts,
+      })
+    })
+
+    return graphData
   }
 
   return (
