@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { Button, Typography } from "@mui/material"
+import { Button, Grid, Typography } from "@mui/material"
 import { UserContext } from "../Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
@@ -31,7 +31,9 @@ const Home = () => {
   ) : (
     <>
       <Toolbar user={user} updateUser={updateUser} />
-      <div
+      <Grid
+        container
+        direction="column"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -39,26 +41,18 @@ const Home = () => {
         }}
       >
         <Typography
-          variant="h1"
+          variant="h2"
           component="div"
           gutterBottom
-          sx={{ textAlign: "center", marginTop: "1rem" }}
+          sx={{ marginTop: "1rem" }}
         >
           Welcome
         </Typography>
-      </div>
 
-      <div
-        style={{
-          marginBottom: "1rem",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
         <Button variant="contained" onClick={handleClimbTypeSelectorOpen}>
           Log a climb
         </Button>
+
         <PickClimbType
           open={openClimbTypeSelector}
           handleClose={handleClimbTypeSelectorClose}
@@ -70,17 +64,9 @@ const Home = () => {
           open={openDetails}
           handleClose={handleDetailsClose}
         />
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
         <GradeGraphWrapper />
-      </div>
+      </Grid>
     </>
   )
 }
