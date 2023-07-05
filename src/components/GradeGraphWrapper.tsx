@@ -105,7 +105,7 @@ const GradeGraphWrapper = () => {
           <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
         </Grid>
       )}
-      <Grid
+      {/* <Grid
         container
         direction="row"
         style={{
@@ -120,10 +120,10 @@ const GradeGraphWrapper = () => {
             <p>Grade: {climb.Grade}</p>
             <p>Attempts: {climb.Attempts}</p>
             <p>Tick: {climb.Tick}</p>
-            {/* <p>Date: {climb.DateTime.toDateString()}</p> */}
+            <p>Date: {climb.DateTime.toDateString()}</p>
           </div>
         ))}
-      </Grid>
+      </Grid> */}
     </>
   )
 }
