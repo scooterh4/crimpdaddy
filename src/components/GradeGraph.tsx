@@ -23,25 +23,25 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
         variant="h4"
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
           alignItems: "center",
+          marginLeft: "10.5rem",
         }}
       >
         {climbType}
       </Typography>
-
       <BarChart
         layout="vertical"
         width={500}
         height={300}
         data={graphData}
+        barSize={100}
         margin={{
           top: 5,
           right: 30,
           left: 20,
           bottom: 5,
         }}
-        barSize={100}
       >
         <XAxis type="number" />
         <YAxis type="category" dataKey="Grade" width={150} tickLine={false} />

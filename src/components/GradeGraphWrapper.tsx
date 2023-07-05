@@ -4,6 +4,7 @@ import { UserContext } from "../Context"
 import { ClimbLog, ClimbGraphData } from "../static/types"
 import { Grid } from "@mui/material"
 import GradeGraph from "./GradeGraph"
+import { ResponsiveContainer } from "recharts"
 
 const GradeGraphWrapper = () => {
   const { user } = useContext(UserContext)
@@ -134,23 +135,14 @@ const GradeGraphWrapper = () => {
 
   return (
     <>
-      <Grid
-        container
-        direction="column"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {climbingData.length > 0 && (
-          <Grid container direction="row" sx={{ mt: 5 }}>
-            <GradeGraph climbType="Boulder" graphData={boulderData} />
-            <GradeGraph climbType="Lead" graphData={leadData} />
-            <GradeGraph climbType="Top Rope" graphData={trData} />
-          </Grid>
-        )}
-        {/* <Grid
+      {climbingData.length > 0 && (
+        <Grid container direction="row" sx={{ mt: 5 }}>
+          <GradeGraph climbType="Boulder" graphData={boulderData} />
+          <GradeGraph climbType="Lead" graphData={leadData} />
+          <GradeGraph climbType="Top Rope" graphData={trData} />
+        </Grid>
+      )}
+      {/* <Grid
           container
           direction="row"
           style={{
@@ -169,7 +161,6 @@ const GradeGraphWrapper = () => {
             </div>
           ))}
         </Grid> */}
-      </Grid>
     </>
   )
 }
