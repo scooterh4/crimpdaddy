@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { Button, Grid, Typography } from "@mui/material"
+import { Button, Container, Grid, Typography } from "@mui/material"
 import { UserContext } from "../Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
@@ -31,44 +31,78 @@ const Home = () => {
   ) : (
     <>
       <Toolbar user={user} updateUser={updateUser} />
-      <Grid
-        container
-        direction="column"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h2"
-          component="div"
-          gutterBottom
-          sx={{ marginTop: "1rem" }}
+
+      <PickClimbType
+        open={openClimbTypeSelector}
+        handleClose={handleClimbTypeSelectorClose}
+        setClimbType={setClimbType}
+        handleSubmitClimbType={handleSubmitClimbType}
+      />
+      <ClimbDetailsDialog
+        climbType={climbType}
+        open={openDetails}
+        handleClose={handleDetailsClose}
+      />
+
+      <Container maxWidth="xl">
+        <Grid
+          container
+          direction="row"
+          sx={{
+            display: "flex-inline",
+            justifyContent: "space-between",
+          }}
         >
-          Welcome
-        </Typography>
+          <Grid item>
+            <Typography variant="h3" component="div" gutterBottom>
+              Dashboard
+            </Typography>
+          </Grid>
 
-        <Button variant="contained" onClick={handleClimbTypeSelectorOpen}>
-          Log a climb
-        </Button>
+          <Grid item />
 
-        <PickClimbType
-          open={openClimbTypeSelector}
-          handleClose={handleClimbTypeSelectorClose}
-          setClimbType={setClimbType}
-          handleSubmitClimbType={handleSubmitClimbType}
-        />
-        <ClimbDetailsDialog
-          climbType={climbType}
-          open={openDetails}
-          handleClose={handleDetailsClose}
-        />
-
-        <Grid container direction="row" marginLeft={{ xs: -26, sm: 0 }}>
-          <GradeGraphWrapper />
+          <Grid item sx={{ paddingTop: 2 }}>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={handleClimbTypeSelectorOpen}
+            >
+              Log a climb
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+
+        <Grid
+          container
+          padding={2}
+          style={{
+            display: "flex",
+            background: "#DFCEA7",
+            borderRadius: 5,
+          }}
+        >
+          <Grid
+            container
+            item
+            spacing={2}
+            direction="column"
+            xs={12}
+            sm={3}
+            style={{ background: "#DFCEA7" }}
+          >
+            {/* <Grid
+            container
+            direction="column"
+            sm={3}
+            xs={12}
+            spacing={5}
+            style={{ background: "#DFCEA7" }}
+          > */}
+            <GradeGraphWrapper />
+            {/* </Grid> */}
+          </Grid>
+        </Grid>
+      </Container>
     </>
   )
 }

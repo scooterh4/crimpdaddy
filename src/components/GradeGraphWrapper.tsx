@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { GetClimbsByUser } from "../db/ClimbLogService"
 import { UserContext } from "../Context"
 import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
-import { Grid } from "@mui/material"
+import { Card, Grid, Typography } from "@mui/material"
 import GradeGraph from "./GradeGraph"
 import { INDOOR_SPORT_GRADES } from "../static/constants"
 
@@ -139,9 +139,33 @@ const GradeGraphWrapper = () => {
     <>
       {climbingData.length > 0 && (
         <>
-          <GradeGraph climbType="Boulder" graphData={graphData.boulderData} />
-          <GradeGraph climbType="Lead" graphData={graphData.leadData} />
-          <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
+          <Grid item sx={{ display: "inline-block" }}>
+            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
+              <Typography variant="h5" align="center">
+                Boulders
+              </Typography>
+              <GradeGraph
+                climbType="Boulder"
+                graphData={graphData.boulderData}
+              />
+            </Card>
+          </Grid>
+          <Grid item sx={{ display: "inline-block" }}>
+            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
+              <Typography variant="h5" align="center">
+                Leads
+              </Typography>
+              <GradeGraph climbType="Lead" graphData={graphData.leadData} />
+            </Card>
+          </Grid>
+          <Grid item sx={{ display: "inline-block" }}>
+            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
+              <Typography variant="h5" align="center">
+                Top Rope
+              </Typography>
+              <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
+            </Card>
+          </Grid>
         </>
       )}
       {/* <Grid
