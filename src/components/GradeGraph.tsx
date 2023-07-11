@@ -18,12 +18,12 @@ export type GradeGraphProps = {
 
 function GradeGraph({ climbType, graphData }: GradeGraphProps) {
   return (
-    <ResponsiveContainer width="100%" height={200}>
+    <ResponsiveContainer width="100%" height={140}>
       <BarChart
         layout="vertical"
         margin={{ left: -15 }}
         data={graphData}
-        barSize={100}
+        barSize={50}
       >
         <XAxis type="number" />
         <YAxis type="category" dataKey="Grade" tickLine={false} fontSize={12} />

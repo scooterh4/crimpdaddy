@@ -139,6 +139,7 @@ const GradeGraphWrapper = () => {
     <>
       {climbingData.length > 0 && (
         <>
+          {/* <Card sx={{ paddingRight: 2, borderRadius: 5 }}> */}
           <Grid item sx={{ display: "inline-block" }}>
             <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
               <Typography variant="h5" align="center">
@@ -166,6 +167,7 @@ const GradeGraphWrapper = () => {
               <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
             </Card>
           </Grid>
+          {/* </Card> */}
         </>
       )}
       {/* <Grid
