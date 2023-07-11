@@ -7,12 +7,15 @@ import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
 import GradeGraphWrapper from "../components/GradeGraphWrapper"
+import MonthlyClimbsGraph from "../components/MonthlyClimbsGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
   const [openClimbTypeSelector, setClimbTypeSelector] = React.useState(false)
   const handleClimbTypeSelectorOpen = () => setClimbTypeSelector(true)
   const handleClimbTypeSelectorClose = () => setClimbTypeSelector(false)
+
+  const dashboardBackground = "#F2EEED"
 
   const [openDetails, setDetailsOpen] = React.useState(false)
   const [climbType, setClimbType] = React.useState(0)
@@ -75,9 +78,10 @@ const Home = () => {
         <Grid
           container
           padding={2}
+          spacing={2}
           style={{
             display: "flex",
-            background: "#B04F54",
+            background: dashboardBackground,
           }}
         >
           <Grid
@@ -87,18 +91,20 @@ const Home = () => {
             direction="column"
             xs={12}
             sm={3}
-            style={{ background: "#B04F54" }}
+            style={{ background: dashboardBackground }}
           >
-            {/* <Grid
-            container
-            direction="column"
-            sm={3}
-            xs={12}
-            spacing={5}
-            style={{ background: "#D99697" }}
-          > */}
             <GradeGraphWrapper />
-            {/* </Grid> */}
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="column"
+            xs={12}
+            sm={9}
+            style={{ background: dashboardBackground }}
+          >
+            <MonthlyClimbsGraph />
           </Grid>
         </Grid>
       </Container>
