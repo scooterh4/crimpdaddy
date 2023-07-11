@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Container, Grid, Typography } from "@mui/material"
-import { UserContext } from "../Context"
+import { UserContext } from "../db/Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"

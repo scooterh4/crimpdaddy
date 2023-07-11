@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { auth } from "../firebase"
 import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
-import { UserContext } from "../Context"
+import { UserContext } from "../db/Context"
 
 export type ProtectedRouteProps = {
   authenticationPath: string

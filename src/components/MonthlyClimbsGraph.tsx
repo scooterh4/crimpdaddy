@@ -10,7 +10,7 @@ import {
 } from "recharts"
 import { MonthlyClimbData } from "../static/types"
 import { GetMonthlyClimbsByUser } from "../db/ClimbLogService"
-import { UserContext } from "../Context"
+import { UserContext } from "../db/Context"
 import { Card, Typography } from "@mui/material"
 
 function MonthlyClimbsGraph() {

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { AppUser } from "./static/types"
+import { AppUser } from "../static/types"
 
 interface IUserContext {
   user: AppUser | null

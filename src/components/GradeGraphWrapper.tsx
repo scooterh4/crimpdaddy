@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { GetClimbsByUser } from "../db/ClimbLogService"
-import { UserContext } from "../Context"
+import { UserContext } from "../db/Context"
 import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import { Card, Grid, Typography } from "@mui/material"
 import GradeGraph from "./GradeGraph"

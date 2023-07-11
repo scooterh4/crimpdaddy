@@ -18,7 +18,7 @@ import {
   GYM_CLIMB_TYPES,
 } from "../static/constants"
 import { LogClimb } from "../db/ClimbLogService"
-import { UserContext } from "../Context"
+import { UserContext } from "../db/Context"
 import { ClimbLog } from "../static/types"
 
 export type LogModalProps = {
