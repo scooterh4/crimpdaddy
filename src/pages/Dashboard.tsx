@@ -54,7 +54,7 @@ const Home = () => {
           }}
         >
           <Grid item>
-            <Typography variant="h3" component="div" gutterBottom>
+            <Typography variant="h3" marginTop={1} component="div" gutterBottom>
               Dashboard
             </Typography>
           </Grid>
