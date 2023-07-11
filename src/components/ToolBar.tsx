@@ -46,7 +46,7 @@ function ToolBar({ user, updateUser }: ToolBarProps) {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ background: "#4FB0AB" }}>
       <Container maxWidth="xl">
         <Toolbar>
           <IconButton

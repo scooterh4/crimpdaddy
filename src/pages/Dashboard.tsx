@@ -77,8 +77,7 @@ const Home = () => {
           padding={2}
           style={{
             display: "flex",
-            background: "#DFCEA7",
-            borderRadius: 5,
+            background: "#B04F54",
           }}
         >
           <Grid
@@ -88,7 +87,7 @@ const Home = () => {
             direction="column"
             xs={12}
             sm={3}
-            style={{ background: "#DFCEA7" }}
+            style={{ background: "#B04F54" }}
           >
             {/* <Grid
             container
@@ -96,7 +95,7 @@ const Home = () => {
             sm={3}
             xs={12}
             spacing={5}
-            style={{ background: "#DFCEA7" }}
+            style={{ background: "#D99697" }}
           > */}
             <GradeGraphWrapper />
             {/* </Grid> */}
