@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Area,
   AreaChart,
@@ -9,26 +9,14 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog, MonthlyClimbData } from "../static/types"
-// import { GetMonthlyClimbsByUser } from "../db/ClimbLogService"
-import { UserContext } from "../db/Context"
 import { Card, Typography } from "@mui/material"
-import { Timestamp } from "firebase/firestore"
 
 export type MonthlyClimbsGraphProps = {
   climbingData: ClimbLog[]
 }
 
 function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
-  // const { user } = useContext(UserContext)
   const [graphData, setGraphData] = useState<MonthlyClimbData[]>([])
-
-  // useEffect(() => {
-  //   if (user) {
-  //     GetMonthlyClimbsByUser(user.id).then((data) => {
-  //       setClimbingData(data)
-  //     })
-  //   }
-  // }, [user])
 
   useEffect(() => {
     if (climbingData.length > 0) {
