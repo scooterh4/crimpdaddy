@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Container, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
@@ -8,9 +8,12 @@ import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
 import GradeGraphWrapper from "../components/GradeGraphWrapper"
 import MonthlyClimbsGraph from "../components/MonthlyClimbsGraph"
+import { GetClimbsByUser } from "../db/ClimbLogService"
+import { ClimbLog } from "../static/types"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
+  const [climbingData, setClimbingData] = React.useState<ClimbLog[]>([])
   const [openClimbTypeSelector, setClimbTypeSelector] = React.useState(false)
   const handleClimbTypeSelectorOpen = () => setClimbTypeSelector(true)
   const handleClimbTypeSelectorClose = () => setClimbTypeSelector(false)
@@ -23,6 +26,14 @@ const Home = () => {
   const handleDetailsClose = () => setDetailsOpen(false)
 
   const isLoading = !user
+
+  useEffect(() => {
+    if (user) {
+      GetClimbsByUser(user.id).then((data) => {
+        setClimbingData(data)
+      })
+    }
+  }, [user])
 
   function handleSubmitClimbType() {
     setClimbTypeSelector(false)
@@ -93,7 +104,7 @@ const Home = () => {
             sm={3}
             style={{ background: dashboardBackground }}
           >
-            <GradeGraphWrapper />
+            <GradeGraphWrapper climbingData={climbingData} />
           </Grid>
           <Grid
             container
@@ -104,7 +115,7 @@ const Home = () => {
             sm={9}
             style={{ background: dashboardBackground }}
           >
-            <MonthlyClimbsGraph />
+            <MonthlyClimbsGraph climbingData={climbingData} />
           </Grid>
         </Grid>
       </Container>

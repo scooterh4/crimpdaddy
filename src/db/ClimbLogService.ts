@@ -16,7 +16,7 @@ const collectionName = "climbingLogs"
 export const LogClimb = async (climbData: ClimbLog): Promise<string> => {
   const collectionPath = `/${collectionName}/${
     climbData.UserId
-  }/${climbData.DateTime.getFullYear()}/indoor/climbs`
+  }/${climbData.DateTime.toDate().getFullYear()}/indoor/climbs`
 
   try {
     const userDoc = doc(db, `/${collectionName}/${climbData.UserId}`)
@@ -66,45 +66,45 @@ export const GetClimbsByUser = async (userId: string): Promise<ClimbLog[]> => {
 }
 
 // get all climbs for a user by month
-export const GetMonthlyClimbsByUser = async (
-  userId: string
-): Promise<MonthlyClimbData[]> => {
-  let result: MonthlyClimbData[] = [
-    { month: "Jan", numberOfClimbs: 0 },
-    { month: "Feb", numberOfClimbs: 0 },
-    { month: "Mar", numberOfClimbs: 0 },
-    { month: "Apr", numberOfClimbs: 0 },
-    { month: "May", numberOfClimbs: 0 },
-    { month: "Jun", numberOfClimbs: 0 },
-    { month: "Jul", numberOfClimbs: 0 },
-    { month: "Aug", numberOfClimbs: 0 },
-    { month: "Sep", numberOfClimbs: 0 },
-    { month: "Oct", numberOfClimbs: 0 },
-    { month: "Nov", numberOfClimbs: 0 },
-    { month: "Dec", numberOfClimbs: 0 },
-  ]
-  const year = new Date().getFullYear()
-  const collectionPath = `/${collectionName}/${userId}/${year}/indoor/climbs`
+// export const GetMonthlyClimbsByUser = async (
+//   userId: string
+// ): Promise<MonthlyClimbData[]> => {
+//   let result: MonthlyClimbData[] = [
+//     { month: "Jan", numberOfClimbs: 0 },
+//     { month: "Feb", numberOfClimbs: 0 },
+//     { month: "Mar", numberOfClimbs: 0 },
+//     { month: "Apr", numberOfClimbs: 0 },
+//     { month: "May", numberOfClimbs: 0 },
+//     { month: "Jun", numberOfClimbs: 0 },
+//     { month: "Jul", numberOfClimbs: 0 },
+//     { month: "Aug", numberOfClimbs: 0 },
+//     { month: "Sep", numberOfClimbs: 0 },
+//     { month: "Oct", numberOfClimbs: 0 },
+//     { month: "Nov", numberOfClimbs: 0 },
+//     { month: "Dec", numberOfClimbs: 0 },
+//   ]
+//   const year = new Date().getFullYear()
+//   const collectionPath = `/${collectionName}/${userId}/${year}/indoor/climbs`
 
-  try {
-    const querySnapshot = await getDocs(collection(db, collectionPath))
+//   try {
+//     const querySnapshot = await getDocs(collection(db, collectionPath))
 
-    querySnapshot.forEach((doc) => {
-      const climb = doc.data() as {
-        UserId: string
-        Attempts: number
-        DateTime: Timestamp
-      }
+//     querySnapshot.forEach((doc) => {
+//       const climb = doc.data() as {
+//         UserId: string
+//         Attempts: number
+//         DateTime: Timestamp
+//       }
 
-      const date = climb.DateTime.toDate()
+//       const date = climb.DateTime.toDate()
 
-      result.find(
-        (m) => m.month === date.toLocaleString("default", { month: "short" })
-      )!.numberOfClimbs += climb.Attempts
-    })
-  } catch (error) {
-    console.log("Error retreiving all users: ", error)
-  }
+//       result.find(
+//         (m) => m.month === date.toLocaleString("default", { month: "short" })
+//       )!.numberOfClimbs += climb.Attempts
+//     })
+//   } catch (error) {
+//     console.log("Error retreiving all users: ", error)
+//   }
 
-  return result as MonthlyClimbData[]
-}
+//   return result as MonthlyClimbData[]
+// }

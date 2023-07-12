@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore"
+
 export type AppUser = {
   id: string
   email: string
@@ -9,7 +11,7 @@ export type ClimbLog = {
   Grade: string
   Tick: string
   Attempts: number
-  DateTime: Date
+  DateTime: Timestamp
 }
 
 export type MonthlyClimbData = {

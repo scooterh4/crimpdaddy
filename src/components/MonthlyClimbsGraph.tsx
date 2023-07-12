@@ -8,22 +8,58 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { MonthlyClimbData } from "../static/types"
-import { GetMonthlyClimbsByUser } from "../db/ClimbLogService"
+import { ClimbLog, MonthlyClimbData } from "../static/types"
+// import { GetMonthlyClimbsByUser } from "../db/ClimbLogService"
 import { UserContext } from "../db/Context"
 import { Card, Typography } from "@mui/material"
+import { Timestamp } from "firebase/firestore"
 
-function MonthlyClimbsGraph() {
-  const { user } = useContext(UserContext)
-  const [graphData, setClimbingData] = useState<MonthlyClimbData[]>([])
+export type MonthlyClimbsGraphProps = {
+  climbingData: ClimbLog[]
+}
+
+function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
+  // const { user } = useContext(UserContext)
+  const [graphData, setGraphData] = useState<MonthlyClimbData[]>([])
+
+  // useEffect(() => {
+  //   if (user) {
+  //     GetMonthlyClimbsByUser(user.id).then((data) => {
+  //       setClimbingData(data)
+  //     })
+  //   }
+  // }, [user])
 
   useEffect(() => {
-    if (user) {
-      GetMonthlyClimbsByUser(user.id).then((data) => {
-        setClimbingData(data)
+    if (climbingData.length > 0) {
+      let result: MonthlyClimbData[] = [
+        { month: "Jan", numberOfClimbs: 0 },
+        { month: "Feb", numberOfClimbs: 0 },
+        { month: "Mar", numberOfClimbs: 0 },
+        { month: "Apr", numberOfClimbs: 0 },
+        { month: "May", numberOfClimbs: 0 },
+        { month: "Jun", numberOfClimbs: 0 },
+        { month: "Jul", numberOfClimbs: 0 },
+        { month: "Aug", numberOfClimbs: 0 },
+        { month: "Sep", numberOfClimbs: 0 },
+        { month: "Oct", numberOfClimbs: 0 },
+        { month: "Nov", numberOfClimbs: 0 },
+        { month: "Dec", numberOfClimbs: 0 },
+      ]
+
+      climbingData.forEach((climb) => {
+        result.find(
+          (m) =>
+            m.month ===
+            climb.DateTime.toDate().toLocaleString("default", {
+              month: "short",
+            })
+        )!.numberOfClimbs += climb.Attempts
       })
+
+      setGraphData(result)
     }
-  }, [user])
+  }, [climbingData])
 
   return (
     <Card sx={{ paddingTop: 2, paddingRight: 2, borderRadius: 5 }}>

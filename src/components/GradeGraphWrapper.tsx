@@ -1,27 +1,31 @@
 import React, { useContext, useEffect, useState } from "react"
-import { GetClimbsByUser } from "../db/ClimbLogService"
+// import { GetClimbsByUser } from "../db/ClimbLogService"
 import { UserContext } from "../db/Context"
 import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import { Card, Grid, Typography } from "@mui/material"
 import GradeGraph from "./GradeGraph"
 import { INDOOR_SPORT_GRADES } from "../static/constants"
 
-const GradeGraphWrapper = () => {
+export type GradeGraphWrapperProps = {
+  climbingData: ClimbLog[]
+}
+
+function GradeGraphWrapper({ climbingData }: GradeGraphWrapperProps) {
   const { user } = useContext(UserContext)
-  const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
+  // const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
   const [graphData, setGraphData] = useState({
     boulderData: [] as ClimbGraphData[],
     leadData: [] as ClimbGraphData[],
     trData: [] as ClimbGraphData[],
   })
 
-  useEffect(() => {
-    if (user) {
-      GetClimbsByUser(user.id).then((data) => {
-        setClimbingData(data)
-      })
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     GetClimbsByUser(user.id).then((data) => {
+  //       setClimbingData(data)
+  //     })
+  //   }
+  // }, [user])
 
   useEffect(() => {
     if (climbingData.length > 0) {

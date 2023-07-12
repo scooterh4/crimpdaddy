@@ -20,6 +20,7 @@ import {
 import { LogClimb } from "../db/ClimbLogService"
 import { UserContext } from "../db/Context"
 import { ClimbLog } from "../static/types"
+import { Timestamp } from "firebase/firestore"
 
 export type LogModalProps = {
   open: boolean
@@ -87,7 +88,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
         Grade: grade,
         Tick: tick,
         Attempts: parseInt(attempts.toString()),
-        DateTime: new Date(),
+        DateTime: Timestamp.now(),
       }
 
       LogClimb(climbData).then((res) => {
