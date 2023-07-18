@@ -18,7 +18,7 @@ export type GradeGraphProps = {
 
 function GradeGraph({ climbType, graphData }: GradeGraphProps) {
   return (
-    <ResponsiveContainer width="100%" height={140}>
+    <ResponsiveContainer height={100} width={300}>
       <BarChart
         layout="vertical"
         margin={{ left: -15 }}

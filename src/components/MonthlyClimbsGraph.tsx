@@ -50,17 +50,14 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
   }, [climbingData])
 
   return (
-    <Card sx={{ paddingTop: 2, paddingRight: 2, borderRadius: 5 }}>
+    <Card
+      sx={{ paddingTop: 2, paddingRight: 2, borderRadius: 5, height: "100%" }}
+    >
       <Typography variant="h5" align="center">
         Climbs by Month
       </Typography>
-      <ResponsiveContainer width="100%" height={200}>
-        <AreaChart
-          layout="horizontal"
-          margin={{ left: -15 }}
-          data={graphData}
-          barSize={50}
-        >
+      <ResponsiveContainer width={800} aspect={3}>
+        <AreaChart margin={{ left: -15 }} data={graphData} barSize={50}>
           <defs>
             <linearGradient id="colorAttempts" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#C6B4B0" stopOpacity={0.8} />

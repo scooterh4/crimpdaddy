@@ -89,7 +89,6 @@ const Home = () => {
         <Grid
           container
           padding={2}
-          spacing={2}
           style={{
             display: "flex",
             background: dashboardBackground,
@@ -98,24 +97,21 @@ const Home = () => {
           <Grid
             container
             item
-            spacing={2}
-            direction="column"
-            xs={12}
-            sm={3}
-            style={{ background: dashboardBackground }}
+            paddingLeft={2}
+            marginBottom={2}
+            direction="row"
+            style={{ display: "flex", background: dashboardBackground }}
           >
-            <GradeGraphWrapper climbingData={climbingData} />
+            <MonthlyClimbsGraph climbingData={climbingData} />
           </Grid>
           <Grid
             container
             item
             paddingLeft={2}
-            direction="column"
-            xs={12}
-            sm={9}
+            direction="row"
             style={{ background: dashboardBackground }}
           >
-            <MonthlyClimbsGraph climbingData={climbingData} />
+            <GradeGraphWrapper climbingData={climbingData} />
           </Grid>
         </Grid>
       </Container>
