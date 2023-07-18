@@ -43,7 +43,7 @@ function HardestGradeDisplay({
 
   return (
     <Card>
-      <Typography variant="h6">Hardest {tickType}</Typography>
+      <Typography variant="h6">{tickType}</Typography>
       <Typography variant="h6">{hardestGrade}</Typography>
     </Card>
   )
