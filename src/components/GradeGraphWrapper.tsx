@@ -3,6 +3,7 @@ import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import { Card, Grid, Typography } from "@mui/material"
 import GradeGraph from "./GradeGraph"
 import { INDOOR_SPORT_GRADES } from "../static/constants"
+import GradePyramidsLegend from "./GradePyramidsLegend"
 
 export type GradeGraphWrapperProps = {
   climbingData: ClimbLog[]
@@ -131,35 +132,68 @@ function GradeGraphWrapper({ climbingData }: GradeGraphWrapperProps) {
     <>
       {climbingData.length > 0 && (
         <>
-          {/* <Card sx={{ paddingRight: 2, borderRadius: 5 }}> */}
-          <Grid item sx={{ display: "inline-block" }}>
-            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
-              <Typography variant="h5" align="center">
-                Boulders
+          <Card sx={{ borderRadius: 5 }}>
+            <Typography variant="h5" align="center">
+              Grade Pyramids
+            </Typography>
+
+            <Grid
+              container
+              direction={"row"}
+              justifyContent={"center"}
+              sx={{ display: "flex" }}
+            >
+              <GradePyramidsLegend />
+            </Grid>
+
+            <Grid
+              item
+              container
+              direction={"column"}
+              sm={4}
+              xs={12}
+              padding={2}
+              sx={{ display: "inline-block" }}
+            >
+              <Typography variant="h6" align="center">
+                Bouldering
               </Typography>
               <GradeGraph
                 climbType="Boulder"
                 graphData={graphData.boulderData}
               />
-            </Card>
-          </Grid>
-          <Grid item sx={{ display: "inline-block" }}>
-            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
-              <Typography variant="h5" align="center">
-                Leads
+            </Grid>
+
+            <Grid
+              item
+              container
+              direction={"column"}
+              sm={4}
+              xs={12}
+              padding={2}
+              sx={{ display: "inline-block" }}
+            >
+              <Typography variant="h6" align="center">
+                Lead
               </Typography>
               <GradeGraph climbType="Lead" graphData={graphData.leadData} />
-            </Card>
-          </Grid>
-          <Grid item sx={{ display: "inline-block" }}>
-            <Card sx={{ paddingRight: 2, borderRadius: 5 }}>
-              <Typography variant="h5" align="center">
+            </Grid>
+
+            <Grid
+              item
+              container
+              direction={"column"}
+              sm={4}
+              xs={12}
+              padding={2}
+              sx={{ display: "inline-block" }}
+            >
+              <Typography variant="h6" align="center">
                 Top Rope
               </Typography>
               <GradeGraph climbType="Top Rope" graphData={graphData.trData} />
-            </Card>
-          </Grid>
-          {/* </Card> */}
+            </Grid>
+          </Card>
         </>
       )}
       {/* <Grid
