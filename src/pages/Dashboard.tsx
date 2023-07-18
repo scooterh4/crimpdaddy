@@ -10,6 +10,8 @@ import GradeGraphWrapper from "../components/GradeGraphWrapper"
 import MonthlyClimbsGraph from "../components/MonthlyClimbsGraph"
 import { GetClimbsByUser } from "../db/ClimbLogService"
 import { ClimbLog } from "../static/types"
+import HardestGradeDisplay from "../components/HardestGradeDisplay"
+import { TICK_TYPES } from "../static/constants"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -104,6 +106,84 @@ const Home = () => {
           >
             <MonthlyClimbsGraph climbingData={climbingData} />
           </Grid>
+          {/* <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Boulder"
+              tickType="Onsight"
+              climbingData={climbingData}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Boulder"
+              tickType="Flash"
+              climbingData={climbingData}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Boulder"
+              tickType="Redpoint"
+              climbingData={climbingData}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Lead"
+              tickType="Onsight"
+              climbingData={climbingData}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Lead"
+              tickType="Flash"
+              climbingData={climbingData}
+            />
+          </Grid>
+          <Grid
+            container
+            item
+            paddingLeft={2}
+            direction="row"
+            style={{ background: dashboardBackground }}
+          >
+            <HardestGradeDisplay
+              climbType="Lead"
+              tickType="Redpoint"
+              climbingData={climbingData}
+            />
+          </Grid> */}
           <Grid
             container
             item
