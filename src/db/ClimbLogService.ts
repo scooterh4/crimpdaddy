@@ -8,7 +8,13 @@ import {
   getDocs,
   Timestamp,
 } from "firebase/firestore"
-import { ClimbLog, MonthlyClimbData } from "../static/types"
+import {
+  ClimbLog,
+  MonthlyClimbData,
+  ClimbGraphData,
+  TickTypes,
+} from "../static/types"
+import { INDOOR_SPORT_GRADES } from "../static/constants"
 
 const collectionName = "climbingLogs"
 
@@ -46,9 +52,20 @@ export const LogClimb = async (climbData: ClimbLog): Promise<string> => {
   return "Success"
 }
 
+export type ClimbingData = {
+  climbingData: ClimbLog[]
+  gradePyramidData: {
+    boulderData: ClimbGraphData[]
+    leadData: ClimbGraphData[]
+    trData: ClimbGraphData[]
+  }
+}
+
 // get all climbs for a user
-export const GetClimbsByUser = async (userId: string): Promise<ClimbLog[]> => {
-  const result: ClimbLog[] = []
+export const GetClimbsByUser = async (
+  userId: string
+): Promise<ClimbingData> => {
+  const rawClimbingData: ClimbLog[] = []
   const year = new Date().getFullYear()
   const collectionPath = `/${collectionName}/${userId}/${year}/indoor/climbs`
 
@@ -56,55 +73,122 @@ export const GetClimbsByUser = async (userId: string): Promise<ClimbLog[]> => {
     const querySnapshot = await getDocs(collection(db, collectionPath))
 
     querySnapshot.forEach((doc) => {
-      result.push(doc.data() as ClimbLog)
+      rawClimbingData.push(doc.data() as ClimbLog)
     })
   } catch (error) {
     console.log("Error retreiving all users: ", error)
   }
 
-  return result as ClimbLog[]
+  const gradePyramidData = formatClimbingData(rawClimbingData)
+
+  return {
+    climbingData: rawClimbingData,
+    gradePyramidData: gradePyramidData,
+  } as ClimbingData
 }
 
-// get all climbs for a user by month
-// export const GetMonthlyClimbsByUser = async (
-//   userId: string
-// ): Promise<MonthlyClimbData[]> => {
-//   let result: MonthlyClimbData[] = [
-//     { month: "Jan", numberOfClimbs: 0 },
-//     { month: "Feb", numberOfClimbs: 0 },
-//     { month: "Mar", numberOfClimbs: 0 },
-//     { month: "Apr", numberOfClimbs: 0 },
-//     { month: "May", numberOfClimbs: 0 },
-//     { month: "Jun", numberOfClimbs: 0 },
-//     { month: "Jul", numberOfClimbs: 0 },
-//     { month: "Aug", numberOfClimbs: 0 },
-//     { month: "Sep", numberOfClimbs: 0 },
-//     { month: "Oct", numberOfClimbs: 0 },
-//     { month: "Nov", numberOfClimbs: 0 },
-//     { month: "Dec", numberOfClimbs: 0 },
-//   ]
-//   const year = new Date().getFullYear()
-//   const collectionPath = `/${collectionName}/${userId}/${year}/indoor/climbs`
+// -----------------
+// Helper functions
+// -----------------
+function formatClimbingData(rawData: ClimbLog[]) {
+  const boulderGradeAttemptMap = new Map<string, TickTypes>()
+  const leadGradeAttemptMap = new Map<string, TickTypes>()
+  const trGradeAttemptMap = new Map<string, TickTypes>()
 
-//   try {
-//     const querySnapshot = await getDocs(collection(db, collectionPath))
+  rawData.forEach((climb) => {
+    const gradeAttemptMap =
+      climb.ClimbType === "Boulder"
+        ? boulderGradeAttemptMap
+        : climb.ClimbType === "Lead"
+        ? leadGradeAttemptMap
+        : trGradeAttemptMap
 
-//     querySnapshot.forEach((doc) => {
-//       const climb = doc.data() as {
-//         UserId: string
-//         Attempts: number
-//         DateTime: Timestamp
-//       }
+    addGradeData(climb, gradeAttemptMap)
+  })
 
-//       const date = climb.DateTime.toDate()
+  // Get sorted lists of the grades in descending order
+  const boulderGrades = Array.from(boulderGradeAttemptMap.keys()).sort((a, b) =>
+    b.localeCompare(a)
+  )
 
-//       result.find(
-//         (m) => m.month === date.toLocaleString("default", { month: "short" })
-//       )!.numberOfClimbs += climb.Attempts
-//     })
-//   } catch (error) {
-//     console.log("Error retreiving all users: ", error)
-//   }
+  const leadGrades = Array.from(leadGradeAttemptMap.keys())
+    .sort(
+      (a, b) => INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
+    )
+    .reverse()
 
-//   return result as MonthlyClimbData[]
-// }
+  const trGrades = Array.from(trGradeAttemptMap.keys())
+    .sort(
+      (a, b) => INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
+    )
+    .reverse()
+
+  // Assemble the data for each graph
+  const boulderGraphData = assembleGraphData(
+    boulderGrades,
+    boulderGradeAttemptMap
+  )
+  const leadGraphData = assembleGraphData(leadGrades, leadGradeAttemptMap)
+  const trGraphData = assembleGraphData(trGrades, trGradeAttemptMap)
+
+  return {
+    boulderData: boulderGraphData,
+    leadData: leadGraphData,
+    trData: trGraphData,
+  }
+}
+
+function addGradeData(
+  climb: ClimbLog,
+  gradeAttemptMap: Map<string, TickTypes>
+) {
+  const ticks = gradeAttemptMap.get(climb.Grade) || {
+    Onsight: 0,
+    Flash: 0,
+    Redpoint: 0,
+    Attempts: 0,
+  }
+
+  switch (climb.Tick) {
+    case "Onsight":
+      ticks.Onsight += 1
+      break
+    case "Flash":
+      ticks.Flash += 1
+      break
+    case "Redpoint":
+      ticks.Redpoint += 1
+      break
+    default:
+      break
+  }
+
+  ticks.Attempts += climb.Attempts > 1 ? climb.Attempts - 1 : 0
+  gradeAttemptMap.set(climb.Grade, ticks)
+}
+
+function assembleGraphData(
+  gradesArray: string[],
+  gradeAttemptMap: Map<string, TickTypes>
+): ClimbGraphData[] {
+  const graphData: ClimbGraphData[] = []
+
+  gradesArray.forEach((grade) => {
+    const ticks: TickTypes = gradeAttemptMap.get(grade) || {
+      Onsight: 0,
+      Flash: 0,
+      Redpoint: 0,
+      Attempts: 0,
+    }
+
+    graphData.push({
+      Grade: grade,
+      Onsight: ticks.Onsight,
+      Flash: ticks.Flash,
+      Redpoint: ticks.Redpoint,
+      Attempts: ticks.Attempts,
+    })
+  })
+
+  return graphData
+}

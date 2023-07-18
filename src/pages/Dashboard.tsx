@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { Button, Container, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
@@ -8,31 +8,37 @@ import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
 import GradeGraphWrapper from "../components/GradeGraphWrapper"
 import MonthlyClimbsGraph from "../components/MonthlyClimbsGraph"
-import { GetClimbsByUser } from "../db/ClimbLogService"
-import { ClimbLog } from "../static/types"
+import { GetClimbsByUser, ClimbingData } from "../db/ClimbLogService"
+import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
 import { TICK_TYPES } from "../static/constants"
+import GradeGraph from "../components/GradeGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
-  const [climbingData, setClimbingData] = React.useState<ClimbLog[]>([])
-  const [openClimbTypeSelector, setClimbTypeSelector] = React.useState(false)
+  const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
+  const [gradePyramidData, setGradePyramidData] = useState({
+    boulderData: [] as ClimbGraphData[],
+    leadData: [] as ClimbGraphData[],
+    trData: [] as ClimbGraphData[],
+  })
+
+  const [openClimbTypeSelector, setClimbTypeSelector] = useState(false)
   const handleClimbTypeSelectorOpen = () => setClimbTypeSelector(true)
   const handleClimbTypeSelectorClose = () => setClimbTypeSelector(false)
-
-  const dashboardBackground = "#F2EEED"
-
-  const [openDetails, setDetailsOpen] = React.useState(false)
-  const [climbType, setClimbType] = React.useState(0)
+  const [openDetails, setDetailsOpen] = useState(false)
+  const [climbType, setClimbType] = useState(0)
   const handleDetailsOpen = () => setDetailsOpen(true)
   const handleDetailsClose = () => setDetailsOpen(false)
-
   const isLoading = !user
+
+  const dashboardBackground = "#F2EEED"
 
   useEffect(() => {
     if (user) {
       GetClimbsByUser(user.id).then((data) => {
-        setClimbingData(data)
+        setClimbingData(data.climbingData)
+        setGradePyramidData(data.gradePyramidData)
       })
     }
   }, [user])
@@ -108,163 +114,190 @@ const Home = () => {
           </Grid>
 
           <Grid
-            item
             container
             direction={"row"}
-            padding={2}
+            justifyContent={"center"}
+            alignContent={"center"}
             style={{
+              display: "flex-inline",
               background: dashboardBackground,
             }}
           >
-            <Typography variant="h5">Bouldering</Typography>
-          </Grid>
-          <Grid
-            container
-            direction={"row"}
-            padding={2}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
-            <Grid item style={{ background: dashboardBackground }}>
-              <HardestGradeDisplay
-                climbType="Boulder"
-                tickType="Onsight"
-                climbingData={climbingData}
-              />
-            </Grid>
             <Grid
+              container
               item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
+              lg={4}
+              md={6}
+              xs={12}
+              direction={"column"}
+              padding={2}
+              style={{
+                background: dashboardBackground,
+              }}
             >
-              <HardestGradeDisplay
-                climbType="Boulder"
-                tickType="Flash"
-                climbingData={climbingData}
-              />
-            </Grid>
-            <Grid
-              item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
-            >
-              <HardestGradeDisplay
-                climbType="Boulder"
-                tickType="Redpoint"
-                climbingData={climbingData}
-              />
-            </Grid>
-          </Grid>
+              <Typography variant="h5">Bouldering</Typography>
 
-          <Grid
-            item
-            container
-            direction={"row"}
-            padding={2}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
-            <Typography variant="h5">Lead</Typography>
-          </Grid>
-          <Grid
-            container
-            direction={"row"}
-            padding={2}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
-            <Grid item style={{ background: dashboardBackground }}>
-              <HardestGradeDisplay
-                climbType="Lead"
-                tickType="Onsight"
-                climbingData={climbingData}
-              />
-            </Grid>
-            <Grid
-              item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
-            >
-              <HardestGradeDisplay
-                climbType="Lead"
-                tickType="Flash"
-                climbingData={climbingData}
-              />
-            </Grid>
-            <Grid
-              item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
-            >
-              <HardestGradeDisplay
-                climbType="Lead"
-                tickType="Redpoint"
-                climbingData={climbingData}
-              />
-            </Grid>
-          </Grid>
+              <Grid
+                container
+                direction={"row"}
+                padding={2}
+                style={{
+                  background: dashboardBackground,
+                }}
+              >
+                <Grid item style={{ background: dashboardBackground }}>
+                  <HardestGradeDisplay
+                    climbType="Boulder"
+                    tickType="Onsight"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="Boulder"
+                    tickType="Flash"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="Boulder"
+                    tickType="Redpoint"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+              </Grid>
 
-          <Grid
-            item
-            container
-            direction={"row"}
-            padding={2}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
-            <Typography variant="h5">Top Rope</Typography>
-          </Grid>
-          <Grid
-            container
-            direction={"row"}
-            padding={2}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
-            <Grid item style={{ background: dashboardBackground }}>
-              <HardestGradeDisplay
-                climbType="TopRope"
-                tickType="Onsight"
-                climbingData={climbingData}
+              <GradeGraph
+                climbType="Boulder"
+                graphData={gradePyramidData.boulderData}
               />
             </Grid>
-            <Grid
-              item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
-            >
-              <HardestGradeDisplay
-                climbType="TopRope"
-                tickType="Flash"
-                climbingData={climbingData}
-              />
-            </Grid>
-            <Grid
-              item
-              paddingLeft={2}
-              style={{ background: dashboardBackground }}
-            >
-              <HardestGradeDisplay
-                climbType="TopRope"
-                tickType="Redpoint"
-                climbingData={climbingData}
-              />
-            </Grid>
-          </Grid>
 
-          <Grid
-            container
-            item
-            paddingLeft={2}
-            direction="row"
-            style={{ background: dashboardBackground }}
-          >
-            <GradeGraphWrapper climbingData={climbingData} />
+            <Grid
+              container
+              item
+              lg={4}
+              md={6}
+              xs={12}
+              direction={"column"}
+              padding={2}
+              style={{
+                background: dashboardBackground,
+              }}
+            >
+              <Typography variant="h5">Lead</Typography>
+              <Grid
+                container
+                direction={"row"}
+                padding={2}
+                style={{
+                  background: dashboardBackground,
+                }}
+              >
+                <Grid item style={{ background: dashboardBackground }}>
+                  <HardestGradeDisplay
+                    climbType="Lead"
+                    tickType="Onsight"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="Lead"
+                    tickType="Flash"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="Lead"
+                    tickType="Redpoint"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+              </Grid>
+
+              <GradeGraph
+                climbType="Lead"
+                graphData={gradePyramidData.leadData}
+              />
+            </Grid>
+
+            <Grid
+              container
+              item
+              lg={4}
+              md={6}
+              xs={12}
+              direction={"column"}
+              padding={2}
+              style={{
+                background: dashboardBackground,
+              }}
+            >
+              <Typography variant="h5">Top Rope</Typography>
+
+              <Grid
+                container
+                direction={"row"}
+                padding={2}
+                style={{
+                  background: dashboardBackground,
+                }}
+              >
+                <Grid item style={{ background: dashboardBackground }}>
+                  <HardestGradeDisplay
+                    climbType="TopRope"
+                    tickType="Onsight"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="TopRope"
+                    tickType="Flash"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  paddingLeft={2}
+                  style={{ background: dashboardBackground }}
+                >
+                  <HardestGradeDisplay
+                    climbType="TopRope"
+                    tickType="Redpoint"
+                    climbingData={climbingData}
+                  />
+                </Grid>
+              </Grid>
+
+              <GradeGraph
+                climbType="TopRope"
+                graphData={gradePyramidData.trData}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Container>
