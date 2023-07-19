@@ -14,6 +14,7 @@ import HardestGradeDisplay from "../components/HardestGradeDisplay"
 import { TICK_TYPES } from "../static/constants"
 import GradeGraph from "../components/GradeGraph"
 import GradePyramidsLegend from "../components/GradePyramidsLegend"
+import Footer from "../components/Footer"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -439,6 +440,8 @@ const Home = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <Footer />
     </>
   )
 }
