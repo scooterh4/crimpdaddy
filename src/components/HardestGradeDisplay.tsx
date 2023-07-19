@@ -42,9 +42,11 @@ function HardestGradeDisplay({
   }, [climbingData])
 
   return (
-    <Card>
-      <Typography variant="h6">{tickType}</Typography>
-      <Typography variant="h6">{hardestGrade}</Typography>
+    <Card sx={{ padding: 2 }}>
+      <Typography variant="h6">{tickType}ed</Typography>
+      <Typography variant="h6" sx={{ textAlign: "center" }}>
+        {hardestGrade}
+      </Typography>
     </Card>
   )
 }
