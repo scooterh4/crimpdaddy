@@ -19,6 +19,7 @@ function HardestGradeDisplay({
   const [hardestGrade, setHardestGrade] = useState("--")
   const gradingSystem =
     climbType === "Boulder" ? BOULDER_GRADES : INDOOR_SPORT_GRADES
+  const title = tickType + "ed"
 
   useEffect(() => {
     if (climbingData.length > 0) {
@@ -42,12 +43,10 @@ function HardestGradeDisplay({
   }, [climbingData])
 
   return (
-    <Card sx={{ padding: 2 }}>
-      <Typography variant="h6">{tickType}ed</Typography>
-      <Typography variant="h6" sx={{ textAlign: "center" }}>
-        {hardestGrade}
-      </Typography>
-    </Card>
+    <>
+      <Typography>{title}</Typography>
+      <Typography sx={{ textAlign: "center" }}>{hardestGrade}</Typography>
+    </>
   )
 }
 
