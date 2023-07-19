@@ -28,12 +28,13 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
   }, [graphData])
 
   return (
-    <ResponsiveContainer height={height} width={300}>
+    <ResponsiveContainer height={height}>
       <BarChart
         layout="vertical"
-        margin={{ left: -15 }}
+        width={400}
         data={graphData}
         barSize={30}
+        style={{ marginLeft: -20 }}
       >
         <XAxis type="number" />
         <YAxis
