@@ -70,8 +70,13 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
 
   function handleSubmit() {
     if (!validateForm()) {
-      console.log("Submitted!")
-      console.log("Form data:", climbType, grade, tick, attempts)
+      console.log(
+        "Form data:",
+        GYM_CLIMB_TYPES[climbType],
+        grade,
+        tick,
+        attempts
+      )
       handleClose()
       logClimb()
       resetForm()

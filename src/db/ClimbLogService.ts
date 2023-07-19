@@ -36,13 +36,13 @@ export const LogClimb = async (climbData: ClimbLog): Promise<string> => {
           console.log("User doc created for user: ", climbData.UserId)
 
           addDoc(collection(db, collectionPath), climbData).then((res) => {
-            console.log("Document written with ID: ", res.id)
+            console.log("Document written")
           })
         })
       } else {
         // user doc exists, so just add the climb
         addDoc(collection(db, collectionPath), climbData).then((res) => {
-          console.log("Document written with ID: ", res.id)
+          console.log("Document written")
         })
       }
     })
