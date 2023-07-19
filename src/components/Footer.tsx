@@ -1,11 +1,11 @@
-import React from "react"
+import * as React from "react"
 import BottomNavigation from "@mui/material/BottomNavigation"
 import BottomNavigationAction from "@mui/material/BottomNavigationAction"
 import FolderIcon from "@mui/icons-material/Folder"
 import RestoreIcon from "@mui/icons-material/Restore"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
-import { Typography } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 
 export default function LabelBottomNavigation() {
   return (
@@ -16,28 +16,14 @@ export default function LabelBottomNavigation() {
         alignContent: "center",
       }}
     >
-      <Typography color={"white"}>CrimpDaddy</Typography>
-
-      {/* <BottomNavigationAction
-        label="Recents"
-        value="recents"
-        icon={<RestoreIcon />}
-      />
-      <BottomNavigationAction
-        label="Favorites"
-        value="favorites"
-        icon={<FavoriteIcon />}
-      />
-      <BottomNavigationAction
-        label="Nearby"
-        value="nearby"
-        icon={<LocationOnIcon />}
-      />
-      <BottomNavigationAction
-        label="Folder"
-        value="folder"
-        icon={<FolderIcon />}
-      /> */}
+      <Grid
+        container
+        direction={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Typography color={"white"}>CrimpDaddy</Typography>
+      </Grid>
     </BottomNavigation>
   )
 }
