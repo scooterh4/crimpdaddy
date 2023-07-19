@@ -43,11 +43,20 @@ function PickClimbType({
         <DialogTitle>What kind of climb?</DialogTitle>
         <DialogContent>
           <Button
-            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Lead)}
+            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Boulder)}
             variant="contained"
             color="primary"
             type="submit"
             sx={{ marginTop: 2 }}
+          >
+            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]}
+          </Button>
+          <Button
+            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Lead)}
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
           >
             {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]}
           </Button>
@@ -56,18 +65,9 @@ function PickClimbType({
             variant="contained"
             color="primary"
             type="submit"
-            sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
-          >
-            Top Rope
-          </Button>
-          <Button
-            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Boulder)}
-            variant="contained"
-            color="primary"
-            type="submit"
             sx={{ marginTop: 2 }}
           >
-            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]}
+            Top Rope
           </Button>
         </DialogContent>
         <DialogActions>
