@@ -9,7 +9,8 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog, MonthlyClimbData } from "../static/types"
-import { Card, Typography } from "@mui/material"
+import { Card, Typography, useTheme } from "@mui/material"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 export type MonthlyClimbsGraphProps = {
   climbingData: ClimbLog[]
@@ -17,6 +18,10 @@ export type MonthlyClimbsGraphProps = {
 
 function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<MonthlyClimbData[]>([])
+  const theme = useTheme()
+  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
+  const graphWidth = mdScreenAndUp ? 800 : 300
+  const graphAspectRatio = mdScreenAndUp ? 3 : 1.5
 
   useEffect(() => {
     if (climbingData.length > 0) {
@@ -56,7 +61,7 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
       <Typography variant="h5" align="center">
         Climbs by Month
       </Typography>
-      <ResponsiveContainer width={800} aspect={3}>
+      <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
         <AreaChart margin={{ left: -15 }} data={graphData} barSize={50}>
           <defs>
             <linearGradient id="colorAttempts" x1="0" y1="0" x2="0" y2="1">
