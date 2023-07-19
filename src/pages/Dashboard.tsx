@@ -105,7 +105,6 @@ const Home = () => {
           <Grid
             container
             item
-            paddingLeft={2}
             marginBottom={2}
             direction="row"
             style={{ display: "flex", background: dashboardBackground }}
@@ -117,9 +116,7 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            alignContent={"center"}
             style={{
-              display: "flex-inline",
               background: dashboardBackground,
             }}
           >
@@ -129,17 +126,21 @@ const Home = () => {
               lg={4}
               md={6}
               xs={12}
+              alignItems={"center"}
               direction={"column"}
               padding={2}
               style={{
                 background: dashboardBackground,
               }}
             >
-              <Typography variant="h5">Bouldering</Typography>
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                Bouldering
+              </Typography>
 
               <Grid
                 container
                 direction={"row"}
+                justifyContent={"center"}
                 padding={2}
                 style={{
                   background: dashboardBackground,
@@ -189,15 +190,19 @@ const Home = () => {
               md={6}
               xs={12}
               direction={"column"}
+              alignItems={"center"}
               padding={2}
               style={{
                 background: dashboardBackground,
               }}
             >
-              <Typography variant="h5">Lead</Typography>
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                Lead
+              </Typography>
               <Grid
                 container
                 direction={"row"}
+                justifyContent={"center"}
                 padding={2}
                 style={{
                   background: dashboardBackground,
@@ -247,16 +252,20 @@ const Home = () => {
               md={6}
               xs={12}
               direction={"column"}
+              alignItems={"center"}
               padding={2}
               style={{
                 background: dashboardBackground,
               }}
             >
-              <Typography variant="h5">Top Rope</Typography>
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                Top Rope
+              </Typography>
 
               <Grid
                 container
                 direction={"row"}
+                justifyContent={"center"}
                 padding={2}
                 style={{
                   background: dashboardBackground,
