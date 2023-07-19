@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { Button, Container, Grid, Typography } from "@mui/material"
+import { Button, Card, Container, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
@@ -13,6 +13,7 @@ import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
 import { TICK_TYPES } from "../static/constants"
 import GradeGraph from "../components/GradeGraph"
+import GradePyramidsLegend from "../components/GradePyramidsLegend"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -104,9 +105,32 @@ const Home = () => {
         >
           <Grid
             container
+            direction={"row"}
+            justifyContent={"center"}
+            style={{
+              background: dashboardBackground,
+            }}
+          >
+            <Grid
+              container
+              direction={"column"}
+              alignItems={"center"}
+              style={{
+                background: dashboardBackground,
+              }}
+            >
+              <Typography variant="h4" component="div" gutterBottom>
+                Activity
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
             item
             marginBottom={2}
             direction="row"
+            justifyContent={"center"}
             style={{ display: "flex", background: dashboardBackground }}
           >
             <MonthlyClimbsGraph climbingData={climbingData} />
@@ -116,6 +140,31 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
+            marginTop={3}
+            style={{
+              background: dashboardBackground,
+            }}
+          >
+            <Grid
+              container
+              direction={"column"}
+              alignItems={"center"}
+              style={{
+                background: dashboardBackground,
+              }}
+            >
+              <Typography variant="h4" component="div" gutterBottom>
+                Grade Pyramids
+              </Typography>
+              <GradePyramidsLegend />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction={"row"}
+            justifyContent={"center"}
+            marginTop={3}
             style={{
               background: dashboardBackground,
             }}
@@ -128,59 +177,83 @@ const Home = () => {
               xs={12}
               alignItems={"center"}
               direction={"column"}
-              padding={2}
-              style={{
-                background: dashboardBackground,
-              }}
+              style={
+                {
+                  // background: dashboardBackground,
+                }
+              }
             >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                Bouldering
-              </Typography>
-
-              <Grid
-                container
-                direction={"row"}
-                justifyContent={"center"}
-                padding={2}
-                style={{
-                  background: dashboardBackground,
+              <Card
+                sx={{
+                  borderRadius: 5,
+                  margin: 2,
+                  padding: 2,
                 }}
               >
-                <Grid item style={{ background: dashboardBackground }}>
-                  <HardestGradeDisplay
-                    climbType="Boulder"
-                    tickType="Onsight"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", textAlign: "center" }}
                 >
-                  <HardestGradeDisplay
-                    climbType="Boulder"
-                    tickType="Flash"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
-                >
-                  <HardestGradeDisplay
-                    climbType="Boulder"
-                    tickType="Redpoint"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-              </Grid>
+                  Bouldering
+                </Typography>
 
-              <GradeGraph
-                climbType="Boulder"
-                graphData={gradePyramidData.boulderData}
-              />
+                <Grid
+                  container
+                  direction={"row"}
+                  justifyContent={"center"}
+                  spacing={3}
+                  padding={2}
+                  style={
+                    {
+                      // background: dashboardBackground,
+                    }
+                  }
+                >
+                  <Grid
+                    item
+                    style={
+                      {
+                        // background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="Boulder"
+                      tickType="Onsight"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    style={
+                      {
+                        // background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="Boulder"
+                      tickType="Flash"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    // style={{ background: dashboardBackground }}
+                  >
+                    <HardestGradeDisplay
+                      climbType="Boulder"
+                      tickType="Redpoint"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                </Grid>
+
+                <GradeGraph
+                  climbType="Boulder"
+                  graphData={gradePyramidData.boulderData}
+                />
+              </Card>
             </Grid>
 
             <Grid
@@ -191,58 +264,85 @@ const Home = () => {
               xs={12}
               direction={"column"}
               alignItems={"center"}
-              padding={2}
               style={{
                 background: dashboardBackground,
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                Lead
-              </Typography>
-              <Grid
-                container
-                direction={"row"}
-                justifyContent={"center"}
-                padding={2}
-                style={{
-                  background: dashboardBackground,
+              <Card
+                sx={{
+                  borderRadius: 5,
+                  margin: 2,
+                  padding: 2,
                 }}
               >
-                <Grid item style={{ background: dashboardBackground }}>
-                  <HardestGradeDisplay
-                    climbType="Lead"
-                    tickType="Onsight"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", textAlign: "center" }}
                 >
-                  <HardestGradeDisplay
-                    climbType="Lead"
-                    tickType="Flash"
-                    climbingData={climbingData}
-                  />
-                </Grid>
+                  Lead
+                </Typography>
                 <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
+                  container
+                  direction={"row"}
+                  justifyContent={"center"}
+                  padding={2}
+                  style={
+                    {
+                      // background: dashboardBackground,
+                    }
+                  }
                 >
-                  <HardestGradeDisplay
-                    climbType="Lead"
-                    tickType="Redpoint"
-                    climbingData={climbingData}
-                  />
+                  <Grid
+                    item
+                    style={
+                      {
+                        // background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="Lead"
+                      tickType="Onsight"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    paddingLeft={2}
+                    style={
+                      {
+                        // background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="Lead"
+                      tickType="Flash"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    paddingLeft={2}
+                    style={
+                      {
+                        // background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="Lead"
+                      tickType="Redpoint"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
 
-              <GradeGraph
-                climbType="Lead"
-                graphData={gradePyramidData.leadData}
-              />
+                <GradeGraph
+                  climbType="Lead"
+                  graphData={gradePyramidData.leadData}
+                />
+              </Card>
             </Grid>
 
             <Grid
@@ -251,61 +351,90 @@ const Home = () => {
               lg={4}
               md={6}
               xs={12}
+              marginTop={3}
               direction={"column"}
               alignItems={"center"}
-              padding={2}
-              style={{
-                background: dashboardBackground,
-              }}
+              style={
+                {
+                  // background: dashboardBackground,
+                }
+              }
             >
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                Top Rope
-              </Typography>
-
-              <Grid
-                container
-                direction={"row"}
-                justifyContent={"center"}
-                padding={2}
-                style={{
-                  background: dashboardBackground,
+              <Card
+                sx={{
+                  borderRadius: 5,
+                  padding: 2,
                 }}
               >
-                <Grid item style={{ background: dashboardBackground }}>
-                  <HardestGradeDisplay
-                    climbType="TopRope"
-                    tickType="Onsight"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", textAlign: "center" }}
                 >
-                  <HardestGradeDisplay
-                    climbType="TopRope"
-                    tickType="Flash"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  paddingLeft={2}
-                  style={{ background: dashboardBackground }}
-                >
-                  <HardestGradeDisplay
-                    climbType="TopRope"
-                    tickType="Redpoint"
-                    climbingData={climbingData}
-                  />
-                </Grid>
-              </Grid>
+                  Top Rope
+                </Typography>
 
-              <GradeGraph
-                climbType="TopRope"
-                graphData={gradePyramidData.trData}
-              />
+                <Grid
+                  container
+                  direction={"row"}
+                  justifyContent={"center"}
+                  padding={2}
+                  style={
+                    {
+                      //background: dashboardBackground,
+                    }
+                  }
+                >
+                  <Grid
+                    item
+                    style={
+                      {
+                        //background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="TopRope"
+                      tickType="Onsight"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    paddingLeft={2}
+                    style={
+                      {
+                        //background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="TopRope"
+                      tickType="Flash"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    paddingLeft={2}
+                    style={
+                      {
+                        //background: dashboardBackground
+                      }
+                    }
+                  >
+                    <HardestGradeDisplay
+                      climbType="TopRope"
+                      tickType="Redpoint"
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                </Grid>
+
+                <GradeGraph
+                  climbType="TopRope"
+                  graphData={gradePyramidData.trData}
+                />
+              </Card>
             </Grid>
           </Grid>
         </Grid>
