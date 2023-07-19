@@ -19,7 +19,7 @@ function HardestGradeDisplay({
   const [hardestGrade, setHardestGrade] = useState("--")
   const gradingSystem =
     climbType === "Boulder" ? BOULDER_GRADES : INDOOR_SPORT_GRADES
-  const title = tickType + "ed"
+  const title = tickType // + "ed"
 
   useEffect(() => {
     if (climbingData.length > 0) {
