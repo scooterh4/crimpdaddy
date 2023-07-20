@@ -194,10 +194,7 @@ const Home = () => {
                   padding: 2,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", textAlign: "center" }}
-                >
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Bouldering
                 </Typography>
 
@@ -279,10 +276,7 @@ const Home = () => {
                   padding: 2,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", textAlign: "center" }}
-                >
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Lead
                 </Typography>
                 <Grid
@@ -370,10 +364,7 @@ const Home = () => {
                   padding: 2,
                 }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", textAlign: "center" }}
-                >
+                <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Top Rope
                 </Typography>
 
