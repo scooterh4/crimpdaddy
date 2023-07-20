@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog, MonthlyClimbData } from "../static/types"
+import { ClimbLog } from "../static/types"
 import { Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"

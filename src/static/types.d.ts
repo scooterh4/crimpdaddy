@@ -14,11 +14,6 @@ export type ClimbLog = {
   DateTime: Timestamp
 }
 
-export type MonthlyClimbData = {
-  month: string
-  numberOfClimbs: number
-}
-
 export type TickTypes = {
   Onsight: number
   Flash: number
