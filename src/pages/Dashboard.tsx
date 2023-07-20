@@ -456,17 +456,41 @@ const Home = () => {
             style={{ display: "flex", background: dashboardBackground }}
           >
             <Grid item>
-              <ProgressionGraph
-                climbType={CLIMB_TYPES.Boulder}
-                climbingData={climbingData}
-              />
+              <Card
+                sx={{
+                  paddingTop: 2,
+                  paddingRight: 2,
+                  borderRadius: 5,
+                  height: "100%",
+                }}
+              >
+                <Typography variant="h5" align="center">
+                  Hardest Boulders by Month
+                </Typography>
+                <ProgressionGraph
+                  climbType={CLIMB_TYPES.Boulder}
+                  climbingData={climbingData}
+                />
+              </Card>
             </Grid>
 
             <Grid item>
-              <ProgressionGraph
-                climbType={CLIMB_TYPES.Sport}
-                climbingData={climbingData}
-              />
+              <Card
+                sx={{
+                  paddingTop: 2,
+                  paddingRight: 2,
+                  borderRadius: 5,
+                  height: "100%",
+                }}
+              >
+                <Typography variant="h5" align="center">
+                  Hardest Leads by Month
+                </Typography>
+                <ProgressionGraph
+                  climbType={CLIMB_TYPES.Sport}
+                  climbingData={climbingData}
+                />
+              </Card>
             </Grid>
           </Grid>
         </Grid>

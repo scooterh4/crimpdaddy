@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../static/types"
-import { Card, Typography, useTheme } from "@mui/material"
+import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES } from "../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../static/constants"
@@ -36,7 +36,7 @@ function MonthlyClimbsGraph({
   const [graphData, setGraphData] = useState<HardestClimbGraphData[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
-  const title = climbType === CLIMB_TYPES.Boulder ? "Boulder" : "Lead"
+  const climbingType = climbType === CLIMB_TYPES.Boulder ? "Boulder" : "Lead"
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
@@ -65,7 +65,7 @@ function MonthlyClimbsGraph({
       let result: HardestClimbGraphData[] = []
 
       climbingData.forEach((climb) => {
-        if (climb.ClimbType !== title) {
+        if (climb.ClimbType !== climbingType) {
           return
         }
 
@@ -127,53 +127,46 @@ function MonthlyClimbsGraph({
   }, [climbingData])
 
   return (
-    <Card
-      sx={{ paddingTop: 2, paddingRight: 2, borderRadius: 5, height: "100%" }}
-    >
-      <Typography variant="h5" align="center">
-        {title}
-      </Typography>
-      <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
-        <LineChart
-          width={500}
-          height={300}
-          data={graphData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="category" dataKey="Month" />
-          <YAxis type="category" dataKey="Grade" domain={gradeSystem} />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="Onsight"
-            stroke={GraphColors.Onsight}
-            fill={GraphColors.Onsight}
-            strokeWidth={3}
-          />
-          <Line
-            type="monotone"
-            dataKey="Flash"
-            stroke={GraphColors.Flash}
-            fill={GraphColors.Flash}
-            strokeWidth={3}
-          />
-          <Line
-            type="monotone"
-            dataKey="Redpoint"
-            stroke={GraphColors.Redpoint}
-            fill={GraphColors.Redpoint}
-            strokeWidth={3}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </Card>
+    <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
+      <LineChart
+        width={500}
+        height={300}
+        data={graphData}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis type="category" dataKey="Month" />
+        <YAxis type="category" dataKey="Grade" domain={gradeSystem} />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="Onsight"
+          stroke={GraphColors.Onsight}
+          fill={GraphColors.Onsight}
+          strokeWidth={3}
+        />
+        <Line
+          type="monotone"
+          dataKey="Flash"
+          stroke={GraphColors.Flash}
+          fill={GraphColors.Flash}
+          strokeWidth={3}
+        />
+        <Line
+          type="monotone"
+          dataKey="Redpoint"
+          stroke={GraphColors.Redpoint}
+          fill={GraphColors.Redpoint}
+          strokeWidth={3}
+        />
+      </LineChart>
+    </ResponsiveContainer>
   )
 }
 
