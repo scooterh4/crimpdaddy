@@ -24,10 +24,13 @@ export type ClimbsByDate = {
 
 function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
+
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
-  const graphWidth = mdScreenAndUp ? 800 : 300
-  const graphAspectRatio = mdScreenAndUp ? 3 : 1.5
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+
+  const graphWidth = mdScreenAndUp ? 700 : xsScreen ? 350 : 500
+  const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
 
   useEffect(() => {
     if (climbingData.length > 0) {

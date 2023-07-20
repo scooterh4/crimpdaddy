@@ -13,8 +13,8 @@ import { CLIMB_TYPES } from "../static/constants"
 import GradeHistogram from "../components/GradeHistogram"
 import GradePyramidsLegend from "../components/GradePyramidsLegend"
 import Footer from "../components/Footer"
-import ClimbingVolumeGraph from "../components/ClimbingVolumeGraph"
 import ProgressionGraph from "../components/ProgressionGraph"
+import VolumeGraph from "../components/VolumeGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -129,14 +129,13 @@ const Home = () => {
 
           <Grid
             container
-            marginBottom={2}
             direction="row"
             spacing={2}
             justifyContent={"center"}
             style={{ display: "flex", background: dashboardBackground }}
           >
             <Grid item>
-              <ClimbingVolumeGraph climbingData={climbingData} />
+              <VolumeGraph climbingData={climbingData} />
             </Grid>
           </Grid>
 
@@ -144,7 +143,7 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            marginTop={3}
+            marginTop={5}
             style={{
               background: dashboardBackground,
             }}
@@ -169,6 +168,7 @@ const Home = () => {
             direction={"row"}
             justifyContent={"center"}
             marginTop={3}
+            marginBottom={5}
             style={{
               background: dashboardBackground,
             }}
@@ -446,8 +446,7 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            marginTop={3}
-            marginBottom={1}
+            marginBottom={2}
             style={{
               background: dashboardBackground,
             }}
