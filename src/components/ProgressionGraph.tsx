@@ -36,7 +36,7 @@ function MonthlyClimbsGraph({
   const [graphData, setGraphData] = useState<HardestClimbGraphData[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
-  const title = climbType === CLIMB_TYPES.Boulder ? "Bouldering" : "Lead"
+  const title = climbType === CLIMB_TYPES.Boulder ? "Boulder" : "Lead"
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
@@ -65,6 +65,10 @@ function MonthlyClimbsGraph({
       let result: HardestClimbGraphData[] = []
 
       climbingData.forEach((climb) => {
+        if (climb.ClimbType !== title) {
+          return
+        }
+
         const month = climb.DateTime.toDate().toLocaleString("default", {
           month: "short",
           year: "numeric",
