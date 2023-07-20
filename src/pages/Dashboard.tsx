@@ -7,14 +7,15 @@ import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
 import GradeGraphWrapper from "../components/GradeGraphWrapper"
-import MonthlyClimbsGraph from "../components/MonthlyClimbsGraph"
 import { GetClimbsByUser, ClimbingData } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
-import { TICK_TYPES } from "../static/constants"
+import { CLIMB_TYPES, TICK_TYPES } from "../static/constants"
 import GradeGraph from "../components/GradeGraph"
 import GradePyramidsLegend from "../components/GradePyramidsLegend"
 import Footer from "../components/Footer"
+import HardestClimbsGraph from "../components/HardestClimbsGraph"
+import ClimbingVolumeGraph from "../components/ClimbingVolumeGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -128,14 +129,32 @@ const Home = () => {
 
           <Grid
             container
+            marginBottom={2}
+            direction="row"
+            spacing={2}
+            justifyContent={"center"}
+            style={{ display: "flex", background: dashboardBackground }}
+          >
+            <Grid item>
+              <ClimbingVolumeGraph climbingData={climbingData} />
+            </Grid>
+
+            <Grid item>
+              <HardestClimbsGraph
+                climbType={CLIMB_TYPES.Boulder}
+                climbingData={climbingData}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
             item
             marginBottom={2}
             direction="row"
             justifyContent={"center"}
             style={{ display: "flex", background: dashboardBackground }}
-          >
-            <MonthlyClimbsGraph climbingData={climbingData} />
-          </Grid>
+          ></Grid>
 
           <Grid
             container
