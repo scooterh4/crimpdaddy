@@ -7,15 +7,15 @@ import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
 import GradeGraphWrapper from "../components/GradeGraphWrapper"
-import { GetClimbsByUser, ClimbingData } from "../db/ClimbLogService"
+import { GetClimbsByUser } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
-import { CLIMB_TYPES, TICK_TYPES } from "../static/constants"
+import { CLIMB_TYPES } from "../static/constants"
 import GradeGraph from "../components/GradeGraph"
 import GradePyramidsLegend from "../components/GradePyramidsLegend"
 import Footer from "../components/Footer"
-import HardestClimbsGraph from "../components/HardestClimbsGraph"
 import ClimbingVolumeGraph from "../components/ClimbingVolumeGraph"
+import ProgressionGraph from "../components/ProgressionGraph"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -109,6 +109,7 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
+            marginBottom={1}
             style={{
               background: dashboardBackground,
             }}
@@ -138,23 +139,7 @@ const Home = () => {
             <Grid item>
               <ClimbingVolumeGraph climbingData={climbingData} />
             </Grid>
-
-            <Grid item>
-              <HardestClimbsGraph
-                climbType={CLIMB_TYPES.Boulder}
-                climbingData={climbingData}
-              />
-            </Grid>
           </Grid>
-
-          <Grid
-            container
-            item
-            marginBottom={2}
-            direction="row"
-            justifyContent={"center"}
-            style={{ display: "flex", background: dashboardBackground }}
-          ></Grid>
 
           <Grid
             container
@@ -455,6 +440,44 @@ const Home = () => {
                   graphData={gradePyramidData.trData}
                 />
               </Card>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction={"row"}
+            justifyContent={"center"}
+            marginTop={3}
+            marginBottom={1}
+            style={{
+              background: dashboardBackground,
+            }}
+          >
+            <Typography variant="h4" component="div" gutterBottom>
+              Progression
+            </Typography>
+          </Grid>
+
+          <Grid
+            container
+            marginBottom={2}
+            direction="row"
+            spacing={2}
+            justifyContent={"center"}
+            style={{ display: "flex", background: dashboardBackground }}
+          >
+            <Grid item>
+              <ProgressionGraph
+                climbType={CLIMB_TYPES.Boulder}
+                climbingData={climbingData}
+              />
+            </Grid>
+
+            <Grid item>
+              <ProgressionGraph
+                climbType={CLIMB_TYPES.Sport}
+                climbingData={climbingData}
+              />
             </Grid>
           </Grid>
         </Grid>
