@@ -40,8 +40,10 @@ function MonthlyClimbsGraph({
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
-  const graphWidth = mdScreenAndUp ? 600 : 300
-  const graphAspectRatio = mdScreenAndUp ? 2 : 1.5
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+
+  const graphWidth = mdScreenAndUp ? 600 : xsScreen ? 350 : 450
+  const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
 
   useEffect(() => {
     if (climbingData.length > 0) {
