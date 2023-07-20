@@ -10,7 +10,7 @@ import { GetClimbsByUser } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
 import { CLIMB_TYPES } from "../static/constants"
-import GradeGraph from "../components/GradeGraph"
+import GradeHistogram from "../components/GradeHistogram"
 import GradePyramidsLegend from "../components/GradePyramidsLegend"
 import Footer from "../components/Footer"
 import ClimbingVolumeGraph from "../components/ClimbingVolumeGraph"
@@ -253,7 +253,7 @@ const Home = () => {
                   </Grid>
                 </Grid>
 
-                <GradeGraph
+                <GradeHistogram
                   climbType="Boulder"
                   graphData={gradePyramidData.boulderData}
                 />
@@ -342,7 +342,7 @@ const Home = () => {
                   </Grid>
                 </Grid>
 
-                <GradeGraph
+                <GradeHistogram
                   climbType="Lead"
                   graphData={gradePyramidData.leadData}
                 />
@@ -434,7 +434,7 @@ const Home = () => {
                   </Grid>
                 </Grid>
 
-                <GradeGraph
+                <GradeHistogram
                   climbType="TopRope"
                   graphData={gradePyramidData.trData}
                 />
