@@ -34,6 +34,7 @@ function MonthlyClimbsGraph({
   climbingData,
 }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<HardestClimbGraphData[]>([])
+  const [gradeRange, setGradeRange] = useState<string[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
   const climbingType = climbType === CLIMB_TYPES.Boulder ? "Boulder" : "Lead"
@@ -63,8 +64,11 @@ function MonthlyClimbsGraph({
       }
 
       let result: HardestClimbGraphData[] = []
+      let gradeMaxIndex = 0
+      let gradeMinIndex = gradeSystem.length
 
       climbingData.forEach((climb) => {
+        // Not the type of climb we want? Next plz
         if (climb.ClimbType !== climbingType) {
           return
         }
@@ -73,10 +77,20 @@ function MonthlyClimbsGraph({
           month: "short",
           year: "numeric",
         })
-
         const climbMonthAdded = result.find((r) => r.Month === month)
 
         if (climbMonthAdded) {
+          // update the grade index for the y-axis range
+          gradeMaxIndex =
+            gradeMaxIndex < gradeSystem.indexOf(climb.Grade)
+              ? gradeSystem.indexOf(climb.Grade)
+              : gradeMaxIndex
+
+          gradeMinIndex =
+            gradeMinIndex > gradeSystem.indexOf(climb.Grade)
+              ? gradeSystem.indexOf(climb.Grade)
+              : gradeMinIndex
+
           if (
             gradeSystem.indexOf(climb.Grade) >
             gradeSystem.indexOf(climbMonthAdded[climb.Tick])
@@ -122,6 +136,18 @@ function MonthlyClimbsGraph({
         return monthOrder[monthA] - monthOrder[monthB]
       })
 
+      // set the graph data and the gradeRange for the y-axis
+      gradeMaxIndex =
+        gradeMaxIndex + 4 > gradeSystem.length
+          ? gradeSystem.length
+          : gradeMaxIndex + 4
+
+      gradeMinIndex = gradeMinIndex - 3 < 0 ? 0 : gradeMinIndex - 3
+
+      console.log("GradeMinIndex", gradeMinIndex)
+      console.log(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
+
+      setGradeRange(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
       setGraphData(result)
     }
   }, [climbingData])
@@ -141,7 +167,7 @@ function MonthlyClimbsGraph({
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="category" dataKey="Month" />
-        <YAxis type="category" dataKey="Grade" domain={gradeSystem} />
+        <YAxis type="category" dataKey="Grade" domain={gradeRange} />
         <Tooltip />
         <Legend />
         <Line
