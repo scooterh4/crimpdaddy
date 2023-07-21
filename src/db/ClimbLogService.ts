@@ -8,12 +8,7 @@ import {
   getDocs,
   Timestamp,
 } from "firebase/firestore"
-import {
-  ClimbLog,
-  MonthlyClimbData,
-  ClimbGraphData,
-  TickTypes,
-} from "../static/types"
+import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import { INDOOR_SPORT_GRADES } from "../static/constants"
 
 const collectionName = "climbingLogs"
