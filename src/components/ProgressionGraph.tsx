@@ -144,9 +144,6 @@ function MonthlyClimbsGraph({
 
       gradeMinIndex = gradeMinIndex - 3 < 0 ? 0 : gradeMinIndex - 3
 
-      console.log("GradeMinIndex", gradeMinIndex)
-      console.log(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
-
       setGradeRange(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
       setGraphData(result)
     }
