@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
 } from "@mui/material"
 import { GYM_CLIMB_TYPES } from "../static/constants"
 
@@ -40,35 +41,52 @@ function PickClimbType({
   return (
     <>
       <Dialog open={open}>
-        <DialogTitle>What kind of climb?</DialogTitle>
-        <DialogContent>
-          <Button
-            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Boulder)}
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ marginTop: 2 }}
+        <DialogTitle textAlign={"center"}>What kind of climb?</DialogTitle>
+        <DialogContent sx={{ justifyContent: "center", alignItems: "center" }}>
+          <Grid
+            container
+            direction="column"
+            alignItems={"center"}
+            justifyContent={"center"}
           >
-            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]}
-          </Button>
-          <Button
-            onClick={() => selectClimbType(GYM_CLIMB_TYPES.Lead)}
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
-          >
-            {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]}
-          </Button>
-          <Button
-            onClick={() => selectClimbType(GYM_CLIMB_TYPES.TopRope)}
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{ marginTop: 2 }}
-          >
-            Top Rope
-          </Button>
+            <Grid item sm={4} xs={12}>
+              <Button
+                onClick={() => selectClimbType(GYM_CLIMB_TYPES.Boulder)}
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ marginTop: 2 }}
+              >
+                {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]}
+              </Button>
+            </Grid>
+            <Grid item sm={4} xs={12}>
+              <Button
+                onClick={() => selectClimbType(GYM_CLIMB_TYPES.Lead)}
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{
+                  marginTop: 2,
+                  marginLeft: 0,
+                  marginRight: 0,
+                }}
+              >
+                {GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]}
+              </Button>
+            </Grid>
+            <Grid item sm={4} xs={12}>
+              <Button
+                onClick={() => selectClimbType(GYM_CLIMB_TYPES.TopRope)}
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ marginTop: 2 }}
+              >
+                Top Rope
+              </Button>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button variant="text" color="error" onClick={handleClose}>
