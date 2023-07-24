@@ -74,10 +74,9 @@ const Home = () => {
           direction="row"
           sx={{
             display: "flex-inline",
-            justifyContent: "space-between",
           }}
         >
-          <Grid item>
+          <Grid container item direction={"column"} sm={4} xs={12}>
             <Typography variant="h3" marginTop={1} component="div" gutterBottom>
               Dashboard
             </Typography>
@@ -85,7 +84,16 @@ const Home = () => {
 
           <Grid item />
 
-          <Grid item sx={{ paddingTop: 2 }}>
+          <Grid
+            container
+            item
+            direction={"column"}
+            sm={4}
+            xs={12}
+            marginBottom={1}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <Button
               variant="contained"
               size="medium"
