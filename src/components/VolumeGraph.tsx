@@ -29,7 +29,7 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
-  const graphWidth = mdScreenAndUp ? 700 : xsScreen ? 350 : 500
+  const graphWidth = mdScreenAndUp ? 700 : xsScreen ? 300 : 500
   const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
 
   useEffect(() => {
