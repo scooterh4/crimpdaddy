@@ -1,10 +1,21 @@
-import React from "react";
-import background from "../images/quickdraws-unsplash.jpg";
-import { Box, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React from "react"
+import background from "../images/quickdraws-unsplash.jpg"
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 function Landing() {
-  let navigate = useNavigate();
+  let navigate = useNavigate()
+  const theme = useTheme()
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+  const backdropFilter = xsScreen ? "" : "blur(5px) saturate(140%)"
+  const boxShadow = xsScreen ? "" : "0px 25px 5px 0px rgba(0, 0, 0, 0.75)"
 
   return (
     <>
@@ -17,7 +28,8 @@ function Landing() {
           alignItems: "center",
         }}
       >
-        <div
+        {/* background image  */}
+        <Grid
           style={{
             position: "absolute",
             top: 0,
@@ -31,11 +43,11 @@ function Landing() {
           }}
         />
 
-        <div
+        <Grid
           style={{
             backgroundColor: "#FFFFFF66",
-            backdropFilter: "blur(5px) saturate(140%)",
-            boxShadow: "0px 25px 5px 0px rgba(0, 0, 0, 0.75)",
+            backdropFilter: backdropFilter,
+            boxShadow: boxShadow,
             borderRadius: 24,
             zIndex: 1,
             margin: "0 auto",
@@ -47,12 +59,20 @@ function Landing() {
           }}
         >
           <Box style={{ display: "block", marginBottom: 24 }}>
-            <Typography variant="h2" fontFamily={"poppins"}>
+            <Typography
+              variant="h2"
+              fontFamily={"poppins"}
+              textAlign={"center"}
+            >
               Log your climbs
             </Typography>
           </Box>
           <Box style={{ display: "block", marginBottom: 30 }}>
-            <Typography variant="h2" fontFamily={"poppins"}>
+            <Typography
+              variant="h2"
+              fontFamily={"poppins"}
+              textAlign={"center"}
+            >
               Track your progress
             </Typography>
           </Box>
@@ -65,10 +85,10 @@ function Landing() {
           >
             Sign in
           </Button>
-        </div>
+        </Grid>
       </Box>
     </>
-  );
+  )
 }
 
-export default Landing;
+export default Landing
