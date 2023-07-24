@@ -47,7 +47,7 @@ const Home = () => {
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
   const redpointCardPadding = xsScreen ? 1 : 2
-  const redpointCardColor = "#C48888"
+  const redpointCardColor = "#FF7A6B"
 
   useEffect(() => {
     if (user) {
