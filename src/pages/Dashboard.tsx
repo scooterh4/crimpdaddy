@@ -1,6 +1,14 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { Button, Card, Container, Grid, Typography } from "@mui/material"
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
 import { UserContext } from "../db/Context"
 import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
@@ -35,6 +43,11 @@ const Home = () => {
   const isLoading = !user
 
   const dashboardBackground = "#F2EEED"
+
+  const theme = useTheme()
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+  const redpointCardPadding = xsScreen ? 1 : 2
+  const redpointCardColor = "#C48888"
 
   useEffect(() => {
     if (user) {
@@ -114,8 +127,72 @@ const Home = () => {
         >
           <Grid
             container
+            item
             direction={"row"}
             justifyContent={"center"}
+            style={{
+              background: dashboardBackground,
+            }}
+          >
+            <Typography variant="h4" component="div" gutterBottom>
+              Redpoint Grades
+            </Typography>
+          </Grid>
+
+          <Grid container direction={"row"} justifyContent={"center"}>
+            <Grid item>
+              <Card
+                sx={{
+                  padding: redpointCardPadding,
+                  backgroundColor: redpointCardColor,
+                }}
+              >
+                <HardestGradeDisplay
+                  climbType="Boulder"
+                  tickType="Redpoint"
+                  climbingData={climbingData}
+                />
+              </Card>
+            </Grid>
+            <Grid
+              item
+              paddingLeft={redpointCardPadding}
+              paddingRight={redpointCardPadding}
+            >
+              <Card
+                sx={{
+                  padding: redpointCardPadding,
+                  backgroundColor: redpointCardColor,
+                }}
+              >
+                <HardestGradeDisplay
+                  climbType="Lead"
+                  tickType="Redpoint"
+                  climbingData={climbingData}
+                />
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card
+                sx={{
+                  padding: redpointCardPadding,
+                  backgroundColor: redpointCardColor,
+                }}
+              >
+                <HardestGradeDisplay
+                  climbType="TopRope"
+                  tickType="Redpoint"
+                  climbingData={climbingData}
+                />
+              </Card>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction={"row"}
+            justifyContent={"center"}
+            marginTop={5}
             marginBottom={1}
             style={{
               background: dashboardBackground,
@@ -189,11 +266,6 @@ const Home = () => {
               xs={12}
               alignItems={"center"}
               direction={"column"}
-              style={
-                {
-                  // background: dashboardBackground,
-                }
-              }
             >
               <Card
                 sx={{
@@ -206,25 +278,16 @@ const Home = () => {
                   Bouldering
                 </Typography>
 
-                <Grid
+                {/* <Grid
                   container
                   direction={"row"}
                   justifyContent={"center"}
                   spacing={3}
                   padding={2}
-                  style={
-                    {
-                      // background: dashboardBackground,
-                    }
-                  }
+
                 >
                   <Grid
                     item
-                    style={
-                      {
-                        // background: dashboardBackground
-                      }
-                    }
                   >
                     <HardestGradeDisplay
                       climbType="Boulder"
@@ -234,11 +297,7 @@ const Home = () => {
                   </Grid>
                   <Grid
                     item
-                    style={
-                      {
-                        // background: dashboardBackground
-                      }
-                    }
+
                   >
                     <HardestGradeDisplay
                       climbType="Boulder"
@@ -248,7 +307,6 @@ const Home = () => {
                   </Grid>
                   <Grid
                     item
-                    // style={{ background: dashboardBackground }}
                   >
                     <HardestGradeDisplay
                       climbType="Boulder"
@@ -256,7 +314,7 @@ const Home = () => {
                       climbingData={climbingData}
                     />
                   </Grid>
-                </Grid>
+                </Grid> */}
 
                 <GradeHistogram
                   climbType="Boulder"
@@ -287,62 +345,34 @@ const Home = () => {
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Lead
                 </Typography>
-                <Grid
+                {/* <Grid
                   container
                   direction={"row"}
                   justifyContent={"center"}
                   padding={2}
-                  style={
-                    {
-                      // background: dashboardBackground,
-                    }
-                  }
                 >
-                  <Grid
-                    item
-                    style={
-                      {
-                        // background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item>
                     <HardestGradeDisplay
                       climbType="Lead"
                       tickType="Onsight"
                       climbingData={climbingData}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    paddingLeft={2}
-                    style={
-                      {
-                        // background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item paddingLeft={2}>
                     <HardestGradeDisplay
                       climbType="Lead"
                       tickType="Flash"
                       climbingData={climbingData}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    paddingLeft={2}
-                    style={
-                      {
-                        // background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item paddingLeft={2}>
                     <HardestGradeDisplay
                       climbType="Lead"
                       tickType="Redpoint"
                       climbingData={climbingData}
                     />
                   </Grid>
-                </Grid>
+                </Grid> */}
 
                 <GradeHistogram
                   climbType="Lead"
@@ -360,11 +390,6 @@ const Home = () => {
               marginTop={3}
               direction={"column"}
               alignItems={"center"}
-              style={
-                {
-                  // background: dashboardBackground,
-                }
-              }
             >
               <Card
                 sx={{
@@ -376,62 +401,34 @@ const Home = () => {
                   Top Rope
                 </Typography>
 
-                <Grid
+                {/* <Grid
                   container
                   direction={"row"}
                   justifyContent={"center"}
                   padding={2}
-                  style={
-                    {
-                      //background: dashboardBackground,
-                    }
-                  }
                 >
-                  <Grid
-                    item
-                    style={
-                      {
-                        //background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item>
                     <HardestGradeDisplay
                       climbType="TopRope"
                       tickType="Onsight"
                       climbingData={climbingData}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    paddingLeft={2}
-                    style={
-                      {
-                        //background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item paddingLeft={2}>
                     <HardestGradeDisplay
                       climbType="TopRope"
                       tickType="Flash"
                       climbingData={climbingData}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    paddingLeft={2}
-                    style={
-                      {
-                        //background: dashboardBackground
-                      }
-                    }
-                  >
+                  <Grid item paddingLeft={2}>
                     <HardestGradeDisplay
                       climbType="TopRope"
                       tickType="Redpoint"
                       climbingData={climbingData}
                     />
                   </Grid>
-                </Grid>
+                </Grid> */}
 
                 <GradeHistogram
                   climbType="TopRope"
