@@ -11,7 +11,8 @@ import {
 } from "recharts"
 import { ClimbGraphData } from "../static/types"
 import { GraphColors } from "../static/styles"
-import GradePyramidsLegend from "./GradePyramidsLegend"
+import { useTheme } from "@mui/material"
+import { useMediaQuery } from "@mui/material"
 
 export type GradeGraphProps = {
   climbType: string
@@ -19,19 +20,17 @@ export type GradeGraphProps = {
 }
 
 function GradeGraph({ climbType, graphData }: GradeGraphProps) {
-  const [height, setHeight] = useState(0)
+  const theme = useTheme()
+  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
-  useEffect(() => {
-    if (graphData.length > 0) {
-      setHeight(graphData.length * 40)
-    }
-  }, [graphData])
+  const graphWidth = mdScreenAndUp ? 350 : xsScreen ? 250 : 300
+  //const graphAspectRatio = mdScreenAndUp ? 1 : xsScreen ? 1.3 : 2
 
   return (
-    <ResponsiveContainer height={height}>
+    <ResponsiveContainer width={graphWidth} aspect={1}>
       <BarChart
         layout="vertical"
-        width={400}
         data={graphData}
         barSize={30}
         style={{ marginLeft: -20 }}
