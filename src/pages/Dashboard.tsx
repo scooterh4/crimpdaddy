@@ -278,44 +278,6 @@ const Home = () => {
                   Bouldering
                 </Typography>
 
-                {/* <Grid
-                  container
-                  direction={"row"}
-                  justifyContent={"center"}
-                  spacing={3}
-                  padding={2}
-
-                >
-                  <Grid
-                    item
-                  >
-                    <HardestGradeDisplay
-                      climbType="Boulder"
-                      tickType="Onsight"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-
-                  >
-                    <HardestGradeDisplay
-                      climbType="Boulder"
-                      tickType="Flash"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                  >
-                    <HardestGradeDisplay
-                      climbType="Boulder"
-                      tickType="Redpoint"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                </Grid> */}
-
                 <GradeHistogram
                   climbType="Boulder"
                   graphData={gradePyramidData.boulderData}
@@ -345,34 +307,6 @@ const Home = () => {
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Lead
                 </Typography>
-                {/* <Grid
-                  container
-                  direction={"row"}
-                  justifyContent={"center"}
-                  padding={2}
-                >
-                  <Grid item>
-                    <HardestGradeDisplay
-                      climbType="Lead"
-                      tickType="Onsight"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid item paddingLeft={2}>
-                    <HardestGradeDisplay
-                      climbType="Lead"
-                      tickType="Flash"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid item paddingLeft={2}>
-                    <HardestGradeDisplay
-                      climbType="Lead"
-                      tickType="Redpoint"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                </Grid> */}
 
                 <GradeHistogram
                   climbType="Lead"
@@ -387,7 +321,7 @@ const Home = () => {
               lg={4}
               md={6}
               xs={12}
-              marginTop={3}
+              marginTop={2}
               direction={"column"}
               alignItems={"center"}
             >
@@ -400,35 +334,6 @@ const Home = () => {
                 <Typography variant="h5" sx={{ textAlign: "center" }}>
                   Top Rope
                 </Typography>
-
-                {/* <Grid
-                  container
-                  direction={"row"}
-                  justifyContent={"center"}
-                  padding={2}
-                >
-                  <Grid item>
-                    <HardestGradeDisplay
-                      climbType="TopRope"
-                      tickType="Onsight"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid item paddingLeft={2}>
-                    <HardestGradeDisplay
-                      climbType="TopRope"
-                      tickType="Flash"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                  <Grid item paddingLeft={2}>
-                    <HardestGradeDisplay
-                      climbType="TopRope"
-                      tickType="Redpoint"
-                      climbingData={climbingData}
-                    />
-                  </Grid>
-                </Grid> */}
 
                 <GradeHistogram
                   climbType="TopRope"
