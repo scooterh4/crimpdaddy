@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -11,7 +10,7 @@ import {
 } from "recharts"
 import { ClimbGraphData } from "../static/types"
 import { GraphColors } from "../static/styles"
-import { useTheme } from "@mui/material"
+import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 
 export type GradeGraphProps = {
@@ -27,31 +26,43 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
   const graphWidth = mdScreenAndUp ? 350 : xsScreen ? 250 : 300
   //const graphAspectRatio = mdScreenAndUp ? 1 : xsScreen ? 1.3 : 2
 
-  return (
-    <ResponsiveContainer width={graphWidth} aspect={1}>
-      <BarChart
-        layout="vertical"
-        data={graphData}
-        barSize={30}
-        style={{ marginLeft: -20 }}
+  if (graphData.length > 0) {
+    return (
+      <ResponsiveContainer width={graphWidth} aspect={1}>
+        <BarChart
+          layout="vertical"
+          data={graphData}
+          barSize={30}
+          style={{ marginLeft: -20 }}
+        >
+          <XAxis type="number" />
+          <YAxis
+            type="category"
+            tickCount={graphData.length}
+            dataKey="Grade"
+            tickLine={false}
+            fontSize={12}
+          />
+          <Tooltip />
+          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+          <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
+          <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
+          <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
+          <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  } else {
+    return (
+      <Typography
+        variant="h3"
+        padding={10}
+        sx={{ textAlign: "center", fontWeight: "bold" }}
       >
-        <XAxis type="number" />
-        <YAxis
-          type="category"
-          tickCount={graphData.length}
-          dataKey="Grade"
-          tickLine={false}
-          fontSize={12}
-        />
-        <Tooltip />
-        <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-        <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
-        <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
-        <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
-        <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+        --
+      </Typography>
+    )
+  }
 }
 
 export default GradeGraph

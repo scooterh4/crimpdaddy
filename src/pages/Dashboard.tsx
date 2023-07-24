@@ -368,32 +368,41 @@ const Home = () => {
             <Grid item>
               <Card
                 sx={{
-                  paddingTop: 2,
-                  paddingRight: 2,
+                  padding: 2,
                   borderRadius: 5,
                   height: "100%",
                 }}
               >
-                <Typography variant="h5" align="center">
-                  Hardest Boulders by Month
-                </Typography>
-                <ProgressionGraph
-                  climbType={CLIMB_TYPES.Boulder}
-                  climbingData={climbingData}
-                />
+                <Grid
+                  container
+                  direction={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Grid item>
+                    <Typography variant="h5" textAlign={"center"}>
+                      Hardest Boulders by Month
+                    </Typography>
+                  </Grid>
+                  <Grid item marginLeft={-5}>
+                    <ProgressionGraph
+                      climbType={CLIMB_TYPES.Boulder}
+                      climbingData={climbingData}
+                    />
+                  </Grid>
+                </Grid>
               </Card>
             </Grid>
 
             <Grid item>
               <Card
                 sx={{
-                  paddingTop: 2,
-                  paddingRight: 2,
+                  padding: 2,
                   borderRadius: 5,
                   height: "100%",
                 }}
               >
-                <Typography variant="h5" align="center">
+                <Typography variant="h5" textAlign="center">
                   Hardest Leads by Month
                 </Typography>
                 <ProgressionGraph
