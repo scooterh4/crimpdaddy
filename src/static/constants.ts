@@ -10,15 +10,7 @@ export enum GYM_CLIMB_TYPES {
   TopRope,
 }
 
-export const TICK_TYPES = [
-  "Onsight",
-  "Flash",
-  "Redpoint",
-  "Hang",
-  "Attempt",
-  "Repeat",
-  "Tick",
-]
+export const TICK_TYPES = ["Onsight", "Flash", "Redpoint", "Repeat", "Attempt"]
 
 export const BOULDER_GRADES = [
   "V0",
