@@ -10,8 +10,8 @@ export type ClimbLog = {
   ClimbType: string
   Grade: string
   Tick: string
-  Attempts: number
-  DateTime: Timestamp
+  Count: number
+  Timestamp: Timestamp
 }
 
 export type TickTypes = {

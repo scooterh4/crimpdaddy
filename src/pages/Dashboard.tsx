@@ -14,7 +14,7 @@ import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
-import { GetClimbsByUser } from "../db/ClimbLogService"
+import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/HardestGradeDisplay"
 import { CLIMB_TYPES } from "../static/constants"
@@ -51,7 +51,9 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      GetClimbsByUser(user.id).then((data) => {
+      console.log("UserId:", user.id)
+
+      GetAllUserClimbs(user.id).then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
       })

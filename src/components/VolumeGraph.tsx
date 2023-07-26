@@ -37,17 +37,17 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
       let result: ClimbsByDate[] = []
 
       climbingData.forEach((climb) => {
-        const date = moment(climb.DateTime.toDate())
+        const date = moment(climb.Timestamp.toDate())
           .format("MMM D, YYYY")
           .toString()
         const dateAlreadyAdded = result.find((r) => r.Date === date)
 
         if (dateAlreadyAdded) {
-          dateAlreadyAdded.Attempts += climb.Attempts
+          dateAlreadyAdded.Attempts += climb.Count
         } else {
           result.push({
             Date: date,
-            Attempts: climb.Attempts,
+            Attempts: climb.Count,
           })
         }
       })

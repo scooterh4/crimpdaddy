@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import {
   Button,
   Dialog,
@@ -32,13 +32,22 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
   const { user } = useContext(UserContext)
   const [grade, setGrade] = useState("")
   const [tick, setTick] = useState("")
-  const [attempts, setAttempts] = useState<number | string>("")
+  const [count, setCount] = useState<number | string>("")
+  const [countLabel, setCountLabel] = useState<string>("Number of climbs")
   const grades =
     climbType === GYM_CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
   const [gradeError, setGradeError] = useState(false)
   const [tickError, setTickError] = useState(false)
   const [attemptError, setAttemptError] = useState(false)
+
+  useEffect(() => {
+    if (tick === "Attempts") {
+      setCountLabel("Number of attempts")
+    } else {
+      setCountLabel("Number of climbs")
+    }
+  }, [tick])
 
   function validateForm() {
     let hasError = false
@@ -51,7 +60,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
       setTickError(true)
       hasError = true
     }
-    if (!attempts) {
+    if (!count) {
       setAttemptError(true)
       hasError = true
     }
@@ -62,7 +71,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
   function resetForm() {
     setGrade("")
     setTick("")
-    setAttempts("")
+    setCount("")
     setGradeError(false)
     setTickError(false)
     setAttemptError(false)
@@ -70,13 +79,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
 
   function handleSubmit() {
     if (!validateForm()) {
-      console.log(
-        "Form data:",
-        GYM_CLIMB_TYPES[climbType],
-        grade,
-        tick,
-        attempts
-      )
+      console.log("Form data:", GYM_CLIMB_TYPES[climbType], grade, tick, count)
       handleClose()
       logClimb()
       resetForm()
@@ -92,13 +95,11 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
         ClimbType: GYM_CLIMB_TYPES[climbType],
         Grade: grade,
         Tick: tick,
-        Attempts: parseInt(attempts.toString()),
-        DateTime: Timestamp.now(),
+        Count: parseInt(count.toString()),
+        Timestamp: Timestamp.now(),
       }
 
-      LogClimb(climbData).then((res) => {
-        console.log(res)
-      })
+      LogClimb(climbData)
     }
   }
 
@@ -144,20 +145,18 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
           <FormControl fullWidth margin="normal">
             <TextField
               variant="outlined"
-              label="Number of attempts"
-              value={attempts}
+              label={countLabel}
+              value={count}
               type="number"
               error={attemptError}
               InputProps={{
                 inputProps: { min: 0 },
               }}
               onChange={(e) =>
-                setAttempts(
-                  e.target.value !== "" ? parseInt(e.target.value) : ""
-                )
+                setCount(e.target.value !== "" ? parseInt(e.target.value) : "")
               }
             >
-              {attempts}
+              {count}
             </TextField>
             {attemptError && (
               <FormHelperText error>This is required!</FormHelperText>

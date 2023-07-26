@@ -73,7 +73,7 @@ function MonthlyClimbsGraph({
           return
         }
 
-        const month = climb.DateTime.toDate().toLocaleString("default", {
+        const month = climb.Timestamp.toDate().toLocaleString("default", {
           month: "short",
           year: "numeric",
         })
