@@ -99,12 +99,20 @@ export const GetAllUserClimbs = async (
   userId: string
 ): Promise<ClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
+  const rawBoulderData: ClimbLog[] = []
+  const rawLeadData: ClimbLog[] = []
+  const rawTrData: ClimbLog[] = []
+
   const boulderData = await GetAllUserClimbsByType(
     userId,
     GYM_CLIMB_TYPES.Boulder
   )
   const leadData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead)
   const trData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope)
+
+  let boulderPyramidData: ClimbGraphData[] = []
+  let leadPyramidData: ClimbGraphData[] = []
+  let trPyramidData: ClimbGraphData[] = []
 
   try {
     boulderData.forEach((log) => {
@@ -113,6 +121,7 @@ export const GetAllUserClimbs = async (
         ClimbType: GYM_CLIMB_TYPES[0],
         ...log,
       }
+      rawBoulderData.push(addDoc)
       rawClimbingData.push(addDoc)
     })
 
@@ -122,6 +131,7 @@ export const GetAllUserClimbs = async (
         ClimbType: GYM_CLIMB_TYPES[1],
         ...log,
       }
+      rawLeadData.push(addDoc)
       rawClimbingData.push(addDoc)
     })
 
@@ -131,23 +141,33 @@ export const GetAllUserClimbs = async (
         ClimbType: GYM_CLIMB_TYPES[2],
         ...log,
       }
+      rawTrData.push(addDoc)
       rawClimbingData.push(addDoc)
     })
+
+    boulderPyramidData = formatClimbingData(
+      rawBoulderData,
+      GYM_CLIMB_TYPES.Boulder
+    )
+    leadPyramidData = formatClimbingData(rawLeadData, GYM_CLIMB_TYPES.Lead)
+    trPyramidData = formatClimbingData(rawTrData, GYM_CLIMB_TYPES.TopRope)
   } catch (error) {
     console.log("Error retreiving all climbing data:", error)
   }
 
-  const gradePyramidData = formatClimbingData(rawClimbingData)
-
   return {
     climbingData: rawClimbingData,
-    gradePyramidData: gradePyramidData,
+    gradePyramidData: {
+      boulderData: boulderPyramidData,
+      leadData: leadPyramidData,
+      trData: trPyramidData,
+    },
   } as ClimbingData
 }
 
 // // Use if you want to change how the data is structured in firebase
 // const MigrateUser = async (userId: string): Promise<void> => {
-//   const chillData = GetClimbsByUser(userId).then((res) => {
+//   const chillData = GetAllUserClimbs(userId).then((res) => {
 //     console.log("Climbing data", res.climbingData)
 
 //     // go through each climb and write a document with the desired structure
@@ -199,52 +219,30 @@ export const GetAllUserClimbs = async (
 // -----------------
 // Helper functions
 // -----------------
-function formatClimbingData(rawData: ClimbLog[]) {
-  const boulderGradeAttemptMap = new Map<string, TickTypes>()
-  const leadGradeAttemptMap = new Map<string, TickTypes>()
-  const trGradeAttemptMap = new Map<string, TickTypes>()
+function formatClimbingData(rawData: ClimbLog[], climbType: number) {
+  const gradeAttemptMap = new Map<string, TickTypes>()
 
   rawData.forEach((climb) => {
-    const gradeAttemptMap =
-      climb.ClimbType === "Boulder"
-        ? boulderGradeAttemptMap
-        : climb.ClimbType === "Lead"
-        ? leadGradeAttemptMap
-        : trGradeAttemptMap
-
     addGradeData(climb, gradeAttemptMap)
   })
 
-  // Get sorted lists of the grades in descending order
-  const boulderGrades = Array.from(boulderGradeAttemptMap.keys()).sort((a, b) =>
-    b.localeCompare(a)
-  )
+  const grades = Array.from(gradeAttemptMap.keys())
 
-  const leadGrades = Array.from(leadGradeAttemptMap.keys())
-    .sort(
-      (a, b) => INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
-    )
-    .reverse()
-
-  const trGrades = Array.from(trGradeAttemptMap.keys())
-    .sort(
-      (a, b) => INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
-    )
-    .reverse()
-
-  // Assemble the data for each graph
-  const boulderGraphData = assembleGraphData(
-    boulderGrades,
-    boulderGradeAttemptMap
-  )
-  const leadGraphData = assembleGraphData(leadGrades, leadGradeAttemptMap)
-  const trGraphData = assembleGraphData(trGrades, trGradeAttemptMap)
-
-  return {
-    boulderData: boulderGraphData,
-    leadData: leadGraphData,
-    trData: trGraphData,
+  // Sort the list of the grades in descending order
+  if (climbType === GYM_CLIMB_TYPES.Boulder) {
+    grades.sort((a, b) => b.localeCompare(a))
+  } else {
+    grades
+      .sort(
+        (a, b) =>
+          INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
+      )
+      .reverse()
   }
+
+  const graphData = assembleGraphData(grades, gradeAttemptMap)
+
+  return graphData
 }
 
 function addGradeData(
@@ -260,19 +258,21 @@ function addGradeData(
 
   switch (climb.Tick) {
     case "Onsight":
-      ticks.Onsight += 1
+      ticks.Onsight += climb.Count
       break
     case "Flash":
-      ticks.Flash += 1
+      ticks.Flash += climb.Count
       break
     case "Redpoint":
-      ticks.Redpoint += 1
+      ticks.Redpoint += climb.Count
+      break
+    case "Attempt":
+      ticks.Attempts += climb.Count
       break
     default:
       break
   }
 
-  ticks.Attempts += climb.Count > 1 ? climb.Count - 1 : 0
   gradeAttemptMap.set(climb.Grade, ticks)
 }
 
