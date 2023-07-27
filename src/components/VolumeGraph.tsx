@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import {
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
+  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -12,18 +13,23 @@ import { ClimbLog } from "../static/types"
 import { Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
+import { GraphColors } from "../static/styles"
+import { Timestamp } from "firebase/firestore"
 
 export type MonthlyClimbsGraphProps = {
   climbingData: ClimbLog[]
 }
 
 export type ClimbsByDate = {
-  Date: string
+  Climbs: number
   Attempts: number
+  Date: string
+  Timestamp: Timestamp
 }
 
 function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
+  const [graphMaxRange, setGraphMaxRange] = useState<number>(25)
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
@@ -31,6 +37,16 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
 
   const graphWidth = mdScreenAndUp ? 700 : xsScreen ? 300 : 500
   const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
+
+  function compareTimestamps(a: ClimbsByDate, b: ClimbsByDate) {
+    if (a.Timestamp < b.Timestamp) {
+      return -1
+    }
+    if (a.Timestamp > b.Timestamp) {
+      return 1
+    }
+    return 0
+  }
 
   useEffect(() => {
     if (climbingData.length > 0) {
@@ -43,15 +59,31 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
         const dateAlreadyAdded = result.find((r) => r.Date === date)
 
         if (dateAlreadyAdded) {
-          dateAlreadyAdded.Attempts += climb.Count
+          if (climb.Tick === "Attempt") {
+            dateAlreadyAdded.Attempts += climb.Count
+          } else {
+            dateAlreadyAdded.Climbs += climb.Count
+          }
         } else {
-          result.push({
-            Date: date,
-            Attempts: climb.Count,
-          })
+          if (climb.Tick === "Attempt") {
+            result.push({
+              Climbs: 0,
+              Attempts: climb.Count,
+              Date: date,
+              Timestamp: climb.Timestamp,
+            })
+          } else {
+            result.push({
+              Climbs: climb.Count,
+              Attempts: 0,
+              Date: date,
+              Timestamp: climb.Timestamp,
+            })
+          }
         }
       })
 
+      result.sort(compareTimestamps)
       setGraphData(result)
     }
   }, [climbingData])
@@ -64,31 +96,39 @@ function MonthlyClimbsGraph({ climbingData }: MonthlyClimbsGraphProps) {
         Volume
       </Typography>
       <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
-        <AreaChart margin={{ left: -15 }} data={graphData} barSize={50}>
-          <defs>
-            <linearGradient id="colorAttempts" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#C6B4B0" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#C6B4B0" stopOpacity={0.1} />
-            </linearGradient>
-          </defs>
+        <BarChart
+          height={1000}
+          data={graphData}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="category" dataKey="Date" />
           <YAxis
             type="number"
             dataKey="Attempts"
-            orientation="left"
-            tickLine={false}
-            fontSize={12}
+            domain={[0, graphMaxRange]}
+            tickCount={6}
           />
           <Tooltip />
-          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-          <Area
-            type="monotone"
-            dataKey="Attempts"
-            stroke="#8884d8"
-            fillOpacity={1}
-            fill="url(#colorAttempts)"
+          <Legend />
+          <Bar
+            dataKey="Climbs"
+            stackId="a"
+            fill="#665b59"
+            isAnimationActive={false}
           />
-        </AreaChart>
+          <Bar
+            dataKey="Attempts"
+            stackId="a"
+            fill={GraphColors.Attempts}
+            isAnimationActive={false}
+          />
+        </BarChart>
       </ResponsiveContainer>
     </Card>
   )

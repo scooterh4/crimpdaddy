@@ -51,8 +51,6 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("UserId:", user.id)
-
       GetAllUserClimbs(user.id).then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
