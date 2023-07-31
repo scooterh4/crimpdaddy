@@ -165,57 +165,6 @@ export const GetAllUserClimbs = async (
   } as ClimbingData
 }
 
-// // Use if you want to change how the data is structured in firebase
-// const MigrateUser = async (userId: string): Promise<void> => {
-//   const chillData = GetAllUserClimbs(userId).then((res) => {
-//     console.log("Climbing data", res.climbingData)
-
-//     // go through each climb and write a document with the desired structure
-//     res.climbingData.forEach((climb) => {
-//       let collectionPath = `/climbingLogs/${userId}/2023/indoor/`
-//       let newDoc: ClimbLogDocument
-
-//       switch (climb.ClimbType) {
-//         case "Boulder":
-//           collectionPath += "boulder"
-//           break
-//         case "Lead":
-//           collectionPath += "lead"
-//           break
-//         case "TopRope":
-//           collectionPath += "topRope"
-//           break
-//       }
-
-//       newDoc = {
-//         Grade: climb.Grade,
-//         Tick: climb.Tick === "Hang" ? "Attempt" : climb.Tick,
-//         Count:
-//           climb.Tick === "Attempt" || climb.Tick === "Hang"
-//             ? climb.Attempts
-//             : 1,
-//         Timestamp: climb.DateTime,
-//       }
-//       addDoc(collection(db, collectionPath), newDoc).then((res) => {
-//         console.log(`New ${newDoc.Tick} doc added`)
-//       })
-
-//       // Need to add the attempts doc for a climb
-//       if (climb.Tick !== "Attempt" && climb.Attempts > 1) {
-//         const gradeDoc: ClimbLogDocument = {
-//           Grade: climb.Grade,
-//           Tick: "Attempt",
-//           Count: climb.Attempts - 1,
-//           Timestamp: climb.DateTime,
-//         }
-//         addDoc(collection(db, collectionPath), gradeDoc).then((res) => {
-//           console.log(`New ${gradeDoc.Tick} doc added`)
-//         })
-//       }
-//     })
-//   })
-// }
-
 // -----------------
 // Helper functions
 // -----------------
@@ -256,6 +205,7 @@ function addGradeData(
     Attempts: 0,
   }
 
+  // Repeats are not added to grade pyramids
   switch (climb.Tick) {
     case "Onsight":
       ticks.Onsight += climb.Count

@@ -10,7 +10,6 @@ import {
   useTheme,
 } from "@mui/material"
 import { UserContext } from "../db/Context"
-import Loading from "../components/Loading"
 import PickClimbType from "../components/PickClimbTypeDialog"
 import ClimbDetailsDialog from "../components/ClimbDetailsDialog"
 import Toolbar from "../components/ToolBar"
@@ -23,6 +22,7 @@ import GradePyramidsLegend from "../components/GradePyramidsLegend"
 import Footer from "../components/Footer"
 import ProgressionGraph from "../components/ProgressionGraph"
 import VolumeGraph from "../components/VolumeGraph"
+import ReactLoading from "react-loading"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -64,7 +64,17 @@ const Home = () => {
   }
 
   return isLoading ? (
-    <Loading />
+    <Grid
+      container
+      justifyContent={"center"}
+      alignItems={"center"}
+      direction="row"
+      sx={{ height: "100vh" }}
+    >
+      <Grid item>
+        <ReactLoading type="spin" color="#0000FF" height={200} width={100} />
+      </Grid>
+    </Grid>
   ) : (
     <>
       <Toolbar user={user} updateUser={updateUser} />
@@ -220,7 +230,7 @@ const Home = () => {
             style={{ display: "flex", background: dashboardBackground }}
           >
             <Grid item>
-              <VolumeGraph climbingData={climbingData} />
+              <VolumeGraph propClimbingData={climbingData} />
             </Grid>
           </Grid>
 
