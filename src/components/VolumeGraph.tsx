@@ -69,38 +69,44 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
     let minTimestamp = 0
     let maxTimestamp = moment().unix()
 
-    console.log("month", today.getMonth())
-    console.log("year", today.getFullYear())
-
     // set the date range we want the data for
     switch (range) {
       case "thisYear":
-        minTimestamp = moment(`${today.getFullYear()}-01-01`).unix()
+        minTimestamp = moment(`${today.getFullYear()}-01-01 00:00:00`).unix()
         maxTimestamp = moment().unix()
         break
 
       case "lastYear":
-        minTimestamp = moment(`${today.getFullYear() - 1}-01-01`).unix()
-        maxTimestamp = moment(`${today.getFullYear()}-01-01`).unix()
+        minTimestamp = moment(
+          `${today.getFullYear() - 1}-01-01 00:00:00`
+        ).unix()
+        maxTimestamp = moment(
+          `${today.getFullYear() - 1}-12-31 23:59:59`
+        ).unix()
         break
 
       case "thisMonth":
+        // the .getMonth() method returns the month in a zero-based format
         minTimestamp = moment(
-          `${today.getFullYear()}-${today.getMonth() + 1}-01`
+          `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`
         ).unix()
         maxTimestamp = moment().unix()
         break
 
       case "lastMonth":
-        if (today.getMonth() === 1) {
-          minTimestamp = moment(`${today.getFullYear() - 1}-12-01`).unix()
-          maxTimestamp = moment(`${today.getFullYear()}-01-01`).unix()
-        } else {
+        if (today.getMonth() === 0) {
           minTimestamp = moment(
-            `${today.getFullYear().toString()}-${today.getMonth()}-01`
+            `${today.getFullYear() - 1}-12-01 00:00:00`
           ).unix()
           maxTimestamp = moment(
-            `${today.getFullYear().toString()}-${today.getMonth() + 1}-01`
+            `${today.getFullYear() - 1}-12-31 23:59:59`
+          ).unix()
+        } else {
+          minTimestamp = moment(
+            `${today.getFullYear()}-${today.getMonth()}-01 00:00:00`
+          ).unix()
+          maxTimestamp = moment(
+            `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`
           ).unix()
         }
         break
@@ -110,11 +116,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         break
     }
 
-    console.log("minTimestamp", minTimestamp)
-    console.log("maxTimestamp", maxTimestamp)
-
     data.forEach((climb) => {
-      console.log("climb seconds", climb.Timestamp.seconds)
       // check if the climb is within the date range first
       if (
         climb.Timestamp.seconds < minTimestamp ||
