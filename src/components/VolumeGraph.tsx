@@ -232,10 +232,8 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         break
 
       case "thisMonth":
-        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-
         let day = 1
-        while (day < lastDay.getDate()) {
+        while (day <= today.getDate()) {
           pushDateToResult(
             result,
             today.getFullYear(),
