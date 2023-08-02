@@ -24,7 +24,6 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../static/styles"
-import { Timestamp } from "firebase/firestore"
 import ReactLoading from "react-loading"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { UserContext } from "../db/Context"
@@ -37,21 +36,29 @@ export type ClimbsByDate = {
   Climbs: number
   Attempts: number
   Date: string
-  Timestamp: Timestamp
+  Timestamp: number
 }
 
 function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
-  const [graphMaxRange, setGraphMaxRange] = useState<number>(25)
-  const [range, setRange] = React.useState("alltime")
+  const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
+  const [range, setRange] = React.useState("thisWeek")
   const { user, updateUser } = useContext(UserContext)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
-  const graphWidth = mdScreenAndUp ? 700 : xsScreen ? 300 : 500
+  const graphWidth = mdScreenAndUp ? 1000 : xsScreen ? 300 : 500
   const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
+
+  // sets the graph data from the initial data passed in by the dashboard
+  useEffect(() => {
+    if (propClimbingData.length > 0) {
+      filterRawClimbingData(propClimbingData, "thisWeek")
+    }
+  }, [propClimbingData])
 
   function compareTimestamps(a: ClimbsByDate, b: ClimbsByDate) {
     if (a.Timestamp < b.Timestamp) {
@@ -63,25 +70,33 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
     return 0
   }
 
-  function filterRawClimbingData(data: ClimbLog[], range: string): void {
-    let result: ClimbsByDate[] = []
+  type DateRange = {
+    MinTimestamp: number
+    MaxTimestamp: number
+  }
+
+  function getDateRange(range: string): DateRange {
     const today = new Date()
     let minTimestamp = 0
     let maxTimestamp = moment().unix()
 
     // set the date range we want the data for
     switch (range) {
-      case "thisYear":
-        minTimestamp = moment(`${today.getFullYear()}-01-01 00:00:00`).unix()
-        maxTimestamp = moment().unix()
-        break
+      case "thisWeek":
+        const firstDayOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay())
+        )
+        const lastDayOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay() + 6)
+        )
 
-      case "lastYear":
         minTimestamp = moment(
-          `${today.getFullYear() - 1}-01-01 00:00:00`
+          `${firstDayOfWeek.getFullYear()}-${firstDayOfWeek.getMonth() +
+            1}-${firstDayOfWeek.getDate()} 00:00:00`
         ).unix()
         maxTimestamp = moment(
-          `${today.getFullYear() - 1}-12-31 23:59:59`
+          `${lastDayOfWeek.getFullYear()}-${lastDayOfWeek.getMonth() +
+            1}-${lastDayOfWeek.getDate()} 23:59:59`
         ).unix()
         break
 
@@ -93,22 +108,9 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         maxTimestamp = moment().unix()
         break
 
-      case "lastMonth":
-        if (today.getMonth() === 0) {
-          minTimestamp = moment(
-            `${today.getFullYear() - 1}-12-01 00:00:00`
-          ).unix()
-          maxTimestamp = moment(
-            `${today.getFullYear() - 1}-12-31 23:59:59`
-          ).unix()
-        } else {
-          minTimestamp = moment(
-            `${today.getFullYear()}-${today.getMonth()}-01 00:00:00`
-          ).unix()
-          maxTimestamp = moment(
-            `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`
-          ).unix()
-        }
+      case "thisYear":
+        minTimestamp = moment(`${today.getFullYear()}-01-01 00:00:00`).unix()
+        maxTimestamp = moment().unix()
         break
 
       // alltime
@@ -116,11 +118,204 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         break
     }
 
+    return { MinTimestamp: minTimestamp, MaxTimestamp: maxTimestamp }
+  }
+
+  function addDateRangeToResult(range: string, result: ClimbsByDate[]): void {
+    const today = new Date()
+
+    switch (range) {
+      case "thisWeek":
+        const firstDayOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay())
+        )
+        const lastDayOfWeek = new Date(
+          today.setDate(today.getDate() - today.getDay() + 6)
+        )
+
+        // Check if the month changes during the week
+        if (firstDayOfWeek.getMonth() === lastDayOfWeek.getMonth()) {
+          let d = firstDayOfWeek.getDate()
+
+          while (d <= lastDayOfWeek.getDate()) {
+            const date = moment(
+              `${firstDayOfWeek.getFullYear()}-${firstDayOfWeek.getMonth() +
+                1}-${d}`
+            )
+              .format("MMM D, YYYY")
+              .toString()
+
+            const timestamp = moment(
+              `${firstDayOfWeek.getFullYear}-${firstDayOfWeek.getMonth() +
+                1}-${d}`
+            ).unix()
+
+            result.push({
+              Climbs: 0,
+              Attempts: 0,
+              Date: date,
+              Timestamp: timestamp,
+            })
+            d++
+          }
+        } else {
+          // The month changes midweek so we'll add the dates in two separate loops
+          const lastDayOfMonth = new Date(
+            firstDayOfWeek.getFullYear(),
+            firstDayOfWeek.getMonth() + 1,
+            0
+          )
+
+          let dayCounter = firstDayOfWeek.getDate()
+          while (dayCounter <= lastDayOfMonth.getDate()) {
+            const date = moment(
+              `${firstDayOfWeek.getFullYear()}-${firstDayOfWeek.getMonth() +
+                1}-${dayCounter}`
+            )
+              .format("MMM D, YYYY")
+              .toString()
+
+            const timestamp = moment(
+              `${firstDayOfWeek.getFullYear}-${firstDayOfWeek.getMonth() +
+                1}-${dayCounter}`
+            ).unix()
+
+            result.push({
+              Climbs: 0,
+              Attempts: 0,
+              Date: date,
+              Timestamp: timestamp,
+            })
+            dayCounter++
+          }
+
+          let newMonthDayCounter = 1
+          while (newMonthDayCounter <= lastDayOfWeek.getDate()) {
+            const date = moment(
+              `${lastDayOfWeek.getFullYear()}-${lastDayOfWeek.getMonth() +
+                1}-${newMonthDayCounter}`
+            )
+              .format("MMM D, YYYY")
+              .toString()
+
+            const timestamp = moment(
+              `${lastDayOfWeek.getFullYear()}-${lastDayOfWeek.getMonth() +
+                1}-${newMonthDayCounter}`
+            ).unix()
+
+            result.push({
+              Climbs: 0,
+              Attempts: 0,
+              Date: date,
+              Timestamp: timestamp,
+            })
+            newMonthDayCounter++
+          }
+        }
+        break
+
+      case "thisMonth":
+        const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+
+        let day = 1
+        while (day < lastDay.getDate()) {
+          const date = moment(
+            `${today.getFullYear()}-${today.getMonth() + 1}-${day}`
+          )
+            .format("MMM D, YYYY")
+            .toString()
+
+          const timestamp = moment(
+            `${today.getFullYear}-${today.getMonth() + 1}-${day}`
+          ).unix()
+
+          result.push({
+            Climbs: 0,
+            Attempts: 0,
+            Date: date,
+            Timestamp: timestamp,
+          })
+          day++
+        }
+        break
+
+      case "lastMonth":
+        const lastDayOfLastMonth = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          0
+        )
+
+        let dCount = 1
+        while (dCount < lastDayOfLastMonth.getDate()) {
+          const date = moment(
+            `${lastDayOfLastMonth.getFullYear()}-${lastDayOfLastMonth.getMonth() +
+              1}-${dCount}`
+          )
+            .format("MMM D, YYYY")
+            .toString()
+
+          const timestamp = moment(
+            `${lastDayOfLastMonth.getFullYear()}-${lastDayOfLastMonth.getMonth() +
+              1}-${dCount}`
+          ).unix()
+
+          result.push({
+            Climbs: 0,
+            Attempts: 0,
+            Date: date,
+            Timestamp: timestamp,
+          })
+          dCount++
+        }
+        break
+
+      case "thisYear":
+        // loop through the months
+        let monthCounter = 1
+        while (monthCounter <= 12) {
+          let lastDayOfMonth = new Date(today.getFullYear(), monthCounter, 0)
+
+          // loop through the days in each month
+          let dayCounter = 1
+          while (dayCounter <= lastDayOfMonth.getDate()) {
+            const date = moment(
+              `${lastDayOfMonth.getFullYear()}-${lastDayOfMonth.getMonth() +
+                1}-${dayCounter}`
+            )
+              .format("MMM D, YYYY")
+              .toString()
+
+            const timestamp = moment(
+              `${lastDayOfMonth.getFullYear()}-${lastDayOfMonth.getMonth() +
+                1}-${dayCounter}`
+            ).unix()
+
+            result.push({
+              Climbs: 0,
+              Attempts: 0,
+              Date: date,
+              Timestamp: timestamp,
+            })
+            dayCounter++
+          }
+          monthCounter++
+        }
+        break
+    }
+  }
+
+  function filterRawClimbingData(data: ClimbLog[], range: string): void {
+    let result: ClimbsByDate[] = []
+    const dateRange = getDateRange(range)
+
+    addDateRangeToResult(range, result)
+
     data.forEach((climb) => {
       // check if the climb is within the date range first
       if (
-        climb.Timestamp.seconds < minTimestamp ||
-        climb.Timestamp.seconds > maxTimestamp
+        climb.Timestamp.seconds < dateRange.MinTimestamp ||
+        climb.Timestamp.seconds > dateRange.MaxTimestamp
       ) {
         return
       }
@@ -128,6 +323,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
       const date = moment(climb.Timestamp.toDate())
         .format("MMM D, YYYY")
         .toString()
+
       const dateAlreadyAdded = result.find((r) => r.Date === date)
 
       if (dateAlreadyAdded) {
@@ -136,53 +332,46 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         } else {
           dateAlreadyAdded.Climbs += climb.Count
         }
-      } else {
-        if (climb.Tick === "Attempt") {
-          result.push({
-            Climbs: 0,
-            Attempts: climb.Count,
-            Date: date,
-            Timestamp: climb.Timestamp,
-          })
-        } else {
-          result.push({
-            Climbs: climb.Count,
-            Attempts: 0,
-            Date: date,
-            Timestamp: climb.Timestamp,
-          })
-        }
       }
+      //else {
+      // if (climb.Tick === "Attempt") {
+      //   result.push({
+      //     Climbs: 0,
+      //     Attempts: climb.Count,
+      //     Date: date,
+      //     Timestamp: climb.Timestamp.seconds,
+      //   })
+      // } else {
+      //   result.push({
+      //     Climbs: climb.Count,
+      //     Attempts: 0,
+      //     Date: date,
+      //     Timestamp: climb.Timestamp.seconds,
+      //   })
+      // }
+      //}
     })
 
-    result.sort(compareTimestamps)
+    // if (range !== "thisMonth") {
+    //   result.sort(compareTimestamps)
+    // }
     setGraphData(result)
+    setIsLoading(false)
   }
-
-  // sets the graph data from the initial data passed in by the dashboard
-  useEffect(() => {
-    if (propClimbingData.length > 0) {
-      filterRawClimbingData(propClimbingData, "alltime")
-    }
-  }, [propClimbingData])
 
   // need to call the db to get the users data again and resort through it
   const handleFilterChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value)
     setRange(event.target.value)
     setIsLoading(true)
     if (user) {
       GetAllUserClimbs(user.id).then((data) => {
         filterRawClimbingData(data.climbingData, event.target.value)
-        setIsLoading(false)
       })
     } else {
-      console.log("Error getting climbing data for volume graph: no user id.")
+      console.log("Error getting climbing data for volume graph: no user data")
       setIsLoading(false)
     }
   }
-
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   if (isLoading) {
     return (
@@ -234,11 +423,10 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         <Grid item sm={3}>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Select value={range} onChange={handleFilterChange} displayEmpty>
-              <MenuItem value={"alltime"}>All-time</MenuItem>
-              <MenuItem value={"thisYear"}>This year</MenuItem>
-              <MenuItem value={"lastYear"}>Last year</MenuItem>
+              <MenuItem value={"thisWeek"}>This week</MenuItem>
               <MenuItem value={"thisMonth"}>This month</MenuItem>
               <MenuItem value={"lastMonth"}>Last month</MenuItem>
+              <MenuItem value={"thisYear"}>This year</MenuItem>
             </Select>
           </FormControl>
         </Grid>
