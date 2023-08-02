@@ -61,10 +61,8 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   }, [propClimbingData])
 
   function filterRawClimbingData(data: ClimbLog[], range: string): void {
-    let result: ClimbsByDate[] = []
     const dateRange = getDateRange(range)
-
-    addDateRangeToResult(range, result)
+    let result = setResultDates(range)
 
     data.forEach((climb) => {
       // check if the climb is within the date range first
@@ -87,8 +85,6 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         } else {
           dateAlreadyAdded.Climbs += climb.Count
         }
-      } else {
-        console.log("VolumeGraph error: Cannot find date in the result list")
       }
     })
 
@@ -105,7 +101,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         filterRawClimbingData(data.climbingData, event.target.value)
       })
     } else {
-      console.log("Error getting climbing data for volume graph: no user data")
+      console.log("VolumeGraph error: no user data")
       setIsLoading(false)
     }
   }
@@ -177,7 +173,8 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
     })
   }
 
-  function addDateRangeToResult(range: string, result: ClimbsByDate[]): void {
+  function setResultDates(range: string): ClimbsByDate[] {
+    let result: ClimbsByDate[] = []
     const today = new Date()
 
     switch (range) {
@@ -289,6 +286,8 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         }
         break
     }
+
+    return result
   }
 
   if (isLoading) {
@@ -374,7 +373,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
           <Bar
             dataKey="Climbs"
             stackId="a"
-            fill="#665b59"
+            fill="#615847"
             isAnimationActive={false}
           />
           <Bar
