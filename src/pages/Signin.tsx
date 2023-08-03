@@ -62,7 +62,7 @@ function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "black" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#DDD1CF", color: "black" }}>
             <LockIcon />
           </Avatar>
           <Typography component="h1" variant="h5">

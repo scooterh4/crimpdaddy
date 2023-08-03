@@ -140,7 +140,7 @@ function SignUp() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "black" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#4a6741" }}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
