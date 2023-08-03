@@ -340,7 +340,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
               <MenuItem value={"thisWeek"}>This week</MenuItem>
               <MenuItem value={"thisMonth"}>This month</MenuItem>
               <MenuItem value={"lastMonth"}>Last month</MenuItem>
-              <MenuItem value={"thisYear"}>This year</MenuItem>
+              {/* <MenuItem value={"thisYear"}>This year</MenuItem> */}
             </Select>
           </FormControl>
         </Grid>
