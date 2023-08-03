@@ -15,7 +15,7 @@ import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
-function Signin() {
+function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
@@ -116,4 +116,4 @@ function Signin() {
   )
 }
 
-export default Signin
+export default SignIn

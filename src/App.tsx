@@ -1,6 +1,6 @@
-import React, { useState } from "react"
-import Signin from "./pages/Signin"
-import Signup from "./pages/Signup"
+import React from "react"
+import SignIn from "./pages/SignIn"
+import SignUp from "./pages/SignUp"
 import Landing from "./pages/Landing"
 import ProtectedRoute, {
   ProtectedRouteProps,
@@ -24,8 +24,8 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route
             path="dashboard"
             element={
