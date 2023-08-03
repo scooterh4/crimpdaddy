@@ -42,7 +42,7 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
   const [attemptError, setAttemptError] = useState(false)
 
   useEffect(() => {
-    if (tick === "Attempts") {
+    if (tick === "Attempt") {
       setCountLabel("Number of attempts")
     } else {
       setCountLabel("Number of climbs")
