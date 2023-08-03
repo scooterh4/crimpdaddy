@@ -13,7 +13,6 @@ import { ClimbLog } from "../static/types"
 import {
   Card,
   FormControl,
-  FormHelperText,
   Grid,
   MenuItem,
   Select,
@@ -43,7 +42,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const [range, setRange] = React.useState("thisWeek")
-  const { user, updateUser } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -163,7 +162,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
     month: number,
     day: number
   ): void {
-    const timestamp = result.push({
+    result.push({
       Climbs: 0,
       Attempts: 0,
       Date: moment(`${year}-${month}-${day}`)
