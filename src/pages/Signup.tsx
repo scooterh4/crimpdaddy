@@ -13,6 +13,7 @@ import {
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
+import ToolBar from "../components/ToolBar"
 
 function SignUp() {
   const [input, setInput] = useState({
@@ -131,6 +132,8 @@ function SignUp() {
 
   return (
     <>
+      <ToolBar user={undefined} />
+
       <Container component="main" maxWidth="xs">
         <Box
           sx={{

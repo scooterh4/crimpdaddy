@@ -15,15 +15,20 @@ import { signOut } from "firebase/auth"
 import { auth } from "../firebase"
 import { AppUser } from "../static/types"
 import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
 
 type ToolBarProps = {
-  user: AppUser | null
-  updateUser: (newUser: AppUser | null) => void
+  user:
+    | {
+        appUser: AppUser | null
+        updateUser: (newUser: AppUser | null) => void
+      }
+    | undefined
 }
 
-function ToolBar({ user, updateUser }: ToolBarProps) {
+function ToolBar({ user }: ToolBarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-
+  const navigate = useNavigate()
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -34,66 +39,84 @@ function ToolBar({ user, updateUser }: ToolBarProps) {
 
   function handleLogout() {
     console.log("logout")
-    signOut(auth)
-      .then(() => {
-        sessionStorage.removeItem("Auth Token")
-        updateUser(null)
-        toast.success("Goodbye!", { toastId: "logoutSuccess" })
-      })
-      .catch((error) => {
-        console.log(error.code, error.message)
-      })
+    if (user) {
+      signOut(auth)
+        .then(() => {
+          sessionStorage.removeItem("Auth Token")
+          user.updateUser(null)
+          toast.success("Goodbye!", { toastId: "logoutSuccess" })
+        })
+        .catch((error) => {
+          console.log(error.code, error.message)
+        })
+    }
   }
 
   return (
-    <AppBar position="static" sx={{ background: "#DDD1CF" }}>
+    <AppBar position="static" sx={{ background: "#DDD1CF", color: "black" }}>
       <Container maxWidth="xl">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          {user && (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
           <Box sx={{ flexGrow: 1, textAlign: "center" }}>
             {user && (
               <Typography variant="h6" component="div">
-                {user.email}
+                {user.appUser && user.appUser.email}
               </Typography>
+            )}
+            {!user && (
+              <IconButton
+                size="large"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => navigate("/")}
+              >
+                CrimpDaddy
+              </IconButton>
             )}
           </Box>
 
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
+          {user && (
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          )}
+          {user && (
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

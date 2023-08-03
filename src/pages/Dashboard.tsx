@@ -77,7 +77,7 @@ const Home = () => {
     </Grid>
   ) : (
     <>
-      <Toolbar user={user} updateUser={updateUser} />
+      <Toolbar user={{ appUser: user, updateUser: updateUser }} />
 
       <PickClimbType
         open={openClimbTypeSelector}

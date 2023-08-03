@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom"
 
 function Landing() {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
   const backdropFilter = xsScreen ? "" : "blur(5px) saturate(140%)"

@@ -14,6 +14,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import ToolBar from "../components/ToolBar"
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -53,6 +54,8 @@ function SignIn() {
 
   return (
     <>
+      <ToolBar user={undefined} />
+
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
