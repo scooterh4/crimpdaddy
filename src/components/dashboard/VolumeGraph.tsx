@@ -289,54 +289,15 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
 
   if (isLoading) {
     return (
-      <Card
-        sx={{
-          paddingTop: 2,
-          borderRadius: 5,
-          width: graphWidth,
-          height: 300,
-        }}
-      >
-        <Grid
-          container
-          justifyContent={"center"}
-          alignItems={"center"}
-          direction="row"
-        >
-          <Grid item marginTop={10}>
-            <ReactLoading
-              type="spin"
-              color="#0000FF"
-              height={200}
-              width={100}
-            />
-          </Grid>
-        </Grid>
-      </Card>
-    )
-  }
-
-  return (
-    <Card
-      sx={{ paddingTop: 2, paddingRight: 2, borderRadius: 5, width: "100%" }}
-    >
       <Grid
         container
         justifyContent={"center"}
         alignItems={"center"}
-        direction="row"
+        direction="column"
       >
-        <Grid item sm={3} />
-
-        <Grid item sm={6}>
-          <Typography variant="h5" align="center">
-            Volume
-          </Typography>
-        </Grid>
-
-        <Grid item sm={3}>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Select value={range} onChange={handleFilterChange} displayEmpty>
+        <Grid item xs={12}>
+          <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
+            <Select value={range} displayEmpty>
               <MenuItem value={"thisWeek"}>This week</MenuItem>
               <MenuItem value={"thisMonth"}>This month</MenuItem>
               <MenuItem value={"lastMonth"}>Last month</MenuItem>
@@ -344,44 +305,101 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
             </Select>
           </FormControl>
         </Grid>
+
+        <Grid container item xs={12}>
+          <Card
+            sx={{
+              paddingTop: 2,
+              borderRadius: 5,
+              width: graphWidth,
+              height: 300,
+            }}
+          >
+            <Grid
+              container
+              justifyContent={"center"}
+              alignItems={"center"}
+              direction="row"
+            >
+              <Grid item marginTop={10}>
+                <ReactLoading
+                  type="spin"
+                  color="#0000FF"
+                  height={200}
+                  width={100}
+                />
+              </Grid>
+            </Grid>
+          </Card>
+        </Grid>
+      </Grid>
+    )
+  }
+
+  return (
+    <Grid
+      container
+      justifyContent={"center"}
+      alignItems={"center"}
+      direction="column"
+    >
+      <Grid item xs={12}>
+        <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
+          <Select value={range} onChange={handleFilterChange} displayEmpty>
+            <MenuItem value={"thisWeek"}>This week</MenuItem>
+            <MenuItem value={"thisMonth"}>This month</MenuItem>
+            <MenuItem value={"lastMonth"}>Last month</MenuItem>
+            {/* <MenuItem value={"thisYear"}>This year</MenuItem> */}
+          </Select>
+        </FormControl>
       </Grid>
 
-      <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
-        <BarChart
-          height={1000}
-          data={graphData}
-          margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
+      <Grid container item xs={12}>
+        <Card
+          sx={{
+            paddingTop: 2,
+            paddingRight: 2,
+            borderRadius: 5,
+            width: "100%",
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="category" dataKey="Date" />
-          <YAxis
-            type="number"
-            dataKey="Attempts"
-            domain={[0, graphMaxRange]}
-            tickCount={6}
-          />
-          <Tooltip />
-          <Legend />
-          <Bar
-            dataKey="Climbs"
-            stackId="a"
-            fill="#615847"
-            isAnimationActive={false}
-          />
-          <Bar
-            dataKey="Attempts"
-            stackId="a"
-            fill={GraphColors.Attempts}
-            isAnimationActive={false}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </Card>
+          <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
+            <BarChart
+              data={graphData}
+              margin={{
+                top: 20,
+                right: 0,
+                left: -10,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="category" dataKey="Date" />
+              <YAxis
+                type="number"
+                dataKey="Attempts"
+                domain={[0, graphMaxRange]}
+                tickCount={6}
+              />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="Climbs"
+                stackId="a"
+                fill="#615847"
+                isAnimationActive={false}
+              />
+              <Bar
+                dataKey="Attempts"
+                stackId="a"
+                fill={GraphColors.Attempts}
+                isAnimationActive={false}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      </Grid>
+    </Grid>
   )
 }
 
