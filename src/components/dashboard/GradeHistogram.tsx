@@ -8,8 +8,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbGraphData } from "../static/types"
-import { GraphColors } from "../static/styles"
+import { ClimbGraphData } from "../../static/types"
+import { GraphColors } from "../../static/styles"
 import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 

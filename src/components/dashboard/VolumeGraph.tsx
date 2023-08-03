@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../static/types"
+import { ClimbLog } from "../../static/types"
 import {
   Card,
   FormControl,
@@ -22,10 +22,10 @@ import {
 } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
-import { GraphColors } from "../static/styles"
+import { GraphColors } from "../../static/styles"
 import ReactLoading from "react-loading"
-import { GetAllUserClimbs } from "../db/ClimbLogService"
-import { UserContext } from "../db/Context"
+import { GetAllUserClimbs } from "../../db/ClimbLogService"
+import { UserContext } from "../../db/Context"
 
 export type MonthlyClimbsGraphProps = {
   propClimbingData: ClimbLog[]

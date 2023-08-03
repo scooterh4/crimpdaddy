@@ -13,7 +13,7 @@ import {
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import ToolBar from "../components/ToolBar"
+import ToolBar from "../components/common/ToolBar"
 
 function SignUp() {
   const [input, setInput] = useState({

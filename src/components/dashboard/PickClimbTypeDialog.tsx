@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Grid,
 } from "@mui/material"
-import { GYM_CLIMB_TYPES } from "../static/constants"
+import { GYM_CLIMB_TYPES } from "../../static/constants"
 
 export type ClimbTypeProps = {
   open: boolean

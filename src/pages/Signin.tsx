@@ -14,7 +14,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import ToolBar from "../components/ToolBar"
+import ToolBar from "../components/common/ToolBar"
 
 function SignIn() {
   const [email, setEmail] = useState("")

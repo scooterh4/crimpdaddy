@@ -1,7 +1,7 @@
 import React from "react"
 import { Square } from "@mui/icons-material"
 import { Card, Grid, Typography } from "@mui/material"
-import { GraphColors } from "../static/styles"
+import { GraphColors } from "../../static/styles"
 
 const GradePyramidsLegend = () => {
   return (

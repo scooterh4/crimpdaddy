@@ -16,10 +16,10 @@ import {
   BOULDER_GRADES,
   INDOOR_SPORT_GRADES,
   GYM_CLIMB_TYPES,
-} from "../static/constants"
-import { LogClimb } from "../db/ClimbLogService"
-import { UserContext } from "../db/Context"
-import { ClimbLog } from "../static/types"
+} from "../../static/constants"
+import { LogClimb } from "../../db/ClimbLogService"
+import { UserContext } from "../../db/Context"
+import { ClimbLog } from "../../static/types"
 import { Timestamp } from "firebase/firestore"
 
 export type LogModalProps = {

@@ -9,12 +9,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../static/types"
+import { ClimbLog } from "../../static/types"
 import { Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES } from "../static/constants"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../static/constants"
-import { GraphColors } from "../static/styles"
+import { CLIMB_TYPES } from "../../static/constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
+import { GraphColors } from "../../static/styles"
 
 export type MonthlyClimbsGraphProps = {
   climbType: number

@@ -12,8 +12,8 @@ import {
 import MenuIcon from "@mui/icons-material/Menu"
 import { AccountCircle } from "@mui/icons-material"
 import { signOut } from "firebase/auth"
-import { auth } from "../firebase"
-import { AppUser } from "../static/types"
+import { auth } from "../../firebase"
+import { AppUser } from "../../static/types"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 

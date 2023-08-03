@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Square } from "@mui/icons-material"
 import { Card, Grid, Typography } from "@mui/material"
-import { GraphColors } from "../static/styles"
-import { ClimbLog } from "../static/types"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../static/constants"
+import { GraphColors } from "../../static/styles"
+import { ClimbLog } from "../../static/types"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 
 export type HardestGradeProps = {
   climbType: string
