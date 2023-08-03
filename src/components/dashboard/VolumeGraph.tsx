@@ -62,6 +62,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   function filterRawClimbingData(data: ClimbLog[], range: string): void {
     const dateRange = getDateRange(range)
     let result = setResultDates(range)
+    let yAxisRange = 0
 
     data.forEach((climb) => {
       // check if the climb is within the date range first
@@ -84,9 +85,15 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         } else {
           dateAlreadyAdded.Climbs += climb.Count
         }
+
+        // update the maxRange for the y-axis
+        if (dateAlreadyAdded.Climbs + dateAlreadyAdded.Attempts > yAxisRange) {
+          yAxisRange = dateAlreadyAdded.Climbs + dateAlreadyAdded.Attempts
+        }
       }
     })
 
+    setGraphMaxRange(yAxisRange + 2 < 9 ? 9 : yAxisRange + 2)
     setGraphData(result)
     setIsLoading(false)
   }
@@ -369,7 +376,7 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
               margin={{
                 top: 20,
                 right: 0,
-                left: -10,
+                left: -20,
                 bottom: 5,
               }}
             >
@@ -379,7 +386,6 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
                 type="number"
                 dataKey="Attempts"
                 domain={[0, graphMaxRange]}
-                tickCount={6}
               />
               <Tooltip />
               <Legend />
