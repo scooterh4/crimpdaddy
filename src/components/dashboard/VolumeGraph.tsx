@@ -46,11 +46,19 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
-  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
-  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+  const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
+  const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
-  const graphWidth = mdScreenAndUp ? 1000 : xsScreen ? 300 : 500
-  const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
+  const graphWidth = lgScreenAndUp
+    ? 1000
+    : mdScreenOnly
+    ? 800
+    : smScreenOnly
+    ? 500
+    : 300
+  const graphAspectRatio =
+    lgScreenAndUp || mdScreenOnly ? 1.9 : smScreenOnly ? 1.6 : 1.1
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
