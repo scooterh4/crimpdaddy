@@ -40,7 +40,7 @@ const Home = () => {
   const [climbType, setClimbType] = useState(0)
   const handleDetailsOpen = () => setDetailsOpen(true)
   const handleDetailsClose = () => setDetailsOpen(false)
-  const isLoading = !user
+  const [isLoading, setIsLoading] = useState(true)
 
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
@@ -57,6 +57,7 @@ const Home = () => {
       GetAllUserClimbs(user.id).then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
+        setIsLoading(false)
       })
     }
   }, [user])
@@ -64,6 +65,18 @@ const Home = () => {
   function handleSubmitClimbType() {
     setClimbTypeSelector(false)
     handleDetailsOpen()
+  }
+
+  // Passed to the ClimbDetailsDialog to reload the data after a climb is logged
+  function climbLogged() {
+    if (user) {
+      setIsLoading(true)
+      GetAllUserClimbs(user.id).then((data) => {
+        setClimbingData(data.climbingData)
+        setGradePyramidData(data.gradePyramidData)
+        setIsLoading(false)
+      })
+    }
   }
 
   return isLoading ? (
@@ -92,6 +105,7 @@ const Home = () => {
         climbType={climbType}
         open={openDetails}
         handleClose={handleDetailsClose}
+        climbLogged={climbLogged}
       />
 
       <Container maxWidth="xl">

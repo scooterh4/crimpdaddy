@@ -26,9 +26,15 @@ export type LogModalProps = {
   open: boolean
   handleClose: () => void
   climbType: number
+  climbLogged: () => void
 }
 
-function LogModal({ open, handleClose, climbType }: LogModalProps) {
+function LogModal({
+  open,
+  handleClose,
+  climbType,
+  climbLogged,
+}: LogModalProps) {
   const { user } = useContext(UserContext)
   const [grade, setGrade] = useState("")
   const [tick, setTick] = useState("")
@@ -99,7 +105,9 @@ function LogModal({ open, handleClose, climbType }: LogModalProps) {
         Timestamp: Timestamp.now(),
       }
 
-      LogClimb(climbData)
+      LogClimb(climbData).then((res) => {
+        climbLogged()
+      })
     }
   }
 
