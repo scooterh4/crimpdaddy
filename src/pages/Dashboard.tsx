@@ -42,12 +42,15 @@ const Home = () => {
   const handleDetailsClose = () => setDetailsOpen(false)
   const isLoading = !user
 
-  const dashboardBackground = "#F2EEED"
-
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+  const smScreen = useMediaQuery(theme.breakpoints.only("sm"))
   const redpointCardPadding = xsScreen ? 1 : 2
   const redpointCardColor = "#FF7A6B"
+
+  const dashboardBackground = "#F2EEED"
+  const dashboardTitleJustify = xsScreen || smScreen ? "center" : "start"
+  const logClimbButtonJustify = xsScreen || smScreen ? "center" : "end"
 
   useEffect(() => {
     if (user) {
@@ -95,26 +98,30 @@ const Home = () => {
         <Grid
           container
           direction="row"
+          marginBottom={1}
           sx={{
             display: "flex-inline",
           }}
         >
-          <Grid container item direction={"column"} sm={4} xs={12}>
+          <Grid
+            item
+            container
+            md={6}
+            xs={12}
+            justifyContent={dashboardTitleJustify}
+            alignItems={"center"}
+          >
             <Typography variant="h3" marginTop={1} component="div" gutterBottom>
               Dashboard
             </Typography>
           </Grid>
 
-          <Grid item />
-
           <Grid
-            container
             item
-            direction={"column"}
-            sm={4}
+            container
+            md={6}
             xs={12}
-            marginBottom={1}
-            justifyContent={"center"}
+            justifyContent={logClimbButtonJustify}
             alignItems={"center"}
           >
             <Button
