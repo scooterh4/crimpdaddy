@@ -40,12 +40,22 @@ function MonthlyClimbsGraph({
   const climbingType = climbType === CLIMB_TYPES.Boulder ? "Boulder" : "Lead"
 
   const theme = useTheme()
-  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
-  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+  const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
+  const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
-  const graphWidth = mdScreenAndUp ? 600 : xsScreen ? 300 : 450
-  const graphAspectRatio = mdScreenAndUp ? 2.1 : xsScreen ? 1.3 : 2
+  const graphWidth = lgScreenAndUp
+    ? 800
+    : mdScreenOnly
+    ? 600
+    : smScreenOnly
+    ? 500
+    : 300
+  const graphAspectRatio =
+    lgScreenAndUp || mdScreenOnly ? 1.9 : smScreenOnly ? 1.6 : 1.1
+  const graphLeftMargin = climbType === CLIMB_TYPES.Boulder ? 5 : -10
 
+  const graphFontSize = lgScreenAndUp || mdScreenOnly || smScreenOnly ? 14 : 11
   useEffect(() => {
     if (climbingData.length > 0) {
       const monthOrder: { [month: string]: number } = {
@@ -157,15 +167,20 @@ function MonthlyClimbsGraph({
           height={300}
           data={graphData}
           margin={{
-            top: 5,
-            right: 30,
-            left: 20,
+            top: 20,
+            right: 0,
+            left: graphLeftMargin,
             bottom: 5,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="category" dataKey="Month" />
-          <YAxis type="category" dataKey="Grade" domain={gradeRange} />
+          <XAxis type="category" dataKey="Month" fontSize={graphFontSize} />
+          <YAxis
+            type="category"
+            dataKey="Grade"
+            domain={gradeRange}
+            fontSize={graphFontSize}
+          />
           <Tooltip />
           <Legend />
           <Line
