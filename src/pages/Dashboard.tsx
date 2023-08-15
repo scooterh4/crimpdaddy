@@ -23,6 +23,7 @@ import Footer from "../components/common/Footer"
 import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import VolumeGraph from "../components/dashboard/VolumeGraph"
 import ReactLoading from "react-loading"
+import SelectFilter from "../components/dashboard/SelectFilter"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -41,6 +42,8 @@ const Home = () => {
   const handleDetailsOpen = () => setDetailsOpen(true)
   const handleDetailsClose = () => setDetailsOpen(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
 
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
@@ -221,8 +224,7 @@ const Home = () => {
 
           <Grid
             container
-            direction={"row"}
-            justifyContent={"center"}
+            direction={"column"}
             marginTop={5}
             marginBottom={1}
             style={{
@@ -231,27 +233,51 @@ const Home = () => {
           >
             <Grid
               container
-              direction={"column"}
+              item
+              direction={"row"}
               alignItems={"center"}
-              style={{
-                background: dashboardBackground,
-              }}
+              justifyContent={"center"}
             >
               <Typography variant="h4" component="div" gutterBottom>
                 Activity
               </Typography>
             </Grid>
-          </Grid>
 
-          <Grid
-            container
-            direction="row"
-            spacing={2}
-            justifyContent={"center"}
-            style={{ display: "flex", background: dashboardBackground }}
-          >
-            <Grid item>
-              <VolumeGraph propClimbingData={climbingData} />
+            <Grid
+              container
+              item
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <SelectFilter
+                dashboardSection="activity"
+                selectedFilter={activityFilter}
+                setFilter={setActivityFilter}
+              />
+            </Grid>
+
+            <Grid
+              container
+              item
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Card
+                sx={{
+                  paddingTop: 2,
+                  // marginRight: 10,
+                  // marginLeft: 10,
+                  borderRadius: 5,
+                  width: "100%",
+                }}
+              >
+                <VolumeGraph
+                  propClimbingData={climbingData}
+                  filter={activityFilter}
+                />
+              </Card>
             </Grid>
           </Grid>
 

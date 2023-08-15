@@ -10,16 +10,7 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../static/types"
-import {
-  Card,
-  FormControl,
-  Grid,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { Grid, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../../static/styles"
@@ -29,6 +20,7 @@ import { UserContext } from "../../db/Context"
 
 export type MonthlyClimbsGraphProps = {
   propClimbingData: ClimbLog[]
+  filter: string
 }
 
 export type ClimbsByDate = {
@@ -38,10 +30,12 @@ export type ClimbsByDate = {
   Timestamp: number
 }
 
-function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
+function MonthlyClimbsGraph({
+  propClimbingData,
+  filter,
+}: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
-  const [range, setRange] = React.useState("thisWeek")
   const { user } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -50,15 +44,8 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
-  const graphWidth = lgScreenAndUp
-    ? 1000
-    : mdScreenOnly
-    ? 800
-    : smScreenOnly
-    ? 500
-    : 300
   const graphAspectRatio =
-    lgScreenAndUp || mdScreenOnly ? 1.9 : smScreenOnly ? 1.6 : 1.1
+    lgScreenAndUp || mdScreenOnly ? 2.3 : smScreenOnly ? 1.6 : 1.1
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
@@ -107,18 +94,17 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
   }
 
   // need to call the db to get the users data again and resort through it
-  const handleFilterChange = (event: SelectChangeEvent) => {
-    setRange(event.target.value)
+  useEffect(() => {
     setIsLoading(true)
     if (user) {
       GetAllUserClimbs(user.id).then((data) => {
-        filterRawClimbingData(data.climbingData, event.target.value)
+        filterRawClimbingData(data.climbingData, filter)
       })
     } else {
       console.log("VolumeGraph error: no user data")
       setIsLoading(false)
     }
-  }
+  }, [filter])
 
   type DateRange = {
     MinTimestamp: number
@@ -309,111 +295,43 @@ function MonthlyClimbsGraph({ propClimbingData }: MonthlyClimbsGraphProps) {
         justifyContent={"center"}
         alignItems={"center"}
         direction="column"
+        marginTop={10}
       >
-        <Grid item xs={12}>
-          <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
-            <Select value={range} displayEmpty>
-              <MenuItem value={"thisWeek"}>This week</MenuItem>
-              <MenuItem value={"thisMonth"}>This month</MenuItem>
-              <MenuItem value={"lastMonth"}>Last month</MenuItem>
-              {/* <MenuItem value={"thisYear"}>This year</MenuItem> */}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid container item xs={12}>
-          <Card
-            sx={{
-              paddingTop: 2,
-              borderRadius: 5,
-              width: graphWidth,
-              height: 300,
-            }}
-          >
-            <Grid
-              container
-              justifyContent={"center"}
-              alignItems={"center"}
-              direction="row"
-            >
-              <Grid item marginTop={10}>
-                <ReactLoading
-                  type="spin"
-                  color="#0000FF"
-                  height={200}
-                  width={100}
-                />
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
+        <ReactLoading type="spin" color="#0000FF" height={200} width={100} />
       </Grid>
     )
   }
 
   return (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      direction="column"
-    >
-      <Grid item xs={12}>
-        <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
-          <Select value={range} onChange={handleFilterChange} displayEmpty>
-            <MenuItem value={"thisWeek"}>This week</MenuItem>
-            <MenuItem value={"thisMonth"}>This month</MenuItem>
-            <MenuItem value={"lastMonth"}>Last month</MenuItem>
-            {/* <MenuItem value={"thisYear"}>This year</MenuItem> */}
-          </Select>
-        </FormControl>
-      </Grid>
-
-      <Grid container item xs={12}>
-        <Card
-          sx={{
-            paddingTop: 2,
-            paddingRight: 2,
-            borderRadius: 5,
-            width: "100%",
-          }}
-        >
-          <ResponsiveContainer width={graphWidth} aspect={graphAspectRatio}>
-            <BarChart
-              data={graphData}
-              margin={{
-                top: 20,
-                right: 0,
-                left: -20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="category" dataKey="Date" />
-              <YAxis
-                type="number"
-                dataKey="Attempts"
-                domain={[0, graphMaxRange]}
-              />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="Climbs"
-                stackId="a"
-                fill="#615847"
-                isAnimationActive={false}
-              />
-              <Bar
-                dataKey="Attempts"
-                stackId="a"
-                fill={GraphColors.Attempts}
-                isAnimationActive={false}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-      </Grid>
-    </Grid>
+    <ResponsiveContainer aspect={graphAspectRatio}>
+      <BarChart
+        data={graphData}
+        margin={{
+          top: 20,
+          right: 10,
+          left: -20,
+          bottom: 20,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis type="category" dataKey="Date" />
+        <YAxis type="number" dataKey="Attempts" domain={[0, graphMaxRange]} />
+        <Tooltip />
+        <Legend />
+        <Bar
+          dataKey="Climbs"
+          stackId="a"
+          fill="#615847"
+          isAnimationActive={false}
+        />
+        <Bar
+          dataKey="Attempts"
+          stackId="a"
+          fill={GraphColors.Attempts}
+          isAnimationActive={false}
+        />
+      </BarChart>
+    </ResponsiveContainer>
   )
 }
 
