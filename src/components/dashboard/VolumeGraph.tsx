@@ -30,6 +30,11 @@ export type ClimbsByDate = {
   Timestamp: number
 }
 
+export type VolumeGraphDateRange = {
+  minTimestamp: number
+  maxTimestamp: number
+}
+
 function MonthlyClimbsGraph({
   propClimbingData,
   filter,
@@ -62,8 +67,8 @@ function MonthlyClimbsGraph({
     data.forEach((climb) => {
       // check if the climb is within the date range first
       if (
-        climb.Timestamp.seconds < dateRange.MinTimestamp ||
-        climb.Timestamp.seconds > dateRange.MaxTimestamp
+        climb.Timestamp.seconds < dateRange.minTimestamp ||
+        climb.Timestamp.seconds > dateRange.maxTimestamp
       ) {
         return
       }
@@ -106,12 +111,7 @@ function MonthlyClimbsGraph({
     }
   }, [filter])
 
-  type DateRange = {
-    MinTimestamp: number
-    MaxTimestamp: number
-  }
-
-  function getDateRange(range: string): DateRange {
+  function getDateRange(range: string): VolumeGraphDateRange {
     const today = new Date()
     let minTimestamp = 0
     let maxTimestamp = moment().unix()
@@ -154,7 +154,7 @@ function MonthlyClimbsGraph({
         break
     }
 
-    return { MinTimestamp: minTimestamp, MaxTimestamp: maxTimestamp }
+    return { minTimestamp: minTimestamp, maxTimestamp: maxTimestamp }
   }
 
   function pushDateToResult(
