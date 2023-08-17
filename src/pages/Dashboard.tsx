@@ -44,6 +44,12 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
+  const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
+    string
+  >("last6Months")
+  const [leadProgressionFilter, setLeadProgressionFilter] = useState<string>(
+    "last6Months"
+  )
 
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
@@ -128,7 +134,13 @@ const Home = () => {
             justifyContent={dashboardTitleJustify}
             alignItems={"center"}
           >
-            <Typography variant="h3" marginTop={1} component="div" gutterBottom>
+            <Typography
+              variant="h3"
+              fontFamily={"poppins"}
+              marginTop={1}
+              component="div"
+              gutterBottom
+            >
               Dashboard
             </Typography>
           </Grid>
@@ -168,7 +180,12 @@ const Home = () => {
               background: dashboardBackground,
             }}
           >
-            <Typography variant="h4" component="div" gutterBottom>
+            <Typography
+              variant="h4"
+              fontFamily={"poppins"}
+              component="div"
+              gutterBottom
+            >
               Redpoint Grades
             </Typography>
           </Grid>
@@ -238,7 +255,12 @@ const Home = () => {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Typography variant="h4" component="div" gutterBottom>
+              <Typography
+                variant="h4"
+                fontFamily={"poppins"}
+                component="div"
+                gutterBottom
+              >
                 Activity
               </Typography>
             </Grid>
@@ -267,8 +289,6 @@ const Home = () => {
               <Card
                 sx={{
                   paddingTop: 2,
-                  // marginRight: 10,
-                  // marginLeft: 10,
                   borderRadius: 5,
                   width: "100%",
                 }}
@@ -298,7 +318,12 @@ const Home = () => {
                 background: dashboardBackground,
               }}
             >
-              <Typography variant="h4" component="div" gutterBottom>
+              <Typography
+                variant="h4"
+                fontFamily={"poppins"}
+                component="div"
+                gutterBottom
+              >
                 Grade Pyramids
               </Typography>
               <GradePyramidsLegend />
@@ -402,32 +427,50 @@ const Home = () => {
 
           <Grid
             container
-            direction={"row"}
-            justifyContent={"center"}
-            marginBottom={2}
+            direction={"column"}
+            marginTop={5}
+            marginBottom={1}
             style={{
               background: dashboardBackground,
             }}
           >
-            <Typography variant="h4" component="div" gutterBottom>
-              Progression
-            </Typography>
-          </Grid>
+            <Grid
+              container
+              item
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Typography
+                variant="h4"
+                fontFamily={"poppins"}
+                component="div"
+                gutterBottom
+              >
+                Progression
+              </Typography>
+            </Grid>
 
-          <Grid
-            container
-            marginBottom={2}
-            direction="row"
-            spacing={2}
-            justifyContent={"center"}
-            style={{ display: "flex", background: dashboardBackground }}
-          >
-            <Grid item>
+            <Grid
+              container
+              direction={"column"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              marginBottom={2}
+            >
+              <Grid item>
+                <SelectFilter
+                  dashboardSection="progression"
+                  selectedFilter={boulderProgressionFilter}
+                  setFilter={setBoulderProgressionFilter}
+                />
+              </Grid>
+
               <Card
                 sx={{
                   padding: 2,
                   borderRadius: 5,
-                  height: "100%",
+                  width: "100%",
                 }}
               >
                 <Grid
@@ -436,36 +479,57 @@ const Home = () => {
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Grid item>
-                    <Typography variant="h5" textAlign={"center"}>
-                      Hardest Boulders by Month
-                    </Typography>
-                  </Grid>
-                  <Grid item marginLeft={-5}>
-                    <ProgressionGraph
-                      climbType={CLIMB_TYPES.Boulder}
-                      climbingData={climbingData}
-                    />
-                  </Grid>
+                  <Typography variant="h5" textAlign={"center"}>
+                    Hardest Boulders by Month
+                  </Typography>
+
+                  <ProgressionGraph
+                    climbType={CLIMB_TYPES.Boulder}
+                    climbingData={climbingData}
+                    filter={boulderProgressionFilter}
+                  />
                 </Grid>
               </Card>
             </Grid>
 
-            <Grid item>
+            <Grid
+              container
+              direction={"column"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              marginBottom={2}
+            >
+              <Grid item>
+                <SelectFilter
+                  dashboardSection="progression"
+                  selectedFilter={leadProgressionFilter}
+                  setFilter={setLeadProgressionFilter}
+                />
+              </Grid>
+
               <Card
                 sx={{
                   padding: 2,
                   borderRadius: 5,
-                  height: "100%",
+                  width: "100%",
                 }}
               >
-                <Typography variant="h5" textAlign="center">
-                  Hardest Leads by Month
-                </Typography>
-                <ProgressionGraph
-                  climbType={CLIMB_TYPES.Sport}
-                  climbingData={climbingData}
-                />
+                <Grid
+                  container
+                  direction={"column"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Typography variant="h5" textAlign={"center"}>
+                    Hardest Leads by Month
+                  </Typography>
+
+                  <ProgressionGraph
+                    climbType={CLIMB_TYPES.Sport}
+                    climbingData={climbingData}
+                    filter={leadProgressionFilter}
+                  />
+                </Grid>
               </Card>
             </Grid>
           </Grid>

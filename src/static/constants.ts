@@ -1,3 +1,5 @@
+import moment from "moment"
+
 export enum CLIMB_TYPES {
   Boulder,
   Sport,
@@ -49,3 +51,8 @@ export const INDOOR_SPORT_GRADES = [
   "5.15-",
   "5.15",
 ]
+
+export const MINIMUM_DATE_FOR_DATA = {
+  dateString: "2023-06-01",
+  formatString: "YYYY-MM-DD",
+}
