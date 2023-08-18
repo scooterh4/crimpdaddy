@@ -63,7 +63,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      GetAllUserClimbs(user.id, new Date().getFullYear()).then((data) => {
+      GetAllUserClimbs(user.id).then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
         setIsLoading(false)
@@ -80,7 +80,7 @@ const Home = () => {
   function climbLogged() {
     if (user) {
       setIsLoading(true)
-      GetAllUserClimbs(user.id, new Date().getFullYear()).then((data) => {
+      GetAllUserClimbs(user.id).then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
         setIsLoading(false)

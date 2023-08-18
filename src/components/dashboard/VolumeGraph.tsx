@@ -102,7 +102,7 @@ function MonthlyClimbsGraph({
   useEffect(() => {
     setIsLoading(true)
     if (user) {
-      GetAllUserClimbs(user.id, new Date().getFullYear()).then((data) => {
+      GetAllUserClimbs(user.id).then((data) => {
         filterRawClimbingData(data.climbingData, filter)
       })
     } else {

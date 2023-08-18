@@ -75,11 +75,9 @@ function MonthlyClimbsGraph({
   useEffect(() => {
     setIsLoading(true)
     if (user) {
-      GetAllUserClimbsByType(user.id, climbType, new Date().getFullYear()).then(
-        (data) => {
-          filterRawClimbingData(data, filter)
-        }
-      )
+      GetAllUserClimbsByType(user.id, climbType).then((data) => {
+        filterRawClimbingData(data, filter)
+      })
     } else {
       console.log("ProgressionGraph error: no user data")
       setIsLoading(false)
