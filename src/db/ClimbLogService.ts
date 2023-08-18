@@ -73,10 +73,10 @@ export type ClimbingData = {
 // get all climbs for a user by type
 export const GetAllUserClimbsByType = async (
   userId: string,
-  climbType: number
+  climbType: number,
+  year: number
 ): Promise<ClimbLogDocument[]> => {
   const rawClimbingData: ClimbLogDocument[] = []
-  const year = new Date().getFullYear()
   const type = GYM_CLIMB_TYPES[climbType]
   const collectionPath = `/${collectionName}/${userId}/${year}/indoor/${type[0].toLowerCase() +
     type.slice(1)}`
@@ -96,7 +96,8 @@ export const GetAllUserClimbsByType = async (
 
 // get all climbs for a user
 export const GetAllUserClimbs = async (
-  userId: string
+  userId: string,
+  year: number
 ): Promise<ClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []
@@ -105,10 +106,19 @@ export const GetAllUserClimbs = async (
 
   const boulderData = await GetAllUserClimbsByType(
     userId,
-    GYM_CLIMB_TYPES.Boulder
+    GYM_CLIMB_TYPES.Boulder,
+    year
   )
-  const leadData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead)
-  const trData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope)
+  const leadData = await GetAllUserClimbsByType(
+    userId,
+    GYM_CLIMB_TYPES.Lead,
+    year
+  )
+  const trData = await GetAllUserClimbsByType(
+    userId,
+    GYM_CLIMB_TYPES.TopRope,
+    year
+  )
 
   let boulderPyramidData: ClimbGraphData[] = []
   let leadPyramidData: ClimbGraphData[] = []
