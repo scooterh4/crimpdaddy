@@ -188,7 +188,6 @@ function MonthlyClimbsGraph({
             fontSize={graphFontSize}
           />
           <Tooltip />
-          <Legend />
           <Line
             type="monotone"
             dataKey="Onsight"

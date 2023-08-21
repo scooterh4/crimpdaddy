@@ -3,4 +3,5 @@ export const GraphColors = {
   Flash: "#FFC733",
   Redpoint: "#FF4633",
   Attempts: "#C4C4C4",
+  Climbs: "#615847",
 }

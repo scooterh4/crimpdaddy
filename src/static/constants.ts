@@ -1,5 +1,3 @@
-import moment from "moment"
-
 export enum CLIMB_TYPES {
   Boulder,
   Sport,

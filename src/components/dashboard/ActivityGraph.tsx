@@ -35,10 +35,7 @@ export type VolumeGraphDateRange = {
   maxTimestamp: number
 }
 
-function MonthlyClimbsGraph({
-  propClimbingData,
-  filter,
-}: MonthlyClimbsGraphProps) {
+function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const { user } = useContext(UserContext)
@@ -317,22 +314,11 @@ function MonthlyClimbsGraph({
         <XAxis type="category" dataKey="Date" />
         <YAxis type="number" dataKey="Attempts" domain={[0, graphMaxRange]} />
         <Tooltip />
-        <Legend />
-        <Bar
-          dataKey="Climbs"
-          stackId="a"
-          fill="#615847"
-          isAnimationActive={false}
-        />
-        <Bar
-          dataKey="Attempts"
-          stackId="a"
-          fill={GraphColors.Attempts}
-          isAnimationActive={false}
-        />
+        <Bar dataKey="Climbs" stackId="a" fill={GraphColors.Climbs} />
+        <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
       </BarChart>
     </ResponsiveContainer>
   )
 }
 
-export default MonthlyClimbsGraph
+export default ActivityGraph

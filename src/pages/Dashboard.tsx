@@ -18,10 +18,10 @@ import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
 import { CLIMB_TYPES } from "../static/constants"
 import GradePyramid from "../components/dashboard/GradePyramid"
-import GradePyramidsLegend from "../components/dashboard/GradePyramidsLegend"
+import SectionLegend from "../components/dashboard/SectionLegend"
 import Footer from "../components/common/Footer"
 import ProgressionGraph from "../components/dashboard/ProgressionGraph"
-import VolumeGraph from "../components/dashboard/VolumeGraph"
+import ActivityGraph from "../components/dashboard/ActivityGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
 
@@ -219,7 +219,7 @@ const Home = () => {
           <Grid
             container
             direction={"column"}
-            marginTop={5}
+            marginTop={7}
             marginBottom={1}
             style={{
               background: dashboardBackground,
@@ -231,6 +231,7 @@ const Home = () => {
               direction={"row"}
               alignItems={"center"}
               justifyContent={"center"}
+              marginBottom={2}
             >
               <Typography
                 variant="h4"
@@ -240,6 +241,8 @@ const Home = () => {
               >
                 Activity
               </Typography>
+
+              <SectionLegend section="activity" />
             </Grid>
 
             <Grid
@@ -272,7 +275,7 @@ const Home = () => {
                   marginRight: cardMargin,
                 }}
               >
-                <VolumeGraph
+                <ActivityGraph
                   propClimbingData={climbingData}
                   filter={activityFilter}
                 />
@@ -284,7 +287,8 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            marginTop={5}
+            marginTop={7}
+            marginBottom={2}
             style={{
               background: dashboardBackground,
             }}
@@ -305,7 +309,8 @@ const Home = () => {
               >
                 Grade Pyramids
               </Typography>
-              <GradePyramidsLegend />
+
+              <SectionLegend section="gradePyramids" />
             </Grid>
           </Grid>
 
@@ -313,8 +318,6 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            marginTop={3}
-            marginBottom={5}
             style={{
               background: dashboardBackground,
             }}
@@ -407,7 +410,7 @@ const Home = () => {
           <Grid
             container
             direction={"column"}
-            marginTop={5}
+            marginTop={7}
             marginBottom={1}
             style={{
               background: dashboardBackground,
@@ -419,6 +422,7 @@ const Home = () => {
               direction={"row"}
               alignItems={"center"}
               justifyContent={"center"}
+              marginBottom={2}
             >
               <Typography
                 variant="h4"
@@ -428,6 +432,8 @@ const Home = () => {
               >
                 Progression
               </Typography>
+
+              <SectionLegend section="progression" />
             </Grid>
 
             <Grid
