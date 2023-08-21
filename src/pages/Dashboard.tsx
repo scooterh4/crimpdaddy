@@ -24,6 +24,7 @@ import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import ActivityGraph from "../components/dashboard/ActivityGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
+import { GraphColors } from "../static/styles"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -142,21 +143,17 @@ const Home = () => {
 
         <Grid
           container
+          direction={"column"}
           padding={2}
+          border={1}
+          borderColor={GraphColors.Attempts}
           style={{
             display: "flex",
             background: dashboardBackground,
+            borderRadius: 10,
           }}
         >
-          <Grid
-            container
-            item
-            direction={"row"}
-            justifyContent={"center"}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
+          <Grid container item direction={"row"} justifyContent={"center"}>
             <Typography
               variant="h4"
               fontFamily={"poppins"}
@@ -216,15 +213,7 @@ const Home = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction={"column"}
-            marginTop={6}
-            marginBottom={1}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
+          <Grid container direction={"column"} marginTop={6} marginBottom={1}>
             <Grid
               container
               item
@@ -289,18 +278,8 @@ const Home = () => {
             justifyContent={"center"}
             marginTop={6}
             marginBottom={2}
-            style={{
-              background: dashboardBackground,
-            }}
           >
-            <Grid
-              container
-              direction={"column"}
-              alignItems={"center"}
-              style={{
-                background: dashboardBackground,
-              }}
-            >
+            <Grid container direction={"column"} alignItems={"center"}>
               <Typography
                 variant="h4"
                 fontFamily={"poppins"}
@@ -314,14 +293,7 @@ const Home = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction={"row"}
-            justifyContent={"center"}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
+          <Grid container direction={"row"} justifyContent={"center"}>
             <Grid
               container
               item
@@ -357,9 +329,6 @@ const Home = () => {
               xs={12}
               direction={"column"}
               alignItems={"center"}
-              style={{
-                background: dashboardBackground,
-              }}
             >
               <Card
                 sx={{
@@ -407,15 +376,7 @@ const Home = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction={"column"}
-            marginTop={6}
-            marginBottom={1}
-            style={{
-              background: dashboardBackground,
-            }}
-          >
+          <Grid container direction={"column"} marginTop={6} marginBottom={1}>
             <Grid
               container
               item
