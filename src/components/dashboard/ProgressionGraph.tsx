@@ -30,10 +30,10 @@ export type MonthlyClimbsGraphProps = {
 }
 
 export type HardestClimbGraphData = {
-  month: string
-  onsight: string
-  flash: string
-  redpoint: string
+  Month: string
+  Onsight: string
+  Flash: string
+  Redpoint: string
   [key: string]: string
 }
 
@@ -67,7 +67,7 @@ function MonthlyClimbsGraph({
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
     if (climbingData.length > 0) {
-      filterRawClimbingData(climbingData, "last6Months")
+      filterRawClimbingData(climbingData)
     }
   }, [climbingData])
 
@@ -75,8 +75,8 @@ function MonthlyClimbsGraph({
   useEffect(() => {
     setIsLoading(true)
     if (user) {
-      GetAllUserClimbsByType(user.id, climbType).then((data) => {
-        filterRawClimbingData(data, filter)
+      GetAllUserClimbsByType(user.id, climbType, filter).then((data) => {
+        filterRawClimbingData(data)
       })
     } else {
       console.log("ProgressionGraph error: no user data")
@@ -84,75 +84,47 @@ function MonthlyClimbsGraph({
     }
   }, [filter])
 
-  function setResultDates(filterRange: string) {
+  function setResultDates(startMoment: Moment) {
     let result: HardestClimbGraphData[] = []
-    const today = moment()
-    let date =
-      filterRange === "last6Months"
-        ? moment().subtract(6, "months")
-        : filterRange === "last12Months"
-        ? moment().subtract(12, "months")
-        : moment().subtract(6, "months")
 
-    // need to redeclare this bc React updates constants for some reason???
-    const minDataDate = moment(
-      MINIMUM_DATE_FOR_DATA.dateString,
-      MINIMUM_DATE_FOR_DATA.formatString
-    )
-    date = date < minDataDate ? minDataDate : date
-
-    while (date.month() <= today.month()) {
-      const monthToAdd = moment(date)
-        .format("MMM YYYY")
-        .toString()
+    while (startMoment.month() <= moment().month()) {
+      const monthToAdd = startMoment.format("MMM YYYY").toString()
 
       result.push({
-        month: monthToAdd,
-        onsight: "",
-        flash: "",
-        redpoint: "",
+        Month: monthToAdd,
+        Onsight: "",
+        Flash: "",
+        Redpoint: "",
       })
 
-      date = date.add(1, "month")
+      startMoment = startMoment.add(1, "month")
     }
 
     return result
   }
 
-  function filterRawClimbingData(
-    climbingData: ClimbLogDocument[],
-    filterRange: string
-  ) {
-    let minDate =
-      filterRange === "last6Months"
-        ? moment().subtract(6, "months")
-        : filterRange === "last12Months"
-        ? moment().subtract(12, "months")
-        : moment().subtract(6, "months")
+  function filterRawClimbingData(climbingData: ClimbLogDocument[]) {
+    // Get the first date that data is available
+    const times = [
+      ...climbingData.map((climb) => {
+        return climb.Timestamp.seconds
+      }),
+    ]
+    const startTime = Math.min.apply(null, times)
 
-    const minDataDate = moment(
-      MINIMUM_DATE_FOR_DATA.dateString,
-      MINIMUM_DATE_FOR_DATA.formatString
-    )
-    minDate = minDate < minDataDate ? minDataDate : minDate
-
-    let result = setResultDates(filterRange)
+    let result = setResultDates(moment.unix(startTime))
 
     // for the y-axis range
     let gradeMaxIndex = 0
     let gradeMinIndex = gradeSystem.length
 
     climbingData.forEach((climb) => {
-      // check if the climb is within the desired date range
-      if (climb.Timestamp.toDate().getMonth() < minDate.month()) {
-        return
-      }
-
+      // All climbs should be in the correct date range
       const month = moment(climb.Timestamp.toDate())
         .format("MMM YYYY")
         .toString()
 
-      const climbMonthAdded = result.find((r) => r.month === month)
+      const climbMonthAdded = result.find((r) => r.Month === month)
 
       if (climbMonthAdded) {
         // update the grade index for the y-axis range

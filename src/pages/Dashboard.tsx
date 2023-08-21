@@ -16,7 +16,7 @@ import Toolbar from "../components/common/ToolBar"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
-import { CLIMB_TYPES } from "../static/constants"
+import { CLIMB_TYPES, MINIMUM_DATE_FOR_DATA } from "../static/constants"
 import GradeHistogram from "../components/dashboard/GradeHistogram"
 import GradePyramidsLegend from "../components/dashboard/GradePyramidsLegend"
 import Footer from "../components/common/Footer"
@@ -24,6 +24,7 @@ import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import VolumeGraph from "../components/dashboard/VolumeGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
+import moment, { Moment } from "moment"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -42,6 +43,9 @@ const Home = () => {
   const handleDetailsOpen = () => setDetailsOpen(true)
   const handleDetailsClose = () => setDetailsOpen(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [minDataMoment, setMinDataMoment] = useState<Moment>(
+    moment(MINIMUM_DATE_FOR_DATA.dateString, MINIMUM_DATE_FOR_DATA.formatString)
+  )
 
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
@@ -63,7 +67,8 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      GetAllUserClimbs(user.id).then((data) => {
+      // on the initial dashboard load, the progression graph needs the last 6 months
+      GetAllUserClimbs(user.id, "last6Months").then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
         setIsLoading(false)
@@ -80,7 +85,8 @@ const Home = () => {
   function climbLogged() {
     if (user) {
       setIsLoading(true)
-      GetAllUserClimbs(user.id).then((data) => {
+
+      GetAllUserClimbs(user.id, "last6Months").then((data) => {
         setClimbingData(data.climbingData)
         setGradePyramidData(data.gradePyramidData)
         setIsLoading(false)

@@ -7,9 +7,16 @@ import {
   setDoc,
   getDocs,
   Timestamp,
+  query,
+  where,
 } from "firebase/firestore"
 import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
-import { INDOOR_SPORT_GRADES, GYM_CLIMB_TYPES } from "../static/constants"
+import {
+  INDOOR_SPORT_GRADES,
+  GYM_CLIMB_TYPES,
+  MINIMUM_DATE_FOR_DATA,
+} from "../static/constants"
+import moment from "moment"
 
 const collectionName = "climbingLogs"
 
@@ -73,15 +80,54 @@ export type ClimbingData = {
 // get all climbs for a user by type
 export const GetAllUserClimbsByType = async (
   userId: string,
-  climbType: number
+  climbType: number,
+  filterRange: string
 ): Promise<ClimbLogDocument[]> => {
   const rawClimbingData: ClimbLogDocument[] = []
   const type = GYM_CLIMB_TYPES[climbType]
   const collectionPath = `/${collectionName}/${userId}/indoor_${type[0].toLowerCase() +
     type.slice(1)}`
+  const minDataMoment = moment(
+    MINIMUM_DATE_FOR_DATA.dateString,
+    MINIMUM_DATE_FOR_DATA.formatString
+  )
+
+  let minMoment = moment()
+
+  switch (filterRange) {
+    case "thisWeek":
+      minMoment = minMoment.subtract(7, "days")
+      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
+      break
+
+    case "thisMonth":
+      minMoment = minMoment.subtract(1, "month")
+      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
+      break
+
+    case "lastMonth":
+      minMoment = minMoment.subtract(2, "months")
+      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
+      break
+
+    case "last6Months":
+      minMoment = minMoment.subtract(6, "months")
+      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
+      break
+
+    case "last12Months":
+      minMoment = minMoment.subtract(12, "months")
+      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
+      break
+  }
 
   try {
-    const querySnapshot = await getDocs(collection(db, collectionPath))
+    const q = query(
+      collection(db, collectionPath),
+      where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
+      where("Timestamp", "<=", Timestamp.fromDate(moment().toDate()))
+    )
+    const querySnapshot = await getDocs(q)
 
     querySnapshot.forEach((doc) => {
       rawClimbingData.push(doc.data() as ClimbLogDocument)
@@ -95,7 +141,8 @@ export const GetAllUserClimbsByType = async (
 
 // get all climbs for a user
 export const GetAllUserClimbs = async (
-  userId: string
+  userId: string,
+  filterRange: string
 ): Promise<ClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []
@@ -104,10 +151,19 @@ export const GetAllUserClimbs = async (
 
   const boulderData = await GetAllUserClimbsByType(
     userId,
-    GYM_CLIMB_TYPES.Boulder
+    GYM_CLIMB_TYPES.Boulder,
+    filterRange
   )
-  const leadData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead)
-  const trData = await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope)
+  const leadData = await GetAllUserClimbsByType(
+    userId,
+    GYM_CLIMB_TYPES.Lead,
+    filterRange
+  )
+  const trData = await GetAllUserClimbsByType(
+    userId,
+    GYM_CLIMB_TYPES.TopRope,
+    filterRange
+  )
 
   let boulderPyramidData: ClimbGraphData[] = []
   let leadPyramidData: ClimbGraphData[] = []
@@ -251,6 +307,9 @@ function assembleGraphData(
   return graphData
 }
 
+// ------------------------
+// Data migration functions
+// ------------------------
 // export const LogNewClimbStructure = async (
 //   climbData: ClimbLog
 // ): Promise<void> => {
@@ -269,43 +328,30 @@ function assembleGraphData(
 //   try {
 //     const userDoc = doc(db, `/${collectionName}/${climbData.UserId}`)
 
-//     // Check whether the user doc exists, if not, create it
-//     await getDoc(userDoc).then((document) => {
-//       if (!document.exists()) {
-//         const addUser = doc(db, `${collectionName}`, climbData.UserId)
-
-//         setDoc(addUser, { userId: climbData.UserId }).then(() => {
-//           console.log("User doc created for user: ", climbData.UserId)
-
-//           addDoc(collection(db, collectionPath), newDocument).then((res) => {
-//             console.log("Document written")
+//     await getDoc(userDoc)
+//       .then((document) => {
+//         // Check whether the user doc exists, if not, create it
+//         if (!document.exists()) {
+//           setDoc(doc(db, `${collectionName}`, climbData.UserId), {
+//             userId: climbData.UserId,
 //           })
-//         })
-//       } else {
-//         // user doc exists, so just add the climb
-//         addDoc(collection(db, collectionPath), newDocument).then((res) => {
-//           console.log("Document written")
-//         })
-//       }
-//     })
+//         }
+//       })
+//       .then(() => {
+//         // Add the new data
+//         setDoc(
+//           doc(db, collectionPath, newDocument.Timestamp.seconds.toString()),
+//           newDocument
+//         )
+//       })
 //   } catch (error) {
 //     console.log("Error logging climbing data: ", error)
 //   }
 // }
 
 // export const MigrateUser = async (userId: string): Promise<void> => {
-//   // const newBoulderPath = `/${collectionName}/${
-//   //   userId
-//   // }/indoor_boulder`
-//   // const newLeadPath = `/${collectionName}/${
-//   //   userId
-//   // }/indoor_lead`
-//   // const newTrPath = `/${collectionName}/${
-//   //   userId
-//   // }/indoor_topRope`
-
 //   try {
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Boulder, 2023).then(
+//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Boulder).then(
 //       (boulderData) => {
 //         let boulders = 0
 //         boulderData.forEach((boulder) => {
@@ -322,7 +368,7 @@ function assembleGraphData(
 //       }
 //     )
 
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead, 2023).then(
+//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead).then(
 //       (leadData) => {
 //         let leads = 0
 //         leadData.forEach((boulder) => {
@@ -339,7 +385,7 @@ function assembleGraphData(
 //       }
 //     )
 
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope, 2023).then(
+//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope).then(
 //       (trData) => {
 //         let trs = 0
 //         trData.forEach((boulder) => {
