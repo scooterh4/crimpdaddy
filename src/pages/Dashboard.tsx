@@ -53,13 +53,10 @@ const Home = () => {
 
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
-  const smScreen = useMediaQuery(theme.breakpoints.only("sm"))
   const redpointCardPadding = xsScreen ? 1 : 2
   const redpointCardColor = "#FF7A6B"
-
   const dashboardBackground = "#F2EEED"
-  const dashboardTitleJustify = xsScreen || smScreen ? "center" : "start"
-  const logClimbButtonJustify = xsScreen || smScreen ? "center" : "end"
+  const cardMargin = xsScreen ? 0 : 2
 
   useEffect(() => {
     if (user) {
@@ -271,6 +268,8 @@ const Home = () => {
                   paddingTop: 2,
                   borderRadius: 5,
                   width: "100%",
+                  marginLeft: cardMargin,
+                  marginRight: cardMargin,
                 }}
               >
                 <VolumeGraph
@@ -446,30 +445,40 @@ const Home = () => {
                 />
               </Grid>
 
-              <Card
-                sx={{
-                  padding: 2,
-                  borderRadius: 5,
-                  width: "100%",
-                }}
+              <Grid
+                container
+                item
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"center"}
               >
-                <Grid
-                  container
-                  direction={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
+                <Card
+                  sx={{
+                    padding: 2,
+                    borderRadius: 5,
+                    width: "100%",
+                    marginLeft: cardMargin,
+                    marginRight: cardMargin,
+                  }}
                 >
-                  <Typography variant="h5" textAlign={"center"}>
-                    Hardest Boulders by Month
-                  </Typography>
+                  <Grid
+                    container
+                    direction={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Typography variant="h5" textAlign={"center"}>
+                      Hardest Boulders by Month
+                    </Typography>
 
-                  <ProgressionGraph
-                    climbType={CLIMB_TYPES.Boulder}
-                    climbingData={climbingData}
-                    filter={boulderProgressionFilter}
-                  />
-                </Grid>
-              </Card>
+                    <ProgressionGraph
+                      climbType={CLIMB_TYPES.Boulder}
+                      climbingData={climbingData}
+                      filter={boulderProgressionFilter}
+                    />
+                  </Grid>
+                </Card>
+              </Grid>
             </Grid>
 
             <Grid
@@ -487,30 +496,40 @@ const Home = () => {
                 />
               </Grid>
 
-              <Card
-                sx={{
-                  padding: 2,
-                  borderRadius: 5,
-                  width: "100%",
-                }}
+              <Grid
+                container
+                item
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"center"}
               >
-                <Grid
-                  container
-                  direction={"column"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
+                <Card
+                  sx={{
+                    padding: 2,
+                    borderRadius: 5,
+                    width: "100%",
+                    marginLeft: cardMargin,
+                    marginRight: cardMargin,
+                  }}
                 >
-                  <Typography variant="h5" textAlign={"center"}>
-                    Hardest Leads by Month
-                  </Typography>
+                  <Grid
+                    container
+                    direction={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Typography variant="h5" textAlign={"center"}>
+                      Hardest Leads by Month
+                    </Typography>
 
-                  <ProgressionGraph
-                    climbType={CLIMB_TYPES.Sport}
-                    climbingData={climbingData}
-                    filter={leadProgressionFilter}
-                  />
-                </Grid>
-              </Card>
+                    <ProgressionGraph
+                      climbType={CLIMB_TYPES.Sport}
+                      climbingData={climbingData}
+                      filter={leadProgressionFilter}
+                    />
+                  </Grid>
+                </Card>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
