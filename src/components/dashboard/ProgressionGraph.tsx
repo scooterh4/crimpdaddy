@@ -147,6 +147,9 @@ function MonthlyClimbsGraph({
       }
     })
 
+    gradeMaxIndex += 2
+    gradeMinIndex = gradeMinIndex > 0 ? gradeMinIndex - 1 : 0
+
     setGradeRange(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
     setGraphData(result)
     setIsLoading(false)
