@@ -17,7 +17,7 @@ import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
 import { CLIMB_TYPES } from "../static/constants"
-import GradeHistogram from "../components/dashboard/GradeHistogram"
+import GradePyramid from "../components/dashboard/GradePyramid"
 import GradePyramidsLegend from "../components/dashboard/GradePyramidsLegend"
 import Footer from "../components/common/Footer"
 import ProgressionGraph from "../components/dashboard/ProgressionGraph"
@@ -340,7 +340,7 @@ const Home = () => {
                   Bouldering
                 </Typography>
 
-                <GradeHistogram
+                <GradePyramid
                   climbType="Boulder"
                   graphData={gradePyramidData.boulderData}
                 />
@@ -370,7 +370,7 @@ const Home = () => {
                   Lead
                 </Typography>
 
-                <GradeHistogram
+                <GradePyramid
                   climbType="Lead"
                   graphData={gradePyramidData.leadData}
                 />
@@ -397,7 +397,7 @@ const Home = () => {
                   Top Rope
                 </Typography>
 
-                <GradeHistogram
+                <GradePyramid
                   climbType="TopRope"
                   graphData={gradePyramidData.trData}
                 />

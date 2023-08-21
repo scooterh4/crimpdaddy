@@ -18,7 +18,7 @@ export type GradeGraphProps = {
   graphData: ClimbGraphData[]
 }
 
-function GradeGraph({ climbType, graphData }: GradeGraphProps) {
+function GradePyramid({ climbType, graphData }: GradeGraphProps) {
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
@@ -65,4 +65,4 @@ function GradeGraph({ climbType, graphData }: GradeGraphProps) {
   }
 }
 
-export default GradeGraph
+export default GradePyramid
