@@ -219,7 +219,7 @@ const Home = () => {
           <Grid
             container
             direction={"column"}
-            marginTop={7}
+            marginTop={6}
             marginBottom={1}
             style={{
               background: dashboardBackground,
@@ -287,7 +287,7 @@ const Home = () => {
             container
             direction={"row"}
             justifyContent={"center"}
-            marginTop={7}
+            marginTop={6}
             marginBottom={2}
             style={{
               background: dashboardBackground,
@@ -410,7 +410,7 @@ const Home = () => {
           <Grid
             container
             direction={"column"}
-            marginTop={7}
+            marginTop={6}
             marginBottom={1}
             style={{
               background: dashboardBackground,

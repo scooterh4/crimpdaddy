@@ -47,7 +47,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
   const graphAspectRatio =
-    lgScreenAndUp || mdScreenOnly ? 2.3 : smScreenOnly ? 1.6 : 1.1
+    lgScreenAndUp || mdScreenOnly ? 2.6 : smScreenOnly ? 1.9 : 1.1
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
