@@ -132,7 +132,7 @@ function SignUp() {
 
   return (
     <>
-      <ToolBar user={undefined} />
+      <ToolBar title={""} user={undefined} />
 
       <Container component="main" maxWidth="xs">
         <Box

@@ -15,20 +15,23 @@ import { signOut } from "firebase/auth"
 import { auth } from "../../firebase"
 import { AppUser } from "../../static/types"
 import { toast } from "react-toastify"
-import { useNavigate } from "react-router-dom"
+//import { useNavigate } from "react-router-dom"
+
+type userObj =
+  | {
+      appUser: AppUser | null
+      updateUser: (newUser: AppUser | null) => void
+    }
+  | undefined
 
 type ToolBarProps = {
-  user:
-    | {
-        appUser: AppUser | null
-        updateUser: (newUser: AppUser | null) => void
-      }
-    | undefined
+  title: string
+  user: userObj
 }
 
-function ToolBar({ user }: ToolBarProps) {
+function ToolBar({ title, user }: ToolBarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -56,19 +59,32 @@ function ToolBar({ user }: ToolBarProps) {
     <AppBar position="static" sx={{ background: "#DDD1CF", color: "black" }}>
       <Container maxWidth="xl">
         <Toolbar>
-          {user && (
+          {/* {user && (
             <IconButton
               size="large"
               edge="start"
               color="inherit"
               aria-label="menu"
+              
             >
               <MenuIcon />
             </IconButton>
-          )}
+          )} */}
 
-          <Box sx={{ flexGrow: 1, textAlign: "center" }}>
-            {user && (
+          <Box
+            justifyContent={"center"}
+            sx={{ flexGrow: 1, textAlign: "center", marginLeft: 5 }}
+          >
+            <Typography
+              variant="h4"
+              fontFamily={"poppins"}
+              marginTop={1}
+              component="div"
+              gutterBottom
+            >
+              {title}
+            </Typography>
+            {/* {user && (
               <Typography variant="h6" component="div">
                 {user.appUser && user.appUser.email}
               </Typography>
@@ -82,7 +98,7 @@ function ToolBar({ user }: ToolBarProps) {
               >
                 CrimpDaddy
               </IconButton>
-            )}
+            )} */}
           </Box>
 
           {user && (

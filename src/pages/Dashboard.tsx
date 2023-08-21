@@ -16,7 +16,7 @@ import Toolbar from "../components/common/ToolBar"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
-import { CLIMB_TYPES, MINIMUM_DATE_FOR_DATA } from "../static/constants"
+import { CLIMB_TYPES } from "../static/constants"
 import GradeHistogram from "../components/dashboard/GradeHistogram"
 import GradePyramidsLegend from "../components/dashboard/GradePyramidsLegend"
 import Footer from "../components/common/Footer"
@@ -24,7 +24,6 @@ import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import VolumeGraph from "../components/dashboard/VolumeGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
-import moment, { Moment } from "moment"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -43,9 +42,6 @@ const Home = () => {
   const handleDetailsOpen = () => setDetailsOpen(true)
   const handleDetailsClose = () => setDetailsOpen(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [minDataMoment, setMinDataMoment] = useState<Moment>(
-    moment(MINIMUM_DATE_FOR_DATA.dateString, MINIMUM_DATE_FOR_DATA.formatString)
-  )
 
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
@@ -108,7 +104,10 @@ const Home = () => {
     </Grid>
   ) : (
     <>
-      <Toolbar user={{ appUser: user, updateUser: updateUser }} />
+      <Toolbar
+        title={"Dashboard"}
+        user={{ appUser: user, updateUser: updateUser }}
+      />
 
       <PickClimbType
         open={openClimbTypeSelector}
@@ -123,45 +122,20 @@ const Home = () => {
         climbLogged={climbLogged}
       />
 
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Grid
           container
           direction="row"
-          marginBottom={1}
+          marginBottom={2}
+          marginTop={2}
           sx={{
             display: "flex-inline",
           }}
         >
-          <Grid
-            item
-            container
-            md={6}
-            xs={12}
-            justifyContent={dashboardTitleJustify}
-            alignItems={"center"}
-          >
-            <Typography
-              variant="h3"
-              fontFamily={"poppins"}
-              marginTop={1}
-              component="div"
-              gutterBottom
-            >
-              Dashboard
-            </Typography>
-          </Grid>
-
-          <Grid
-            item
-            container
-            md={6}
-            xs={12}
-            justifyContent={logClimbButtonJustify}
-            alignItems={"center"}
-          >
+          <Grid item container justifyContent={"center"} alignItems={"center"}>
             <Button
               variant="contained"
-              size="medium"
+              size="large"
               onClick={handleClimbTypeSelectorOpen}
             >
               Log a climb
