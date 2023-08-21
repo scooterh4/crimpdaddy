@@ -24,7 +24,7 @@ import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import ActivityGraph from "../components/dashboard/ActivityGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
-import { GraphColors } from "../static/styles"
+import { AppColors, GraphColors } from "../static/styles"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -56,7 +56,7 @@ const Home = () => {
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
   const redpointCardPadding = xsScreen ? 1 : 2
   const redpointCardColor = "#FF7A6B"
-  const dashboardBackground = "#F2EEED"
+  const dashboardBackground = "#fefefc"
   const cardMargin = xsScreen ? 0 : 2
 
   useEffect(() => {
@@ -135,6 +135,7 @@ const Home = () => {
               variant="contained"
               size="large"
               onClick={handleClimbTypeSelectorOpen}
+              sx={{ background: AppColors.primary }}
             >
               Log a climb
             </Button>

@@ -6,12 +6,13 @@ import RestoreIcon from "@mui/icons-material/Restore"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import { Grid, Typography } from "@mui/material"
+import { AppColors } from "../../static/styles"
 
 export default function LabelBottomNavigation() {
   return (
     <BottomNavigation
       sx={{
-        background: "#DDD1CF",
+        background: AppColors.primary,
         marginTop: 5,
         alignContent: "center",
       }}

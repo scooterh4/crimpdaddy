@@ -15,6 +15,7 @@ import { signOut } from "firebase/auth"
 import { auth } from "../../firebase"
 import { AppUser } from "../../static/types"
 import { toast } from "react-toastify"
+import { AppColors } from "../../static/styles"
 //import { useNavigate } from "react-router-dom"
 
 type userObj =
@@ -56,7 +57,10 @@ function ToolBar({ title, user }: ToolBarProps) {
   }
 
   return (
-    <AppBar position="static" sx={{ background: "#DDD1CF", color: "black" }}>
+    <AppBar
+      position="static"
+      sx={{ background: AppColors.primary, color: "white" }}
+    >
       <Container maxWidth="xl">
         <Toolbar>
           {/* {user && (

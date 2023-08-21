@@ -20,7 +20,7 @@ function SectionLegend({ section }: SectionLegendProps) {
         >
           <Grid item sx={{ display: "inline-flex" }}>
             <Square sx={{ color: GraphColors.Climbs }} />
-            <Typography>Climbs</Typography>
+            <Typography>Sends</Typography>
           </Grid>
 
           <Grid item sx={{ display: "inline-flex" }}>
