@@ -20,11 +20,8 @@ export type GradeGraphProps = {
 
 function GradePyramid({ climbType, graphData }: GradeGraphProps) {
   const theme = useTheme()
-  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
-
-  const graphWidth = mdScreenAndUp ? 350 : xsScreen ? 250 : 300
-  //const graphAspectRatio = mdScreenAndUp ? 1 : xsScreen ? 1.3 : 2
+  const graphWidth = xsScreen ? 250 : 300
 
   if (graphData.length > 0) {
     return (
