@@ -12,12 +12,11 @@ import {
 import { ClimbLog } from "../../static/types"
 import { Grid, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import moment, { Moment } from "moment"
+import moment from "moment"
 import { GraphColors } from "../../static/styles"
 import ReactLoading from "react-loading"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
 import { UserContext } from "../../db/Context"
-import { MINIMUM_DATE_FOR_DATA } from "../../static/constants"
 
 export type MonthlyClimbsGraphProps = {
   propClimbingData: ClimbLog[]
@@ -44,9 +43,6 @@ function MonthlyClimbsGraph({
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const { user } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [minDataMoment, setMinDataMoment] = useState<Moment>(
-    moment(MINIMUM_DATE_FOR_DATA.dateString, MINIMUM_DATE_FOR_DATA.formatString)
-  )
 
   const theme = useTheme()
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
