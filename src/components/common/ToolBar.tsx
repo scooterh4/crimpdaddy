@@ -11,11 +11,12 @@ import {
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { AccountCircle } from "@mui/icons-material"
-import { signOut } from "firebase/auth"
+import { reload, signOut } from "firebase/auth"
 import { auth } from "../../firebase"
 import { AppUser } from "../../static/types"
 import { toast } from "react-toastify"
 import { AppColors } from "../../static/styles"
+import { useNavigate } from "react-router-dom"
 //import { useNavigate } from "react-router-dom"
 
 type userObj =
@@ -32,8 +33,9 @@ type ToolBarProps = {
 
 function ToolBar({ title, user }: ToolBarProps) {
   const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
+  const cursor = title === "Dashboard" ? "" : "pointer"
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -54,6 +56,12 @@ function ToolBar({ title, user }: ToolBarProps) {
         .catch((error) => {
           console.log(error.code, error.message)
         })
+    }
+  }
+
+  function headerClicked() {
+    if (header === "CrimpDaddy") {
+      navigate("/")
     }
   }
 
@@ -86,6 +94,8 @@ function ToolBar({ title, user }: ToolBarProps) {
               marginTop={1}
               component="div"
               gutterBottom
+              onClick={headerClicked}
+              sx={{ cursor: cursor }}
             >
               {header}
             </Typography>
