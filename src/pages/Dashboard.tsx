@@ -84,7 +84,12 @@ const Home = () => {
       sx={{ height: "100vh" }}
     >
       <Grid item>
-        <ReactLoading type="spin" color="#0000FF" height={200} width={100} />
+        <ReactLoading
+          type="spin"
+          color={ThemeColors.darkAccent}
+          height={200}
+          width={100}
+        />
       </Grid>
     </Grid>
   ) : (

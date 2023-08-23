@@ -13,7 +13,7 @@ import { ClimbLog } from "../../static/types"
 import { Grid, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
-import { GraphColors } from "../../static/styles"
+import { GraphColors, ThemeColors } from "../../static/styles"
 import ReactLoading from "react-loading"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
 import { UserContext } from "../../db/Context"
@@ -294,7 +294,12 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         direction="column"
         marginTop={10}
       >
-        <ReactLoading type="spin" color="#0000FF" height={200} width={100} />
+        <ReactLoading
+          type="spin"
+          color={ThemeColors.darkAccent}
+          height={200}
+          width={100}
+        />
       </Grid>
     )
   }

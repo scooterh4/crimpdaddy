@@ -14,7 +14,7 @@ import { Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES, MINIMUM_DATE_FOR_DATA } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
-import { GraphColors } from "../../static/styles"
+import { GraphColors, ThemeColors } from "../../static/styles"
 import ReactLoading from "react-loading"
 import { UserContext } from "../../db/Context"
 import {
@@ -164,7 +164,12 @@ function MonthlyClimbsGraph({
         direction="column"
         marginTop={10}
       >
-        <ReactLoading type="spin" color="#0000FF" height={200} width={100} />
+        <ReactLoading
+          type="spin"
+          color={ThemeColors.darkAccent}
+          height={200}
+          width={100}
+        />
       </Grid>
     )
   } else if (graphData.length > 0) {
