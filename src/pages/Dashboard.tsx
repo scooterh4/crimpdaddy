@@ -268,9 +268,8 @@ const Home = () => {
               direction={"column"}
               gridAutoRows="auto"
               item
-              lg={4}
-              md={6}
-              xs={12}
+              md
+              xs
             >
               <Typography
                 fontFamily={"poppins"}
@@ -281,7 +280,7 @@ const Home = () => {
                 Bouldering
               </Typography>
 
-              <Grid item gridRow={2}>
+              <Grid item gridRow={2} marginLeft={-5}>
                 <GradePyramid
                   climbType="Boulder"
                   graphData={gradePyramidData.boulderData}
@@ -295,8 +294,7 @@ const Home = () => {
               direction={"column"}
               gridAutoRows="auto"
               item
-              lg={4}
-              md={6}
+              md={4}
               xs={12}
             >
               <Typography
@@ -308,7 +306,7 @@ const Home = () => {
                 Lead
               </Typography>
 
-              <Grid item gridRow={2}>
+              <Grid item gridRow={2} marginLeft={-5}>
                 <GradePyramid
                   climbType="Lead"
                   graphData={gradePyramidData.leadData}
@@ -322,9 +320,8 @@ const Home = () => {
               direction={"column"}
               gridAutoRows="auto"
               item
-              lg={4}
-              md={6}
-              xs={12}
+              md
+              xs
             >
               <Typography
                 fontFamily={"poppins"}
@@ -335,7 +332,7 @@ const Home = () => {
                 Top Rope
               </Typography>
 
-              <Grid item gridRow={2}>
+              <Grid item gridRow={2} marginLeft={-5}>
                 <GradePyramid
                   climbType="TopRope"
                   graphData={gradePyramidData.trData}

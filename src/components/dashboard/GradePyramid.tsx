@@ -30,7 +30,7 @@ function GradePyramid({ climbType, graphData }: GradeGraphProps) {
           layout="vertical"
           data={graphData}
           barSize={30}
-          style={{ marginLeft: -20 }}
+          //style={{ marginLeft: -20 }}
         >
           <XAxis type="number" />
           <YAxis
