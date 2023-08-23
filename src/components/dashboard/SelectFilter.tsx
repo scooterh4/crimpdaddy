@@ -51,9 +51,17 @@ function SelectFilter({
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
-      <Select defaultValue={selectedFilter} onChange={handleFilterChange}>
+      <Select
+        defaultValue={selectedFilter}
+        onChange={handleFilterChange}
+        sx={{ fontFamily: "poppins" }}
+      >
         {selectList.map((select) => (
-          <MenuItem key={select.value} value={select.value}>
+          <MenuItem
+            key={select.value}
+            value={select.value}
+            sx={{ fontFamily: "poppins" }}
+          >
             {select.label}
           </MenuItem>
         ))}

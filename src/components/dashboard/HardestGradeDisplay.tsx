@@ -4,6 +4,7 @@ import { Card, Grid, Typography } from "@mui/material"
 import { GraphColors } from "../../static/styles"
 import { ClimbLog } from "../../static/types"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
+import BoulderIcon from "../../images/rock.png"
 
 export type HardestGradeProps = {
   climbType: string
@@ -44,11 +45,14 @@ function HardestGradeDisplay({
 
   return (
     <>
-      <Typography variant="h6" sx={{ textAlign: "center" }}>
-        {title}
-      </Typography>
-      <Typography variant="h6" sx={{ textAlign: "center", fontWeight: "bold" }}>
+      <Typography
+        variant="h5"
+        sx={{ fontFamily: "poppins", textAlign: "center", fontWeight: "bold" }}
+      >
         {hardestGrade}
+      </Typography>
+      <Typography sx={{ fontFamily: "poppins", textAlign: "center" }}>
+        {title}
       </Typography>
     </>
   )

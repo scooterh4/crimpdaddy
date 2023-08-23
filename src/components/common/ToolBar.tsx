@@ -86,7 +86,7 @@ function ToolBar({ title, user }: ToolBarProps) {
               component="div"
               gutterBottom
             >
-              {title}
+              Gym Climbs
             </Typography>
             {/* {user && (
               <Typography variant="h6" component="div">

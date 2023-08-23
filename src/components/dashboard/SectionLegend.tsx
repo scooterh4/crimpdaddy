@@ -20,12 +20,12 @@ function SectionLegend({ section }: SectionLegendProps) {
         >
           <Grid item sx={{ display: "inline-flex" }}>
             <Square sx={{ color: GraphColors.Climbs }} />
-            <Typography>Sends</Typography>
+            <Typography fontFamily={"poppins"}>Climbs</Typography>
           </Grid>
 
           <Grid item sx={{ display: "inline-flex" }}>
             <Square sx={{ color: GraphColors.Attempts }} />
-            <Typography>Attempts</Typography>
+            <Typography fontFamily={"poppins"}>Attempts</Typography>
           </Grid>
         </Grid>
       </>
@@ -43,23 +43,23 @@ function SectionLegend({ section }: SectionLegendProps) {
       >
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Onsight }} />
-          <Typography>Onsight</Typography>
+          <Typography fontFamily={"poppins"}>Onsight</Typography>
         </Grid>
 
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Flash }} />
-          <Typography>Flash</Typography>
+          <Typography fontFamily={"poppins"}>Flash</Typography>
         </Grid>
 
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Redpoint }} />
-          <Typography>Redpoint</Typography>
+          <Typography fontFamily={"poppins"}>Redpoint</Typography>
         </Grid>
 
         {section === "gradePyramids" && (
           <Grid item sx={{ display: "inline-flex" }}>
             <Square sx={{ color: GraphColors.Attempts }} />
-            <Typography>Attempts</Typography>
+            <Typography fontFamily={"poppins"}>Attempts</Typography>
           </Grid>
         )}
       </Grid>
