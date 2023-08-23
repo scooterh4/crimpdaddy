@@ -28,6 +28,11 @@ export default function LabelBottomNavigation() {
         {/* <a href="https://www.flaticon.com/free-icons/rock" title="rock icons">
           Rock icons created by Freepik - Flaticon
         </a> */}
+        {/* <a href="https://www.freepik.com/icon/belayer_10225991#fromView=keyword&term=Climbing&page=2&position=89">Icon by Vectors Tank</a> */}
+        {/* <a href="https://www.freepik.com/icon/climbing_10225968#fromView=keyword&term=Climbing&page=2&position=12">Icon by Vectors Tank</a> */}
+        {/* <a href="https://www.flaticon.com/free-icons/climbing" title="climbing icons">Climbing icons created by Sohell - Flaticon</a> */}
+        {/* <a href="https://www.freepik.com/search?format=search&last_filter=page&last_value=3&page=3&query=climbing&type=icon">Icon by Freepik</a> */}
+        {/* <a href="https://www.flaticon.com/free-icons/coal" title="coal icons">Coal icons created by Freepik - Flaticon</a> */}
       </Grid>
     </BottomNavigation>
   )
