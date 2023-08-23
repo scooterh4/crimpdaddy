@@ -14,6 +14,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import ToolBar from "../components/common/ToolBar"
+import { AppColors } from "../static/styles"
 
 function SignUp() {
   const [input, setInput] = useState({
@@ -137,13 +138,13 @@ function SignUp() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 5,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "#4a6741" }}>
+          <Avatar sx={{ m: 1, bgcolor: AppColors.success }}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">

@@ -15,6 +15,7 @@ import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import ToolBar from "../components/common/ToolBar"
+import { AppColors } from "../static/styles"
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -59,13 +60,13 @@ function SignIn() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 5,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "#DDD1CF", color: "black" }}>
+          <Avatar sx={{ m: 1, bgcolor: AppColors.info, color: "white" }}>
             <LockIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
