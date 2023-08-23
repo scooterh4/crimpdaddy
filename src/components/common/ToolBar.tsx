@@ -31,6 +31,7 @@ type ToolBarProps = {
 }
 
 function ToolBar({ title, user }: ToolBarProps) {
+  const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   //const navigate = useNavigate()
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -77,16 +78,16 @@ function ToolBar({ title, user }: ToolBarProps) {
 
           <Box
             justifyContent={"center"}
-            sx={{ flexGrow: 1, textAlign: "center", marginLeft: 5 }}
+            sx={{ flexGrow: 1, textAlign: "center" }}
           >
             <Typography
-              variant="h4"
+              variant="h5"
               fontFamily={"poppins"}
               marginTop={1}
               component="div"
               gutterBottom
             >
-              Gym Climbs
+              {header}
             </Typography>
             {/* {user && (
               <Typography variant="h6" component="div">
