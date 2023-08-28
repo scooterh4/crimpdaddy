@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
   CartesianGrid,
-  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -12,7 +11,7 @@ import {
 import { ClimbLog } from "../../static/types"
 import { Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES, MINIMUM_DATE_FOR_DATA } from "../../static/constants"
+import { CLIMB_TYPES } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { GraphColors, ThemeColors } from "../../static/styles"
 import ReactLoading from "react-loading"

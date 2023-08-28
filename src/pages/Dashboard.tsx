@@ -8,7 +8,7 @@ import Toolbar from "../components/common/ToolBar"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
-import { CLIMB_TYPES } from "../static/constants"
+import { GYM_CLIMB_TYPES } from "../static/constants"
 import GradePyramid from "../components/dashboard/GradePyramid"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import Footer from "../components/common/Footer"
@@ -42,6 +42,9 @@ const Home = () => {
     string
   >("last6Months")
   const [leadProgressionFilter, setLeadProgressionFilter] = useState<string>(
+    "last6Months"
+  )
+  const [trProgressionFilter, setTrProgressionFilter] = useState<string>(
     "last6Months"
   )
 
@@ -411,7 +414,7 @@ const Home = () => {
 
             <Grid container item direction={"row"} alignItems={"center"}>
               <ProgressionGraph
-                climbType={CLIMB_TYPES.Boulder}
+                climbType={GYM_CLIMB_TYPES.Boulder}
                 climbingData={climbingData}
                 filter={boulderProgressionFilter}
               />
@@ -460,9 +463,58 @@ const Home = () => {
 
             <Grid container item direction={"row"} alignItems={"center"}>
               <ProgressionGraph
-                climbType={CLIMB_TYPES.Sport}
+                climbType={GYM_CLIMB_TYPES.Lead}
                 climbingData={climbingData}
                 filter={leadProgressionFilter}
+              />
+
+              <SectionLegend section="progression" />
+            </Grid>
+          </Grid>
+
+          <Grid
+            border={1}
+            borderColor={ThemeColors.darkAccent}
+            borderRadius={5}
+            container
+            direction={"column"}
+            marginTop={2}
+            padding={2}
+          >
+            <Grid
+              alignItems={"center"}
+              container
+              direction={"row"}
+              display={"grid"}
+              gridAutoRows={"auto"}
+              gridTemplateColumns={"1fr 1fr 1fr"}
+            >
+              <Typography
+                color={ThemeColors.darkShade}
+                fontFamily={"poppins"}
+                gridColumn={{ sm: "2", xs: "1" }}
+                gutterBottom
+                justifySelf={{ sm: "center", xs: "start" }}
+                paddingLeft={{ sm: 0, xs: 2 }}
+                variant="h6"
+              >
+                Top Rope
+              </Typography>
+
+              <Grid item gridColumn={"3"} justifySelf={"end"}>
+                <SelectFilter
+                  dashboardSection="progression"
+                  selectedFilter={trProgressionFilter}
+                  setFilter={setTrProgressionFilter}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction={"row"} alignItems={"center"}>
+              <ProgressionGraph
+                climbType={GYM_CLIMB_TYPES.TopRope}
+                climbingData={climbingData}
+                filter={trProgressionFilter}
               />
 
               <SectionLegend section="progression" />
