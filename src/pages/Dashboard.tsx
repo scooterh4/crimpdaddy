@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
+import { useNavigate } from "react-router-dom"
 import { Button, Container, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
-import PickClimbType from "../components/dashboard/PickClimbTypeDialog"
-import ClimbDetailsDialog from "../components/dashboard/ClimbDetailsDialog"
 import Toolbar from "../components/common/ToolBar"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
@@ -28,13 +27,8 @@ const Home = () => {
     trData: [] as ClimbGraphData[],
   })
 
-  const [openClimbTypeSelector, setClimbTypeSelector] = useState(false)
-  const handleClimbTypeSelectorOpen = () => setClimbTypeSelector(true)
-  const handleClimbTypeSelectorClose = () => setClimbTypeSelector(false)
-  const [openDetails, setDetailsOpen] = useState(false)
-  const [climbType, setClimbType] = useState(0)
-  const handleDetailsOpen = () => setDetailsOpen(true)
-  const handleDetailsClose = () => setDetailsOpen(false)
+  const navigate = useNavigate()
+  const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
   const [isLoading, setIsLoading] = useState(true)
 
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
@@ -61,24 +55,6 @@ const Home = () => {
     }
   }, [user])
 
-  function handleSubmitClimbType() {
-    setClimbTypeSelector(false)
-    handleDetailsOpen()
-  }
-
-  // Passed to the ClimbDetailsDialog to reload the data after a climb is logged
-  function climbLogged() {
-    if (user) {
-      setIsLoading(true)
-
-      GetAllUserClimbs(user.id, "last6Months").then((data) => {
-        setClimbingData(data.climbingData)
-        setGradePyramidData(data.gradePyramidData)
-        setIsLoading(false)
-      })
-    }
-  }
-
   return isLoading ? (
     <Grid
       container
@@ -103,19 +79,6 @@ const Home = () => {
         user={{ appUser: user, updateUser: updateUser }}
       />
 
-      <PickClimbType
-        open={openClimbTypeSelector}
-        handleClose={handleClimbTypeSelectorClose}
-        setClimbType={setClimbType}
-        handleSubmitClimbType={handleSubmitClimbType}
-      />
-      <ClimbDetailsDialog
-        climbType={climbType}
-        open={openDetails}
-        handleClose={handleDetailsClose}
-        climbLogged={climbLogged}
-      />
-
       {/* <Grid
         style={{
           position: "fixed",
@@ -130,6 +93,7 @@ const Home = () => {
           //opacity: 0.5,
         }}
       /> */}
+
       <Container maxWidth="md">
         <Grid
           container
@@ -157,6 +121,7 @@ const Home = () => {
               fontFamily: "poppins",
               justifySelf: "center",
               ":hover": { backgroundColor: ThemeColors.darkAccent },
+              marginTop: 2,
             }}
           >
             Log a climb

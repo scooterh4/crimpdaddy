@@ -6,6 +6,7 @@ import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
+import LogClimbPage from "./pages/LogClimb"
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
@@ -32,6 +33,15 @@ const App = () => {
               <ProtectedRoute
                 {...defaultProtectedRouteProps}
                 outlet={<Dashboard />}
+              />
+            }
+          />
+          <Route
+            path="logClimb"
+            element={
+              <ProtectedRoute
+                {...defaultProtectedRouteProps}
+                outlet={<LogClimbPage />}
               />
             }
           />

@@ -24,6 +24,8 @@ export const BOULDER_GRADES = [
   "V8",
   "V9",
   "V10",
+  "V11",
+  "V12",
 ]
 
 export const INDOOR_SPORT_GRADES = [
