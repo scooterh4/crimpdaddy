@@ -153,6 +153,7 @@ const Home = () => {
               display: "flex",
               fontFamily: "poppins",
               justifySelf: "center",
+              ":hover": { backgroundColor: ThemeColors.darkAccent },
             }}
           >
             Log a climb
