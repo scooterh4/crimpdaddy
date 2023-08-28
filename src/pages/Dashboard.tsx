@@ -17,6 +17,7 @@ import ActivityGraph from "../components/dashboard/ActivityGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import { AppColors, ThemeColors } from "../static/styles"
+import BackgroundImage from "../images/neom-xhMz5xIbhRg-unsplash.jpg"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -112,6 +113,20 @@ const Home = () => {
         climbLogged={climbLogged}
       />
 
+      {/* <Grid
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+          backgroundImage: `url(${BackgroundImage})`,
+          backgroundSize: "cover",
+          filter: "sepia(0.75)",
+          //opacity: 0.5,
+        }}
+      /> */}
       <Container maxWidth="md">
         <Grid
           container
