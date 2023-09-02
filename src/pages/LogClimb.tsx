@@ -32,10 +32,12 @@ import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
+import HelpCenterIcon from "@mui/icons-material/HelpCenter"
 import { ClimbLog } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 import { LogClimb } from "../db/ClimbLogService"
 import App from "../App"
+import Footer from "../components/common/Footer"
 
 function LogClimbPage() {
   const navigate = useNavigate()
@@ -44,8 +46,8 @@ function LogClimbPage() {
   const [gradesList, setGradesList] = useState<string[]>([])
   const [grade, setGrade] = useState("")
   const [selectedTick, setSelectedTick] = useState("")
-  const [count, setCount] = useState<number | string>("")
-  const [countLabel, setCountLabel] = useState<string>("Number of climbs")
+  const [showAttemptInput, setAttemptInputVisibility] = useState(false)
+  const [attemptCount, setAttemptCount] = useState<number | string>("")
 
   const [gradeError, setGradeError] = useState(false)
   const [tickError, setTickError] = useState(false)
@@ -72,9 +74,9 @@ function LogClimbPage() {
     if (value !== null) {
       setSelectedTick(value.toString())
 
-      value.toString() === "Attempt"
-        ? setCountLabel("Number of attempts")
-        : setCountLabel("Number of climbs")
+      value.toString() !== "Onsight" && value.toString() !== "Flash"
+        ? setAttemptInputVisibility(true)
+        : setAttemptInputVisibility(false)
     }
   }
 
@@ -89,9 +91,11 @@ function LogClimbPage() {
       setTickError(true)
       hasError = true
     }
-    if (!count || count === "") {
-      setAttemptError(true)
-      hasError = true
+    if (selectedTick !== "Onsight" && selectedTick !== "Flash") {
+      if (!attemptCount || attemptCount === "") {
+        setAttemptError(true)
+        hasError = true
+      }
     }
 
     return hasError
@@ -100,17 +104,35 @@ function LogClimbPage() {
   function submitForm() {
     if (!formHasError()) {
       if (user) {
+        // If they picked repeat or redpoint, log the climb and the attempts seperately
         const climbData: ClimbLog = {
           UserId: user.id,
           ClimbType: climbType,
           Grade: grade,
           Tick: selectedTick,
-          Count: parseInt(count.toString()),
+          Count:
+            selectedTick === "Attempt" ? parseInt(attemptCount.toString()) : 1,
           Timestamp: Timestamp.now(),
         }
 
         LogClimb(climbData)
 
+        if (
+          (selectedTick === "Redpoint" || selectedTick === "Repeat") &&
+          parseInt(attemptCount.toString()) > 1
+        ) {
+          const attemptData: ClimbLog = {
+            UserId: user.id,
+            ClimbType: climbType,
+            Grade: grade,
+            Tick: "Attempt",
+            Count: parseInt(attemptCount.toString()) - 1,
+            Timestamp: Timestamp.now(),
+          }
+
+          LogClimb(attemptData)
+        }
+        console.log(user.id)
         navigate("/dashboard")
       }
     } else {
@@ -249,75 +271,99 @@ function LogClimbPage() {
           )}
 
           {climbType !== "" && (
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"row"}
-              justifyContent={"center"}
-              spacing={12}
-            >
-              {TICK_TYPES.map((tick, index) => (
-                <Grid item>
-                  <Button
-                    key={index}
-                    value={tick}
-                    onClick={tickButtonClicked}
-                    sx={{
-                      backgroundColor:
-                        selectedTick === tick ? tickColors[index] : "white",
-                      color:
-                        selectedTick === tick ? "white" : tickColors[index],
-                      ":hover": {
-                        backgroundColor:
-                          selectedTick === tick
-                            ? tickColors[index]
-                            : ThemeColors.darkAccent,
-                        color: "white",
-                      },
-                    }}
-                  >
-                    <Grid
-                      alignItems={"center"}
-                      container
-                      direction={"column"}
-                      justifyContent={"center"}
-                    >
-                      <SvgIcon
-                        component={tickIcons[index]}
+            <Grid container direction={"column"}>
+              <Typography
+                fontFamily={"poppins"}
+                marginBottom={2}
+                marginLeft={2}
+              >
+                Select a tick:
+              </Typography>
+              <Grid
+                alignItems={"center"}
+                container
+                direction={"column"}
+                justifyContent={"center"}
+              >
+                <Grid container direction={"row"}>
+                  {TICK_TYPES.map((tick, index) => (
+                    <Grid item xs>
+                      <Button
+                        key={index}
+                        value={tick}
+                        onClick={tickButtonClicked}
                         sx={{
+                          backgroundColor:
+                            selectedTick === tick ? tickColors[index] : "white",
                           color:
                             selectedTick === tick ? "white" : tickColors[index],
                           ":hover": {
-                            color:
+                            backgroundColor:
                               selectedTick === tick
-                                ? "white"
-                                : tickColors[index],
+                                ? tickColors[index]
+                                : ThemeColors.darkAccent,
+                            color: "white",
                           },
                         }}
-                      />
-                      {tick}
+                      >
+                        <Grid
+                          alignItems={"center"}
+                          container
+                          direction={"column"}
+                          justifyContent={"center"}
+                        >
+                          <SvgIcon
+                            component={tickIcons[index]}
+                            sx={{
+                              color:
+                                selectedTick === tick
+                                  ? "white"
+                                  : tickColors[index],
+                              ":hover": {
+                                color:
+                                  selectedTick === tick
+                                    ? "white"
+                                    : tickColors[index],
+                              },
+                            }}
+                          />
+                          {tick}
+                        </Grid>
+                      </Button>
                     </Grid>
-                  </Button>
+                  ))}
                 </Grid>
-              ))}
+              </Grid>
+
+              {/* <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: AppColors.info,
+                  color: "white",
+                  marginTop: 5,
+                  ":hover": { backgroundColor: ThemeColors.darkAccent },
+                }}
+              >
+                <HelpCenterIcon />
+              </Button> */}
             </Grid>
           )}
 
-          {selectedTick !== "" && (
+          {showAttemptInput && (
             <FormControl fullWidth sx={{ marginTop: 5 }}>
               <TextField
                 error={attemptError}
-                label={countLabel}
+                label={"Number of attempts"}
                 onChange={(e) =>
-                  setCount(
+                  setAttemptCount(
                     e.target.value !== "" ? parseInt(e.target.value) : ""
                   )
                 }
                 type="number"
-                value={count}
+                value={attemptCount}
                 variant="outlined"
               >
-                {count}
+                {attemptCount}
               </TextField>
               {attemptError && (
                 <FormHelperText sx={{ color: AppColors.danger }}>
@@ -336,6 +382,7 @@ function LogClimbPage() {
                 backgroundColor: AppColors.primary,
                 color: "white",
                 ":hover": { backgroundColor: ThemeColors.darkAccent },
+                marginBottom: 5,
                 marginTop: 5,
               }}
             >
