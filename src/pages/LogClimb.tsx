@@ -2,12 +2,9 @@ import React, { useContext, useEffect, useState } from "react"
 import {
   Button,
   Container,
-  Fab,
   FormControl,
   FormHelperText,
   Grid,
-  Icon,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -18,7 +15,6 @@ import {
 } from "@mui/material"
 import {
   BOULDER_GRADES,
-  GYM_CLIMB_TYPES,
   INDOOR_SPORT_GRADES,
   TICK_TYPES,
 } from "../static/constants"
@@ -32,12 +28,9 @@ import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
-import HelpCenterIcon from "@mui/icons-material/HelpCenter"
 import { ClimbLog } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 import { LogClimb } from "../db/ClimbLogService"
-import App from "../App"
-import Footer from "../components/common/Footer"
 
 function LogClimbPage() {
   const navigate = useNavigate()
@@ -46,6 +39,7 @@ function LogClimbPage() {
   const [gradesList, setGradesList] = useState<string[]>([])
   const [grade, setGrade] = useState("")
   const [selectedTick, setSelectedTick] = useState("")
+  const [selectedTickDescription, setSelectedTickDescription] = useState("")
   const [showAttemptInput, setAttemptInputVisibility] = useState(false)
   const [attemptCount, setAttemptCount] = useState<number | string>("")
 
@@ -68,6 +62,16 @@ function LogClimbPage() {
     AppColors.danger,
   ]
 
+  const tickDescriptions = {
+    Onsight:
+      "You completed the route on your first attempt without any prior knowledge of how to complete it.",
+    Flash:
+      "You completed the route on your first attempt but had prior knowledge of how to complete it.",
+    Redpoint: "You completed the route but it was not your first attempt.",
+    Repeat: "You have already completed the route and sent it again.",
+    Attempt: "You did not completed the route.",
+  }
+
   const tickButtonClicked = (event: React.MouseEvent<HTMLElement>) => {
     const value = event.currentTarget.getAttribute("value")
 
@@ -77,6 +81,32 @@ function LogClimbPage() {
       value.toString() !== "Onsight" && value.toString() !== "Flash"
         ? setAttemptInputVisibility(true)
         : setAttemptInputVisibility(false)
+
+      switch (value.toString()) {
+        case "Onsight":
+          setSelectedTickDescription(tickDescriptions.Onsight)
+          break
+
+        case "Flash":
+          setSelectedTickDescription(tickDescriptions.Flash)
+          break
+
+        case "Redpoint":
+          setSelectedTickDescription(tickDescriptions.Redpoint)
+          break
+
+        case "Repeat":
+          setSelectedTickDescription(tickDescriptions.Repeat)
+          break
+
+        case "Attempt":
+          setSelectedTickDescription(tickDescriptions.Attempt)
+          break
+
+        default:
+          setSelectedTickDescription("")
+          break
+      }
     }
   }
 
@@ -334,19 +364,21 @@ function LogClimbPage() {
                   ))}
                 </Grid>
               </Grid>
-
-              {/* <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: AppColors.info,
-                  color: "white",
-                  marginTop: 5,
-                  ":hover": { backgroundColor: ThemeColors.darkAccent },
-                }}
-              >
-                <HelpCenterIcon />
-              </Button> */}
             </Grid>
+          )}
+
+          {selectedTickDescription !== "" && (
+            <Typography
+              border={1}
+              borderRadius={5}
+              fontWeight={"bold"}
+              marginTop={5}
+              textAlign={"center"}
+              variant="h6"
+              sx={{ color: AppColors.info }}
+            >
+              {selectedTickDescription}
+            </Typography>
           )}
 
           {showAttemptInput && (
