@@ -77,7 +77,11 @@ function AppDrawer() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem key="progress" disablePadding>
+        <ListItem
+          disablePadding
+          key="progress"
+          onClick={() => navigate("/progression")}
+        >
           <ListItemButton>
             <ListItemIcon>
               <ShowChartIcon />

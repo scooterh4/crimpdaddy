@@ -8,6 +8,7 @@ import ProtectedRoute, {
 import Dashboard from "./pages/Dashboard"
 import LogClimbPage from "./pages/LogClimb"
 import GradePyramids from "./pages/GradePyramids"
+import ProgressionPage from "./pages/Progression"
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
@@ -55,7 +56,15 @@ const App = () => {
               />
             }
           />
-          \
+          <Route
+            path="progression"
+            element={
+              <ProtectedRoute
+                {...defaultProtectedRouteProps}
+                outlet={<ProgressionPage />}
+              />
+            }
+          />
         </Routes>
       </Router>
     </UserContextProvider>
