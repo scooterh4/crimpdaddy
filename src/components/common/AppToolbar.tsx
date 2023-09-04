@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
   AppBar,
   Box,
@@ -10,26 +10,18 @@ import {
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./AppDrawer"
-import { AppUser } from "../../static/types"
 import { AppColors } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
-//import { useNavigate } from "react-router-dom"
-
-export type userObj =
-  | {
-      appUser: AppUser | null
-      updateUser: (newUser: AppUser | null) => void
-    }
-  | undefined
+import { UserContext } from "../../db/Context"
 
 type ToolBarProps = {
   title: string
-  user: userObj
 }
 
 const drawerWidth = 250
 
-function ToolBar({ title, user }: ToolBarProps) {
+function ToolBar({ title }: ToolBarProps) {
+  const { user, updateUser } = useContext(UserContext)
   const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
   const cursor = title === "Dashboard" ? "" : "pointer"
   const [mobileOpen, setMobileOpen] = React.useState(false)

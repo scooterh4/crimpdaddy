@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
 import {
-  Box,
   Button,
   Container,
   CssBaseline,
@@ -25,7 +24,6 @@ import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import { AppColors, ThemeColors } from "../static/styles"
 import AppDrawer from "../components/common/AppDrawer"
-import BackgroundImage from "../images/neom-xhMz5xIbhRg-unsplash.jpg"
 
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
@@ -86,10 +84,7 @@ const Home = () => {
   ) : (
     <>
       <CssBaseline />
-      <AppToolbar
-        title={"Dashboard"}
-        user={{ appUser: user, updateUser: updateUser }}
-      />
+      <AppToolbar title={"Dashboard"} />
 
       <Container sx={{ display: "flex" }}>
         <Grid

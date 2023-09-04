@@ -188,10 +188,7 @@ function LogClimbPage() {
 
   return (
     <>
-      <AppToolbar
-        title={"Dashboard"}
-        user={{ appUser: user, updateUser: updateUser }}
-      />
+      <AppToolbar title={"Dashboard"} />
 
       <Container maxWidth="md">
         <Grid

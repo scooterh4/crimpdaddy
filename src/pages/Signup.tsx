@@ -133,7 +133,7 @@ function SignUp() {
 
   return (
     <>
-      <AppToolbar title={""} user={undefined} />
+      <AppToolbar title={""} />
 
       <Container component="main" maxWidth="xs">
         <Box
