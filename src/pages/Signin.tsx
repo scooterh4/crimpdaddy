@@ -14,7 +14,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import ToolBar from "../components/common/ToolBar"
+import AppToolbar from "../components/common/AppToolbar"
 import { AppColors } from "../static/styles"
 
 function SignIn() {
@@ -55,7 +55,7 @@ function SignIn() {
 
   return (
     <>
-      <ToolBar title={""} user={undefined} />
+      <AppToolbar title={""} user={undefined} />
 
       <Container component="main" maxWidth="xs">
         <Box

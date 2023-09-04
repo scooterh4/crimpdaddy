@@ -13,7 +13,7 @@ import {
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import ToolBar from "../components/common/ToolBar"
+import AppToolbar from "../components/common/AppToolbar"
 import { AppColors } from "../static/styles"
 
 function SignUp() {
@@ -133,7 +133,7 @@ function SignUp() {
 
   return (
     <>
-      <ToolBar title={""} user={undefined} />
+      <AppToolbar title={""} user={undefined} />
 
       <Container component="main" maxWidth="xs">
         <Box

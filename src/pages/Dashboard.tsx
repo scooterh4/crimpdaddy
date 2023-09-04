@@ -1,21 +1,30 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
-import { Button, Container, Grid, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Drawer,
+  Grid,
+  Typography,
+} from "@mui/material"
 import { UserContext } from "../db/Context"
-import Toolbar from "../components/common/ToolBar"
+import AppToolbar from "../components/common/AppToolbar"
+import AppFooter from "../components/common/AppFooter"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import { ClimbGraphData, ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
 import { GYM_CLIMB_TYPES } from "../static/constants"
 import GradePyramid from "../components/dashboard/GradePyramid"
 import SectionLegend from "../components/dashboard/SectionLegend"
-import Footer from "../components/common/Footer"
 import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import ActivityGraph from "../components/dashboard/ActivityGraph"
 import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import { AppColors, ThemeColors } from "../static/styles"
+import AppDrawer from "../components/common/AppDrawer"
 import BackgroundImage from "../images/neom-xhMz5xIbhRg-unsplash.jpg"
 
 const Home = () => {
@@ -55,6 +64,8 @@ const Home = () => {
     }
   }, [user])
 
+  const drawerWidth = 250
+
   return isLoading ? (
     <Grid
       container
@@ -74,32 +85,40 @@ const Home = () => {
     </Grid>
   ) : (
     <>
-      <Toolbar
+      <CssBaseline />
+      <AppToolbar
         title={"Dashboard"}
         user={{ appUser: user, updateUser: updateUser }}
       />
 
-      {/* <Grid
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: -1,
-          backgroundImage: `url(${BackgroundImage})`,
-          backgroundSize: "cover",
-          filter: "sepia(0.75)",
-          //opacity: 0.5,
-        }}
-      /> */}
+      <Container sx={{ display: "flex" }}>
+        <Grid
+          aria-label="mailbox folders"
+          container
+          direction={"column"}
+          sx={{ width: { lg: drawerWidth, xs: 0 } }}
+        >
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", lg: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            {AppDrawer}
+          </Drawer>
+        </Grid>
 
-      <Container maxWidth="md">
         <Grid
           container
           direction={"column"}
-          style={{
-            display: "flex",
+          marginLeft={{ xl: -15 }}
+          sx={{
+            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
           <Typography
@@ -487,8 +506,7 @@ const Home = () => {
           </Grid>
         </Grid>
       </Container>
-
-      <Footer />
+      <AppFooter />
     </>
   )
 }

@@ -19,7 +19,7 @@ import {
   TICK_TYPES,
 } from "../static/constants"
 import { useNavigate } from "react-router-dom"
-import Toolbar from "../components/common/ToolBar"
+import AppToolbar from "../components/common/AppToolbar"
 import { UserContext } from "../db/Context"
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import { AppColors, GraphColors, ThemeColors } from "../static/styles"
@@ -188,7 +188,7 @@ function LogClimbPage() {
 
   return (
     <>
-      <Toolbar
+      <AppToolbar
         title={"Dashboard"}
         user={{ appUser: user, updateUser: updateUser }}
       />
