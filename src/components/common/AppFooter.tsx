@@ -23,7 +23,15 @@ export default function LabelBottomNavigation() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Typography color={"white"}>CrimpDaddy</Typography>
+        <Typography
+          marginLeft={{
+            xl: 5,
+            lg: 35,
+          }}
+          color={"white"}
+        >
+          CrimpDaddy
+        </Typography>
 
         {/* <a href="https://www.flaticon.com/free-icons/rock" title="rock icons">
           Rock icons created by Freepik - Flaticon
