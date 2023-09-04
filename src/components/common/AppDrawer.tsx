@@ -18,9 +18,11 @@ import { signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "../../firebase"
 import { UserContext } from "../../db/Context"
+import { useNavigate } from "react-router-dom"
 
 function AppDrawer() {
   const { user, updateUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
   function handleLogout() {
     if (user) {
@@ -45,7 +47,11 @@ function AppDrawer() {
       </Toolbar>
       <Divider />
       <List sx={{ color: AppColors.primary }}>
-        <ListItem disablePadding key="dashboard">
+        <ListItem
+          disablePadding
+          key="dashboard"
+          onClick={() => navigate("/dashboard")}
+        >
           <ListItemButton>
             <ListItemIcon>
               <DashboardIcon />
@@ -56,7 +62,11 @@ function AppDrawer() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding key="grades">
+        <ListItem
+          disablePadding
+          key="grades"
+          onClick={() => navigate("/gradePyramids")}
+        >
           <ListItemButton>
             <ListItemIcon>
               <EqualizerIcon />

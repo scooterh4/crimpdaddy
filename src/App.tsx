@@ -7,6 +7,7 @@ import ProtectedRoute, {
 } from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
 import LogClimbPage from "./pages/LogClimb"
+import GradePyramids from "./pages/GradePyramids"
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
@@ -45,6 +46,16 @@ const App = () => {
               />
             }
           />
+          <Route
+            path="gradePyramids"
+            element={
+              <ProtectedRoute
+                {...defaultProtectedRouteProps}
+                outlet={<GradePyramids />}
+              />
+            }
+          />
+          \
         </Routes>
       </Router>
     </UserContextProvider>

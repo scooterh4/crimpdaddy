@@ -28,16 +28,9 @@ import AppDrawer from "../components/common/AppDrawer"
 const Home = () => {
   const { user, updateUser } = useContext(UserContext)
   const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
-  const [gradePyramidData, setGradePyramidData] = useState({
-    boulderData: [] as ClimbGraphData[],
-    leadData: [] as ClimbGraphData[],
-    trData: [] as ClimbGraphData[],
-  })
-
   const navigate = useNavigate()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
   const [isLoading, setIsLoading] = useState(true)
-
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
     string
@@ -49,14 +42,11 @@ const Home = () => {
     "last6Months"
   )
 
-  //const redpointCardColor = "#FF7A6B"
-
   useEffect(() => {
     if (user) {
       // on the initial dashboard load, the progression graph needs the last 6 months
       GetAllUserClimbs(user.id, "last6Months").then((data) => {
         setClimbingData(data.climbingData)
-        setGradePyramidData(data.gradePyramidData)
         setIsLoading(false)
       })
     }
@@ -231,114 +221,6 @@ const Home = () => {
                   climbType="TopRope"
                   tickType="Redpoint"
                   climbingData={climbingData}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid
-            container
-            direction={"row"}
-            justifyContent={"center"}
-            marginBottom={2}
-            marginTop={6}
-          >
-            <Grid container direction={"column"} alignItems={"center"}>
-              <Typography
-                variant="h4"
-                fontFamily={"poppins"}
-                component="div"
-                gutterBottom
-              >
-                Grade Pyramids
-              </Typography>
-
-              <SectionLegend section="gradePyramids" />
-            </Grid>
-          </Grid>
-
-          <Grid
-            border={1}
-            borderColor={ThemeColors.darkAccent}
-            borderRadius={5}
-            container
-            direction={"row"}
-            padding={2}
-          >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md
-              xs
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
-              >
-                Bouldering
-              </Typography>
-
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="Boulder"
-                  graphData={gradePyramidData.boulderData}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md={4}
-              xs={12}
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
-              >
-                Lead
-              </Typography>
-
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="Lead"
-                  graphData={gradePyramidData.leadData}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md
-              xs
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
-              >
-                Top Rope
-              </Typography>
-
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="TopRope"
-                  graphData={gradePyramidData.trData}
                 />
               </Grid>
             </Grid>
