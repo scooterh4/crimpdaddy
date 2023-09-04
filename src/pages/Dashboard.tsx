@@ -109,7 +109,7 @@ const Home = () => {
             }}
             open
           >
-            {AppDrawer}
+            <AppDrawer />
           </Drawer>
         </Grid>
 
