@@ -2,7 +2,6 @@ import React, { useContext } from "react"
 import {
   AppBar,
   Box,
-  Container,
   Drawer,
   IconButton,
   Toolbar,
@@ -10,15 +9,13 @@ import {
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./AppDrawer"
-import { AppColors } from "../../static/styles"
+import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
 import { UserContext } from "../../db/Context"
 
 type ToolBarProps = {
   title: string
 }
-
-const drawerWidth = 250
 
 function ToolBar({ title }: ToolBarProps) {
   const { user, updateUser } = useContext(UserContext)
@@ -38,11 +35,16 @@ function ToolBar({ title }: ToolBarProps) {
   }
 
   return (
-    <AppBar
-      position="static"
-      sx={{ background: AppColors.primary, color: "white" }}
-    >
-      <Container maxWidth="xl">
+    <>
+      <AppBar
+        position="fixed"
+        sx={{
+          background: AppColors.primary,
+          color: "white",
+          width: title !== "" ? { lg: `calc(100% - ${drawerWidth}px)` } : {},
+          ml: title !== "" ? { lg: `${drawerWidth}px` } : {},
+        }}
+      >
         <Toolbar>
           {user && (
             <IconButton
@@ -57,14 +59,7 @@ function ToolBar({ title }: ToolBarProps) {
             </IconButton>
           )}
 
-          <Box
-            justifyContent={"center"}
-            marginLeft={{
-              xl: title === "Dashboard" ? 5 : 0,
-              lg: title === "Dashboard" ? 35 : 0,
-            }}
-            sx={{ flexGrow: 1, textAlign: "center" }}
-          >
+          <Box alignItems={"center"} sx={{ flexGrow: 1, textAlign: "center" }}>
             <Typography
               variant="h5"
               fontFamily={"poppins"}
@@ -72,16 +67,20 @@ function ToolBar({ title }: ToolBarProps) {
               component="div"
               gutterBottom
               onClick={headerClicked}
-              sx={{ cursor: cursor }}
             >
               {header}
             </Typography>
           </Box>
         </Toolbar>
+      </AppBar>
 
+      {title !== "" && (
         <Box
           component="nav"
-          sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+          sx={{
+            width: { lg: drawerWidth },
+            flexShrink: { lg: 0 },
+          }}
           aria-label="mailbox folders"
         >
           <Drawer
@@ -101,9 +100,22 @@ function ToolBar({ title }: ToolBarProps) {
           >
             <AppDrawer />
           </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", lg: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            <AppDrawer />
+          </Drawer>
         </Box>
-      </Container>
-    </AppBar>
+      )}
+    </>
   )
 }
 

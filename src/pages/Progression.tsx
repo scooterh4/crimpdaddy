@@ -1,17 +1,16 @@
-import { Container, Drawer, Grid, Typography } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
-import { ThemeColors } from "../static/styles"
-import { ClimbGraphData, ClimbLog } from "../static/types"
+import { ThemeColors, drawerWidth } from "../static/styles"
+import { ClimbLog } from "../static/types"
 import { UserContext } from "../db/Context"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
-import ReactLoading from "react-loading"
 import AppToolbar from "../components/common/AppToolbar"
-import AppDrawer from "../components/common/AppDrawer"
 import ProgressionGraph from "../components/dashboard/ProgressionGraph"
 import { GYM_CLIMB_TYPES } from "../static/constants"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import AppFooter from "../components/common/AppFooter"
+import AppLoading from "../components/common/AppLoading"
 
 function ProgressionPage() {
   const { user, updateUser } = useContext(UserContext)
@@ -37,66 +36,42 @@ function ProgressionPage() {
     }
   }, [user])
 
-  const drawerWidth = 250
-
   return isLoading ? (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      direction="row"
-      sx={{ height: "100vh" }}
-    >
-      <Grid item>
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
-    </Grid>
+    <Box sx={{ display: "flex" }}>
+      <AppToolbar title="Dashboard" />
+
+      <Box
+        component="main"
+        marginTop={5}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+        }}
+      >
+        <AppLoading />
+      </Box>
+    </Box>
   ) : (
     <>
-      <AppToolbar title={"Dashboard"} />
+      <Box sx={{ display: "flex" }}>
+        <AppToolbar title="Dashboard" />
 
-      <Container sx={{ display: "flex" }}>
-        <Grid
-          aria-label="mailbox folders"
-          container
-          direction={"column"}
-          sx={{ width: { lg: drawerWidth, xs: 0 } }}
-        >
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: "none", lg: "block" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-            open
-          >
-            <AppDrawer />
-          </Drawer>
-        </Grid>
-
-        <Grid
-          container
-          direction={"column"}
-          marginLeft={{ xl: -15 }}
+        <Box
+          component="main"
+          marginTop={5}
           sx={{
+            flexGrow: 1,
+            p: 3,
             width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
           <Typography
-            component="div"
+            color={ThemeColors.darkShade}
             fontFamily={"poppins"}
             gutterBottom
-            marginTop={6}
-            textAlign={"center"}
-            variant="h4"
+            paddingTop={2}
+            variant="h3"
           >
             Progression
           </Typography>
@@ -203,7 +178,6 @@ function ProgressionPage() {
             borderRadius={5}
             container
             direction={"column"}
-            marginBottom={5}
             marginTop={2}
             padding={2}
           >
@@ -246,9 +220,9 @@ function ProgressionPage() {
 
             <SectionLegend section="progression" />
           </Grid>
-        </Grid>
-      </Container>
-      <AppFooter />
+        </Box>
+      </Box>
+      <AppFooter drawerWidth={drawerWidth} />
     </>
   )
 }

@@ -20,3 +20,5 @@ export const GraphColors = {
   Attempts: "#C4C4C4",
   Climbs: "#837D79",
 }
+
+export const drawerWidth = 250

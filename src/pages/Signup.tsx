@@ -135,7 +135,7 @@ function SignUp() {
     <>
       <AppToolbar title={""} />
 
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ marginTop: 10 }}>
         <Box
           sx={{
             marginTop: 5,

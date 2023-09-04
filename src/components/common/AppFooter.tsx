@@ -8,13 +8,20 @@ import LocationOnIcon from "@mui/icons-material/LocationOn"
 import { Grid, Typography } from "@mui/material"
 import { AppColors } from "../../static/styles"
 
-export default function LabelBottomNavigation() {
+type FooterProps = {
+  drawerWidth: number
+}
+
+export default function LabelBottomNavigation({ drawerWidth }: FooterProps) {
   return (
     <BottomNavigation
       sx={{
         background: AppColors.primary,
         marginTop: 5,
         alignContent: "center",
+        position: "relative",
+        width: { lg: `calc(100% - ${drawerWidth}px)` },
+        ml: { lg: `${drawerWidth}px` },
       }}
     >
       <Grid
@@ -24,10 +31,10 @@ export default function LabelBottomNavigation() {
         alignItems={"center"}
       >
         <Typography
-          marginLeft={{
-            xl: 5,
-            lg: 35,
-          }}
+          // marginLeft={{
+          //   xl: 5,
+          //   lg: 35,
+          // }}
           color={"white"}
         >
           CrimpDaddy

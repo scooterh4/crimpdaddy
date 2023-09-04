@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
+  Box,
   Button,
   Container,
   FormControl,
@@ -21,8 +22,12 @@ import {
 import { useNavigate } from "react-router-dom"
 import AppToolbar from "../components/common/AppToolbar"
 import { UserContext } from "../db/Context"
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
-import { AppColors, GraphColors, ThemeColors } from "../static/styles"
+import {
+  AppColors,
+  GraphColors,
+  ThemeColors,
+  drawerWidth,
+} from "../static/styles"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
@@ -31,6 +36,7 @@ import CancelIcon from "@mui/icons-material/Cancel"
 import { ClimbLog } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 import { LogClimb } from "../db/ClimbLogService"
+import AppFooter from "../components/common/AppFooter"
 
 function LogClimbPage() {
   const navigate = useNavigate()
@@ -188,238 +194,233 @@ function LogClimbPage() {
 
   return (
     <>
-      <AppToolbar title={"Dashboard"} />
+      <Box sx={{ display: "flex" }}>
+        <AppToolbar title="Dashboard" />
 
-      <Container maxWidth="md">
-        <Grid
-          container
-          direction={"column"}
-          style={{
-            display: "flex",
+        <Box
+          component="main"
+          marginTop={5}
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
-          <Button
-            onClick={() => navigate("/dashboard")}
-            size="large"
-            variant="text"
-            sx={{
-              //backgroundColor: ThemeColors.lightAccent,
-              color: AppColors.info,
-              ":hover": {
-                backgroundColor: ThemeColors.darkAccent,
-                color: "white",
-              },
+          <Grid
+            container
+            direction={"column"}
+            style={{
               display: "flex",
-              justifyContent: "left",
-              marginTop: 2,
             }}
           >
-            <ArrowBackIosIcon />
-            Dashboard
-          </Button>
-
-          <Typography
-            color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
-            gutterBottom
-            paddingTop={2}
-            variant="h3"
-          >
-            Log a climb
-          </Typography>
-
-          <FormControl fullWidth sx={{ marginTop: 5 }}>
-            <InputLabel id="climb_type_label">Climb Type</InputLabel>
-            <Select
-              id="climbTypeSelect"
-              label={"Climb Type"}
-              labelId="climb_type_label"
-              onChange={handleFilterChange}
-              value={climbType}
-              sx={{ fontFamily: "poppins" }}
+            <Typography
+              color={ThemeColors.darkShade}
+              fontFamily={"poppins"}
+              gutterBottom
+              paddingTop={2}
+              variant="h3"
             >
-              <MenuItem
-                key={"boulder"}
-                value={"Boulder"}
-                sx={{ fontFamily: "poppins" }}
-              >
-                Boulder
-              </MenuItem>
-              <MenuItem
-                key={"lead"}
-                value={"Lead"}
-                sx={{ fontFamily: "poppins" }}
-              >
-                Lead
-              </MenuItem>
-              <MenuItem
-                key={"topRope"}
-                value={"TopRope"}
-                sx={{ fontFamily: "poppins" }}
-              >
-                Top Rope
-              </MenuItem>
-            </Select>
-          </FormControl>
+              Log a climb
+            </Typography>
 
-          {climbType !== "" && (
-            <FormControl fullWidth sx={{ marginBottom: 5, marginTop: 5 }}>
-              <InputLabel
-                id="grade_label"
-                sx={{
-                  color: gradeError ? AppColors.danger : "black",
-                }}
-              >
-                Grade
-              </InputLabel>
+            <FormControl fullWidth sx={{ marginTop: 5 }}>
+              <InputLabel id="climb_type_label">Climb Type</InputLabel>
               <Select
-                error={gradeError}
-                label={"Grade"}
-                onChange={(e) => setGrade(e.target.value)}
-                value={grade}
+                id="climbTypeSelect"
+                label={"Climb Type"}
+                labelId="climb_type_label"
+                onChange={handleFilterChange}
+                value={climbType}
                 sx={{ fontFamily: "poppins" }}
               >
-                {gradesList.map((grade, index) => (
-                  <MenuItem
-                    key={grade}
-                    value={grade}
-                    sx={{ fontFamily: "poppins" }}
-                  >
-                    {grade}
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  key={"boulder"}
+                  value={"Boulder"}
+                  sx={{ fontFamily: "poppins" }}
+                >
+                  Boulder
+                </MenuItem>
+                <MenuItem
+                  key={"lead"}
+                  value={"Lead"}
+                  sx={{ fontFamily: "poppins" }}
+                >
+                  Lead
+                </MenuItem>
+                <MenuItem
+                  key={"topRope"}
+                  value={"TopRope"}
+                  sx={{ fontFamily: "poppins" }}
+                >
+                  Top Rope
+                </MenuItem>
               </Select>
-              {gradeError && (
-                <FormHelperText sx={{ color: AppColors.danger }}>
-                  This is required!
-                </FormHelperText>
-              )}
             </FormControl>
-          )}
 
-          {climbType !== "" && (
-            <Grid container direction={"column"}>
-              <Typography
-                fontFamily={"poppins"}
-                marginBottom={2}
-                marginLeft={2}
-              >
-                Select a tick:
-              </Typography>
-              <Grid
-                alignItems={"center"}
-                container
-                direction={"column"}
-                justifyContent={"center"}
-              >
-                <Grid container direction={"row"}>
-                  {TICK_TYPES.map((tick, index) => (
-                    <Grid item xs>
-                      <Button
-                        key={index}
-                        value={tick}
-                        onClick={tickButtonClicked}
-                        sx={{
-                          backgroundColor:
-                            selectedTick === tick ? tickColors[index] : "white",
-                          color:
-                            selectedTick === tick ? "white" : tickColors[index],
-                          ":hover": {
+            {climbType !== "" && (
+              <FormControl fullWidth sx={{ marginBottom: 5, marginTop: 5 }}>
+                <InputLabel
+                  id="grade_label"
+                  sx={{
+                    color: gradeError ? AppColors.danger : "black",
+                  }}
+                >
+                  Grade
+                </InputLabel>
+                <Select
+                  error={gradeError}
+                  label={"Grade"}
+                  onChange={(e) => setGrade(e.target.value)}
+                  value={grade}
+                  sx={{ fontFamily: "poppins" }}
+                >
+                  {gradesList.map((grade, index) => (
+                    <MenuItem
+                      key={grade}
+                      value={grade}
+                      sx={{ fontFamily: "poppins" }}
+                    >
+                      {grade}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {gradeError && (
+                  <FormHelperText sx={{ color: AppColors.danger }}>
+                    This is required!
+                  </FormHelperText>
+                )}
+              </FormControl>
+            )}
+
+            {climbType !== "" && (
+              <Grid container direction={"column"}>
+                <Typography
+                  fontFamily={"poppins"}
+                  marginBottom={2}
+                  marginLeft={2}
+                >
+                  Select a tick:
+                </Typography>
+                <Grid
+                  alignItems={"center"}
+                  container
+                  direction={"column"}
+                  justifyContent={"center"}
+                >
+                  <Grid container direction={"row"}>
+                    {TICK_TYPES.map((tick, index) => (
+                      <Grid item xs>
+                        <Button
+                          key={index}
+                          value={tick}
+                          onClick={tickButtonClicked}
+                          sx={{
                             backgroundColor:
                               selectedTick === tick
                                 ? tickColors[index]
-                                : ThemeColors.darkAccent,
-                            color: "white",
-                          },
-                        }}
-                      >
-                        <Grid
-                          alignItems={"center"}
-                          container
-                          direction={"column"}
-                          justifyContent={"center"}
-                        >
-                          <SvgIcon
-                            component={tickIcons[index]}
-                            sx={{
-                              color:
+                                : "white",
+                            color:
+                              selectedTick === tick
+                                ? "white"
+                                : tickColors[index],
+                            ":hover": {
+                              backgroundColor:
                                 selectedTick === tick
-                                  ? "white"
-                                  : tickColors[index],
-                              ":hover": {
+                                  ? tickColors[index]
+                                  : ThemeColors.darkAccent,
+                              color: "white",
+                            },
+                          }}
+                        >
+                          <Grid
+                            alignItems={"center"}
+                            container
+                            direction={"column"}
+                            justifyContent={"center"}
+                          >
+                            <SvgIcon
+                              component={tickIcons[index]}
+                              sx={{
                                 color:
                                   selectedTick === tick
                                     ? "white"
                                     : tickColors[index],
-                              },
-                            }}
-                          />
-                          {tick}
-                        </Grid>
-                      </Button>
-                    </Grid>
-                  ))}
+                                ":hover": {
+                                  color:
+                                    selectedTick === tick
+                                      ? "white"
+                                      : tickColors[index],
+                                },
+                              }}
+                            />
+                            {tick}
+                          </Grid>
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          )}
+            )}
 
-          {selectedTickDescription !== "" && (
-            <Typography
-              border={1}
-              borderRadius={5}
-              fontWeight={"bold"}
-              marginTop={5}
-              textAlign={"center"}
-              variant="h6"
-              sx={{ color: AppColors.info }}
-            >
-              {selectedTickDescription}
-            </Typography>
-          )}
-
-          {showAttemptInput && (
-            <FormControl fullWidth sx={{ marginTop: 5 }}>
-              <TextField
-                error={attemptError}
-                label={"Number of attempts"}
-                onChange={(e) =>
-                  setAttemptCount(
-                    e.target.value !== "" ? parseInt(e.target.value) : ""
-                  )
-                }
-                type="number"
-                value={attemptCount}
-                variant="outlined"
+            {selectedTickDescription !== "" && (
+              <Typography
+                border={1}
+                borderRadius={5}
+                fontWeight={"bold"}
+                marginTop={5}
+                textAlign={"center"}
+                variant="h6"
+                sx={{ color: AppColors.info }}
               >
-                {attemptCount}
-              </TextField>
-              {attemptError && (
-                <FormHelperText sx={{ color: AppColors.danger }}>
-                  This is required!
-                </FormHelperText>
-              )}
-            </FormControl>
-          )}
+                {selectedTickDescription}
+              </Typography>
+            )}
 
-          {selectedTick !== "" && (
-            <Button
-              onClick={submitForm}
-              size="large"
-              variant="contained"
-              sx={{
-                backgroundColor: AppColors.primary,
-                color: "white",
-                ":hover": { backgroundColor: ThemeColors.darkAccent },
-                marginBottom: 5,
-                marginTop: 5,
-              }}
-            >
-              Submit
-            </Button>
-          )}
-        </Grid>
-      </Container>
+            {showAttemptInput && (
+              <FormControl fullWidth sx={{ marginTop: 5 }}>
+                <TextField
+                  error={attemptError}
+                  label={"Number of attempts"}
+                  onChange={(e) =>
+                    setAttemptCount(
+                      e.target.value !== "" ? parseInt(e.target.value) : ""
+                    )
+                  }
+                  type="number"
+                  value={attemptCount}
+                  variant="outlined"
+                >
+                  {attemptCount}
+                </TextField>
+                {attemptError && (
+                  <FormHelperText sx={{ color: AppColors.danger }}>
+                    This is required!
+                  </FormHelperText>
+                )}
+              </FormControl>
+            )}
+
+            {selectedTick !== "" && (
+              <Button
+                onClick={submitForm}
+                size="large"
+                variant="contained"
+                sx={{
+                  backgroundColor: ThemeColors.darkAccent,
+                  color: "white",
+                  ":hover": { backgroundColor: ThemeColors.darkShade },
+                  marginBottom: 5,
+                  marginTop: 5,
+                }}
+              >
+                Submit
+              </Button>
+            )}
+          </Grid>
+        </Box>
+      </Box>
+      <AppFooter drawerWidth={drawerWidth} />
     </>
   )
 }

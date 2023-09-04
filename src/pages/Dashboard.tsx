@@ -1,14 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
-import {
-  Button,
-  Container,
-  CssBaseline,
-  Drawer,
-  Grid,
-  Typography,
-} from "@mui/material"
+import { Box, Button, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
 import AppToolbar from "../components/common/AppToolbar"
 import AppFooter from "../components/common/AppFooter"
@@ -17,12 +10,11 @@ import { ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import ActivityGraph from "../components/dashboard/ActivityGraph"
-import ReactLoading from "react-loading"
 import SelectFilter from "../components/dashboard/SelectFilter"
-import { AppColors, ThemeColors } from "../static/styles"
-import AppDrawer from "../components/common/AppDrawer"
+import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
+import AppLoading from "../components/common/AppLoading"
 
-const Home = () => {
+const Dashboard = () => {
   const { user, updateUser } = useContext(UserContext)
   const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
   const navigate = useNavigate()
@@ -40,56 +32,33 @@ const Home = () => {
     }
   }, [user])
 
-  const drawerWidth = 250
-
   return isLoading ? (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      direction="row"
-      sx={{ height: "100vh" }}
-    >
-      <Grid item>
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
-    </Grid>
+    <Box sx={{ display: "flex" }}>
+      <AppToolbar title="Dashboard" />
+
+      <Box
+        component="main"
+        marginTop={5}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+        }}
+      >
+        <AppLoading />
+      </Box>
+    </Box>
   ) : (
     <>
-      <AppToolbar title={"Dashboard"} />
+      <Box sx={{ display: "flex" }}>
+        <AppToolbar title="Dashboard" />
 
-      <Container sx={{ display: "flex" }}>
-        <Grid
-          aria-label="mailbox folders"
-          container
-          direction={"column"}
-          sx={{ width: { lg: drawerWidth, xs: 0 } }}
-        >
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: "none", lg: "block" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-            open
-          >
-            <AppDrawer />
-          </Drawer>
-        </Grid>
-
-        <Grid
-          container
-          direction={"column"}
-          marginLeft={{ xl: -15 }}
+        <Box
+          component="main"
+          marginTop={5}
           sx={{
+            flexGrow: 1,
+            p: 3,
             width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
@@ -107,11 +76,11 @@ const Home = () => {
             size="large"
             variant="contained"
             sx={{
-              background: AppColors.primary,
+              background: ThemeColors.darkAccent,
               display: "flex",
               fontFamily: "poppins",
               justifySelf: "center",
-              ":hover": { backgroundColor: ThemeColors.darkAccent },
+              ":hover": { backgroundColor: ThemeColors.darkShade },
               marginTop: 2,
             }}
           >
@@ -212,11 +181,11 @@ const Home = () => {
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Container>
-      <AppFooter />
+        </Box>
+      </Box>
+      <AppFooter drawerWidth={drawerWidth} />
     </>
   )
 }
 
-export default Home
+export default Dashboard

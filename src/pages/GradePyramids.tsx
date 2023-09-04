@@ -1,14 +1,14 @@
-import { Container, CssBaseline, Drawer, Grid, Typography } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import GradePyramid from "../components/dashboard/GradePyramid"
-import { ThemeColors } from "../static/styles"
+import { ThemeColors, drawerWidth } from "../static/styles"
 import { ClimbGraphData } from "../static/types"
 import { UserContext } from "../db/Context"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
-import ReactLoading from "react-loading"
 import AppToolbar from "../components/common/AppToolbar"
-import AppDrawer from "../components/common/AppDrawer"
+import AppLoading from "../components/common/AppLoading"
+import AppFooter from "../components/common/AppFooter"
 
 function GradePyramidPage() {
   const { user, updateUser } = useContext(UserContext)
@@ -29,80 +29,47 @@ function GradePyramidPage() {
     }
   }, [user])
 
-  const drawerWidth = 250
-
   return isLoading ? (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      direction="row"
-      sx={{ height: "100vh" }}
-    >
-      <Grid item>
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
-    </Grid>
+    <Box sx={{ display: "flex" }}>
+      <AppToolbar title="Dashboard" />
+
+      <Box
+        component="main"
+        marginTop={5}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+        }}
+      >
+        <AppLoading />
+      </Box>
+    </Box>
   ) : (
     <>
-      <CssBaseline />
-      <AppToolbar title={"Dashboard"} />
+      <Box sx={{ display: "flex" }}>
+        <AppToolbar title="Dashboard" />
 
-      <Container sx={{ display: "flex" }}>
-        <Grid
-          aria-label="mailbox folders"
-          container
-          direction={"column"}
-          sx={{ width: { lg: drawerWidth, xs: 0 } }}
-        >
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: "none", lg: "block" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-            open
-          >
-            <AppDrawer />
-          </Drawer>
-        </Grid>
-
-        <Grid
-          container
-          direction={"column"}
-          marginLeft={{ xl: -15 }}
+        <Box
+          component="main"
+          marginTop={5}
           sx={{
+            flexGrow: 1,
+            p: 3,
             width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
-          <Grid
-            container
-            direction={"row"}
-            justifyContent={"center"}
-            marginBottom={2}
-            marginTop={6}
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gutterBottom
+            paddingTop={2}
+            variant="h3"
           >
-            <Grid container direction={"column"} alignItems={"center"}>
-              <Typography
-                variant="h4"
-                fontFamily={"poppins"}
-                component="div"
-                gutterBottom
-              >
-                Grade Pyramids
-              </Typography>
+            Grade Pyramids
+          </Typography>
 
-              <SectionLegend section="gradePyramids" />
-            </Grid>
-          </Grid>
+          <SectionLegend section="gradePyramids" />
 
           <Grid
             border={1}
@@ -190,8 +157,9 @@ function GradePyramidPage() {
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Box>
+      </Box>
+      <AppFooter drawerWidth={drawerWidth} />
     </>
   )
 }

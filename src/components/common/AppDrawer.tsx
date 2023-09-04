@@ -40,13 +40,13 @@ function AppDrawer() {
 
   return (
     <div>
-      <Toolbar sx={{ color: AppColors.primary }}>
+      <Toolbar sx={{ background: "white", color: AppColors.primary }}>
         <Typography fontFamily={"poppins"} textAlign={"center"} variant={"h6"}>
           CrimpDaddy
         </Typography>
       </Toolbar>
       <Divider />
-      <List sx={{ color: AppColors.primary }}>
+      <List sx={{ background: "white", color: AppColors.primary }}>
         <ListItem
           disablePadding
           key="dashboard"
@@ -94,7 +94,7 @@ function AppDrawer() {
         </ListItem>
       </List>
       <Divider />
-      <List sx={{ color: AppColors.primary }}>
+      <List sx={{ background: "white", color: AppColors.primary }}>
         <ListItem disablePadding key="logout" onClick={handleLogout}>
           <ListItemButton>
             <ListItemIcon>
