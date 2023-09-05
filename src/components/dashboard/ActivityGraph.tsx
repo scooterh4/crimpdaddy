@@ -17,6 +17,7 @@ import { GraphColors, ThemeColors } from "../../static/styles"
 import ReactLoading from "react-loading"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
 import { UserContext } from "../../db/Context"
+import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
   propClimbingData: ClimbLog[]
@@ -298,22 +299,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   }
 
   if (isLoading) {
-    return (
-      <Grid
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-        direction="column"
-        marginTop={10}
-      >
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
-    )
+    return <AppLoading />
   }
 
   return (

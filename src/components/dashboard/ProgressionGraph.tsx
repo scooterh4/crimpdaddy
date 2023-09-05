@@ -9,18 +9,18 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../static/types"
-import { Grid, Typography, useTheme } from "@mui/material"
+import { Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
-import { GraphColors, ThemeColors } from "../../static/styles"
-import ReactLoading from "react-loading"
+import { GraphColors } from "../../static/styles"
 import { UserContext } from "../../db/Context"
 import {
   ClimbLogDocument,
   GetAllUserClimbsByType,
 } from "../../db/ClimbLogService"
 import moment, { Moment } from "moment"
+import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
   climbType: number
@@ -162,22 +162,7 @@ function MonthlyClimbsGraph({
   }
 
   if (isLoading) {
-    return (
-      <Grid
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-        direction="column"
-        marginTop={10}
-      >
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
-    )
+    return <AppLoading />
   } else if (graphData.length > 0) {
     return (
       <ResponsiveContainer aspect={graphAspectRatio}>

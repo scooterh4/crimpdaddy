@@ -10,16 +10,15 @@ function AppLoading() {
       justifyContent={"center"}
       alignItems={"center"}
       direction="row"
-      sx={{ height: "100vh" }}
+      marginTop={8}
+      sx={{ height: "100%" }}
     >
-      <Grid item>
-        <ReactLoading
-          type="spin"
-          color={ThemeColors.darkAccent}
-          height={200}
-          width={100}
-        />
-      </Grid>
+      <ReactLoading
+        type="spin"
+        color={ThemeColors.darkAccent}
+        height={200}
+        width={100}
+      />
     </Grid>
   )
 }

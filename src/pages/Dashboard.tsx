@@ -33,21 +33,22 @@ const Dashboard = () => {
   }, [user])
 
   return isLoading ? (
-    <Box sx={{ display: "flex" }}>
-      <AppToolbar title="Dashboard" />
+    <>
+      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+        <AppToolbar title="Dashboard" />
 
-      <Box
-        component="main"
-        marginTop={5}
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
-        }}
-      >
-        <AppLoading />
+        <Box
+          component="main"
+          flexDirection={"column"}
+          sx={{
+            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+          }}
+        >
+          <AppLoading />
+        </Box>
       </Box>
-    </Box>
+      <AppFooter />
+    </>
   ) : (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
