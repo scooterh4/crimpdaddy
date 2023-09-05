@@ -420,7 +420,7 @@ function LogClimbPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter drawerWidth={drawerWidth} />
+      <AppFooter />
     </>
   )
 }

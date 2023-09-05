@@ -222,7 +222,7 @@ function ProgressionPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter drawerWidth={drawerWidth} />
+      <AppFooter />
     </>
   )
 }

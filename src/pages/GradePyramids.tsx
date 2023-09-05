@@ -192,7 +192,7 @@ function GradePyramidPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter drawerWidth={drawerWidth} />
+      <AppFooter />
     </>
   )
 }

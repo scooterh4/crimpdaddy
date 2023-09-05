@@ -183,7 +183,7 @@ const Dashboard = () => {
           </Grid>
         </Box>
       </Box>
-      <AppFooter drawerWidth={drawerWidth} />
+      <AppFooter />
     </>
   )
 }
