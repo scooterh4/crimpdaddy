@@ -119,7 +119,14 @@ function MonthlyClimbsGraph({
 
     climbingData.forEach((climb) => {
       // All climbs should be in the correct date range
-      const month = moment(climb.Timestamp.toDate())
+
+      const dateToConvert = climb.Timestamp.toDate()
+
+      const month = moment(
+        `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
+          1}-${dateToConvert.getDate()}`,
+        "YYYY-MM-D"
+      )
         .format("MMM YYYY")
         .toString()
 

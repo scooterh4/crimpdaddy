@@ -70,8 +70,14 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         return
       }
 
-      const date = moment(climb.Timestamp.toDate())
-        .format("MMM D, YYYY")
+      const dateToConvert = climb.Timestamp.toDate()
+
+      const date = moment(
+        `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
+          1}-${dateToConvert.getDate()}`,
+        "YYYY-MM-DD"
+      )
+        .format("MMM DD, YYYY")
         .toString()
 
       const dateAlreadyAdded = result.find((r) => r.Date === date)
@@ -125,24 +131,30 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
 
         minTimestamp = moment(
           `${firstDayOfWeek.getFullYear()}-${firstDayOfWeek.getMonth() +
-            1}-${firstDayOfWeek.getDate()} 00:00:00`
+            1}-${firstDayOfWeek.getDate()} 00:00:00`,
+          "YYYY-MM-DD kk:mm:ss"
         ).unix()
         maxTimestamp = moment(
           `${lastDayOfWeek.getFullYear()}-${lastDayOfWeek.getMonth() +
-            1}-${lastDayOfWeek.getDate()} 23:59:59`
+            1}-${lastDayOfWeek.getDate()} 23:59:59`,
+          "YYYY-MM-DD kk:mm:ss"
         ).unix()
         break
 
       case "thisMonth":
         // the .getMonth() method returns the month in a zero-based format
         minTimestamp = moment(
-          `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`
+          `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`,
+          "YYYY-MM-DD kk:mm:ss"
         ).unix()
         maxTimestamp = moment().unix()
         break
 
       case "thisYear":
-        minTimestamp = moment(`${today.getFullYear()}-01-01 00:00:00`).unix()
+        minTimestamp = moment(
+          `${today.getFullYear()}-01-01 00:00:00`,
+          "YYYY-MM-DD kk:mm:ss"
+        ).unix()
         maxTimestamp = moment().unix()
         break
 
@@ -163,10 +175,10 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
     result.push({
       Climbs: 0,
       Attempts: 0,
-      Date: moment(`${year}-${month}-${day}`)
-        .format("MMM D, YYYY")
+      Date: moment(`${year}-${month}-${day}`, "YYYY-MM-DD")
+        .format("MMM DD, YYYY")
         .toString(),
-      Timestamp: moment(`${year}-${month}-${day}`).unix(),
+      Timestamp: moment(`${year}-${month}-${day}`, "YYYY-MM-DD").unix(),
     })
   }
 
