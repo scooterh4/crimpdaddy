@@ -104,6 +104,20 @@ function AppDrawer() {
           </ListItemButton>
         </ListItem>
       </List>
+      {user !== null && (
+        <Typography
+          fontFamily={"poppins"}
+          sx={{
+            background: "white",
+            color: AppColors.primary,
+            position: "fixed",
+            bottom: 0,
+            textAlign: "center",
+          }}
+        >
+          {user.email}
+        </Typography>
+      )}
     </div>
   )
 }
