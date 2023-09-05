@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react"
 import {
   Box,
   Button,
-  Container,
   FormControl,
   FormHelperText,
   Grid,
@@ -194,7 +193,7 @@ function LogClimbPage() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
 
         <Box

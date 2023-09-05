@@ -50,7 +50,7 @@ const Dashboard = () => {
     </Box>
   ) : (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
 
         <Box
