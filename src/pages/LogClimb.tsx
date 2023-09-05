@@ -369,6 +369,7 @@ function LogClimbPage() {
                 fontWeight={"bold"}
                 marginTop={5}
                 textAlign={"center"}
+                padding={2}
                 variant="h6"
                 sx={{ color: AppColors.info }}
               >

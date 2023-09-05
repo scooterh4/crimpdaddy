@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
-import { ThemeColors, drawerWidth } from "../static/styles"
+import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import { ClimbLog } from "../static/types"
 import { UserContext } from "../db/Context"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
@@ -75,9 +75,14 @@ function ProgressionPage() {
           >
             Progression
           </Typography>
+
+          <Grid container direction={"row"} marginBottom={2}>
+            <SectionLegend section="progression" />
+          </Grid>
+
           <Grid
             border={1}
-            borderColor={ThemeColors.darkAccent}
+            borderColor={AppColors.primary}
             borderRadius={5}
             container
             direction={"column"}
@@ -98,7 +103,7 @@ function ProgressionPage() {
                 gutterBottom
                 justifySelf={{ sm: "center", xs: "start" }}
                 paddingLeft={{ sm: 0, xs: 2 }}
-                variant="h6"
+                variant="h5"
               >
                 Bouldering
               </Typography>
@@ -112,20 +117,18 @@ function ProgressionPage() {
               </Grid>
             </Grid>
 
-            <Grid container item direction={"row"} alignItems={"center"}>
+            <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Boulder}
                 climbingData={climbingData}
                 filter={boulderProgressionFilter}
               />
             </Grid>
-
-            <SectionLegend section="progression" />
           </Grid>
 
           <Grid
             border={1}
-            borderColor={ThemeColors.darkAccent}
+            borderColor={AppColors.primary}
             borderRadius={5}
             container
             direction={"column"}
@@ -147,7 +150,7 @@ function ProgressionPage() {
                 gutterBottom
                 justifySelf={{ sm: "center", xs: "start" }}
                 paddingLeft={{ sm: 0, xs: 2 }}
-                variant="h6"
+                variant="h5"
               >
                 Lead
               </Typography>
@@ -161,20 +164,18 @@ function ProgressionPage() {
               </Grid>
             </Grid>
 
-            <Grid container item direction={"row"} alignItems={"center"}>
+            <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Lead}
                 climbingData={climbingData}
                 filter={leadProgressionFilter}
               />
             </Grid>
-
-            <SectionLegend section="progression" />
           </Grid>
 
           <Grid
             border={1}
-            borderColor={ThemeColors.darkAccent}
+            borderColor={AppColors.primary}
             borderRadius={5}
             container
             direction={"column"}
@@ -196,7 +197,7 @@ function ProgressionPage() {
                 gutterBottom
                 justifySelf={{ sm: "center", xs: "start" }}
                 paddingLeft={{ sm: 0, xs: 2 }}
-                variant="h6"
+                variant="h5"
               >
                 Top Rope
               </Typography>
@@ -210,15 +211,13 @@ function ProgressionPage() {
               </Grid>
             </Grid>
 
-            <Grid container item direction={"row"} alignItems={"center"}>
+            <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.TopRope}
                 climbingData={climbingData}
                 filter={trProgressionFilter}
               />
             </Grid>
-
-            <SectionLegend section="progression" />
           </Grid>
         </Box>
       </Box>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, Grid, Typography } from "@mui/material"
+import { Box, Button, FormControl, Grid, Typography } from "@mui/material"
 import { UserContext } from "../db/Context"
 import AppToolbar from "../components/common/AppToolbar"
 import AppFooter from "../components/common/AppFooter"
@@ -71,75 +71,26 @@ const Dashboard = () => {
           >
             Dashboard
           </Typography>
-          <Button
-            onClick={handleClimbTypeSelectorOpen}
-            size="large"
-            variant="contained"
-            sx={{
-              background: ThemeColors.darkAccent,
-              display: "flex",
-              fontFamily: "poppins",
-              justifySelf: "center",
-              ":hover": { backgroundColor: ThemeColors.darkShade },
-              marginTop: 2,
-            }}
-          >
-            Log a climb
-          </Button>
 
-          <Grid
-            container
-            direction={"column"}
-            marginTop={6}
-            padding={2}
-            border={1}
-            borderColor={AppColors.primary}
-            borderRadius={5}
-          >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"row"}
-              display={"grid"}
-              gridTemplateColumns={"1fr 1fr 1fr"}
-              gridAutoRows={"auto"}
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <Button
+              onClick={handleClimbTypeSelectorOpen}
+              size="large"
+              variant="contained"
+              sx={{
+                background: ThemeColors.darkAccent,
+                fontFamily: "poppins",
+                ":hover": { backgroundColor: ThemeColors.darkShade },
+              }}
             >
-              <Typography
-                color={ThemeColors.darkShade}
-                fontFamily={"poppins"}
-                gutterBottom
-                gridColumn={{ sm: "2", xs: "1" }}
-                justifySelf={{ sm: "center", xs: "start" }}
-                paddingLeft={{ sm: 0, xs: 2 }}
-                variant="h6"
-              >
-                Activity
-              </Typography>
-
-              <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
-                <SelectFilter
-                  dashboardSection="activity"
-                  selectedFilter={activityFilter}
-                  setFilter={setActivityFilter}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container item direction={"row"} alignItems={"center"}>
-              <ActivityGraph
-                propClimbingData={climbingData}
-                filter={activityFilter}
-              />
-            </Grid>
-
-            <SectionLegend section="activity" />
-          </Grid>
+              Log a climb
+            </Button>
+          </FormControl>
 
           <Typography
             color={ThemeColors.darkShade}
             fontFamily={"poppins"}
             gutterBottom
-            marginTop={6}
             textAlign={"center"}
             variant="h4"
           >
@@ -180,6 +131,54 @@ const Dashboard = () => {
                 />
               </Grid>
             </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction={"column"}
+            marginTop={6}
+            padding={2}
+            border={1}
+            borderColor={AppColors.primary}
+            borderRadius={5}
+          >
+            <Grid
+              alignItems={"center"}
+              container
+              direction={"row"}
+              display={"grid"}
+              gridTemplateColumns={"1fr 1fr 1fr"}
+              gridAutoRows={"auto"}
+            >
+              <Typography
+                color={ThemeColors.darkShade}
+                fontFamily={"poppins"}
+                gutterBottom
+                gridColumn={{ sm: "2", xs: "1" }}
+                justifySelf={{ sm: "center", xs: "start" }}
+                paddingLeft={{ sm: 0, xs: 2 }}
+                variant="h5"
+              >
+                Activity
+              </Typography>
+
+              <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
+                <SelectFilter
+                  dashboardSection="activity"
+                  selectedFilter={activityFilter}
+                  setFilter={setActivityFilter}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction={"row"} alignItems={"center"}>
+              <ActivityGraph
+                propClimbingData={climbingData}
+                filter={activityFilter}
+              />
+            </Grid>
+
+            <SectionLegend section="activity" />
           </Grid>
         </Box>
       </Box>
