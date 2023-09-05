@@ -20,12 +20,13 @@ export type GradeGraphProps = {
 
 function GradePyramid({ climbType, graphData }: GradeGraphProps) {
   const theme = useTheme()
-  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
-  const graphWidth = xsScreen ? 250 : 300
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+  const mdScreen = useMediaQuery(theme.breakpoints.only("md"))
+  const graphAspectRatio = lgScreenAndUp ? 4 : mdScreen ? 3 : 2
 
   if (graphData.length > 0) {
     return (
-      <ResponsiveContainer width={graphWidth} aspect={1}>
+      <ResponsiveContainer aspect={graphAspectRatio}>
         <BarChart
           layout="vertical"
           data={graphData}

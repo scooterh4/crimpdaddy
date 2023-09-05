@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import GradePyramid from "../components/dashboard/GradePyramid"
-import { ThemeColors, drawerWidth } from "../static/styles"
+import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import { ClimbGraphData } from "../static/types"
 import { UserContext } from "../db/Context"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
@@ -47,7 +47,7 @@ function GradePyramidPage() {
     </Box>
   ) : (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -69,93 +69,126 @@ function GradePyramidPage() {
             Grade Pyramids
           </Typography>
 
-          <SectionLegend section="gradePyramids" />
+          <Grid container direction={"row"} marginBottom={2}>
+            <SectionLegend section="gradePyramids" />
+          </Grid>
 
-          <Grid
-            border={1}
-            borderColor={ThemeColors.darkAccent}
-            borderRadius={5}
-            container
-            direction={"row"}
-            padding={2}
-          >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md
-              xs
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
+          <Grid container direction={"row"}>
+            {gradePyramidData.boulderData.length > 0 && (
+              <Grid
+                alignItems={"center"}
+                border={1}
+                borderColor={AppColors.primary}
+                borderRadius={5}
+                container
+                direction={"column"}
+                gridAutoRows="auto"
               >
-                Bouldering
-              </Typography>
+                <Typography
+                  fontFamily={"poppins"}
+                  gridRow={1}
+                  padding={2}
+                  variant="h5"
+                  sx={{ textAlign: "center" }}
+                >
+                  Bouldering
+                </Typography>
 
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="Boulder"
-                  graphData={gradePyramidData.boulderData}
-                />
+                <Grid
+                  container
+                  item
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  marginLeft={-5}
+                >
+                  <GradePyramid
+                    climbType="Boulder"
+                    graphData={gradePyramidData.boulderData}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+            )}
 
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md={4}
-              xs={12}
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
+            {gradePyramidData.leadData.length > 0 && (
+              <Grid
+                alignItems={"center"}
+                border={1}
+                borderColor={AppColors.primary}
+                borderRadius={5}
+                container
+                direction={"column"}
+                gridAutoRows="auto"
+                marginBottom={gradePyramidData.trData.length > 0 ? 5 : 0}
+                marginTop={gradePyramidData.boulderData.length > 0 ? 5 : 0}
               >
-                Lead
-              </Typography>
+                <Typography
+                  fontFamily={"poppins"}
+                  gridRow={1}
+                  padding={2}
+                  variant="h5"
+                  sx={{ textAlign: "center" }}
+                >
+                  Lead
+                </Typography>
 
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="Lead"
-                  graphData={gradePyramidData.leadData}
-                />
+                <Grid
+                  container
+                  item
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  marginLeft={-5}
+                >
+                  <GradePyramid
+                    climbType="Lead"
+                    graphData={gradePyramidData.leadData}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+            )}
 
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"column"}
-              gridAutoRows="auto"
-              item
-              md
-              xs
-            >
-              <Typography
-                fontFamily={"poppins"}
-                gridRow={1}
-                variant="h6"
-                sx={{ textAlign: "center" }}
+            {gradePyramidData.trData.length > 0 && (
+              <Grid
+                alignItems={"center"}
+                border={1}
+                borderColor={AppColors.primary}
+                borderRadius={5}
+                container
+                direction={"column"}
+                gridAutoRows="auto"
+                marginTop={
+                  gradePyramidData.leadData.length < 1 &&
+                  gradePyramidData.boulderData.length > 0
+                    ? 5
+                    : 0
+                }
               >
-                Top Rope
-              </Typography>
+                <Typography
+                  fontFamily={"poppins"}
+                  gridRow={1}
+                  padding={2}
+                  variant="h5"
+                  sx={{ textAlign: "center" }}
+                >
+                  Top Rope
+                </Typography>
 
-              <Grid item gridRow={2} marginLeft={-5}>
-                <GradePyramid
-                  climbType="TopRope"
-                  graphData={gradePyramidData.trData}
-                />
+                <Grid
+                  container
+                  item
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  marginLeft={-5}
+                >
+                  <GradePyramid
+                    climbType="TopRope"
+                    graphData={gradePyramidData.trData}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
+            )}
           </Grid>
         </Box>
       </Box>
