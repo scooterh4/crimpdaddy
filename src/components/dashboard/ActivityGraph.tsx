@@ -3,18 +3,16 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../static/types"
-import { Grid, useTheme } from "@mui/material"
+import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
-import { GraphColors, ThemeColors } from "../../static/styles"
-import ReactLoading from "react-loading"
+import { GraphColors } from "../../static/styles"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
 import { UserContext } from "../../db/Context"
 import AppLoading from "../common/AppLoading"
@@ -43,12 +41,10 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
-  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
-  const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
+  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
-  const graphAspectRatio =
-    lgScreenAndUp || mdScreenOnly ? 2.6 : smScreenOnly ? 1.9 : 1.1
+  const graphAspectRatio = mdScreenAndUp ? 4 : smScreenOnly ? 2 : 1.1
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
