@@ -107,6 +107,7 @@ function AppDrawer() {
       {user !== null && (
         <Typography
           fontFamily={"poppins"}
+          paddingLeft={1}
           sx={{
             background: "white",
             color: AppColors.primary,
