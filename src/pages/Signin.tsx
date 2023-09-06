@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import {
   Avatar,
@@ -16,16 +16,22 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import AppToolbar from "../components/common/AppToolbar"
 import { AppColors } from "../static/styles"
+import { UserContext } from "../components/context-api"
 
 function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+  const { updateUser } = useContext(UserContext)
 
   function Submit() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         sessionStorage.setItem("Auth Token", userCredential.user.refreshToken)
+        updateUser({
+          id: userCredential.user.uid,
+          email: userCredential.user.email ? userCredential.user.email : "",
+        })
         navigate("/dashboard")
       })
       .catch((error) => {

@@ -14,7 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { GraphColors } from "../../static/styles"
-import { UserContext } from "../../db/Context"
+import { UserContext } from "../context-api"
 import {
   ClimbLogDocument,
   GetAllUserClimbsByType,
@@ -50,7 +50,7 @@ function MonthlyClimbsGraph({
   const [gradeRange, setGradeRange] = useState<string[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
-  const { user } = useContext(UserContext)
+  // const { user } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -71,17 +71,17 @@ function MonthlyClimbsGraph({
   }, [climbingData])
 
   // need to call the db to get the users data again and resort through it
-  useEffect(() => {
-    setIsLoading(true)
-    if (user) {
-      GetAllUserClimbsByType(user.id, climbType, filter).then((data) => {
-        filterRawClimbingData(data)
-      })
-    } else {
-      console.log("ProgressionGraph error: no user data")
-      setIsLoading(false)
-    }
-  }, [filter])
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //   if (user) {
+  //     GetAllUserClimbsByType(user.id, climbType, filter).then((data) => {
+  //       filterRawClimbingData(data)
+  //     })
+  //   } else {
+  //     console.log("ProgressionGraph error: no user data")
+  //     setIsLoading(false)
+  //   }
+  // }, [filter])
 
   function setResultDates(startMoment: Moment) {
     let result: HardestClimbGraphData[] = []

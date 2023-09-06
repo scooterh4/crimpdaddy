@@ -4,32 +4,35 @@ import SectionLegend from "../components/dashboard/SectionLegend"
 import GradePyramid from "../components/dashboard/GradePyramid"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import { ClimbGraphData } from "../static/types"
-import { UserContext } from "../db/Context"
+import { UserContext, ClimbingDataContext } from "../components/context-api"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 import AppToolbar from "../components/common/AppToolbar"
 import AppLoading from "../components/common/AppLoading"
 import AppFooter from "../components/common/AppFooter"
 
 function GradePyramidPage() {
-  const { user, updateUser } = useContext(UserContext)
-  const [isLoading, setIsLoading] = useState(true)
-  const [gradePyramidData, setGradePyramidData] = useState({
-    boulderData: [] as ClimbGraphData[],
-    leadData: [] as ClimbGraphData[],
-    trData: [] as ClimbGraphData[],
-  })
+  // const { user } = useContext(UserContext)
+  const { data } = useContext(ClimbingDataContext)
+  const [isLoading, setIsLoading] = useState(false)
+  // const [gradePyramidData, setGradePyramidData] = useState({
+  //   boulderData: [] as ClimbGraphData[],
+  //   leadData: [] as ClimbGraphData[],
+  //   trData: [] as ClimbGraphData[],
+  // })
 
-  useEffect(() => {
-    if (user) {
-      // on the initial dashboard load, the progression graph needs the last 6 months
-      GetAllUserClimbs(user.id, "last6Months").then((data) => {
-        setGradePyramidData(data.gradePyramidData)
-        setIsLoading(false)
-      })
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     // on the initial dashboard load, the progression graph needs the last 6 months
+  //     GetAllUserClimbs(user.id, "last6Months").then((data) => {
+  //       setGradePyramidData(data.gradePyramidData)
+  //       setIsLoading(false)
+  //     })
+  //   }
+  // }, [user])
 
-  return isLoading ? (
+  console.log("data:", data)
+
+  return data === null || isLoading ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -100,11 +103,13 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.boulderData.length > 0 ? -5 : 0}
+                marginLeft={
+                  data.gradePyramidData.boulderData.length > 0 ? -5 : 0
+                }
               >
                 <GradePyramid
                   climbType="Boulder"
-                  graphData={gradePyramidData.boulderData}
+                  graphData={data.gradePyramidData.boulderData}
                 />
               </Grid>
             </Grid>
@@ -136,11 +141,11 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.leadData.length > 0 ? -5 : 0}
+                marginLeft={data.gradePyramidData.leadData.length > 0 ? -5 : 0}
               >
                 <GradePyramid
                   climbType="Lead"
-                  graphData={gradePyramidData.leadData}
+                  graphData={data.gradePyramidData.leadData}
                 />
               </Grid>
             </Grid>
@@ -170,11 +175,11 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.trData.length > 0 ? -5 : 0}
+                marginLeft={data.gradePyramidData.trData.length > 0 ? -5 : 0}
               >
                 <GradePyramid
                   climbType="TopRope"
-                  graphData={gradePyramidData.trData}
+                  graphData={data.gradePyramidData.trData}
                 />
               </Grid>
             </Grid>

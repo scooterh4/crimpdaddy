@@ -20,7 +20,7 @@ import {
 } from "../static/constants"
 import { useNavigate } from "react-router-dom"
 import AppToolbar from "../components/common/AppToolbar"
-import { UserContext } from "../db/Context"
+import { UserContext } from "../components/context-api"
 import {
   AppColors,
   GraphColors,
@@ -39,7 +39,7 @@ import AppFooter from "../components/common/AppFooter"
 
 function LogClimbPage() {
   const navigate = useNavigate()
-  const { user, updateUser } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [climbType, setClimbType] = useState("")
   const [gradesList, setGradesList] = useState<string[]>([])
   const [grade, setGrade] = useState("")

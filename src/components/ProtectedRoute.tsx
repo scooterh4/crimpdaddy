@@ -1,9 +1,8 @@
 import React, { useContext, useEffect } from "react"
 import { Navigate } from "react-router-dom"
-import { toast } from "react-toastify"
 import { auth } from "../firebase"
 import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
-import { UserContext } from "../db/Context"
+import { UserContext, UserContextProvider } from "./context-api"
 
 export type ProtectedRouteProps = {
   authenticationPath: string
@@ -20,7 +19,7 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
       (persistedUser) => {
         // user refreshed the page
         if (persistedUser && !user) {
-          // console.log(persistedUser.uid)
+          console.log("Protected route updating the user")
           updateUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",
@@ -35,10 +34,9 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
 
   // Normal sign in case
   if (isAuthenticated) {
+    console.log("Protected route return statment")
     return outlet
   } else {
-    // toast.error("Nice try! Please login first", { toastId: "niceTry" })
-
     return <Navigate to={{ pathname: authenticationPath }} />
   }
 }

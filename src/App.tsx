@@ -13,7 +13,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
-import { UserContextProvider } from "./db/Context"
+import { UserContextProvider } from "./components/context-api"
 
 const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
@@ -30,7 +30,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route
-            path="dashboard"
+            path="/dashboard"
             element={
               <ProtectedRoute
                 {...defaultProtectedRouteProps}
@@ -39,7 +39,7 @@ const App = () => {
             }
           />
           <Route
-            path="logClimb"
+            path="/logClimb"
             element={
               <ProtectedRoute
                 {...defaultProtectedRouteProps}
@@ -48,7 +48,7 @@ const App = () => {
             }
           />
           <Route
-            path="gradePyramids"
+            path="/gradePyramids"
             element={
               <ProtectedRoute
                 {...defaultProtectedRouteProps}
@@ -57,7 +57,7 @@ const App = () => {
             }
           />
           <Route
-            path="progression"
+            path="/progression"
             element={
               <ProtectedRoute
                 {...defaultProtectedRouteProps}

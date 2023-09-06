@@ -14,7 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../../static/styles"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
-import { UserContext } from "../../db/Context"
+import { UserContext } from "../context-api"
 import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {

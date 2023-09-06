@@ -17,7 +17,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "../../firebase"
-import { UserContext } from "../../db/Context"
+import { UserContext } from "../context-api"
 import { useNavigate } from "react-router-dom"
 
 function AppDrawer() {
