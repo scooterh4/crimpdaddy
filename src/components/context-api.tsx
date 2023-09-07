@@ -58,7 +58,7 @@ export const UserDataProvider = ({
     if (saveUser !== null) {
       if (climbingData === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
-        console.log("context calling firestore")
+        console.log("FIRESTORE", "context calling firestore")
         GetAllUserClimbs(saveUser.id, "thisWeek").then((res) => {
           setData(res)
           // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
@@ -71,7 +71,8 @@ export const UserDataProvider = ({
           setData(persistentData)
         } else {
           console.log(
-            "!! Odd case where sessionData is null and climbingData is not null"
+            "WARNING!",
+            "Odd case where sessionData is null and climbingData is not null"
           )
         }
       }

@@ -37,7 +37,7 @@ function ProgressionPage() {
   // }, [user])
 
   console.log("climbingData:", climbingData)
-  return climbingData === null || isLoading ? (
+  return climbingData === null ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />

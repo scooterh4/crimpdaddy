@@ -119,16 +119,25 @@ function MonthlyClimbsGraph({
 
     climbingData.forEach((climb) => {
       // All climbs should be in the correct date range
+      let month = ""
 
-      const dateToConvert = climb.Timestamp.toDate()
+      try {
+        const dateToConvert = climb.Timestamp.toDate()
 
-      const month = moment(
-        `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
-          1}-${dateToConvert.getDate()}`,
-        "YYYY-MM-D"
-      )
-        .format("MMM YYYY")
-        .toString()
+        month = moment(
+          `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
+            1}-${dateToConvert.getDate()}`,
+          "YYYY-MM-D"
+        )
+          .format("MMM YYYY")
+          .toString()
+      } catch {
+        // *************
+        // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
+        // *************
+        month = moment(climb.Timestamp, "MMM YYYY").toString()
+        console.log("climb date", month)
+      }
 
       const climbMonthAdded = result.find((r) => r.Month === month)
 
