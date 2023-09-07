@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import {
   AppBar,
   Box,
@@ -11,14 +11,14 @@ import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./AppDrawer"
 import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
-import { UserContext } from "../context-api"
+import { useUserContext } from "../context-api"
 
 type ToolBarProps = {
   title: string
 }
 
 function ToolBar({ title }: ToolBarProps) {
-  const { user } = useContext(UserContext)
+  const user = useUserContext()
   const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
   const cursor = title === "Dashboard" ? "" : "pointer"
   const [mobileOpen, setMobileOpen] = React.useState(false)

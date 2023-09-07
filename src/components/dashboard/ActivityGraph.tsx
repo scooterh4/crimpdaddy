@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Bar,
   BarChart,
@@ -14,7 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../../static/styles"
 import { GetAllUserClimbs } from "../../db/ClimbLogService"
-import { UserContext } from "../context-api"
+import { useUserContext } from "../context-api"
 import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
@@ -35,9 +35,9 @@ export type VolumeGraphDateRange = {
 }
 
 function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
+  const { user } = useUserContext()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
-  const { user } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
@@ -67,18 +67,27 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         return
       }
 
-      const dateToConvert = climb.Timestamp.toDate()
+      let date = ""
 
-      const date = moment(
-        `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
-          1}-${dateToConvert.getDate()}`,
-        "YYYY-MM-DD"
-      )
-        .format("MMM DD, YYYY")
-        .toString()
+      try {
+        const dateToConvert = climb.Timestamp.toDate()
+
+        date = moment(
+          `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
+            1}-${dateToConvert.getDate()}`,
+          "YYYY-MM-DD"
+        )
+          .format("MMM DD, YYYY")
+          .toString()
+      } catch {
+        // *************
+        // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
+        // *************
+        date = moment(climb.Timestamp, "MMM DD, YYYY").toString()
+        console.log("climb date", date)
+      }
 
       const dateAlreadyAdded = result.find((r) => r.Date === date)
-
       if (dateAlreadyAdded) {
         if (climb.Tick === "Attempt") {
           dateAlreadyAdded.Attempts += climb.Count

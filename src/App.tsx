@@ -13,7 +13,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
-import { UserContextProvider } from "./components/context-api"
+import { UserDataProvider } from "./components/context-api"
 
 const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
@@ -21,7 +21,7 @@ const App = () => {
   }
 
   return (
-    <UserContextProvider>
+    <UserDataProvider>
       <CssBaseline />
       <ToastContainer position="top-center" />
       <Router>
@@ -67,7 +67,7 @@ const App = () => {
           />
         </Routes>
       </Router>
-    </UserContextProvider>
+    </UserDataProvider>
   )
 }
 

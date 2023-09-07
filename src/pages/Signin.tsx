@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import {
   Avatar,
@@ -16,13 +16,13 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import AppToolbar from "../components/common/AppToolbar"
 import { AppColors } from "../static/styles"
-import { UserContext } from "../components/context-api"
+import { useUserContext } from "../components/context-api"
 
 function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-  const { updateUser } = useContext(UserContext)
+  const { updateUser } = useUserContext()
 
   function Submit() {
     signInWithEmailAndPassword(auth, email, password)

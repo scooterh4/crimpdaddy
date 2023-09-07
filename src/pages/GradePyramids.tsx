@@ -1,18 +1,24 @@
 import { Box, Grid, Typography } from "@mui/material"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import GradePyramid from "../components/dashboard/GradePyramid"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import { ClimbGraphData } from "../static/types"
-import { UserContext, ClimbingDataContext } from "../components/context-api"
-import { GetAllUserClimbs } from "../db/ClimbLogService"
+import { useUserContext } from "../components/context-api"
 import AppToolbar from "../components/common/AppToolbar"
 import AppLoading from "../components/common/AppLoading"
 import AppFooter from "../components/common/AppFooter"
 
 function GradePyramidPage() {
   // const { user } = useContext(UserContext)
-  const { data } = useContext(ClimbingDataContext)
+  const { climbingData } = useUserContext()
+  const gradePyramidData = climbingData
+    ? climbingData.gradePyramidData
+    : {
+        boulderData: [] as ClimbGraphData[],
+        leadData: [] as ClimbGraphData[],
+        trData: [] as ClimbGraphData[],
+      }
   const [isLoading, setIsLoading] = useState(false)
   // const [gradePyramidData, setGradePyramidData] = useState({
   //   boulderData: [] as ClimbGraphData[],
@@ -30,9 +36,9 @@ function GradePyramidPage() {
   //   }
   // }, [user])
 
-  console.log("data:", data)
+  console.log("data:", gradePyramidData)
 
-  return data === null || isLoading ? (
+  return !gradePyramidData || isLoading ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -103,13 +109,11 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={
-                  data.gradePyramidData.boulderData.length > 0 ? -5 : 0
-                }
+                marginLeft={gradePyramidData.boulderData.length > 0 ? -5 : 0}
               >
                 <GradePyramid
                   climbType="Boulder"
-                  graphData={data.gradePyramidData.boulderData}
+                  graphData={gradePyramidData.boulderData}
                 />
               </Grid>
             </Grid>
@@ -141,11 +145,11 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={data.gradePyramidData.leadData.length > 0 ? -5 : 0}
+                marginLeft={gradePyramidData.leadData.length > 0 ? -5 : 0}
               >
                 <GradePyramid
                   climbType="Lead"
-                  graphData={data.gradePyramidData.leadData}
+                  graphData={gradePyramidData.leadData}
                 />
               </Grid>
             </Grid>
@@ -175,11 +179,11 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={data.gradePyramidData.trData.length > 0 ? -5 : 0}
+                marginLeft={gradePyramidData.trData.length > 0 ? -5 : 0}
               >
                 <GradePyramid
                   climbType="TopRope"
-                  graphData={data.gradePyramidData.trData}
+                  graphData={gradePyramidData.trData}
                 />
               </Grid>
             </Grid>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import {
   Divider,
   List,
@@ -17,11 +17,11 @@ import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "../../firebase"
-import { UserContext } from "../context-api"
+import { useUserContext } from "../context-api"
 import { useNavigate } from "react-router-dom"
 
 function AppDrawer() {
-  const { user, updateUser } = useContext(UserContext)
+  const { user, updateUser, updateData } = useUserContext()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -30,6 +30,7 @@ function AppDrawer() {
         .then(() => {
           sessionStorage.removeItem("Auth Token")
           updateUser(null)
+          updateData(null)
           toast.success("Goodbye!", { toastId: "logoutSuccess" })
         })
         .catch((error) => {
@@ -104,7 +105,7 @@ function AppDrawer() {
           </ListItemButton>
         </ListItem>
       </List>
-      {user !== null && (
+      {user && (
         <Typography
           fontFamily={"poppins"}
           paddingLeft={1}
@@ -116,7 +117,7 @@ function AppDrawer() {
             textAlign: "center",
           }}
         >
-          {user.email}
+          {user.email ? user.email : ""}
         </Typography>
       )}
     </div>

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import { auth } from "../firebase"
-import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
-import { UserContext, UserContextProvider } from "./context-api"
+import { Unsubscribe, getAuth, onAuthStateChanged } from "firebase/auth"
+import { useUserContext } from "./context-api"
 
 export type ProtectedRouteProps = {
   authenticationPath: string
@@ -11,7 +11,7 @@ export type ProtectedRouteProps = {
 
 function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
-  const { user, updateUser } = useContext(UserContext)
+  const { user, updateUser } = useUserContext()
 
   useEffect(() => {
     const subscriber: Unsubscribe = onAuthStateChanged(
@@ -19,10 +19,12 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
       (persistedUser) => {
         // user refreshed the page
         if (persistedUser && !user) {
+          console.log("Protected route resetting the user")
           updateUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",
           })
+          return outlet
         }
       }
     )

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
 import { Box, Button, FormControl, Grid, Typography } from "@mui/material"
-import { UserContext, ClimbingDataContext } from "../components/context-api"
+import { useUserContext } from "../components/context-api"
 import AppToolbar from "../components/common/AppToolbar"
 import AppFooter from "../components/common/AppFooter"
 import { ClimbLog } from "../static/types"
@@ -15,10 +15,10 @@ import AppLoading from "../components/common/AppLoading"
 import { GetAllUserClimbs } from "../db/ClimbLogService"
 
 const Dashboard = () => {
-  const { user } = useContext(UserContext)
-  const { data, updateData, dataTimeRange, updateDataTimeRange } = useContext(
-    ClimbingDataContext
-  )
+  const { user, climbingData } = useUserContext()
+  // const { dataTimeRange, updateDataTimeRange } = useContext(
+  //   ClimbingDataContext
+  // )
 
   // const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
   const navigate = useNavigate()
@@ -27,20 +27,24 @@ const Dashboard = () => {
   const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
 
   // we want this to run once when the user initially signs in
-  useEffect(() => {
-    if (data === null && dataTimeRange === "" && user !== null) {
-      console.log("Setting the data!")
-      GetAllUserClimbs(user.id, "last6Months").then((res) => {
-        updateData(res)
-        updateDataTimeRange("last6Months")
-      })
-      setIsLoading(false)
-    }
-  }, [])
+  // useEffect(() => {
+  //   // if (data === null && dataTimeRange === "" && user !== null) {
+  //   if (!data && user !== null && user.id) {
+  //     console.log("Setting the data!")
+  //     GetAllUserClimbs(user.id, "last6Months").then((res) => {
+  //       console.log("Getting all user data")
+  //       console.log("data", res)
+  //       onDataChange(res)
+  //       //updateDataTimeRange("last6Months")
+  //     })
+  //     setIsLoading(false)
+  //   }
+  // }, [])
 
   console.log("The Dashboard user:", user)
+  console.log("The Dashboard data:", climbingData)
 
-  return isLoading || data === null ? (
+  return !climbingData ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -120,7 +124,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="Boulder"
                   tickType="Redpoint"
-                  climbingData={data.climbingData}
+                  climbingData={climbingData.climbingData}
                 />
               </Grid>
 
@@ -128,7 +132,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="Lead"
                   tickType="Redpoint"
-                  climbingData={data.climbingData}
+                  climbingData={climbingData.climbingData}
                 />
               </Grid>
 
@@ -136,7 +140,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="TopRope"
                   tickType="Redpoint"
-                  climbingData={data.climbingData}
+                  climbingData={climbingData.climbingData}
                 />
               </Grid>
             </Grid>
@@ -182,7 +186,7 @@ const Dashboard = () => {
 
             <Grid container item direction={"row"} alignItems={"center"}>
               <ActivityGraph
-                propClimbingData={data.climbingData}
+                propClimbingData={climbingData.climbingData}
                 filter={activityFilter}
               />
             </Grid>
