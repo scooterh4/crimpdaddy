@@ -14,12 +14,11 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
   const { user, updateUser } = useContext(UserContext)
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(
+    const subscriber: Unsubscribe = onAuthStateChanged(
       auth,
       (persistedUser) => {
         // user refreshed the page
         if (persistedUser && !user) {
-          console.log("Protected route updating the user")
           updateUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",
@@ -29,12 +28,11 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
     )
 
     // Unsubscribe the listener when the component is unmounted
-    return () => unsubscribe()
+    return () => subscriber()
   }, [])
 
   // Normal sign in case
   if (isAuthenticated) {
-    console.log("Protected route return statment")
     return outlet
   } else {
     return <Navigate to={{ pathname: authenticationPath }} />
