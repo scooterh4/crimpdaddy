@@ -77,11 +77,19 @@ export type ClimbingData = {
   }
 }
 
+export enum DateFilters {
+  ThisWeek,
+  ThisMonth,
+  LastMonth,
+  Last6Months,
+  Last12Months,
+}
+
 // get all climbs for a user by type
 export const GetAllUserClimbsByType = async (
   userId: string,
   climbType: number,
-  filterRange: string
+  filter: number
 ): Promise<ClimbLogDocument[]> => {
   const rawClimbingData: ClimbLogDocument[] = []
   const type = GYM_CLIMB_TYPES[climbType]
@@ -94,34 +102,36 @@ export const GetAllUserClimbsByType = async (
 
   let minMoment = moment()
 
-  switch (filterRange) {
-    case "thisWeek":
+  switch (filter) {
+    case DateFilters.ThisWeek:
       minMoment = minMoment.subtract(7, "days")
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
-    case "thisMonth":
+    case DateFilters.ThisMonth:
       minMoment = minMoment.subtract(1, "month")
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
-    case "lastMonth":
+    case DateFilters.LastMonth:
       minMoment = minMoment.subtract(2, "months")
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
-    case "last6Months":
+    case DateFilters.Last6Months:
       minMoment = minMoment.subtract(6, "months")
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
-    case "last12Months":
+    case DateFilters.Last12Months:
       minMoment = minMoment.subtract(12, "months")
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
   }
 
   try {
+    console.log("FIRESTORE", "calling firestore")
+
     const q = query(
       collection(db, collectionPath),
       where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
@@ -142,7 +152,7 @@ export const GetAllUserClimbsByType = async (
 // get all climbs for a user
 export const GetAllUserClimbs = async (
   userId: string,
-  filterRange: string
+  filterRange: number
 ): Promise<ClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []

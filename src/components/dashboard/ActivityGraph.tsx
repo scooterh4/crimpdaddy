@@ -39,7 +39,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-
+  const { climbingData } = useUserContext()
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
@@ -48,10 +48,11 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (propClimbingData.length > 0) {
-      filterRawClimbingData(propClimbingData, "thisWeek")
+    console.log("climbingData:", climbingData)
+    if (climbingData && climbingData.climbingData.length > 0) {
+      filterRawClimbingData(climbingData.climbingData, filter)
     }
-  }, [propClimbingData])
+  }, [])
 
   function filterRawClimbingData(data: ClimbLog[], range: string): void {
     const dateRange = getDateRange(range)
@@ -108,17 +109,17 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   }
 
   // need to call the db to get the users data again and resort through it
-  useEffect(() => {
-    setIsLoading(true)
-    if (user) {
-      GetAllUserClimbs(user.id, filter).then((data) => {
-        filterRawClimbingData(data.climbingData, filter)
-      })
-    } else {
-      console.log("VolumeGraph error: no user data")
-      setIsLoading(false)
-    }
-  }, [filter])
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //   if (user) {
+  //     GetAllUserClimbs(user.id, filter).then((data) => {
+  //       filterRawClimbingData(data.climbingData, filter)
+  //     })
+  //   } else {
+  //     console.log("VolumeGraph error: no user data")
+  //     setIsLoading(false)
+  //   }
+  // }, [filter])
 
   function getDateRange(range: string): VolumeGraphDateRange {
     const today = new Date()

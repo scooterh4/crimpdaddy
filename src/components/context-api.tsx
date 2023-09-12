@@ -7,39 +7,30 @@ import React, {
   useState,
 } from "react"
 import { AppUser } from "../static/types"
-import { ClimbingData, GetAllUserClimbs } from "../db/ClimbLogService"
+import {
+  ClimbingData,
+  DateFilters,
+  GetAllUserClimbs,
+} from "../db/ClimbLogService"
 
 interface IUserContext {
   user: AppUser | null
   updateUser: (newUser: AppUser | null) => void
   climbingData: ClimbingData | null
   updateData: (newData: ClimbingData | null) => void
+  dataDateRange: number | null
+  updateDateRange: (newRange: number | null) => void
 }
-
-// interface IClimbingDataContext {
-//   data: ClimbingData | null
-//   updateData: (newUser: ClimbingData | null) => void
-//   dataTimeRange: string
-//   updateDataTimeRange: (newTimeRange: string) => void
-// }
 
 const userDefaultState: IUserContext = {
   user: null,
   updateUser: () => {},
   climbingData: null,
   updateData: () => {},
+  dataDateRange: null,
+  updateDateRange: () => {},
 }
 
-// const climbingDataDefaultState: IClimbingDataContext = {
-//   data: null,
-//   updateData: () => {},
-//   dataTimeRange: "",
-//   updateDataTimeRange: () => {},
-// }
-
-// export const ClimbingDataContext = createContext<IClimbingDataContext>(
-//   climbingDataDefaultState
-// )
 export const UserContext = createContext<IUserContext>(userDefaultState)
 
 export const UserDataProvider = ({
@@ -50,6 +41,7 @@ export const UserDataProvider = ({
   console.log("UserDataProvider rendered")
   const [user, setUser] = useState<AppUser | null>(null)
   const [climbingData, setData] = useState<ClimbingData | null>(null)
+  const [dataDateRange, setDateRange] = useState<number | null>(null)
   const sessionData = sessionStorage.getItem("climbingData")
 
   const updateUser = (saveUser: AppUser | null) => {
@@ -58,9 +50,10 @@ export const UserDataProvider = ({
     if (saveUser !== null) {
       if (climbingData === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
-        console.log("FIRESTORE", "context calling firestore")
-        GetAllUserClimbs(saveUser.id, "thisWeek").then((res) => {
+        GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
           setData(res)
+          setDateRange(DateFilters.ThisWeek)
+
           // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
           sessionStorage.setItem("climbingData", JSON.stringify(res))
         })
@@ -87,11 +80,18 @@ export const UserDataProvider = ({
       : sessionStorage.setItem("climbingData", JSON.stringify(saveData))
   }
 
+  const updateDateRange = (saveRange: number | null) => {
+    // TODO I think we'll have to make an enum to compare filter range values
+    setDateRange(saveRange)
+  }
+
   const authUserContextValue: IUserContext = {
     user,
     updateUser,
     climbingData,
     updateData,
+    dataDateRange,
+    updateDateRange,
   }
 
   return (
