@@ -13,13 +13,13 @@ import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../../static/styles"
-import { GetAllUserClimbs } from "../../db/ClimbLogService"
+import { DateFilters, GetAllUserClimbs } from "../../db/ClimbLogService"
 import { useUserContext } from "../context-api"
 import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
   propClimbingData: ClimbLog[]
-  filter: string
+  filter: number
 }
 
 export type ClimbsByDate = {
@@ -54,7 +54,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
     }
   }, [])
 
-  function filterRawClimbingData(data: ClimbLog[], range: string): void {
+  function filterRawClimbingData(data: ClimbLog[], range: number): void {
     const dateRange = getDateRange(range)
     let result = setResultDates(range)
     let yAxisRange = 0
@@ -121,14 +121,14 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
   //   }
   // }, [filter])
 
-  function getDateRange(range: string): VolumeGraphDateRange {
+  function getDateRange(range: number): VolumeGraphDateRange {
     const today = new Date()
     let minTimestamp = 0
     let maxTimestamp = moment().unix()
 
     // set the date range we want the data for
     switch (range) {
-      case "thisWeek":
+      case DateFilters.ThisWeek:
         const firstDayOfWeek = new Date(
           today.setDate(today.getDate() - today.getDay())
         )
@@ -148,7 +148,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         ).unix()
         break
 
-      case "thisMonth":
+      case DateFilters.ThisMonth:
         // the .getMonth() method returns the month in a zero-based format
         minTimestamp = moment(
           `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`,
@@ -157,7 +157,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         maxTimestamp = moment().unix()
         break
 
-      case "thisYear":
+      case DateFilters.ThisYear:
         minTimestamp = moment(
           `${today.getFullYear()}-01-01 00:00:00`,
           "YYYY-MM-DD kk:mm:ss"
@@ -189,12 +189,12 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
     })
   }
 
-  function setResultDates(range: string): ClimbsByDate[] {
+  function setResultDates(range: number): ClimbsByDate[] {
     let result: ClimbsByDate[] = []
     const today = new Date()
 
     switch (range) {
-      case "thisWeek":
+      case DateFilters.ThisWeek:
         const firstDayOfWeek = new Date(
           today.setDate(today.getDate() - today.getDay())
         )
@@ -247,7 +247,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         }
         break
 
-      case "thisMonth":
+      case DateFilters.ThisMonth:
         let day = 1
         while (day <= today.getDate()) {
           pushDateToResult(
@@ -260,7 +260,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         }
         break
 
-      case "lastMonth":
+      case DateFilters.LastMonth:
         const lastDayOfLastMonth = new Date(
           today.getFullYear(),
           today.getMonth(),
@@ -279,7 +279,7 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
         }
         break
 
-      case "thisYear":
+      case DateFilters.ThisYear:
         // loop through the months
         let monthCounter = 1
         while (monthCounter <= 12) {

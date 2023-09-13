@@ -10,6 +10,7 @@ import { GYM_CLIMB_TYPES } from "../static/constants"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import AppFooter from "../components/common/AppFooter"
 import AppLoading from "../components/common/AppLoading"
+import { DateFilters } from "../db/ClimbLogService"
 
 function ProgressionPage() {
   // const user = useUserContext
@@ -17,13 +18,13 @@ function ProgressionPage() {
   //const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
-    string
-  >("last6Months")
-  const [leadProgressionFilter, setLeadProgressionFilter] = useState<string>(
-    "last6Months"
+    number
+  >(DateFilters.Last6Months)
+  const [leadProgressionFilter, setLeadProgressionFilter] = useState<number>(
+    DateFilters.Last6Months
   )
-  const [trProgressionFilter, setTrProgressionFilter] = useState<string>(
-    "last6Months"
+  const [trProgressionFilter, setTrProgressionFilter] = useState<number>(
+    DateFilters.Last6Months
   )
 
   // useEffect(() => {

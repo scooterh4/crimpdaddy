@@ -25,7 +25,7 @@ import AppLoading from "../common/AppLoading"
 export type MonthlyClimbsGraphProps = {
   climbType: number
   climbingData: ClimbLog[]
-  filter: string
+  filter: number
 }
 
 export type HardestClimbGraphData = {

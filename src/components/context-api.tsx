@@ -50,7 +50,9 @@ export const UserDataProvider = ({
     if (saveUser !== null) {
       if (climbingData === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
+        console.log("This is the userId", saveUser.id)
         GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
+          console.log("THERE BETTER BE DATA HERE:", res)
           setData(res)
           setDateRange(DateFilters.ThisWeek)
 

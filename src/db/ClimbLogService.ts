@@ -1,6 +1,5 @@
-import { db } from "../firebase"
+import { firestore } from "../firebase"
 import {
-  collection,
   doc,
   getDoc,
   addDoc,
@@ -9,6 +8,10 @@ import {
   Timestamp,
   query,
   where,
+  QueryDocumentSnapshot,
+  collection,
+  FirestoreDataConverter,
+  DocumentData,
 } from "firebase/firestore"
 import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
 import {
@@ -27,6 +30,26 @@ export type ClimbLogDocument = {
   Timestamp: Timestamp
 }
 
+const converter = <ClimbLogDocument>() => ({
+  toFirestore: (data: Partial<ClimbLogDocument>) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) =>
+    snap.data() as ClimbLogDocument,
+})
+
+// const dataPoint = <T>(collectionPath: string) =>
+//   collection(firestore, collectionPath).withConverter(converter())
+
+// const userData = {
+//   user: (userId: string, climbType: number) =>
+//     dataPoint<ClimbLogDocument>(
+//       `climbingLogs/${userId}/indoor_${
+//         climbType === 0 ? "boulder" : climbType === 1 ? "lead" : "topRope"
+//       }`
+//     ),
+// }
+
+// export { userData }
+
 // log an indoor climb
 export const LogClimb = async (climbData: ClimbLog): Promise<void> => {
   const collectionPath = `/${collectionName}/${
@@ -42,25 +65,29 @@ export const LogClimb = async (climbData: ClimbLog): Promise<void> => {
   }
 
   try {
-    const userDoc = doc(db, `/${collectionName}/${climbData.UserId}`)
+    const userDoc = doc(firestore, `/${collectionName}/${climbData.UserId}`)
 
     // Check whether the user doc exists, if not, create it
     await getDoc(userDoc).then((document) => {
       if (!document.exists()) {
-        const addUser = doc(db, `${collectionName}`, climbData.UserId)
+        const addUser = doc(firestore, `${collectionName}`, climbData.UserId)
 
         setDoc(addUser, { userId: climbData.UserId }).then(() => {
           console.log("User doc created for user: ", climbData.UserId)
 
-          addDoc(collection(db, collectionPath), newDocument).then((res) => {
-            console.log("Document written")
-          })
+          addDoc(collection(firestore, collectionPath), newDocument).then(
+            (res) => {
+              console.log("Document written")
+            }
+          )
         })
       } else {
         // user doc exists, so just add the climb
-        addDoc(collection(db, collectionPath), newDocument).then((res) => {
-          console.log("Document written")
-        })
+        addDoc(collection(firestore, collectionPath), newDocument).then(
+          (res) => {
+            console.log("Document written")
+          }
+        )
       }
     })
   } catch (error) {
@@ -81,6 +108,7 @@ export enum DateFilters {
   ThisWeek,
   ThisMonth,
   LastMonth,
+  ThisYear,
   Last6Months,
   Last12Months,
 }
@@ -130,13 +158,14 @@ export const GetAllUserClimbsByType = async (
   }
 
   try {
-    console.log("FIRESTORE", "calling firestore")
+    console.log("FIRESTORE call")
 
     const q = query(
-      collection(db, collectionPath),
+      collection(firestore, collectionPath).withConverter(converter()),
       where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
       where("Timestamp", "<=", Timestamp.fromDate(moment().toDate()))
     )
+
     const querySnapshot = await getDocs(q)
 
     querySnapshot.forEach((doc) => {

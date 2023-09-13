@@ -20,5 +20,5 @@ setPersistence(authentication, browserLocalPersistence)
   })
 
 export const auth = authentication
-export const db = getFirestore(app)
+export const firestore = getFirestore(app)
 export default app

@@ -12,7 +12,7 @@ import ActivityGraph from "../components/dashboard/ActivityGraph"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import AppLoading from "../components/common/AppLoading"
-import { GetAllUserClimbs } from "../db/ClimbLogService"
+import { DateFilters, GetAllUserClimbs } from "../db/ClimbLogService"
 
 const Dashboard = () => {
   const { user, climbingData } = useUserContext()
@@ -24,7 +24,9 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
   const [isLoading, setIsLoading] = useState(true)
-  const [activityFilter, setActivityFilter] = useState<string>("thisWeek")
+  const [activityFilter, setActivityFilter] = useState<number>(
+    DateFilters.ThisWeek
+  )
 
   // we want this to run once when the user initially signs in
   // useEffect(() => {
@@ -41,7 +43,6 @@ const Dashboard = () => {
   //   }
   // }, [])
 
-  console.log("The Dashboard user:", user)
   console.log("The Dashboard data:", climbingData)
 
   return !climbingData ? (

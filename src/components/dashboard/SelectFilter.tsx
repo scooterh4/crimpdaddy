@@ -1,14 +1,15 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import { DateFilters } from "../../db/ClimbLogService"
 
 export type SelectFilterProps = {
   dashboardSection: string
-  selectedFilter: string
-  setFilter: React.Dispatch<React.SetStateAction<string>>
+  selectedFilter: number
+  setFilter: React.Dispatch<React.SetStateAction<number>>
 }
 
 export type filterObj = {
-  value: string
+  value: number
   label: string
 }
 
@@ -18,13 +19,13 @@ function SelectFilter({
   setFilter,
 }: SelectFilterProps) {
   const activityList = [
-    { value: "thisWeek", label: "This week" },
-    { value: "thisMonth", label: "This month" },
-    { value: "lastMonth", label: "Last month" },
+    { value: DateFilters.ThisWeek, label: "This week" },
+    { value: DateFilters.ThisMonth, label: "This month" },
+    { value: DateFilters.LastMonth, label: "Last month" },
   ]
   const otherList = [
-    { value: "last6Months", label: "Last 6 months" },
-    { value: "last12Months", label: "Last 12 months" },
+    { value: DateFilters.Last6Months, label: "Last 6 months" },
+    { value: DateFilters.Last12Months, label: "Last 12 months" },
   ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
@@ -32,7 +33,7 @@ function SelectFilter({
   )
 
   useEffect(() => {
-    switch (selectedFilter) {
+    switch (dashboardSection) {
       case "activity":
         setSelectList(activityList)
         break
@@ -43,16 +44,16 @@ function SelectFilter({
         setSelectList(otherList)
         break
     }
-  }, [selectedFilter])
+  }, [])
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilter(event.target.value)
+    setFilter(parseInt(event.target.value))
   }
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
       <Select
-        defaultValue={selectedFilter}
+        defaultValue={selectedFilter.toString()}
         onChange={handleFilterChange}
         sx={{ fontFamily: "poppins" }}
       >
