@@ -10,10 +10,13 @@ import {
   where,
   QueryDocumentSnapshot,
   collection,
-  FirestoreDataConverter,
-  DocumentData,
 } from "firebase/firestore"
-import { ClimbLog, ClimbGraphData, TickTypes } from "../static/types"
+import {
+  ClimbLog,
+  ClimbGraphData,
+  TickTypes,
+  ClimbLogDocument,
+} from "../static/types"
 import {
   INDOOR_SPORT_GRADES,
   GYM_CLIMB_TYPES,
@@ -22,13 +25,6 @@ import {
 import moment from "moment"
 
 const collectionName = "climbingLogs"
-
-export type ClimbLogDocument = {
-  Grade: string
-  Tick: string
-  Count: number
-  Timestamp: Timestamp
-}
 
 const converter = <ClimbLogDocument>() => ({
   toFirestore: (data: Partial<ClimbLogDocument>) => data,
@@ -51,29 +47,30 @@ const converter = <ClimbLogDocument>() => ({
 // export { userData }
 
 // log an indoor climb
-export const LogClimb = async (climbData: ClimbLog): Promise<void> => {
-  const collectionPath = `/${collectionName}/${
-    climbData.UserId
-  }/indoor_${climbData.ClimbType[0].toLowerCase() +
+export const LogClimb = async (
+  climbData: ClimbLog,
+  userId: string
+): Promise<void> => {
+  const collectionPath = `/${collectionName}/${userId}/indoor_${climbData.ClimbType[0].toLowerCase() +
     climbData.ClimbType.slice(1)}`
 
   const newDocument: ClimbLogDocument = {
     Grade: climbData.Grade,
     Tick: climbData.Tick,
     Count: climbData.Count,
-    Timestamp: climbData.Timestamp,
+    Timestamp: Timestamp.fromMillis(climbData.UnixTime * 1000),
   }
 
   try {
-    const userDoc = doc(firestore, `/${collectionName}/${climbData.UserId}`)
+    const userDoc = doc(firestore, `/${collectionName}/${userId}`)
 
     // Check whether the user doc exists, if not, create it
     await getDoc(userDoc).then((document) => {
       if (!document.exists()) {
-        const addUser = doc(firestore, `${collectionName}`, climbData.UserId)
+        const addUser = doc(firestore, `${collectionName}`, userId)
 
-        setDoc(addUser, { userId: climbData.UserId }).then(() => {
-          console.log("User doc created for user: ", climbData.UserId)
+        setDoc(addUser, { userId: userId }).then(() => {
+          console.log("User doc created for user: ", userId)
 
           addDoc(collection(firestore, collectionPath), newDocument).then(
             (res) => {
@@ -169,6 +166,10 @@ export const GetAllUserClimbsByType = async (
     const querySnapshot = await getDocs(q)
 
     querySnapshot.forEach((doc) => {
+      // *************
+      // TODO Need to set the timestamp to an actual Unix timestamp (not a firestore timestamp)
+      // When pulling the data out of session storage it's no longer a timestamp object
+      // *************
       rawClimbingData.push(doc.data() as ClimbLogDocument)
     })
   } catch (error) {
@@ -211,8 +212,8 @@ export const GetAllUserClimbs = async (
   try {
     boulderData.forEach((log) => {
       const addDoc: ClimbLog = {
-        UserId: userId,
         ClimbType: GYM_CLIMB_TYPES[0],
+        UnixTime: log.Timestamp.seconds,
         ...log,
       }
       rawBoulderData.push(addDoc)
@@ -221,8 +222,8 @@ export const GetAllUserClimbs = async (
 
     leadData.forEach((log) => {
       const addDoc: ClimbLog = {
-        UserId: userId,
         ClimbType: GYM_CLIMB_TYPES[1],
+        UnixTime: log.Timestamp.seconds,
         ...log,
       }
       rawLeadData.push(addDoc)
@@ -231,8 +232,8 @@ export const GetAllUserClimbs = async (
 
     trData.forEach((log) => {
       const addDoc: ClimbLog = {
-        UserId: userId,
         ClimbType: GYM_CLIMB_TYPES[2],
+        UnixTime: log.Timestamp.seconds,
         ...log,
       }
       rawTrData.push(addDoc)

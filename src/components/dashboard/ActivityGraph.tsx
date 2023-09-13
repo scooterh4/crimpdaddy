@@ -62,31 +62,16 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
     data.forEach((climb) => {
       // check if the climb is within the date range first
       if (
-        climb.Timestamp.seconds < dateRange.minTimestamp ||
-        climb.Timestamp.seconds > dateRange.maxTimestamp
+        climb.UnixTime < dateRange.minTimestamp ||
+        climb.UnixTime > dateRange.maxTimestamp
       ) {
         return
       }
 
-      let date = ""
-
-      try {
-        const dateToConvert = climb.Timestamp.toDate()
-
-        date = moment(
-          `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
-            1}-${dateToConvert.getDate()}`,
-          "YYYY-MM-DD"
-        )
-          .format("MMM DD, YYYY")
-          .toString()
-      } catch {
-        // *************
-        // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
-        // *************
-        date = moment(climb.Timestamp, "MMM DD, YYYY").toString()
-        console.log("climb date", date)
-      }
+      const date = moment
+        .unix(climb.UnixTime)
+        .format("MMM DD, YYYY")
+        .toString()
 
       const dateAlreadyAdded = result.find((r) => r.Date === date)
       if (dateAlreadyAdded) {

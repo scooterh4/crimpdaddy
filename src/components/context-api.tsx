@@ -38,21 +38,17 @@ export const UserDataProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  console.log("UserDataProvider rendered")
   const [user, setUser] = useState<AppUser | null>(null)
   const [climbingData, setData] = useState<ClimbingData | null>(null)
   const [dataDateRange, setDateRange] = useState<number | null>(null)
   const sessionData = sessionStorage.getItem("climbingData")
 
   const updateUser = (saveUser: AppUser | null) => {
-    console.log("context updateUser")
     setUser(saveUser)
     if (saveUser !== null) {
       if (climbingData === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
-        console.log("This is the userId", saveUser.id)
         GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
-          console.log("THERE BETTER BE DATA HERE:", res)
           setData(res)
           setDateRange(DateFilters.ThisWeek)
 

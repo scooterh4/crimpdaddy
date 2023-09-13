@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Box,
   Button,
@@ -33,9 +33,9 @@ import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
 import { ClimbLog } from "../static/types"
-import { Timestamp } from "firebase/firestore"
 import { LogClimb } from "../db/ClimbLogService"
 import AppFooter from "../components/common/AppFooter"
+import moment from "moment"
 
 function LogClimbPage() {
   const navigate = useNavigate()
@@ -141,31 +141,29 @@ function LogClimbPage() {
       if (user) {
         // If they picked repeat or redpoint, log the climb and the attempts seperately
         const climbData: ClimbLog = {
-          UserId: user.id,
           ClimbType: climbType,
           Grade: grade,
           Tick: selectedTick,
           Count:
             selectedTick === "Attempt" ? parseInt(attemptCount.toString()) : 1,
-          Timestamp: Timestamp.now(),
+          UnixTime: moment().unix(),
         }
 
-        LogClimb(climbData)
+        LogClimb(climbData, user.id)
 
         if (
           (selectedTick === "Redpoint" || selectedTick === "Repeat") &&
           parseInt(attemptCount.toString()) > 1
         ) {
           const attemptData: ClimbLog = {
-            UserId: user.id,
             ClimbType: climbType,
             Grade: grade,
             Tick: "Attempt",
             Count: parseInt(attemptCount.toString()) - 1,
-            Timestamp: Timestamp.now(),
+            UnixTime: moment().unix(),
           }
 
-          LogClimb(attemptData)
+          LogClimb(attemptData, user.id)
         }
         console.log(user.id)
         navigate("/dashboard")

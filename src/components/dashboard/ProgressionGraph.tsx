@@ -8,17 +8,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../../static/types"
+import { ClimbLog, ClimbLogDocument } from "../../static/types"
 import { Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { GraphColors } from "../../static/styles"
 import { UserContext } from "../context-api"
-import {
-  ClimbLogDocument,
-  GetAllUserClimbsByType,
-} from "../../db/ClimbLogService"
+import { GetAllUserClimbsByType } from "../../db/ClimbLogService"
 import moment, { Moment } from "moment"
 import AppLoading from "../common/AppLoading"
 
@@ -102,11 +99,11 @@ function MonthlyClimbsGraph({
     return result
   }
 
-  function filterRawClimbingData(climbingData: ClimbLogDocument[]) {
+  function filterRawClimbingData(climbingData: ClimbLog[]) {
     // Get the first date that data is available
     const times = [
       ...climbingData.map((climb) => {
-        return climb.Timestamp.seconds
+        return climb.UnixTime
       }),
     ]
     const startTime = Math.min.apply(null, times)
@@ -119,25 +116,11 @@ function MonthlyClimbsGraph({
 
     climbingData.forEach((climb) => {
       // All climbs should be in the correct date range
-      let month = ""
 
-      try {
-        const dateToConvert = climb.Timestamp.toDate()
-
-        month = moment(
-          `${dateToConvert.getFullYear()}-${dateToConvert.getMonth() +
-            1}-${dateToConvert.getDate()}`,
-          "YYYY-MM-D"
-        )
-          .format("MMM YYYY")
-          .toString()
-      } catch {
-        // *************
-        // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
-        // *************
-        month = moment(climb.Timestamp, "MMM YYYY").toString()
-        console.log("climb date", month)
-      }
+      const month = moment
+        .unix(climb.UnixTime)
+        .format("MMM YYYY")
+        .toString()
 
       const climbMonthAdded = result.find((r) => r.Month === month)
 

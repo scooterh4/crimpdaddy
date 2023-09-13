@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react"
+import React, { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import { auth } from "../firebase"
-import { Unsubscribe, getAuth, onAuthStateChanged } from "firebase/auth"
+import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
 import { useUserContext } from "./context-api"
 
 export type ProtectedRouteProps = {
@@ -19,7 +19,6 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
       (persistedUser) => {
         // user refreshed the page
         if (persistedUser && !user) {
-          console.log("Protected route resetting the user")
           updateUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",

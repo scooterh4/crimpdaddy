@@ -5,13 +5,19 @@ export type AppUser = {
   email: string
 }
 
-export type ClimbLog = {
-  UserId: string
-  ClimbType: string
+export type ClimbLogDocument = {
   Grade: string
   Tick: string
   Count: number
   Timestamp: Timestamp
+}
+
+export type ClimbLog = {
+  ClimbType: string
+  Grade: string
+  Tick: string
+  Count: number
+  UnixTime: number
 }
 
 export type TickTypes = {
