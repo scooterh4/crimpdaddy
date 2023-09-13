@@ -1,14 +1,15 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { DateFilters } from "../../db/ClimbLogService"
+import { useUserContext } from "../context-api"
 
-export type SelectFilterProps = {
+type SelectFilterProps = {
   dashboardSection: string
   selectedFilter: number
   setFilter: React.Dispatch<React.SetStateAction<number>>
 }
 
-export type filterObj = {
+type filterObj = {
   value: number
   label: string
 }
@@ -18,6 +19,7 @@ function SelectFilter({
   selectedFilter,
   setFilter,
 }: SelectFilterProps) {
+  const { dataDateRange, updateDateRange } = useUserContext()
   const activityList = [
     { value: DateFilters.ThisWeek, label: "This week" },
     { value: DateFilters.ThisMonth, label: "This month" },
@@ -47,7 +49,14 @@ function SelectFilter({
   }, [])
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilter(parseInt(event.target.value))
+    const value = parseInt(event.target.value)
+
+    // the graph needs data that's farther back in time than the data available
+    if (!dataDateRange || value > dataDateRange) {
+      updateDateRange(value)
+    }
+
+    setFilter(value)
   }
 
   return (

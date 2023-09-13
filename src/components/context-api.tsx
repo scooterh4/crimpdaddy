@@ -50,7 +50,7 @@ export const UserDataProvider = ({
           sessionStorage.setItem(
             sessionDataKey,
             JSON.stringify({
-              timeRange: DateFilters[DateFilters.ThisWeek],
+              timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
               climbingData: res.climbingData,
               gradePyramidData: res.gradePyramidData,
             })
@@ -64,6 +64,10 @@ export const UserDataProvider = ({
             climbingData: persistentData.climbingData,
             gradePyramidData: persistentData.gradePyramidData,
           })
+          const persistentRange = Object.values(DateFilters).indexOf(
+            persistentData.timeRange
+          )
+          setDateRange(persistentRange)
         } else {
           console.log(
             "WARNING!",
@@ -82,9 +86,27 @@ export const UserDataProvider = ({
       : sessionStorage.setItem("climbingData", JSON.stringify(saveData))
   }
 
+  // after initializing, we want this to be the only place to call firestore
   const updateDateRange = (saveRange: number | null) => {
-    // TODO I think we'll have to make an enum to compare filter range values
     setDateRange(saveRange)
+    if (saveRange && user) {
+      GetAllUserClimbs(user.id, saveRange).then((res) => {
+        setData(res)
+
+        sessionStorage.setItem(
+          sessionDataKey,
+          JSON.stringify({
+            timeRange: DateFilters[saveRange],
+            climbingData: res.climbingData,
+            gradePyramidData: res.gradePyramidData,
+          })
+        )
+      })
+    } else {
+      console.log(
+        "WARNING! UpdateDateRange in context-api doesn't have both a user and a saveRange"
+      )
+    }
   }
 
   const authUserContextValue: IUserContext = {

@@ -18,7 +18,6 @@ import { useUserContext } from "../context-api"
 import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
-  propClimbingData: ClimbLog[]
   filter: number
 }
 
@@ -34,25 +33,23 @@ export type VolumeGraphDateRange = {
   maxTimestamp: number
 }
 
-function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
-  const { user } = useUserContext()
+function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
+  const { climbingData } = useUserContext()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { climbingData } = useUserContext()
+
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
-
   const graphAspectRatio = mdScreenAndUp ? 4 : smScreenOnly ? 2 : 1.1
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    console.log("climbingData:", climbingData)
     if (climbingData && climbingData.climbingData.length > 0) {
       filterRawClimbingData(climbingData.climbingData, filter)
     }
-  }, [])
+  }, [filter])
 
   function filterRawClimbingData(data: ClimbLog[], range: number): void {
     const dateRange = getDateRange(range)
@@ -92,19 +89,6 @@ function ActivityGraph({ propClimbingData, filter }: MonthlyClimbsGraphProps) {
     setGraphData(result)
     setIsLoading(false)
   }
-
-  // need to call the db to get the users data again and resort through it
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   if (user) {
-  //     GetAllUserClimbs(user.id, filter).then((data) => {
-  //       filterRawClimbingData(data.climbingData, filter)
-  //     })
-  //   } else {
-  //     console.log("VolumeGraph error: no user data")
-  //     setIsLoading(false)
-  //   }
-  // }, [filter])
 
   function getDateRange(range: number): VolumeGraphDateRange {
     const today = new Date()

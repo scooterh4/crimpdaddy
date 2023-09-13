@@ -1,49 +1,25 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
 import { Box, Button, FormControl, Grid, Typography } from "@mui/material"
 import { useUserContext } from "../components/context-api"
 import AppToolbar from "../components/common/AppToolbar"
 import AppFooter from "../components/common/AppFooter"
-import { ClimbLog } from "../static/types"
 import HardestGradeDisplay from "../components/dashboard/HardestGradeDisplay"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import ActivityGraph from "../components/dashboard/ActivityGraph"
 import SelectFilter from "../components/dashboard/SelectFilter"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import AppLoading from "../components/common/AppLoading"
-import { DateFilters, GetAllUserClimbs } from "../db/ClimbLogService"
+import { DateFilters } from "../db/ClimbLogService"
 
 const Dashboard = () => {
-  const { user, climbingData } = useUserContext()
-  // const { dataTimeRange, updateDataTimeRange } = useContext(
-  //   ClimbingDataContext
-  // )
-
-  // const [climbingData, setClimbingData] = useState<ClimbLog[]>([])
+  const { climbingData } = useUserContext()
   const navigate = useNavigate()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
-  const [isLoading, setIsLoading] = useState(true)
   const [activityFilter, setActivityFilter] = useState<number>(
     DateFilters.ThisWeek
   )
-
-  // we want this to run once when the user initially signs in
-  // useEffect(() => {
-  //   // if (data === null && dataTimeRange === "" && user !== null) {
-  //   if (!data && user !== null && user.id) {
-  //     console.log("Setting the data!")
-  //     GetAllUserClimbs(user.id, "last6Months").then((res) => {
-  //       console.log("Getting all user data")
-  //       console.log("data", res)
-  //       onDataChange(res)
-  //       //updateDataTimeRange("last6Months")
-  //     })
-  //     setIsLoading(false)
-  //   }
-  // }, [])
-
-  console.log("The Dashboard data:", climbingData)
 
   return !climbingData ? (
     <>
@@ -186,10 +162,7 @@ const Dashboard = () => {
             </Grid>
 
             <Grid container item direction={"row"} alignItems={"center"}>
-              <ActivityGraph
-                propClimbingData={climbingData.climbingData}
-                filter={activityFilter}
-              />
+              <ActivityGraph filter={activityFilter} />
             </Grid>
 
             <SectionLegend section="activity" />
