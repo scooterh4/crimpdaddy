@@ -34,3 +34,13 @@ export type ClimbGraphData = {
   Redpoint: number
   Attempts: number
 }
+
+export type SessionStorageData = {
+  timeRange: string
+  climbingData: ClimbLog[]
+  gradePyramidData: {
+    boulderData: ClimbGraphData[]
+    leadData: ClimbGraphData[]
+    trData: ClimbGraphData[]
+  }
+}

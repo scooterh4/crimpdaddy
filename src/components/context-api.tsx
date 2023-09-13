@@ -1,12 +1,5 @@
-import React, {
-  ReactNode,
-  createContext,
-  useContext,
-  useMemo,
-  useReducer,
-  useState,
-} from "react"
-import { AppUser } from "../static/types"
+import React, { createContext, useContext, useState } from "react"
+import { AppUser, SessionStorageData } from "../static/types"
 import {
   ClimbingData,
   DateFilters,
@@ -33,6 +26,8 @@ const userDefaultState: IUserContext = {
 
 export const UserContext = createContext<IUserContext>(userDefaultState)
 
+const sessionDataKey = "climbingData"
+
 export const UserDataProvider = ({
   children,
 }: {
@@ -41,7 +36,7 @@ export const UserDataProvider = ({
   const [user, setUser] = useState<AppUser | null>(null)
   const [climbingData, setData] = useState<ClimbingData | null>(null)
   const [dataDateRange, setDateRange] = useState<number | null>(null)
-  const sessionData = sessionStorage.getItem("climbingData")
+  const sessionData = sessionStorage.getItem(sessionDataKey)
 
   const updateUser = (saveUser: AppUser | null) => {
     setUser(saveUser)
@@ -52,14 +47,23 @@ export const UserDataProvider = ({
           setData(res)
           setDateRange(DateFilters.ThisWeek)
 
-          // TODO Need to set the timestamp in sessionstorage to an actual Unix timestamp (not a firestore timestamp)
-          sessionStorage.setItem("climbingData", JSON.stringify(res))
+          sessionStorage.setItem(
+            sessionDataKey,
+            JSON.stringify({
+              timeRange: DateFilters[DateFilters.ThisWeek],
+              climbingData: res.climbingData,
+              gradePyramidData: res.gradePyramidData,
+            })
+          )
         })
       } else {
         if (sessionData !== null) {
           console.log("context getting sessionData")
-          const persistentData: ClimbingData = JSON.parse(sessionData)
-          setData(persistentData)
+          const persistentData: SessionStorageData = JSON.parse(sessionData)
+          setData({
+            climbingData: persistentData.climbingData,
+            gradePyramidData: persistentData.gradePyramidData,
+          })
         } else {
           console.log(
             "WARNING!",
