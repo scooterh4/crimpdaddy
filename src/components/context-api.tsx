@@ -13,7 +13,7 @@ interface IUserContext {
   updateUser: (newUser: AppUser | null) => void
   userClimbingData: UserClimbingData | null
   clearAppData: () => void
-  addClimb: (log: ClimbLog) => void
+  addClimbLogData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
   updateDateRange: (newRange: number | null) => void
 }
@@ -23,7 +23,7 @@ const userDefaultState: IUserContext = {
   updateUser: () => {},
   userClimbingData: null,
   clearAppData: () => {},
-  addClimb: () => {},
+  addClimbLogData: () => {},
   dataDateRange: null,
   updateDateRange: () => {},
 }
@@ -89,22 +89,27 @@ export const UserDataProvider = ({
   }
 
   // used when logging a climb. Adds the doc to the climbing data instead of calling firestore again
-  const addClimb = (log: ClimbLog) => {
+  const addClimbLogData = (logsToAdd: ClimbLog[]) => {
     if (userClimbingData) {
-      let newLogData = userClimbingData.climbingLogs
-      let newGradePyramidData = userClimbingData.gradePyramidData
-
-      newLogData.push(log)
-
       console.log(
-        "Here the gradePyramidData:",
-        userClimbingData.gradePyramidData
+        "Here the userClimbingData:",
+        userClimbingData.climbingLogs.concat(logsToAdd)
       )
 
       setAppData({
-        climbingLogs: newLogData,
-        gradePyramidData: newGradePyramidData,
+        climbingLogs: userClimbingData.climbingLogs.concat(logsToAdd),
+        gradePyramidData: userClimbingData.gradePyramidData,
       })
+      sessionStorage.setItem(
+        sessionDataKey,
+        JSON.stringify({
+          timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
+          climbingData: userClimbingData.climbingLogs.concat(logsToAdd),
+          gradePyramidData: userClimbingData.gradePyramidData,
+        })
+      )
+
+      console.log("The context climbing data should be up to date")
     } else {
     }
   }
@@ -137,7 +142,7 @@ export const UserDataProvider = ({
     updateUser,
     userClimbingData,
     clearAppData,
-    addClimb,
+    addClimbLogData,
     dataDateRange,
     updateDateRange,
   }

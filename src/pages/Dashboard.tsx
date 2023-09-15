@@ -14,7 +14,7 @@ import AppLoading from "../components/common/AppLoading"
 import { DateFilters } from "../static/constants"
 
 const Dashboard = () => {
-  const { userClimbingData } = useUserContext()
+  const { userClimbingData, addClimbLogData } = useUserContext()
   const navigate = useNavigate()
   const location = useLocation()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
@@ -26,6 +26,7 @@ const Dashboard = () => {
     // if a new climb has been logged, add it to the context data
     if (location.state) {
       console.log(location.state.data)
+      addClimbLogData(location.state.data)
     }
   }, [])
 

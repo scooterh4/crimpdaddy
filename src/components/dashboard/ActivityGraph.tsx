@@ -51,6 +51,13 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
     }
   }, [filter])
 
+  useEffect(() => {
+    console.log("ActivityGraph updating climbing data")
+    if (userClimbingData && userClimbingData.climbingLogs.length > 0) {
+      filterRawClimbingData(userClimbingData.climbingLogs, filter)
+    }
+  }, [userClimbingData])
+
   function filterRawClimbingData(data: ClimbLog[], range: number): void {
     const dateRange = getDateRange(range)
     let result = setResultDates(range)
