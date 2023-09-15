@@ -11,15 +11,16 @@ import AppFooter from "../components/common/AppFooter"
 
 function GradePyramidPage() {
   // const { user } = useContext(UserContext)
-  const { climbingData } = useUserContext()
-  const gradePyramidData = climbingData
-    ? climbingData.gradePyramidData
+  const { userClimbingData } = useUserContext()
+  const gradePyramidData = userClimbingData
+    ? userClimbingData.gradePyramidData
     : {
         boulderData: [] as ClimbGraphData[],
         leadData: [] as ClimbGraphData[],
         trData: [] as ClimbGraphData[],
       }
   const [isLoading, setIsLoading] = useState(false)
+
   // const [gradePyramidData, setGradePyramidData] = useState({
   //   boulderData: [] as ClimbGraphData[],
   //   leadData: [] as ClimbGraphData[],

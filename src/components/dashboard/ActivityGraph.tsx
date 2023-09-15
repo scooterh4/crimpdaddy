@@ -8,33 +8,33 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../../static/types"
 import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
 import { GraphColors } from "../../static/styles"
-import { DateFilters, GetAllUserClimbs } from "../../db/ClimbLogService"
 import { useUserContext } from "../context-api"
 import AppLoading from "../common/AppLoading"
+import { ClimbLog } from "../../static/types"
+import { DateFilters } from "../../static/constants"
 
-export type MonthlyClimbsGraphProps = {
+type MonthlyClimbsGraphProps = {
   filter: number
 }
 
-export type ClimbsByDate = {
+type ClimbsByDate = {
   Climbs: number
   Attempts: number
   Date: string
   Timestamp: number
 }
 
-export type VolumeGraphDateRange = {
+type VolumeGraphDateRange = {
   minTimestamp: number
   maxTimestamp: number
 }
 
 function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
-  const { climbingData } = useUserContext()
+  const { userClimbingData } = useUserContext()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -46,8 +46,8 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (climbingData && climbingData.climbingData.length > 0) {
-      filterRawClimbingData(climbingData.climbingData, filter)
+    if (userClimbingData && userClimbingData.climbingLogs.length > 0) {
+      filterRawClimbingData(userClimbingData.climbingLogs, filter)
     }
   }, [filter])
 

@@ -16,13 +16,16 @@ import {
   ClimbGraphData,
   TickTypes,
   ClimbLogDocument,
+  UserClimbingData,
 } from "../static/types"
 import {
   INDOOR_SPORT_GRADES,
   GYM_CLIMB_TYPES,
   MINIMUM_DATE_FOR_DATA,
+  DateFilters,
 } from "../static/constants"
 import moment from "moment"
+import { useUserContext } from "../components/context-api"
 
 const collectionName = "climbingLogs"
 
@@ -72,42 +75,16 @@ export const LogClimb = async (
         setDoc(addUser, { userId: userId }).then(() => {
           console.log("User doc created for user: ", userId)
 
-          addDoc(collection(firestore, collectionPath), newDocument).then(
-            (res) => {
-              console.log("Document written")
-            }
-          )
+          addDoc(collection(firestore, collectionPath), newDocument)
         })
       } else {
         // user doc exists, so just add the climb
-        addDoc(collection(firestore, collectionPath), newDocument).then(
-          (res) => {
-            console.log("Document written")
-          }
-        )
+        addDoc(collection(firestore, collectionPath), newDocument)
       }
     })
   } catch (error) {
     console.log("Error logging climbing data: ", error)
   }
-}
-
-export type ClimbingData = {
-  climbingData: ClimbLog[]
-  gradePyramidData: {
-    boulderData: ClimbGraphData[]
-    leadData: ClimbGraphData[]
-    trData: ClimbGraphData[]
-  }
-}
-
-export enum DateFilters {
-  ThisWeek,
-  ThisMonth,
-  LastMonth,
-  ThisYear,
-  Last6Months,
-  Last12Months,
 }
 
 // get all climbs for a user by type
@@ -166,10 +143,6 @@ export const GetAllUserClimbsByType = async (
     const querySnapshot = await getDocs(q)
 
     querySnapshot.forEach((doc) => {
-      // *************
-      // TODO Need to set the timestamp to an actual Unix timestamp (not a firestore timestamp)
-      // When pulling the data out of session storage it's no longer a timestamp object
-      // *************
       rawClimbingData.push(doc.data() as ClimbLogDocument)
     })
   } catch (error) {
@@ -183,7 +156,7 @@ export const GetAllUserClimbsByType = async (
 export const GetAllUserClimbs = async (
   userId: string,
   filterRange: number
-): Promise<ClimbingData> => {
+): Promise<UserClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []
   const rawLeadData: ClimbLog[] = []
@@ -251,13 +224,13 @@ export const GetAllUserClimbs = async (
   }
 
   return {
-    climbingData: rawClimbingData,
+    climbingLogs: rawClimbingData,
     gradePyramidData: {
       boulderData: boulderPyramidData,
       leadData: leadPyramidData,
       trData: trPyramidData,
     },
-  } as ClimbingData
+  } as UserClimbingData
 }
 
 // -----------------

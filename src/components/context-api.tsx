@@ -1,16 +1,19 @@
 import React, { createContext, useContext, useState } from "react"
-import { AppUser, SessionStorageData } from "../static/types"
 import {
-  ClimbingData,
-  DateFilters,
-  GetAllUserClimbs,
-} from "../db/ClimbLogService"
+  AppUser,
+  ClimbLog,
+  UserClimbingData,
+  SessionStorageData,
+} from "../static/types"
+import { GetAllUserClimbs } from "../db/ClimbLogService"
+import { DateFilters, GYM_CLIMB_TYPES } from "../static/constants"
 
 interface IUserContext {
   user: AppUser | null
   updateUser: (newUser: AppUser | null) => void
-  climbingData: ClimbingData | null
-  updateData: (newData: ClimbingData | null) => void
+  userClimbingData: UserClimbingData | null
+  clearAppData: () => void
+  addClimb: (log: ClimbLog) => void
   dataDateRange: number | null
   updateDateRange: (newRange: number | null) => void
 }
@@ -18,8 +21,9 @@ interface IUserContext {
 const userDefaultState: IUserContext = {
   user: null,
   updateUser: () => {},
-  climbingData: null,
-  updateData: () => {},
+  userClimbingData: null,
+  clearAppData: () => {},
+  addClimb: () => {},
   dataDateRange: null,
   updateDateRange: () => {},
 }
@@ -34,24 +38,24 @@ export const UserDataProvider = ({
   children: React.ReactNode
 }) => {
   const [user, setUser] = useState<AppUser | null>(null)
-  const [climbingData, setData] = useState<ClimbingData | null>(null)
+  const [userClimbingData, setAppData] = useState<UserClimbingData | null>(null)
   const [dataDateRange, setDateRange] = useState<number | null>(null)
   const sessionData = sessionStorage.getItem(sessionDataKey)
 
   const updateUser = (saveUser: AppUser | null) => {
     setUser(saveUser)
     if (saveUser !== null) {
-      if (climbingData === null && sessionData === null) {
+      if (userClimbingData === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
         GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
-          setData(res)
+          setAppData(res)
           setDateRange(DateFilters.ThisWeek)
 
           sessionStorage.setItem(
             sessionDataKey,
             JSON.stringify({
               timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
-              climbingData: res.climbingData,
+              climbingData: res.climbingLogs,
               gradePyramidData: res.gradePyramidData,
             })
           )
@@ -60,8 +64,8 @@ export const UserDataProvider = ({
         if (sessionData !== null) {
           console.log("context getting sessionData")
           const persistentData: SessionStorageData = JSON.parse(sessionData)
-          setData({
-            climbingData: persistentData.climbingData,
+          setAppData({
+            climbingLogs: persistentData.climbingData,
             gradePyramidData: persistentData.gradePyramidData,
           })
           const persistentRange = Object.values(DateFilters).indexOf(
@@ -78,12 +82,31 @@ export const UserDataProvider = ({
     }
   }
 
-  // this should only be used when logging out
-  const updateData = (saveData: ClimbingData | null) => {
-    setData(saveData)
-    saveData === null
-      ? sessionStorage.removeItem("climbingData")
-      : sessionStorage.setItem("climbingData", JSON.stringify(saveData))
+  // used when logging out
+  const clearAppData = () => {
+    setAppData(null)
+    sessionStorage.removeItem("climbingData")
+  }
+
+  // used when logging a climb. Adds the doc to the climbing data instead of calling firestore again
+  const addClimb = (log: ClimbLog) => {
+    if (userClimbingData) {
+      let newLogData = userClimbingData.climbingLogs
+      let newGradePyramidData = userClimbingData.gradePyramidData
+
+      newLogData.push(log)
+
+      console.log(
+        "Here the gradePyramidData:",
+        userClimbingData.gradePyramidData
+      )
+
+      setAppData({
+        climbingLogs: newLogData,
+        gradePyramidData: newGradePyramidData,
+      })
+    } else {
+    }
   }
 
   // after initializing, we want this to be the only place to call firestore
@@ -91,13 +114,13 @@ export const UserDataProvider = ({
     setDateRange(saveRange)
     if (saveRange && user) {
       GetAllUserClimbs(user.id, saveRange).then((res) => {
-        setData(res)
+        setAppData(res)
 
         sessionStorage.setItem(
           sessionDataKey,
           JSON.stringify({
             timeRange: DateFilters[saveRange],
-            climbingData: res.climbingData,
+            climbingData: res.climbingLogs,
             gradePyramidData: res.gradePyramidData,
           })
         )
@@ -112,8 +135,9 @@ export const UserDataProvider = ({
   const authUserContextValue: IUserContext = {
     user,
     updateUser,
-    climbingData,
-    updateData,
+    userClimbingData,
+    clearAppData,
+    addClimb,
     dataDateRange,
     updateDateRange,
   }
@@ -126,67 +150,3 @@ export const UserDataProvider = ({
 }
 
 export const useUserContext = () => useContext(UserContext)
-
-// type State = {
-//   user: AppUser | null
-//   climbingData: ClimbingData
-// }
-
-// type API = {
-//   onUserChange: (user: AppUser | null) => void
-//   onDataChange: (climbingData: ClimbingData) => void
-// }
-
-// export const UserContext = createContext<State["user"]>({} as State["user"])
-// export const ClimbingDataContext = createContext<State["climbingData"]>(
-//   {} as State["climbingData"]
-// )
-// const UserAPIContext = createContext<API>({} as API)
-
-// type Actions =
-//   | { type: "updateUser"; user: AppUser | null }
-//   | { type: "updateData"; climbingData: ClimbingData }
-
-// const reducer = (state: State, action: Actions): State => {
-//   switch (action.type) {
-//     case "updateUser":
-//       return { ...state, user: action.user }
-//     case "updateData":
-//       return { ...state, climbingData: action.climbingData }
-//   }
-// }
-
-// export const UserDataProvider = ({ children }: { children: ReactNode }) => {
-//   const [state, dispatch] = useReducer(reducer, {} as State)
-
-//   const api = useMemo(() => {
-//     const onSave = () => {
-//       // send the request to the backend here
-//     }
-
-//     const onUserChange = (user: AppUser | null) => {
-//       console.log("UserDataProvider updating user:", user)
-//       dispatch({ type: "updateUser", user })
-//     }
-
-//     const onDataChange = (climbingData: ClimbingData) => {
-//       dispatch({ type: "updateData", climbingData })
-//     }
-
-//     return { onSave, onUserChange, onDataChange }
-//   }, [])
-
-//   return (
-//     <UserAPIContext.Provider value={api}>
-//       <UserContext.Provider value={state.user}>
-//         <ClimbingDataContext.Provider value={state.climbingData}>
-//           {children}
-//         </ClimbingDataContext.Provider>
-//       </UserContext.Provider>
-//     </UserAPIContext.Provider>
-//   )
-// }
-
-// export const useUserAPI = () => useContext(UserAPIContext)
-// export const useUserContext = () => useContext(UserContext)
-// export const useClimbingDataContext = () => useContext(ClimbingDataContext)

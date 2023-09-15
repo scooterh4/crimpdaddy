@@ -5,6 +5,15 @@ export type AppUser = {
   email: string
 }
 
+export type UserClimbingData = {
+  climbingLogs: ClimbLog[]
+  gradePyramidData: {
+    boulderData: ClimbGraphData[]
+    leadData: ClimbGraphData[]
+    trData: ClimbGraphData[]
+  }
+}
+
 export type ClimbLogDocument = {
   Grade: string
   Tick: string

@@ -18,7 +18,7 @@ import {
   INDOOR_SPORT_GRADES,
   TICK_TYPES,
 } from "../static/constants"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useNavigation } from "react-router-dom"
 import AppToolbar from "../components/common/AppToolbar"
 import { useUserContext } from "../components/context-api"
 import {
@@ -138,6 +138,7 @@ function LogClimbPage() {
 
   function submitForm() {
     if (!formHasError()) {
+      let logData: ClimbLog[] = []
       if (user) {
         // If they picked repeat or redpoint, log the climb and the attempts seperately
         const climbData: ClimbLog = {
@@ -149,6 +150,7 @@ function LogClimbPage() {
           UnixTime: moment().unix(),
         }
 
+        logData.push(climbData)
         LogClimb(climbData, user.id)
 
         if (
@@ -163,14 +165,17 @@ function LogClimbPage() {
             UnixTime: moment().unix(),
           }
 
+          logData.push(attemptData)
           LogClimb(attemptData, user.id)
         }
-        console.log(user.id)
-        navigate("/dashboard")
+        navigate("/dashboard", {
+          state: {
+            data: logData,
+          },
+        })
       }
     } else {
-      console.log("Error!")
-      // navigate("/dashboard")
+      console.log("LogClimb formHasError")
     }
   }
 

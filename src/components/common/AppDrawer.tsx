@@ -21,7 +21,7 @@ import { useUserContext } from "../context-api"
 import { useNavigate } from "react-router-dom"
 
 function AppDrawer() {
-  const { user, updateUser, updateData } = useUserContext()
+  const { user, updateUser, clearAppData } = useUserContext()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -30,7 +30,7 @@ function AppDrawer() {
         .then(() => {
           sessionStorage.removeItem("Auth Token")
           updateUser(null)
-          updateData(null)
+          clearAppData()
           toast.success("Goodbye!", { toastId: "logoutSuccess" })
         })
         .catch((error) => {
