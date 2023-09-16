@@ -37,7 +37,6 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
   const { userClimbingLogs } = useUserContext()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
@@ -46,7 +45,7 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (userClimbingLogs && userClimbingLogs.length > 0) {
+    if (userClimbingLogs) {
       filterRawClimbingData(userClimbingLogs, filter)
     }
   }, [filter])
@@ -93,7 +92,6 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
 
     setGraphMaxRange(yAxisRange + 2 < 9 ? 9 : yAxisRange + 2)
     setGraphData(result)
-    setIsLoading(false)
   }
 
   function getDateRange(range: number): VolumeGraphDateRange {
@@ -279,7 +277,7 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
     return result
   }
 
-  if (isLoading) {
+  if (!graphData) {
     return <AppLoading />
   }
 
