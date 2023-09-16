@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
 import { useUserContext } from "../components/context-api"
@@ -11,7 +11,7 @@ import AppFooter from "../components/common/AppFooter"
 import AppLoading from "../components/common/AppLoading"
 
 function ProgressionPage() {
-  const { userClimbingLogs } = useUserContext()
+  const { userClimbingLogs, dataDateRange, updateDateRange } = useUserContext()
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
     number
   >(DateFilters.Last6Months)
@@ -22,7 +22,11 @@ function ProgressionPage() {
     DateFilters.Last6Months
   )
 
-  console.log("climbingData:", userClimbingLogs)
+  useEffect(() => {
+    if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
+      updateDateRange(DateFilters.Last6Months)
+    }
+  }, [])
 
   return userClimbingLogs === null ? (
     <>
