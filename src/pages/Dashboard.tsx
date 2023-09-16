@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { useLocation, useNavigate, useNavigation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Box, Button, FormControl, Grid, Typography } from "@mui/material"
 import { useUserContext } from "../components/context-api"
 import AppToolbar from "../components/common/AppToolbar"
@@ -14,7 +14,7 @@ import AppLoading from "../components/common/AppLoading"
 import { DateFilters } from "../static/constants"
 
 const Dashboard = () => {
-  const { userClimbingData, addClimbLogData } = useUserContext()
+  const { userClimbingLogs, addClimbLogData } = useUserContext()
   const navigate = useNavigate()
   const location = useLocation()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
@@ -25,12 +25,11 @@ const Dashboard = () => {
   useEffect(() => {
     // if a new climb has been logged, add it to the context data
     if (location.state) {
-      console.log(location.state.data)
       addClimbLogData(location.state.data)
     }
   }, [])
 
-  return !userClimbingData ? (
+  return !userClimbingLogs ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -110,7 +109,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="Boulder"
                   tickType="Redpoint"
-                  climbingData={userClimbingData.climbingLogs}
+                  climbingData={userClimbingLogs}
                 />
               </Grid>
 
@@ -118,7 +117,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="Lead"
                   tickType="Redpoint"
-                  climbingData={userClimbingData.climbingLogs}
+                  climbingData={userClimbingLogs}
                 />
               </Grid>
 
@@ -126,7 +125,7 @@ const Dashboard = () => {
                 <HardestGradeDisplay
                   climbType="TopRope"
                   tickType="Redpoint"
-                  climbingData={userClimbingData.climbingLogs}
+                  climbingData={userClimbingLogs}
                 />
               </Grid>
             </Grid>

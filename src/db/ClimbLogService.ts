@@ -25,7 +25,6 @@ import {
   DateFilters,
 } from "../static/constants"
 import moment from "moment"
-import { useUserContext } from "../components/context-api"
 
 const collectionName = "climbingLogs"
 
@@ -236,7 +235,7 @@ export const GetAllUserClimbs = async (
 // -----------------
 // Helper functions
 // -----------------
-function formatClimbingData(rawData: ClimbLog[], climbType: number) {
+export function formatClimbingData(rawData: ClimbLog[], climbType: number) {
   const gradeAttemptMap = new Map<string, TickTypes>()
 
   rawData.forEach((climb) => {
@@ -262,7 +261,7 @@ function formatClimbingData(rawData: ClimbLog[], climbType: number) {
   return graphData
 }
 
-function addGradeData(
+export function addGradeData(
   climb: ClimbLog,
   gradeAttemptMap: Map<string, TickTypes>
 ) {
@@ -294,7 +293,7 @@ function addGradeData(
   gradeAttemptMap.set(climb.Grade, ticks)
 }
 
-function assembleGraphData(
+export function assembleGraphData(
   gradesArray: string[],
   gradeAttemptMap: Map<string, TickTypes>
 ): ClimbGraphData[] {

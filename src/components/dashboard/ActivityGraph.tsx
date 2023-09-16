@@ -34,7 +34,7 @@ type VolumeGraphDateRange = {
 }
 
 function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
-  const { userClimbingData } = useUserContext()
+  const { userClimbingLogs } = useUserContext()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -46,17 +46,16 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (userClimbingData && userClimbingData.climbingLogs.length > 0) {
-      filterRawClimbingData(userClimbingData.climbingLogs, filter)
+    if (userClimbingLogs && userClimbingLogs.length > 0) {
+      filterRawClimbingData(userClimbingLogs, filter)
     }
   }, [filter])
 
   useEffect(() => {
-    console.log("ActivityGraph updating climbing data")
-    if (userClimbingData && userClimbingData.climbingLogs.length > 0) {
-      filterRawClimbingData(userClimbingData.climbingLogs, filter)
+    if (userClimbingLogs && userClimbingLogs.length > 0) {
+      filterRawClimbingData(userClimbingLogs, filter)
     }
-  }, [userClimbingData])
+  }, [userClimbingLogs])
 
   function filterRawClimbingData(data: ClimbLog[], range: number): void {
     const dateRange = getDateRange(range)

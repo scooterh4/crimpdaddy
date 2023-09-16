@@ -1,45 +1,23 @@
 import { Box, Grid, Typography } from "@mui/material"
-import React, { useState } from "react"
+import React from "react"
 import SectionLegend from "../components/dashboard/SectionLegend"
 import GradePyramid from "../components/dashboard/GradePyramid"
 import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
-import { ClimbGraphData } from "../static/types"
 import { useUserContext } from "../components/context-api"
 import AppToolbar from "../components/common/AppToolbar"
 import AppLoading from "../components/common/AppLoading"
 import AppFooter from "../components/common/AppFooter"
+import { GYM_CLIMB_TYPES } from "../static/constants"
 
 function GradePyramidPage() {
-  // const { user } = useContext(UserContext)
-  const { userClimbingData } = useUserContext()
-  const gradePyramidData = userClimbingData
-    ? userClimbingData.gradePyramidData
-    : {
-        boulderData: [] as ClimbGraphData[],
-        leadData: [] as ClimbGraphData[],
-        trData: [] as ClimbGraphData[],
-      }
-  const [isLoading, setIsLoading] = useState(false)
+  const {
+    userClimbingLogs,
+    userBoulderGradePyramidData,
+    userLeadGradePyramidData,
+    userTrGradePyramidData,
+  } = useUserContext()
 
-  // const [gradePyramidData, setGradePyramidData] = useState({
-  //   boulderData: [] as ClimbGraphData[],
-  //   leadData: [] as ClimbGraphData[],
-  //   trData: [] as ClimbGraphData[],
-  // })
-
-  // useEffect(() => {
-  //   if (user) {
-  //     // on the initial dashboard load, the progression graph needs the last 6 months
-  //     GetAllUserClimbs(user.id, "last6Months").then((data) => {
-  //       setGradePyramidData(data.gradePyramidData)
-  //       setIsLoading(false)
-  //     })
-  //   }
-  // }, [user])
-
-  console.log("data:", gradePyramidData)
-
-  return !gradePyramidData || isLoading ? (
+  return !userClimbingLogs ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -110,12 +88,15 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.boulderData.length > 0 ? -5 : 0}
+                marginLeft={
+                  userBoulderGradePyramidData
+                    ? userBoulderGradePyramidData.length > 0
+                      ? -5
+                      : 0
+                    : 0
+                }
               >
-                <GradePyramid
-                  climbType="Boulder"
-                  graphData={gradePyramidData.boulderData}
-                />
+                <GradePyramid climbType={GYM_CLIMB_TYPES.Boulder} />
               </Grid>
             </Grid>
 
@@ -146,12 +127,15 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.leadData.length > 0 ? -5 : 0}
+                marginLeft={
+                  userLeadGradePyramidData
+                    ? userLeadGradePyramidData.length > 0
+                      ? -5
+                      : 0
+                    : 0
+                }
               >
-                <GradePyramid
-                  climbType="Lead"
-                  graphData={gradePyramidData.leadData}
-                />
+                <GradePyramid climbType={GYM_CLIMB_TYPES.Lead} />
               </Grid>
             </Grid>
 
@@ -180,12 +164,15 @@ function GradePyramidPage() {
                 direction={"row"}
                 alignItems={"center"}
                 justifyContent={"center"}
-                marginLeft={gradePyramidData.trData.length > 0 ? -5 : 0}
+                marginLeft={
+                  userTrGradePyramidData
+                    ? userTrGradePyramidData.length > 0
+                      ? -5
+                      : 0
+                    : 0
+                }
               >
-                <GradePyramid
-                  climbType="TopRope"
-                  graphData={gradePyramidData.trData}
-                />
+                <GradePyramid climbType={GYM_CLIMB_TYPES.TopRope} />
               </Grid>
             </Grid>
           </Grid>

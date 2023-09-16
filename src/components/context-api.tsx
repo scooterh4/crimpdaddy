@@ -2,16 +2,19 @@ import React, { createContext, useContext, useState } from "react"
 import {
   AppUser,
   ClimbLog,
-  UserClimbingData,
   SessionStorageData,
+  ClimbGraphData,
 } from "../static/types"
-import { GetAllUserClimbs } from "../db/ClimbLogService"
+import { GetAllUserClimbs, formatClimbingData } from "../db/ClimbLogService"
 import { DateFilters, GYM_CLIMB_TYPES } from "../static/constants"
 
 interface IUserContext {
   user: AppUser | null
   updateUser: (newUser: AppUser | null) => void
-  userClimbingData: UserClimbingData | null
+  userClimbingLogs: ClimbLog[] | null
+  userBoulderGradePyramidData: ClimbGraphData[] | null
+  userLeadGradePyramidData: ClimbGraphData[] | null
+  userTrGradePyramidData: ClimbGraphData[] | null
   clearAppData: () => void
   addClimbLogData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
@@ -21,7 +24,10 @@ interface IUserContext {
 const userDefaultState: IUserContext = {
   user: null,
   updateUser: () => {},
-  userClimbingData: null,
+  userClimbingLogs: null,
+  userBoulderGradePyramidData: null,
+  userLeadGradePyramidData: null,
+  userTrGradePyramidData: null,
   clearAppData: () => {},
   addClimbLogData: () => {},
   dataDateRange: null,
@@ -38,18 +44,35 @@ export const UserDataProvider = ({
   children: React.ReactNode
 }) => {
   const [user, setUser] = useState<AppUser | null>(null)
-  const [userClimbingData, setAppData] = useState<UserClimbingData | null>(null)
+  const [userClimbingLogs, setUserClimbingLogs] = useState<ClimbLog[] | null>(
+    null
+  )
+  const [
+    userBoulderGradePyramidData,
+    setUserBoulderGradePyramidData,
+  ] = useState<ClimbGraphData[] | null>(null)
+  const [userLeadGradePyramidData, setUserLeadGradePyramidData] = useState<
+    ClimbGraphData[] | null
+  >(null)
+  const [userTrGradePyramidData, setUserTrGradePyramidData] = useState<
+    ClimbGraphData[] | null
+  >(null)
   const [dataDateRange, setDateRange] = useState<number | null>(null)
   const sessionData = sessionStorage.getItem(sessionDataKey)
 
   const updateUser = (saveUser: AppUser | null) => {
     setUser(saveUser)
     if (saveUser !== null) {
-      if (userClimbingData === null && sessionData === null) {
+      if (userClimbingLogs === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
         GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
-          setAppData(res)
+          setUserClimbingLogs(res.climbingLogs)
           setDateRange(DateFilters.ThisWeek)
+          updateGradePyramidData(
+            res.gradePyramidData.boulderData,
+            res.gradePyramidData.leadData,
+            res.gradePyramidData.trData
+          )
 
           sessionStorage.setItem(
             sessionDataKey,
@@ -64,14 +87,16 @@ export const UserDataProvider = ({
         if (sessionData !== null) {
           console.log("context getting sessionData")
           const persistentData: SessionStorageData = JSON.parse(sessionData)
-          setAppData({
-            climbingLogs: persistentData.climbingData,
-            gradePyramidData: persistentData.gradePyramidData,
-          })
+          setUserClimbingLogs(persistentData.climbingData)
           const persistentRange = Object.values(DateFilters).indexOf(
             persistentData.timeRange
           )
           setDateRange(persistentRange)
+          updateGradePyramidData(
+            persistentData.gradePyramidData.boulderData,
+            persistentData.gradePyramidData.leadData,
+            persistentData.gradePyramidData.trData
+          )
         } else {
           console.log(
             "WARNING!",
@@ -84,34 +109,39 @@ export const UserDataProvider = ({
 
   // used when logging out
   const clearAppData = () => {
-    setAppData(null)
+    setUserClimbingLogs(null)
+    setUserBoulderGradePyramidData(null)
+    setUserLeadGradePyramidData(null)
+    setUserTrGradePyramidData(null)
     sessionStorage.removeItem("climbingData")
   }
 
   // used when logging a climb. Adds the doc to the climbing data instead of calling firestore again
   const addClimbLogData = (logsToAdd: ClimbLog[]) => {
-    if (userClimbingData) {
-      console.log(
-        "Here the userClimbingData:",
-        userClimbingData.climbingLogs.concat(logsToAdd)
-      )
+    setUserClimbingLogs(
+      userClimbingLogs ? userClimbingLogs.concat(logsToAdd) : logsToAdd
+    )
 
-      setAppData({
-        climbingLogs: userClimbingData.climbingLogs.concat(logsToAdd),
-        gradePyramidData: userClimbingData.gradePyramidData,
+    updateGradePyramidDataFromLogs(
+      userClimbingLogs ? userClimbingLogs.concat(logsToAdd) : logsToAdd
+    )
+
+    sessionStorage.setItem(
+      sessionDataKey,
+      JSON.stringify({
+        timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
+        climbingData: userClimbingLogs
+          ? userClimbingLogs.concat(logsToAdd)
+          : logsToAdd,
+        gradePyramidData: {
+          boulderData: userBoulderGradePyramidData,
+          leadData: userLeadGradePyramidData,
+          trData: userTrGradePyramidData,
+        },
       })
-      sessionStorage.setItem(
-        sessionDataKey,
-        JSON.stringify({
-          timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
-          climbingData: userClimbingData.climbingLogs.concat(logsToAdd),
-          gradePyramidData: userClimbingData.gradePyramidData,
-        })
-      )
+    )
 
-      console.log("The context climbing data should be up to date")
-    } else {
-    }
+    console.log("The context climbing data should be up to date")
   }
 
   // after initializing, we want this to be the only place to call firestore
@@ -119,7 +149,10 @@ export const UserDataProvider = ({
     setDateRange(saveRange)
     if (saveRange && user) {
       GetAllUserClimbs(user.id, saveRange).then((res) => {
-        setAppData(res)
+        setUserClimbingLogs(res.climbingLogs)
+        setUserBoulderGradePyramidData(res.gradePyramidData.boulderData)
+        setUserLeadGradePyramidData(res.gradePyramidData.leadData)
+        setUserTrGradePyramidData(res.gradePyramidData.trData)
 
         sessionStorage.setItem(
           sessionDataKey,
@@ -137,10 +170,54 @@ export const UserDataProvider = ({
     }
   }
 
+  const updateGradePyramidData = (
+    boulderData: ClimbGraphData[],
+    leadData: ClimbGraphData[],
+    trData: ClimbGraphData[]
+  ) => {
+    setUserBoulderGradePyramidData(boulderData)
+    setUserLeadGradePyramidData(leadData)
+    setUserTrGradePyramidData(trData)
+  }
+
+  // private function in the context
+  function updateGradePyramidDataFromLogs(userClimbingLogs: ClimbLog[]) {
+    console.log("updateGradePyramidData in context")
+    let boulderingLogs: ClimbLog[] = []
+    let leadLogs: ClimbLog[] = []
+    let trLogs: ClimbLog[] = []
+
+    userClimbingLogs.forEach((log) => {
+      switch (log.ClimbType) {
+        case GYM_CLIMB_TYPES[0]:
+          boulderingLogs.push(log)
+          break
+        case GYM_CLIMB_TYPES[1]:
+          leadLogs.push(log)
+          break
+        case GYM_CLIMB_TYPES[2]:
+          trLogs.push(log)
+          break
+      }
+    })
+
+    const newBoulderData = formatClimbingData(
+      boulderingLogs,
+      GYM_CLIMB_TYPES.Boulder
+    )
+    const newLeadData = formatClimbingData(leadLogs, GYM_CLIMB_TYPES.Lead)
+    const newTrData = formatClimbingData(trLogs, GYM_CLIMB_TYPES.TopRope)
+
+    updateGradePyramidData(newBoulderData, newLeadData, newTrData)
+  }
+
   const authUserContextValue: IUserContext = {
     user,
     updateUser,
-    userClimbingData,
+    userClimbingLogs,
+    userBoulderGradePyramidData,
+    userLeadGradePyramidData,
+    userTrGradePyramidData,
     clearAppData,
     addClimbLogData,
     dataDateRange,

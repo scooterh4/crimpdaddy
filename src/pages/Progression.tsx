@@ -11,8 +11,7 @@ import AppFooter from "../components/common/AppFooter"
 import AppLoading from "../components/common/AppLoading"
 
 function ProgressionPage() {
-  const { userClimbingData } = useUserContext()
-  const [isLoading, setIsLoading] = useState(true)
+  const { userClimbingLogs } = useUserContext()
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
     number
   >(DateFilters.Last6Months)
@@ -23,9 +22,9 @@ function ProgressionPage() {
     DateFilters.Last6Months
   )
 
-  console.log("climbingData:", userClimbingData)
+  console.log("climbingData:", userClimbingLogs)
 
-  return userClimbingData === null ? (
+  return userClimbingLogs === null ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -110,7 +109,7 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Boulder}
-                climbingData={userClimbingData.climbingLogs}
+                climbingData={userClimbingLogs}
                 filter={boulderProgressionFilter}
               />
             </Grid>
@@ -157,7 +156,7 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Lead}
-                climbingData={userClimbingData.climbingLogs}
+                climbingData={userClimbingLogs}
                 filter={leadProgressionFilter}
               />
             </Grid>
@@ -204,7 +203,7 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.TopRope}
-                climbingData={userClimbingData.climbingLogs}
+                climbingData={userClimbingLogs}
                 filter={trProgressionFilter}
               />
             </Grid>
