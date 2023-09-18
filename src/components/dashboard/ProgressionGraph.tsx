@@ -147,11 +147,10 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
     setGraphData(result)
   }
 
-  console.log("ProgressionGraph data:", graphData)
-
   if (graphData.length <= 0) {
     return (
       <Typography
+        fontFamily={"poppins"}
         variant="h3"
         padding={10}
         sx={{ textAlign: "center", fontWeight: "bold" }}
