@@ -147,7 +147,7 @@ function SignUp() {
           <Avatar sx={{ m: 1, bgcolor: AppColors.success }}>
             <PersonAddIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" fontFamily={"poppins"} variant="h5">
             Sign up
           </Typography>
           <Box sx={{ mt: 3 }}>
@@ -201,14 +201,16 @@ function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, fontFamily: "poppins" }}
               onClick={Submit}
             >
               Sign Up
             </Button>
             <Grid container>
               <Grid item>
-                <Link to={"/signin"}>Already have an account? Sign in</Link>
+                <Link style={{ fontFamily: "poppins" }} to={"/signin"}>
+                  Already have an account? Sign in
+                </Link>
               </Grid>
             </Grid>
           </Box>

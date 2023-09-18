@@ -74,7 +74,7 @@ function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: AppColors.info, color: "white" }}>
             <LockIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" fontFamily="poppins" variant="h5">
             Sign in
           </Typography>
           <Box sx={{ mt: 3 }}>
@@ -105,7 +105,7 @@ function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, fontFamily: "poppins" }}
               onClick={Submit}
             >
               Sign In
@@ -115,7 +115,9 @@ function SignIn() {
                 <Link to={"/"}>Forgot password?</Link>
               </Grid> */}
               <Grid item>
-                <Link to={"/signup"}>{"Don't have an account? Sign Up"}</Link>
+                <Link style={{ fontFamily: "poppins" }} to={"/signup"}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
               </Grid>
             </Grid>
           </Box>
