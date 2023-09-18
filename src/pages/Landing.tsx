@@ -9,8 +9,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import { hover } from "@testing-library/user-event/dist/hover"
-import { AppColors } from "../static/styles"
+import { AppColors, ThemeColors } from "../static/styles"
 
 function Landing() {
   const navigate = useNavigate()
@@ -81,7 +80,7 @@ function Landing() {
             size="large"
             onClick={() => navigate("/signup")}
             sx={{
-              backgroundColor: "black",
+              backgroundColor: ThemeColors.darkAccent,
               color: "white",
               ":hover": { backgroundColor: AppColors.primary },
             }}
