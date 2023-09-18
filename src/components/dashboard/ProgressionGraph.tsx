@@ -48,14 +48,12 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
   const theme = useTheme()
-  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
-  const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
+  const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
 
-  const graphAspectRatio =
-    lgScreenAndUp || mdScreenOnly ? 2.3 : smScreenOnly ? 1.6 : 1.1
+  const graphAspectRatio = mdScreenAndUp ? 4.0 : smScreenOnly ? 2 : 1.1
   const graphLeftMargin = climbType === CLIMB_TYPES.Boulder ? -20 : -10
-  const graphFontSize = lgScreenAndUp || mdScreenOnly || smScreenOnly ? 14 : 11
+  const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11
 
   useEffect(() => {
     switch (climbType) {
