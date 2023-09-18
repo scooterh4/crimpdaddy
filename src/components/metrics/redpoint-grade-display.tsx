@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { Grid, Typography } from "@mui/material"
-import { ClimbLog } from "../../static/types"
+import { ClimbLog } from "../../types"
 import {
   BOULDER_GRADES,
   INDOOR_SPORT_GRADES,
   TICK_TYPES,
-} from "../../static/constants"
-import { useUserContext } from "../context-api"
+} from "../../constants"
+import { useUserContext } from "../../context-api"
 
 export type HardestGradeProps = {
   climbType: string

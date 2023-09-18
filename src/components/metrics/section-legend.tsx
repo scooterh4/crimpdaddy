@@ -1,7 +1,7 @@
 import React from "react"
 import { Square } from "@mui/icons-material"
 import { Grid, Typography } from "@mui/material"
-import { GraphColors } from "../../static/styles"
+import { GraphColors } from "../../styles/styles"
 
 export type SectionLegendProps = {
   section: string

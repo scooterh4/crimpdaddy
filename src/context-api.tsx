@@ -1,12 +1,8 @@
 import React, { createContext, useContext, useState } from "react"
-import {
-  AppUser,
-  ClimbLog,
-  SessionStorageData,
-  ClimbGraphData,
-} from "../static/types"
-import { GetAllUserClimbs, formatClimbingData } from "../db/ClimbLogService"
-import { DateFilters, GYM_CLIMB_TYPES } from "../static/constants"
+import { AppUser, ClimbLog, SessionStorageData, ClimbGraphData } from "./types"
+import { GetAllUserClimbs } from "./util/db"
+import { DateFilters, GYM_CLIMB_TYPES } from "./constants"
+import { formatClimbingData } from "./util/helper-functions"
 
 interface IUserContext {
   user: AppUser | null

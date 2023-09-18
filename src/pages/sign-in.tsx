@@ -14,9 +14,9 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import AppToolbar from "../components/common/AppToolbar"
-import { AppColors } from "../static/styles"
-import { useUserContext } from "../components/context-api"
+import AppToolbar from "../components/common/app-toolbar"
+import { AppColors } from "../styles/styles"
+import { useUserContext } from "../context-api"
 
 function SignIn() {
   const [email, setEmail] = useState("")

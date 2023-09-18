@@ -8,10 +8,10 @@ import {
   Typography,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
-import AppDrawer from "./AppDrawer"
-import { AppColors, drawerWidth } from "../../static/styles"
+import AppDrawer from "./app-drawer"
+import { AppColors, drawerWidth } from "../../styles/styles"
 import { useNavigate } from "react-router-dom"
-import { useUserContext } from "../context-api"
+import { useUserContext } from "../../context-api"
 
 type ToolBarProps = {
   title: string

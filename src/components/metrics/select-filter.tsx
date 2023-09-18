@@ -1,7 +1,7 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../context-api"
-import { DateFilters } from "../../static/constants"
+import { useUserContext } from "../../context-api"
+import { DateFilters } from "../../constants"
 
 type SelectFilterProps = {
   dashboardSection: string

@@ -11,11 +11,11 @@ import {
 import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
-import { GraphColors } from "../../static/styles"
-import { useUserContext } from "../context-api"
-import AppLoading from "../common/AppLoading"
-import { ClimbLog } from "../../static/types"
-import { DateFilters } from "../../static/constants"
+import { GraphColors } from "../../styles/styles"
+import { useUserContext } from "../../context-api"
+import AppLoading from "../common/app-loading"
+import { ClimbLog } from "../../types"
+import { DateFilters } from "../../constants"
 
 type MonthlyClimbsGraphProps = {
   filter: number

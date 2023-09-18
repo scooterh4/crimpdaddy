@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import { auth } from "../firebase"
 import { Unsubscribe, onAuthStateChanged } from "firebase/auth"
-import { useUserContext } from "./context-api"
+import { useUserContext } from "../context-api"
 
 export type ProtectedRouteProps = {
   authenticationPath: string

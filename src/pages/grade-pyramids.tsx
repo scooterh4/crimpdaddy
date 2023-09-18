@@ -1,13 +1,13 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React from "react"
-import SectionLegend from "../components/dashboard/SectionLegend"
-import GradePyramid from "../components/dashboard/GradePyramid"
-import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
-import { useUserContext } from "../components/context-api"
-import AppToolbar from "../components/common/AppToolbar"
-import AppLoading from "../components/common/AppLoading"
-import AppFooter from "../components/common/AppFooter"
-import { GYM_CLIMB_TYPES } from "../static/constants"
+import SectionLegend from "../components/metrics/section-legend"
+import GradePyramid from "../components/metrics/grade-pyramid-graph"
+import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
+import { useUserContext } from "../context-api"
+import AppToolbar from "../components/common/app-toolbar"
+import AppLoading from "../components/common/app-loading"
+import AppFooter from "../components/common/app-footer"
+import { GYM_CLIMB_TYPES } from "../constants"
 
 function GradePyramidPage() {
   const {

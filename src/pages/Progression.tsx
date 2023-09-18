@@ -1,14 +1,14 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import SectionLegend from "../components/dashboard/SectionLegend"
-import { AppColors, ThemeColors, drawerWidth } from "../static/styles"
-import { useUserContext } from "../components/context-api"
-import AppToolbar from "../components/common/AppToolbar"
-import ProgressionGraph from "../components/dashboard/ProgressionGraph"
-import { DateFilters, GYM_CLIMB_TYPES } from "../static/constants"
-import SelectFilter from "../components/dashboard/SelectFilter"
-import AppFooter from "../components/common/AppFooter"
-import AppLoading from "../components/common/AppLoading"
+import { useUserContext } from "../context-api"
+import { DateFilters, GYM_CLIMB_TYPES } from "../constants"
+import AppToolbar from "../components/common/app-toolbar"
+import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
+import AppLoading from "../components/common/app-loading"
+import AppFooter from "../components/common/app-footer"
+import SectionLegend from "../components/metrics/section-legend"
+import SelectFilter from "../components/metrics/select-filter"
+import ProgressionGraph from "../components/metrics/progression-graph"
 
 function ProgressionPage() {
   const { userClimbingLogs, dataDateRange, updateDateRange } = useUserContext()

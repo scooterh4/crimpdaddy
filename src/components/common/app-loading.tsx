@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material"
 import React from "react"
 import ReactLoading from "react-loading"
-import { ThemeColors } from "../../static/styles"
+import { ThemeColors } from "../../styles/styles"
 
 function AppLoading() {
   return (

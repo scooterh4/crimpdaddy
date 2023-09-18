@@ -1,19 +1,17 @@
 import React from "react"
-import SignIn from "./pages/SignIn"
-import SignUp from "./pages/SignUp"
-import Landing from "./pages/Landing"
-import ProtectedRoute, {
-  ProtectedRouteProps,
-} from "./components/ProtectedRoute"
-import Dashboard from "./pages/Dashboard"
-import LogClimbPage from "./pages/LogClimb"
-import GradePyramids from "./pages/GradePyramids"
-import ProgressionPage from "./pages/Progression"
+import SignIn from "./pages/sign-in"
+import SignUp from "./pages/sign-up"
+import Landing from "./pages/landing"
+import ProtectedRoute, { ProtectedRouteProps } from "./pages/protected-route"
+import Dashboard from "./pages/dashboard"
+import LogClimbPage from "./pages/log-climb"
+import GradePyramids from "./pages/grade-pyramids"
+import ProgressionPage from "./pages/progression"
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
-import { UserDataProvider } from "./components/context-api"
+import { UserDataProvider } from "./context-api"
 
 const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {

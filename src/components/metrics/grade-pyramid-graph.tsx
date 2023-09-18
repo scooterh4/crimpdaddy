@@ -8,12 +8,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbGraphData } from "../../static/types"
-import { GraphColors } from "../../static/styles"
+import { ClimbGraphData } from "../../types"
+import { GraphColors } from "../../styles/styles"
 import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-import { useUserContext } from "../context-api"
-import { GYM_CLIMB_TYPES } from "../../static/constants"
+import { useUserContext } from "../../context-api"
+import { GYM_CLIMB_TYPES } from "../../constants"
 
 export type GradeGraphProps = {
   climbType: number

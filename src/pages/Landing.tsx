@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../static/styles"
+import { AppColors, ThemeColors } from "../styles/styles"
 
 function Landing() {
   const navigate = useNavigate()

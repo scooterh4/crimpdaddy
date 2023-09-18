@@ -13,8 +13,8 @@ import {
 import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import AppToolbar from "../components/common/AppToolbar"
-import { AppColors } from "../static/styles"
+import AppToolbar from "../components/common/app-toolbar"
+import { AppColors } from "../styles/styles"
 
 function SignUp() {
   const [input, setInput] = useState({

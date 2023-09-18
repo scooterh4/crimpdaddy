@@ -13,28 +13,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import {
-  BOULDER_GRADES,
-  INDOOR_SPORT_GRADES,
-  TICK_TYPES,
-} from "../static/constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES, TICK_TYPES } from "../constants"
 import { useNavigate, useNavigation } from "react-router-dom"
-import AppToolbar from "../components/common/AppToolbar"
-import { useUserContext } from "../components/context-api"
+import AppToolbar from "../components/common/app-toolbar"
+import { useUserContext } from "../context-api"
 import {
   AppColors,
   GraphColors,
   ThemeColors,
   drawerWidth,
-} from "../static/styles"
+} from "../styles/styles"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
-import { ClimbLog } from "../static/types"
-import { LogClimb } from "../db/ClimbLogService"
-import AppFooter from "../components/common/AppFooter"
+import { ClimbLog } from "../types"
+import { LogClimb } from "../util/db"
+import AppFooter from "../components/common/app-footer"
 import moment from "moment"
 
 function LogClimbPage() {

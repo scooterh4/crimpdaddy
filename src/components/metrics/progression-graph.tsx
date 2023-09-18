@@ -8,13 +8,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../../static/types"
+import { ClimbLog } from "../../types"
 import { Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../../static/constants"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
-import { GraphColors } from "../../static/styles"
-import { useUserContext } from "../context-api"
+import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../../constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
+import { GraphColors } from "../../styles/styles"
+import { useUserContext } from "../../context-api"
 import moment, { Moment } from "moment"
 
 export type MonthlyClimbsGraphProps = {
