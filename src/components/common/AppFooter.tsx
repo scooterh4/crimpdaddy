@@ -31,6 +31,7 @@ export default function LabelBottomNavigation() {
           //   lg: 35,
           // }}
           color={"white"}
+          fontFamily={"poppins"}
         >
           CrimpDaddy
         </Typography>
