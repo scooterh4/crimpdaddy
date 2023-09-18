@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react"
-import { Square } from "@mui/icons-material"
-import { Card, Grid, Typography } from "@mui/material"
-import { GraphColors } from "../../static/styles"
+import { Grid, Typography } from "@mui/material"
 import { ClimbLog } from "../../static/types"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
-import BoulderIcon from "../../images/coal.png"
-import LeadIcon from "../../images/climbing_838982.png"
-import TrIcon from "../../images/belay.png"
+import {
+  BOULDER_GRADES,
+  INDOOR_SPORT_GRADES,
+  TICK_TYPES,
+} from "../../static/constants"
+import { useUserContext } from "../context-api"
 
 export type HardestGradeProps = {
   climbType: string
-  tickType: string
-  climbingData: ClimbLog[]
 }
 
-function HardestGradeDisplay({
-  climbType,
-  tickType,
-  climbingData,
-}: HardestGradeProps) {
+function HardestGradeDisplay({ climbType }: HardestGradeProps) {
+  const {
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
+    userClimbingLogs,
+  } = useUserContext()
   const [hardestGrade, setHardestGrade] = useState("--")
   const gradingSystem =
     climbType === "Boulder" ? BOULDER_GRADES : INDOOR_SPORT_GRADES
@@ -31,9 +31,26 @@ function HardestGradeDisplay({
   //     : TrIcon
 
   useEffect(() => {
-    if (climbingData.length > 0) {
+    if (userClimbingLogs && userClimbingLogs.length > 0) {
+      let climbingData: ClimbLog[] = []
+      switch (climbType) {
+        case "Boulder":
+          climbingData = userBoulderLogs ? userBoulderLogs : []
+          break
+        case "Lead":
+          climbingData = userLeadLogs ? userLeadLogs : []
+          break
+        case "TopRope":
+          climbingData = userTopRopeLogs ? userTopRopeLogs : []
+          break
+      }
+
       const climbs = climbingData.filter(
-        (climb) => climb.Tick === tickType && climb.ClimbType === climbType
+        (climb) =>
+          (climb.Tick === TICK_TYPES[0] ||
+            climb.Tick === TICK_TYPES[1] ||
+            climb.Tick === TICK_TYPES[2]) &&
+          climb.ClimbType === climbType
       )
 
       if (climbs.length > 0) {
@@ -49,7 +66,7 @@ function HardestGradeDisplay({
         setHardestGrade("--")
       }
     }
-  }, [climbingData])
+  }, [userClimbingLogs])
 
   return (
     // <Grid container direction={"row"} justifyContent={"center"}>

@@ -106,27 +106,15 @@ const Dashboard = () => {
           >
             <Grid container direction={"row"} justifyContent={"center"}>
               <Grid item xs>
-                <HardestGradeDisplay
-                  climbType="Boulder"
-                  tickType="Redpoint"
-                  climbingData={userClimbingLogs}
-                />
+                <HardestGradeDisplay climbType="Boulder" />
               </Grid>
 
               <Grid item xs={4}>
-                <HardestGradeDisplay
-                  climbType="Lead"
-                  tickType="Redpoint"
-                  climbingData={userClimbingLogs}
-                />
+                <HardestGradeDisplay climbType="Lead" />
               </Grid>
 
               <Grid item xs>
-                <HardestGradeDisplay
-                  climbType="TopRope"
-                  tickType="Redpoint"
-                  climbingData={userClimbingLogs}
-                />
+                <HardestGradeDisplay climbType="TopRope" />
               </Grid>
             </Grid>
           </Grid>
