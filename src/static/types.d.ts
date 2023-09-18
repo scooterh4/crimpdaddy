@@ -6,7 +6,12 @@ export type AppUser = {
 }
 
 export type UserClimbingData = {
-  climbingLogs: ClimbLog[]
+  climbingLogs: {
+    allClimbs: ClimbLog[]
+    boulderLogs: ClimbLog[]
+    leadLogs: ClimbLog[]
+    topRopeLogs: ClimbLog[]
+  }
   gradePyramidData: {
     boulderData: ClimbGraphData[]
     leadData: ClimbGraphData[]
@@ -46,7 +51,12 @@ export type ClimbGraphData = {
 
 export type SessionStorageData = {
   timeRange: string
-  climbingData: ClimbLog[]
+  climbingData: {
+    allClimbs: ClimbLog[]
+    boulderLogs: ClimbLog[]
+    leadLogs: ClimbLog[]
+    topRopeLogs: ClimbLog[]
+  }
   gradePyramidData: {
     boulderData: ClimbGraphData[]
     leadData: ClimbGraphData[]

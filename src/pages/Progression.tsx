@@ -113,7 +113,6 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Boulder}
-                climbingData={userClimbingLogs}
                 filter={boulderProgressionFilter}
               />
             </Grid>
@@ -160,7 +159,6 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Lead}
-                climbingData={userClimbingLogs}
                 filter={leadProgressionFilter}
               />
             </Grid>
@@ -207,7 +205,6 @@ function ProgressionPage() {
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.TopRope}
-                climbingData={userClimbingLogs}
                 filter={trProgressionFilter}
               />
             </Grid>

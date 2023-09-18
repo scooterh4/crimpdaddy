@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   CartesianGrid,
   Line,
@@ -8,20 +8,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog, ClimbLogDocument } from "../../static/types"
+import { ClimbLog } from "../../static/types"
 import { Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES } from "../../static/constants"
+import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { GraphColors } from "../../static/styles"
-import { UserContext } from "../context-api"
-import { GetAllUserClimbsByType } from "../../db/ClimbLogService"
+import { useUserContext } from "../context-api"
 import moment, { Moment } from "moment"
-import AppLoading from "../common/AppLoading"
 
 export type MonthlyClimbsGraphProps = {
   climbType: number
-  climbingData: ClimbLog[]
   filter: number
 }
 
@@ -38,17 +35,17 @@ export type ProgressionGraphDateRange = {
   maxDate: Date
 }
 
-function MonthlyClimbsGraph({
-  climbType,
-  climbingData,
-  filter,
-}: MonthlyClimbsGraphProps) {
+function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
+  const {
+    userClimbingLogs,
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
+  } = useUserContext()
   const [graphData, setGraphData] = useState<HardestClimbGraphData[]>([])
   const [gradeRange, setGradeRange] = useState<string[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
-  // const { user } = useContext(UserContext)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const theme = useTheme()
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
@@ -60,25 +57,25 @@ function MonthlyClimbsGraph({
   const graphLeftMargin = climbType === CLIMB_TYPES.Boulder ? -20 : -10
   const graphFontSize = lgScreenAndUp || mdScreenOnly || smScreenOnly ? 14 : 11
 
-  // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (climbingData.length > 0) {
-      filterRawClimbingData(climbingData)
+    switch (climbType) {
+      case GYM_CLIMB_TYPES.Boulder:
+        if (userBoulderLogs) {
+          filterRawClimbingData(userBoulderLogs)
+        }
+        break
+      case GYM_CLIMB_TYPES.Lead:
+        if (userLeadLogs) {
+          filterRawClimbingData(userLeadLogs)
+        }
+        break
+      case GYM_CLIMB_TYPES.TopRope:
+        if (userTopRopeLogs) {
+          filterRawClimbingData(userTopRopeLogs)
+        }
+        break
     }
-  }, [climbingData])
-
-  // need to call the db to get the users data again and resort through it
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   if (user) {
-  //     GetAllUserClimbsByType(user.id, climbType, filter).then((data) => {
-  //       filterRawClimbingData(data)
-  //     })
-  //   } else {
-  //     console.log("ProgressionGraph error: no user data")
-  //     setIsLoading(false)
-  //   }
-  // }, [filter])
+  }, [userClimbingLogs])
 
   function setResultDates(startMoment: Moment) {
     let result: HardestClimbGraphData[] = []
@@ -150,12 +147,21 @@ function MonthlyClimbsGraph({
 
     setGradeRange(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
     setGraphData(result)
-    setIsLoading(false)
   }
 
-  if (isLoading) {
-    return <AppLoading />
-  } else if (graphData.length > 0) {
+  console.log("ProgressionGraph data:", graphData)
+
+  if (graphData.length <= 0) {
+    return (
+      <Typography
+        variant="h3"
+        padding={10}
+        sx={{ textAlign: "center", fontWeight: "bold" }}
+      >
+        --
+      </Typography>
+    )
+  } else {
     return (
       <ResponsiveContainer aspect={graphAspectRatio}>
         <LineChart
@@ -199,16 +205,6 @@ function MonthlyClimbsGraph({
           />
         </LineChart>
       </ResponsiveContainer>
-    )
-  } else {
-    return (
-      <Typography
-        variant="h3"
-        padding={10}
-        sx={{ textAlign: "center", fontWeight: "bold" }}
-      >
-        --
-      </Typography>
     )
   }
 }

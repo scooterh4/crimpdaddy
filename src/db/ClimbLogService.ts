@@ -25,6 +25,7 @@ import {
   DateFilters,
 } from "../static/constants"
 import moment from "moment"
+import { useUserContext } from "../components/context-api"
 
 const collectionName = "climbingLogs"
 
@@ -223,7 +224,12 @@ export const GetAllUserClimbs = async (
   }
 
   return {
-    climbingLogs: rawClimbingData,
+    climbingLogs: {
+      allClimbs: rawClimbingData,
+      boulderLogs: rawBoulderData,
+      leadLogs: rawLeadData,
+      topRopeLogs: rawTrData,
+    },
     gradePyramidData: {
       boulderData: boulderPyramidData,
       leadData: leadPyramidData,
