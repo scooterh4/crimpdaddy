@@ -9,6 +9,8 @@ import {
   useTheme,
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { hover } from "@testing-library/user-event/dist/hover"
+import { AppColors } from "../static/styles"
 
 function Landing() {
   const navigate = useNavigate()
@@ -39,7 +41,6 @@ function Landing() {
             zIndex: -1,
             backgroundImage: `url(${background})`,
             backgroundSize: "cover",
-            filter: "sepia(0.75)",
           }}
         />
 
@@ -60,30 +61,32 @@ function Landing() {
         >
           <Box style={{ display: "block", marginBottom: 24 }}>
             <Typography
-              variant="h2"
+              variant="h4"
               fontFamily={"poppins"}
               textAlign={"center"}
             >
-              Log your climbs
+              Log your climbs. Track your progress.
             </Typography>
           </Box>
-          <Box style={{ display: "block", marginBottom: 30 }}>
+          {/* <Box style={{ display: "block", marginBottom: 30 }}>
             <Typography
               variant="h2"
               fontFamily={"poppins"}
               textAlign={"center"}
-            >
-              Track your progress
-            </Typography>
-          </Box>
+            ></Typography>
+          </Box> */}
 
           <Button
             variant="contained"
             size="large"
-            onClick={() => navigate("/signin")}
-            style={{ backgroundColor: "black", color: "white" }}
+            onClick={() => navigate("/signup")}
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              ":hover": { backgroundColor: AppColors.primary },
+            }}
           >
-            Sign in
+            Sign up today
           </Button>
         </Grid>
       </Box>
