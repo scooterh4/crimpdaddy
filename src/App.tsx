@@ -21,7 +21,7 @@ const App = () => {
   return (
     <UserDataProvider>
       <CssBaseline />
-      <ToastContainer position="top-center" />
+      <ToastContainer position="bottom-center" />
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
