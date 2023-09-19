@@ -1,7 +1,12 @@
 import React, { createContext, useContext, useState } from "react"
-import { AppUser, ClimbLog, SessionStorageData, ClimbGraphData } from "./types"
+import {
+  AppUser,
+  ClimbLog,
+  SessionStorageData,
+  GradePyramidGraphData,
+} from "./types"
 import { GetAllUserClimbs } from "./util/db"
-import { DateFilters, GYM_CLIMB_TYPES } from "./constants"
+import { DateFilters, GYM_CLIMB_TYPES, GradePyramidFilter } from "./constants"
 import { formatClimbingData } from "./util/helper-functions"
 
 interface IUserContext {
@@ -14,9 +19,9 @@ interface IUserContext {
   setUserLeadLogs: (logs: ClimbLog[] | null) => void
   userTopRopeLogs: ClimbLog[] | null
   setUserTopRopeLogs: (logs: ClimbLog[] | null) => void
-  userBoulderGradePyramidData: ClimbGraphData[] | null
-  userLeadGradePyramidData: ClimbGraphData[] | null
-  userTrGradePyramidData: ClimbGraphData[] | null
+  userBoulderGradePyramidData: GradePyramidGraphData[] | null
+  userLeadGradePyramidData: GradePyramidGraphData[] | null
+  userTrGradePyramidData: GradePyramidGraphData[] | null
   clearAppData: () => void
   addClimbLogData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
@@ -65,12 +70,12 @@ export const UserDataProvider = ({
   const [
     userBoulderGradePyramidData,
     setUserBoulderGradePyramidData,
-  ] = useState<ClimbGraphData[] | null>(null)
+  ] = useState<GradePyramidGraphData[] | null>(null)
   const [userLeadGradePyramidData, setUserLeadGradePyramidData] = useState<
-    ClimbGraphData[] | null
+    GradePyramidGraphData[] | null
   >(null)
   const [userTrGradePyramidData, setUserTrGradePyramidData] = useState<
-    ClimbGraphData[] | null
+    GradePyramidGraphData[] | null
   >(null)
   const [dataDateRange, setDateRange] = useState<number | null>(null)
   const sessionData = sessionStorage.getItem(sessionDataKey)
@@ -152,7 +157,9 @@ export const UserDataProvider = ({
         )
         const newBoulderData = formatClimbingData(
           userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.Boulder
+          GYM_CLIMB_TYPES.Boulder,
+          GradePyramidFilter.ClimbsAndAttempts,
+          dataDateRange ? dataDateRange : DateFilters.ThisWeek
         )
         setUserBoulderGradePyramidData(newBoulderData)
         break
@@ -163,7 +170,9 @@ export const UserDataProvider = ({
         )
         const newLeadData = formatClimbingData(
           userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.Lead
+          GYM_CLIMB_TYPES.Lead,
+          GradePyramidFilter.ClimbsAndAttempts,
+          dataDateRange ? dataDateRange : DateFilters.ThisWeek
         )
         setUserLeadGradePyramidData(newLeadData)
         break
@@ -174,7 +183,9 @@ export const UserDataProvider = ({
         )
         const newTrData = formatClimbingData(
           userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.TopRope
+          GYM_CLIMB_TYPES.TopRope,
+          GradePyramidFilter.ClimbsAndAttempts,
+          dataDateRange ? dataDateRange : DateFilters.ThisWeek
         )
         setUserTrGradePyramidData(newTrData)
         break

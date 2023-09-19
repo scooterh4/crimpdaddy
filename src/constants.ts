@@ -61,6 +61,12 @@ export enum DateFilters {
   Last12Months,
 }
 
+export enum GradePyramidFilter {
+  ClimbsAndAttempts,
+  AttemptsOnly,
+  ClimbsOnly,
+}
+
 export const MINIMUM_DATE_FOR_DATA = {
   dateString: "2023-06-01",
   formatString: "YYYY-MM-DD",

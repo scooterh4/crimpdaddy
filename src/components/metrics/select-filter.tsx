@@ -1,10 +1,11 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUserContext } from "../../context-api"
-import { DateFilters } from "../../constants"
+import { DateFilters, GradePyramidFilter } from "../../constants"
 
 type SelectFilterProps = {
-  dashboardSection: string
+  page: string
+  dateFilter: boolean
   selectedFilter: number
   setFilter: React.Dispatch<React.SetStateAction<number>>
 }
@@ -15,47 +16,61 @@ type filterObj = {
 }
 
 function SelectFilter({
-  dashboardSection,
+  page,
+  dateFilter,
   selectedFilter,
   setFilter,
 }: SelectFilterProps) {
   const { dataDateRange, updateDateRange } = useUserContext()
-  const activityList = [
+  const activityDateList = [
     { value: DateFilters.ThisWeek, label: "This week" },
     { value: DateFilters.ThisMonth, label: "This month" },
     { value: DateFilters.LastMonth, label: "Last month" },
   ]
-  const otherList = [
+  const otherDateList = [
     { value: DateFilters.Last6Months, label: "Last 6 months" },
     { value: DateFilters.Last12Months, label: "Last 12 months" },
   ]
+  const gradePyramidSelectList = [
+    { value: GradePyramidFilter.ClimbsAndAttempts, label: "Attempts & Climbs" },
+    { value: GradePyramidFilter.AttemptsOnly, label: "Attempts only" },
+    { value: GradePyramidFilter.ClimbsOnly, label: "Climbs only" },
+  ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
-    dashboardSection === "activity" ? activityList : otherList
+    page === "activity"
+      ? activityDateList
+      : dateFilter
+      ? otherDateList
+      : gradePyramidSelectList
   )
 
   useEffect(() => {
-    switch (dashboardSection) {
-      case "activity":
-        setSelectList(activityList)
-        break
-      case "gradePyramids":
-        setSelectList(otherList)
-        break
-      case "progression":
-        setSelectList(otherList)
-        break
+    if (!dateFilter) {
+      setSelectList(gradePyramidSelectList)
+    } else {
+      switch (page) {
+        case "activity":
+          setSelectList(activityDateList)
+          break
+        case "gradePyramids":
+          setSelectList(otherDateList)
+          break
+        case "progression":
+          setSelectList(otherDateList)
+          break
+      }
     }
   }, [])
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     const value = parseInt(event.target.value)
-
-    // the graph needs data that's farther back in time than the data available
-    if (!dataDateRange || value > dataDateRange) {
-      updateDateRange(value)
+    if (dateFilter) {
+      // the graph needs data that's farther back in time than the data available
+      if (!dataDateRange || value > dataDateRange) {
+        updateDateRange(value)
+      }
     }
-
     setFilter(value)
   }
 

@@ -103,7 +103,8 @@ function ProgressionPage() {
 
               <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
                 <SelectFilter
-                  dashboardSection="progression"
+                  page="progression"
+                  dateFilter={true}
                   selectedFilter={boulderProgressionFilter}
                   setFilter={setBoulderProgressionFilter}
                 />
@@ -149,7 +150,8 @@ function ProgressionPage() {
 
               <Grid item gridColumn={"3"} justifySelf={"end"}>
                 <SelectFilter
-                  dashboardSection="progression"
+                  page="progression"
+                  dateFilter={true}
                   selectedFilter={leadProgressionFilter}
                   setFilter={setLeadProgressionFilter}
                 />
@@ -195,7 +197,8 @@ function ProgressionPage() {
 
               <Grid item gridColumn={"3"} justifySelf={"end"}>
                 <SelectFilter
-                  dashboardSection="progression"
+                  page="progression"
+                  dateFilter={true}
                   selectedFilter={trProgressionFilter}
                   setFilter={setTrProgressionFilter}
                 />

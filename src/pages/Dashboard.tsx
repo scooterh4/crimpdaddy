@@ -150,7 +150,8 @@ const Dashboard = () => {
 
               <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
                 <SelectFilter
-                  dashboardSection="activity"
+                  page="activity"
+                  dateFilter={true}
                   selectedFilter={activityFilter}
                   setFilter={setActivityFilter}
                 />

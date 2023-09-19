@@ -8,24 +8,30 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbGraphData } from "../../types"
+import { ClimbLog, GradePyramidGraphData } from "../../types"
 import { GraphColors } from "../../styles/styles"
 import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../context-api"
 import { GYM_CLIMB_TYPES } from "../../constants"
+import { formatClimbingData } from "../../util/helper-functions"
 
 export type GradeGraphProps = {
   climbType: number
+  tickFilter: number
+  dateFilter: number
 }
 
-function GradePyramid({ climbType }: GradeGraphProps) {
+function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
   const {
     userBoulderGradePyramidData,
     userLeadGradePyramidData,
     userTrGradePyramidData,
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
   } = useUserContext()
-  const [graphData, setGraphData] = useState<ClimbGraphData[]>([])
+  const [graphData, setGraphData] = useState<GradePyramidGraphData[]>([])
   const theme = useTheme()
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
   const mdScreen = useMediaQuery(theme.breakpoints.only("md"))
@@ -46,6 +52,23 @@ function GradePyramid({ climbType }: GradeGraphProps) {
         break
     }
   }, [])
+
+  useEffect(() => {
+    console.log("Grade Pyramid filter changed")
+    const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
+      [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
+      [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
+      [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
+    }
+
+    const formattedData = formatClimbingData(
+      logsMapping[climbType as GYM_CLIMB_TYPES],
+      climbType,
+      tickFilter,
+      dateFilter
+    )
+    setGraphData(formattedData)
+  }, [tickFilter, dateFilter])
 
   return graphData.length <= 0 ? (
     <Typography

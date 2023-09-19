@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore"
 import {
   ClimbLog,
-  ClimbGraphData,
+  GradePyramidGraphData,
   ClimbLogDocument,
   UserClimbingData,
 } from "../types"
@@ -21,6 +21,7 @@ import {
   GYM_CLIMB_TYPES,
   MINIMUM_DATE_FOR_DATA,
   DateFilters,
+  GradePyramidFilter,
 } from "../constants"
 import moment from "moment"
 import { formatClimbingData } from "./helper-functions"
@@ -176,9 +177,9 @@ export const GetAllUserClimbs = async (
     filterRange
   )
 
-  let boulderPyramidData: ClimbGraphData[] = []
-  let leadPyramidData: ClimbGraphData[] = []
-  let trPyramidData: ClimbGraphData[] = []
+  let boulderPyramidData: GradePyramidGraphData[] = []
+  let leadPyramidData: GradePyramidGraphData[] = []
+  let trPyramidData: GradePyramidGraphData[] = []
 
   try {
     boulderData.forEach((log) => {
@@ -213,10 +214,22 @@ export const GetAllUserClimbs = async (
 
     boulderPyramidData = formatClimbingData(
       rawBoulderData,
-      GYM_CLIMB_TYPES.Boulder
+      GYM_CLIMB_TYPES.Boulder,
+      GradePyramidFilter.ClimbsAndAttempts,
+      filterRange
     )
-    leadPyramidData = formatClimbingData(rawLeadData, GYM_CLIMB_TYPES.Lead)
-    trPyramidData = formatClimbingData(rawTrData, GYM_CLIMB_TYPES.TopRope)
+    leadPyramidData = formatClimbingData(
+      rawLeadData,
+      GYM_CLIMB_TYPES.Lead,
+      GradePyramidFilter.ClimbsAndAttempts,
+      filterRange
+    )
+    trPyramidData = formatClimbingData(
+      rawTrData,
+      GYM_CLIMB_TYPES.TopRope,
+      GradePyramidFilter.ClimbsAndAttempts,
+      filterRange
+    )
   } catch (error) {
     console.log("Error retreiving all climbing data:", error)
   }

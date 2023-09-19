@@ -41,7 +41,7 @@ export type TickTypes = {
   Attempts: number
 }
 
-export type ClimbGraphData = {
+export type GradePyramidGraphData = {
   Grade: string
   Onsight: number
   Flash: number
