@@ -17,12 +17,7 @@ import {
   ClimbLogDocument,
   UserClimbingData,
 } from "../types"
-import {
-  GYM_CLIMB_TYPES,
-  MINIMUM_DATE_FOR_DATA,
-  DateFilters,
-  GradePyramidFilter,
-} from "../constants"
+import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../constants"
 import moment from "moment"
 import { formatClimbingData, getMinimumMoment } from "./helper-functions"
 
@@ -35,7 +30,7 @@ const converter = <ClimbLogDocument>() => ({
 })
 
 // log an indoor climb
-export const LogClimb = async (
+export const logClimb = async (
   climbData: ClimbLog,
   userId: string
 ): Promise<void> => {
@@ -73,7 +68,7 @@ export const LogClimb = async (
 }
 
 // get all climbs for a user by type
-export const GetAllUserClimbsByType = async (
+export const getAllUserClimbsByType = async (
   userId: string,
   climbType: number,
   filter: number
@@ -106,7 +101,7 @@ export const GetAllUserClimbsByType = async (
 }
 
 // get all climbs for a user
-export const GetAllUserClimbs = async (
+export const getAllUserClimbs = async (
   userId: string,
   filterRange: number
 ): Promise<UserClimbingData> => {
@@ -115,17 +110,17 @@ export const GetAllUserClimbs = async (
   const rawLeadData: ClimbLog[] = []
   const rawTrData: ClimbLog[] = []
 
-  const boulderData = await GetAllUserClimbsByType(
+  const boulderData = await getAllUserClimbsByType(
     userId,
     GYM_CLIMB_TYPES.Boulder,
     filterRange
   )
-  const leadData = await GetAllUserClimbsByType(
+  const leadData = await getAllUserClimbsByType(
     userId,
     GYM_CLIMB_TYPES.Lead,
     filterRange
   )
-  const trData = await GetAllUserClimbsByType(
+  const trData = await getAllUserClimbsByType(
     userId,
     GYM_CLIMB_TYPES.TopRope,
     filterRange

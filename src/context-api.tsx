@@ -5,7 +5,7 @@ import {
   SessionStorageData,
   GradePyramidGraphData,
 } from "./types"
-import { GetAllUserClimbs } from "./util/db"
+import { getAllUserClimbs } from "./util/db"
 import { DateFilters, GYM_CLIMB_TYPES, GradePyramidFilter } from "./constants"
 import { formatClimbingData } from "./util/helper-functions"
 
@@ -85,7 +85,7 @@ export const UserDataProvider = ({
     if (saveUser !== null) {
       if (userClimbingLogs === null && sessionData === null) {
         // We want this to happen once when the user initially logs in
-        GetAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
+        getAllUserClimbs(saveUser.id, DateFilters.ThisWeek).then((res) => {
           setUserClimbingLogs(res.climbingLogs.allClimbs)
           setUserBoulderLogs(res.climbingLogs.boulderLogs)
           setUserLeadLogs(res.climbingLogs.leadLogs)
@@ -217,7 +217,7 @@ export const UserDataProvider = ({
     )
     setDateRange(saveRange)
     if (saveRange && user) {
-      GetAllUserClimbs(user.id, saveRange).then((res) => {
+      getAllUserClimbs(user.id, saveRange).then((res) => {
         setUserClimbingLogs(res.climbingLogs.allClimbs)
         setUserBoulderLogs(res.climbingLogs.boulderLogs)
         setUserLeadLogs(res.climbingLogs.leadLogs)

@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES, TICK_TYPES } from "../constants"
-import { useNavigate, useNavigation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import AppToolbar from "../components/common/app-toolbar"
 import { useUserContext } from "../context-api"
 import {
@@ -29,7 +29,7 @@ import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
 import { ClimbLog } from "../types"
-import { LogClimb } from "../util/db"
+import { logClimb } from "../util/db"
 import AppFooter from "../components/common/app-footer"
 import moment from "moment"
 
@@ -147,7 +147,7 @@ function LogClimbPage() {
         }
 
         logData.push(climbData)
-        LogClimb(climbData, user.id)
+        logClimb(climbData, user.id)
 
         if (
           (selectedTick === "Redpoint" || selectedTick === "Repeat") &&
@@ -162,7 +162,7 @@ function LogClimbPage() {
           }
 
           logData.push(attemptData)
-          LogClimb(attemptData, user.id)
+          logClimb(attemptData, user.id)
         }
         navigate("/dashboard", {
           state: {
@@ -171,7 +171,7 @@ function LogClimbPage() {
         })
       }
     } else {
-      console.log("LogClimb formHasError")
+      console.log("logClimb formHasError")
     }
   }
 
