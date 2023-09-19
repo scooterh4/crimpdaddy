@@ -98,7 +98,7 @@ export const UserDataProvider = ({
           sessionStorage.setItem(
             sessionDataKey,
             JSON.stringify({
-              timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
+              timeRange: DateFilters[DateFilters.ThisWeek],
               climbingData: res.climbingLogs,
               gradePyramidData: res.gradePyramidData,
             })
@@ -211,6 +211,10 @@ export const UserDataProvider = ({
 
   // after initializing, we want this to be the only place to call firestore
   const updateDateRange = (saveRange: number | null) => {
+    console.log(
+      "context updateDateRange:",
+      saveRange ? DateFilters[saveRange] : null
+    )
     setDateRange(saveRange)
     if (saveRange && user) {
       GetAllUserClimbs(user.id, saveRange).then((res) => {
