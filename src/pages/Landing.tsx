@@ -80,7 +80,7 @@ function Landing() {
             size="large"
             onClick={() => navigate("/signup")}
             sx={{
-              backgroundColor: ThemeColors.darkAccent,
+              backgroundColor: "black",
               color: "white",
               ":hover": { backgroundColor: AppColors.primary },
             }}
