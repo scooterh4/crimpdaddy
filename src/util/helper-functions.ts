@@ -8,14 +8,7 @@ import {
 } from "../constants"
 import { GradePyramidGraphData, ClimbLog, TickTypes } from "../types"
 
-export function formatClimbingData(
-  rawData: ClimbLog[],
-  climbType: number,
-  gradePyramidFilter: number,
-  dateFilter: number
-) {
-  const gradeAttemptMap = new Map<string, TickTypes>()
-
+export function getMinimumMoment(dateFilter: number) {
   const minDataMoment = moment(
     MINIMUM_DATE_FOR_DATA.dateString,
     MINIMUM_DATE_FOR_DATA.formatString
@@ -48,6 +41,18 @@ export function formatClimbingData(
       minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
   }
+
+  return minMoment
+}
+
+export function formatClimbingData(
+  rawData: ClimbLog[],
+  climbType: number,
+  gradePyramidFilter: number,
+  dateFilter: number
+) {
+  const gradeAttemptMap = new Map<string, TickTypes>()
+  const minMoment = getMinimumMoment(dateFilter)
 
   rawData.forEach((climb) => {
     // check the gradePyramidFilter

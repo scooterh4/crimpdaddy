@@ -24,7 +24,7 @@ import {
   GradePyramidFilter,
 } from "../constants"
 import moment from "moment"
-import { formatClimbingData } from "./helper-functions"
+import { formatClimbingData, getMinimumMoment } from "./helper-functions"
 
 const collectionName = "climbingLogs"
 
@@ -33,20 +33,6 @@ const converter = <ClimbLogDocument>() => ({
   fromFirestore: (snap: QueryDocumentSnapshot) =>
     snap.data() as ClimbLogDocument,
 })
-
-// const dataPoint = <T>(collectionPath: string) =>
-//   collection(firestore, collectionPath).withConverter(converter())
-
-// const userData = {
-//   user: (userId: string, climbType: number) =>
-//     dataPoint<ClimbLogDocument>(
-//       `climbingLogs/${userId}/indoor_${
-//         climbType === 0 ? "boulder" : climbType === 1 ? "lead" : "topRope"
-//       }`
-//     ),
-// }
-
-// export { userData }
 
 // log an indoor climb
 export const LogClimb = async (
@@ -96,39 +82,7 @@ export const GetAllUserClimbsByType = async (
   const type = GYM_CLIMB_TYPES[climbType]
   const collectionPath = `/${collectionName}/${userId}/indoor_${type[0].toLowerCase() +
     type.slice(1)}`
-  const minDataMoment = moment(
-    MINIMUM_DATE_FOR_DATA.dateString,
-    MINIMUM_DATE_FOR_DATA.formatString
-  )
-
-  let minMoment = moment()
-
-  switch (filter) {
-    case DateFilters.ThisWeek:
-      minMoment = minMoment.subtract(7, "days")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
-      break
-
-    case DateFilters.ThisMonth:
-      minMoment = minMoment.subtract(1, "month")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
-      break
-
-    case DateFilters.LastMonth:
-      minMoment = minMoment.subtract(2, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
-      break
-
-    case DateFilters.Last6Months:
-      minMoment = minMoment.subtract(6, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
-      break
-
-    case DateFilters.Last12Months:
-      minMoment = minMoment.subtract(12, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
-      break
-  }
+  const minMoment = getMinimumMoment(filter)
 
   try {
     console.log("FIRESTORE call")
