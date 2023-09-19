@@ -30,6 +30,7 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
     userBoulderLogs,
     userLeadLogs,
     userTopRopeLogs,
+    userClimbingLogs,
   } = useUserContext()
   const [graphData, setGraphData] = useState<GradePyramidGraphData[]>([])
   const theme = useTheme()
@@ -51,7 +52,7 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
         setGraphData(userTrGradePyramidData ? userTrGradePyramidData : [])
         break
     }
-  }, [])
+  }, [userClimbingLogs])
 
   useEffect(() => {
     console.log("Grade Pyramid filter changed")
