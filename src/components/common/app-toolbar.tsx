@@ -67,6 +67,7 @@ function ToolBar({ title }: ToolBarProps) {
               component="div"
               gutterBottom
               onClick={headerClicked}
+              sx={{ cursor: cursor }}
             >
               {header}
             </Typography>
