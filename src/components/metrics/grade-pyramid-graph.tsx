@@ -55,7 +55,6 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
   }, [userClimbingLogs])
 
   useEffect(() => {
-    console.log("Grade Pyramid filter changed")
     const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
       [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
       [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],

@@ -271,10 +271,6 @@ export const UserDataProvider = ({
 
   // after initializing, we want this to be the only place to call firestore
   const updateDateRange = (saveRange: number | null) => {
-    console.log(
-      "context updateDateRange:",
-      saveRange ? DateFilters[saveRange] : null
-    )
     setDateRange(saveRange)
     if (saveRange && user) {
       getAllUserClimbingData(user.id, saveRange).then((res) => {
