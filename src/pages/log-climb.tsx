@@ -35,7 +35,7 @@ import moment from "moment"
 
 function LogClimbPage() {
   const navigate = useNavigate()
-  const { user } = useUserContext()
+  const { user, addClimbLogData } = useUserContext()
   const [climbType, setClimbType] = useState("")
   const [gradesList, setGradesList] = useState<string[]>([])
   const [grade, setGrade] = useState("")
@@ -134,7 +134,7 @@ function LogClimbPage() {
 
   function submitForm() {
     if (!formHasError()) {
-      let logData: ClimbLog[] = []
+      let newClimbLogData: ClimbLog[] = []
       if (user) {
         // If they picked repeat or redpoint, log the climb and the attempts seperately
         const climbData: ClimbLog = {
@@ -146,7 +146,7 @@ function LogClimbPage() {
           UnixTime: moment().unix(),
         }
 
-        logData.push(climbData)
+        newClimbLogData.push(climbData)
         logClimb(climbData, user.id)
 
         if (
@@ -161,14 +161,13 @@ function LogClimbPage() {
             UnixTime: moment().unix(),
           }
 
-          logData.push(attemptData)
+          newClimbLogData.push(attemptData)
           logClimb(attemptData, user.id)
         }
-        navigate("/dashboard", {
-          state: {
-            data: logData,
-          },
-        })
+
+        // We are assuming the climbs got logged properly in the db
+        addClimbLogData(newClimbLogData)
+        navigate("/dashboard")
       }
     } else {
       console.log("logClimb formHasError")

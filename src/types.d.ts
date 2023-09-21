@@ -17,6 +17,9 @@ export type UserClimbingData = {
     leadData: ClimbGraphData[]
     trData: ClimbGraphData[]
   }
+  summaryStats: {
+    indoorRedpointGrades: UserIndoorRedpointGradesDoc
+  }
 }
 
 export type ClimbLogDocument = {
@@ -62,4 +65,13 @@ export type SessionStorageData = {
     leadData: ClimbGraphData[]
     trData: ClimbGraphData[]
   }
+  summaryStats: {
+    indoorRedpointGrades: UserIndoorRedpointGradesDoc
+  }
+}
+
+export type UserIndoorRedpointGradesDoc = {
+  Boulder: string
+  Lead: string
+  TopRope: string
 }

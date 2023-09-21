@@ -5,8 +5,15 @@ import {
   GradePyramidFilter,
   DateFilters,
   MINIMUM_DATE_FOR_DATA,
+  TICK_TYPES,
+  BOULDER_GRADES,
 } from "../constants"
-import { GradePyramidGraphData, ClimbLog, TickTypes } from "../types"
+import {
+  GradePyramidGraphData,
+  ClimbLog,
+  TickTypes,
+  UserIndoorRedpointGradesDoc,
+} from "../types"
 
 export function getMinimumMoment(dateFilter: number) {
   const minDataMoment = moment(
@@ -149,6 +156,96 @@ export function assembleGraphData(
   })
 
   return graphData
+}
+
+export function findNewRedpointGrades(
+  currentHardestGrades: UserIndoorRedpointGradesDoc | null,
+  climbLogs: ClimbLog[]
+): UserIndoorRedpointGradesDoc {
+  let returnGrades = currentHardestGrades
+    ? currentHardestGrades
+    : { Boulder: "", Lead: "", TopRope: "" }
+  let updateGrade = ""
+  // Assuming all climbs are of the same type
+  // with the current climb-logging design this should be true
+  const gradeSystem =
+    climbLogs[0].ClimbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
+      ? BOULDER_GRADES
+      : INDOOR_SPORT_GRADES
+
+  climbLogs.forEach((climb) => {
+    if (climb.Tick === "Attempt") {
+      return
+    } else {
+      if (!currentHardestGrades) {
+        switch (climb.ClimbType) {
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
+            returnGrades = {
+              Boulder: climb.Grade,
+              Lead: "",
+              TopRope: "",
+            }
+            break
+
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
+            returnGrades = {
+              Boulder: "",
+              Lead: climb.Grade,
+              TopRope: "",
+            }
+            break
+
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
+            returnGrades = {
+              Boulder: "",
+              Lead: "",
+              TopRope: climb.Grade,
+            }
+            break
+        }
+      } else {
+        switch (climb.ClimbType) {
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
+            const boulderGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const boulderHardestGradeIndex = gradeSystem.indexOf(
+              currentHardestGrades.Boulder
+            )
+            updateGrade =
+              boulderGradeIndex > boulderHardestGradeIndex
+                ? climb.Grade
+                : currentHardestGrades.Boulder
+            returnGrades.Boulder = updateGrade
+            break
+
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
+            const leadGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const leadHardestGradeIndex = gradeSystem.indexOf(
+              currentHardestGrades.Lead
+            )
+            updateGrade =
+              leadGradeIndex > leadHardestGradeIndex
+                ? climb.Grade
+                : currentHardestGrades.Lead
+            returnGrades.Lead = updateGrade
+            break
+
+          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
+            const trGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const trHardestGradeIndex = gradeSystem.indexOf(
+              currentHardestGrades.TopRope
+            )
+            updateGrade =
+              trGradeIndex > trHardestGradeIndex
+                ? climb.Grade
+                : currentHardestGrades.TopRope
+            returnGrades.TopRope = updateGrade
+            break
+        }
+      }
+    }
+  })
+
+  return returnGrades
 }
 
 // ------------------------

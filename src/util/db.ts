@@ -16,6 +16,7 @@ import {
   GradePyramidGraphData,
   ClimbLogDocument,
   UserClimbingData,
+  UserIndoorRedpointGradesDoc,
 } from "../types"
 import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../constants"
 import moment from "moment"
@@ -28,6 +29,57 @@ const converter = <ClimbLogDocument>() => ({
   fromFirestore: (snap: QueryDocumentSnapshot) =>
     snap.data() as ClimbLogDocument,
 })
+
+export const getUserIndoorRedpointGrades = async (
+  userId: string
+): Promise<UserIndoorRedpointGradesDoc> => {
+  let redpointGrades: UserIndoorRedpointGradesDoc = {
+    Boulder: "",
+    Lead: "",
+    TopRope: "",
+  }
+  const collectionPath = `/${collectionName}/${userId}/indoor_summary_stats`
+
+  try {
+    console.log("FIRESTORE READ CALL")
+
+    const docRef = doc(firestore, collectionPath, "redpoint_grades")
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.data) {
+      redpointGrades = docSnap.data() as UserIndoorRedpointGradesDoc
+    }
+  } catch (error) {
+    console.log(
+      `FIRESTORE Error retreiving UserIndoorRedpointGrades data:`,
+      error
+    )
+  }
+
+  return redpointGrades
+}
+
+export const updateUserIndoorRedpointGrades = async (
+  userId: string,
+  updateGrades: UserIndoorRedpointGradesDoc
+): Promise<void> => {
+  const docPath = `/${collectionName}/${userId}/indoor_summary_stats/redpoint_grades`
+
+  try {
+    console.log("FIRESTORE WRITE CALL")
+
+    const docRef = doc(firestore, docPath)
+
+    await setDoc(docRef, updateGrades).then((document) => {
+      console.log("RedpointGrades doc updated for user: ", userId, document)
+    })
+  } catch (error) {
+    console.log(
+      `FIRESTORE Error updating UserIndoorRedpointGrades data:`,
+      error
+    )
+  }
+}
 
 // log an indoor climb
 export const logClimb = async (
@@ -63,7 +115,7 @@ export const logClimb = async (
       }
     })
   } catch (error) {
-    console.log("Error logging climbing data: ", error)
+    console.log("FIRESTORE Error logging climbing data: ", error)
   }
 }
 
@@ -80,7 +132,7 @@ export const getAllUserClimbsByType = async (
   const minMoment = getMinimumMoment(filter)
 
   try {
-    console.log("FIRESTORE call")
+    console.log("FIRESTORE READ CALL")
 
     const q = query(
       collection(firestore, collectionPath).withConverter(converter()),
@@ -94,14 +146,14 @@ export const getAllUserClimbsByType = async (
       rawClimbingData.push(doc.data() as ClimbLogDocument)
     })
   } catch (error) {
-    console.log(`Error retreiving ${type} data:`, error)
+    console.log(`FIRESTORE Error retreiving ${type} data:`, error)
   }
 
   return rawClimbingData
 }
 
 // get all climbs for a user
-export const getAllUserClimbs = async (
+export const getAllUserClimbingData = async (
   userId: string,
   filterRange: number
 ): Promise<UserClimbingData> => {
@@ -125,6 +177,8 @@ export const getAllUserClimbs = async (
     GYM_CLIMB_TYPES.TopRope,
     filterRange
   )
+
+  const indoorRedpointGrades = await getUserIndoorRedpointGrades(userId)
 
   let boulderPyramidData: GradePyramidGraphData[] = []
   let leadPyramidData: GradePyramidGraphData[] = []
@@ -180,7 +234,7 @@ export const getAllUserClimbs = async (
       filterRange
     )
   } catch (error) {
-    console.log("Error retreiving all climbing data:", error)
+    console.log("FIRESTORE Error retreiving all climbing data:", error)
   }
 
   return {
@@ -195,5 +249,6 @@ export const getAllUserClimbs = async (
       leadData: leadPyramidData,
       trData: trPyramidData,
     },
+    summaryStats: { indoorRedpointGrades: indoorRedpointGrades },
   } as UserClimbingData
 }

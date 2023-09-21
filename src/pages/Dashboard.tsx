@@ -14,20 +14,12 @@ import { DateFilters } from "../constants"
 import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
 
 const Dashboard = () => {
-  const { userClimbingLogs, addClimbLogData } = useUserContext()
+  const { userClimbingLogs } = useUserContext()
   const navigate = useNavigate()
-  const location = useLocation()
   const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
   const [activityFilter, setActivityFilter] = useState<number>(
     DateFilters.ThisWeek
   )
-
-  useEffect(() => {
-    // if a new climb has been logged, add it to the context data
-    if (location.state) {
-      addClimbLogData(location.state.data)
-    }
-  }, [])
 
   return !userClimbingLogs ? (
     <>

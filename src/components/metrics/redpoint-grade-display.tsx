@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Grid, Typography } from "@mui/material"
-import { ClimbLog } from "../../types"
-import {
-  BOULDER_GRADES,
-  INDOOR_SPORT_GRADES,
-  TICK_TYPES,
-} from "../../constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
 import { useUserContext } from "../../context-api"
 
 export type HardestGradeProps = {
@@ -13,12 +8,7 @@ export type HardestGradeProps = {
 }
 
 function HardestGradeDisplay({ climbType }: HardestGradeProps) {
-  const {
-    userBoulderLogs,
-    userLeadLogs,
-    userTopRopeLogs,
-    userClimbingLogs,
-  } = useUserContext()
+  const { userIndoorRedpointGrades } = useUserContext()
   const [hardestGrade, setHardestGrade] = useState("--")
   const gradingSystem =
     climbType === "Boulder" ? BOULDER_GRADES : INDOOR_SPORT_GRADES
@@ -31,42 +21,30 @@ function HardestGradeDisplay({ climbType }: HardestGradeProps) {
   //     : TrIcon
 
   useEffect(() => {
-    if (userClimbingLogs && userClimbingLogs.length > 0) {
-      let climbingData: ClimbLog[] = []
+    if (userIndoorRedpointGrades) {
       switch (climbType) {
         case "Boulder":
-          climbingData = userBoulderLogs ? userBoulderLogs : []
+          setHardestGrade(
+            userIndoorRedpointGrades.Boulder
+              ? userIndoorRedpointGrades.Boulder
+              : "--"
+          )
           break
         case "Lead":
-          climbingData = userLeadLogs ? userLeadLogs : []
+          setHardestGrade(
+            userIndoorRedpointGrades.Lead ? userIndoorRedpointGrades.Lead : "--"
+          )
           break
         case "TopRope":
-          climbingData = userTopRopeLogs ? userTopRopeLogs : []
+          setHardestGrade(
+            userIndoorRedpointGrades.TopRope
+              ? userIndoorRedpointGrades.TopRope
+              : "--"
+          )
           break
       }
-
-      const climbs = climbingData.filter(
-        (climb) =>
-          (climb.Tick === TICK_TYPES[0] ||
-            climb.Tick === TICK_TYPES[1] ||
-            climb.Tick === TICK_TYPES[2]) &&
-          climb.ClimbType === climbType
-      )
-
-      if (climbs.length > 0) {
-        const result = climbs.reduce((prev, current) =>
-          gradingSystem.indexOf(prev.Grade) >
-          gradingSystem.indexOf(current.Grade)
-            ? prev
-            : current
-        )
-
-        setHardestGrade(result.Grade)
-      } else {
-        setHardestGrade("--")
-      }
     }
-  }, [userClimbingLogs])
+  }, [userIndoorRedpointGrades])
 
   return (
     // <Grid container direction={"row"} justifyContent={"center"}>
