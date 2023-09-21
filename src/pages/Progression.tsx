@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../context-api"
+import { useUserContext } from "../user-context"
 import { DateFilters, GYM_CLIMB_TYPES } from "../constants"
 import AppToolbar from "../components/common/app-toolbar"
 import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"

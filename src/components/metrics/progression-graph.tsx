@@ -14,7 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../../constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
 import { GraphColors } from "../../styles/styles"
-import { useUserContext } from "../../context-api"
+import { useUserContext } from "../../user-context"
 import moment, { Moment } from "moment"
 
 export type MonthlyClimbsGraphProps = {

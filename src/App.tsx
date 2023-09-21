@@ -11,7 +11,7 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import "react-toastify/dist/ReactToastify.css"
 import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
-import { UserDataProvider } from "./context-api"
+import { UserDataProvider } from "./user-context"
 
 const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {

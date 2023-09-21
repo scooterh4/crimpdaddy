@@ -16,7 +16,7 @@ import {
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES, TICK_TYPES } from "../constants"
 import { useNavigate } from "react-router-dom"
 import AppToolbar from "../components/common/app-toolbar"
-import { useUserContext } from "../context-api"
+import { useUserContext } from "../user-context"
 import {
   AppColors,
   GraphColors,

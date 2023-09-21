@@ -12,7 +12,7 @@ import { ClimbLog, GradePyramidGraphData } from "../../types"
 import { GraphColors } from "../../styles/styles"
 import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-import { useUserContext } from "../../context-api"
+import { useUserContext } from "../../user-context"
 import { GYM_CLIMB_TYPES } from "../../constants"
 import { formatClimbingData } from "../../util/helper-functions"
 
