@@ -14,7 +14,7 @@ import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
 import { GYM_CLIMB_TYPES } from "../../constants"
-import { formatClimbingData } from "../../util/helper-functions"
+import { getGradePyramidGraphData } from "../../util/helper-functions"
 
 export type GradeGraphProps = {
   climbType: number
@@ -61,7 +61,7 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
       [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
     }
 
-    const formattedData = formatClimbingData(
+    const formattedData = getGradePyramidGraphData(
       logsMapping[climbType as GYM_CLIMB_TYPES],
       climbType,
       tickFilter,

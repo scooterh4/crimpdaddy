@@ -13,7 +13,7 @@ import {
 import { DateFilters, GYM_CLIMB_TYPES, GradePyramidFilter } from "./constants"
 import {
   findNewRedpointGrades,
-  formatClimbingData,
+  getGradePyramidGraphData,
 } from "./util/helper-functions"
 
 interface IUserContext {
@@ -188,7 +188,7 @@ export const UserDataProvider = ({
         setUserBoulderLogs(
           userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd
         )
-        const newBoulderData = formatClimbingData(
+        const newBoulderData = getGradePyramidGraphData(
           userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.Boulder,
           GradePyramidFilter.ClimbsAndAttempts,
@@ -204,7 +204,7 @@ export const UserDataProvider = ({
         setUserLeadLogs(
           userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd
         )
-        const newLeadData = formatClimbingData(
+        const newLeadData = getGradePyramidGraphData(
           userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.Lead,
           GradePyramidFilter.ClimbsAndAttempts,
@@ -220,7 +220,7 @@ export const UserDataProvider = ({
         setUserTopRopeLogs(
           userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd
         )
-        const newTrData = formatClimbingData(
+        const newTrData = getGradePyramidGraphData(
           userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.TopRope,
           GradePyramidFilter.ClimbsAndAttempts,

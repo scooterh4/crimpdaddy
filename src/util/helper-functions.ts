@@ -41,12 +41,12 @@ export function getMinimumMoment(dateFilter: number) {
   return minMoment
 }
 
-export function formatClimbingData(
+export function getGradePyramidGraphData(
   rawData: ClimbLog[],
   climbType: number,
   gradePyramidFilter: number,
   dateFilter: number
-) {
+): GradePyramidGraphData[] {
   const gradeAttemptMap = new Map<string, TickTypes>()
   const minMoment = getMinimumMoment(dateFilter)
 
@@ -84,7 +84,7 @@ export function formatClimbingData(
       .reverse()
   }
 
-  const graphData = assembleGraphData(grades, gradeAttemptMap)
+  const graphData = assembleGradePyramidData(grades, gradeAttemptMap)
 
   return graphData
 }
@@ -121,7 +121,7 @@ export function addGradeData(
   gradeAttemptMap.set(climb.Grade, ticks)
 }
 
-export function assembleGraphData(
+export function assembleGradePyramidData(
   gradesArray: string[],
   gradeAttemptMap: Map<string, TickTypes>
 ): GradePyramidGraphData[] {
