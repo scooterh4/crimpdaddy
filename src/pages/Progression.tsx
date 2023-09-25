@@ -88,20 +88,26 @@ function ProgressionPage() {
               display={"grid"}
               gridAutoRows={"auto"}
               gridTemplateColumns={"1fr 1fr 1fr"}
+              paddingLeft={{ sm: 0, xs: 2 }}
             >
               <Typography
                 color={ThemeColors.darkShade}
                 fontFamily={"poppins"}
-                gridColumn={{ sm: "2", xs: "1" }}
+                gridColumn={"2"}
+                gridRow={"1"}
                 gutterBottom
-                justifySelf={{ sm: "center", xs: "start" }}
-                paddingLeft={{ sm: 0, xs: 2 }}
+                justifySelf={"center"}
                 variant="h5"
               >
                 Bouldering
               </Typography>
 
-              <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
+              <Grid
+                item
+                gridColumn={{ sm: "3", xs: "2" }}
+                gridRow={{ sm: "1", xs: 2 }}
+                justifySelf={{ sm: "end", xs: "center" }}
+              >
                 <SelectFilter
                   page="progression"
                   dateFilter={true}
@@ -135,20 +141,26 @@ function ProgressionPage() {
               display={"grid"}
               gridAutoRows={"auto"}
               gridTemplateColumns={"1fr 1fr 1fr"}
+              paddingLeft={{ sm: 0, xs: 2 }}
             >
               <Typography
                 color={ThemeColors.darkShade}
                 fontFamily={"poppins"}
-                gridColumn={{ sm: "2", xs: "1" }}
+                gridColumn={"2"}
+                gridRow={"1"}
                 gutterBottom
-                justifySelf={{ sm: "center", xs: "start" }}
-                paddingLeft={{ sm: 0, xs: 2 }}
+                justifySelf={"center"}
                 variant="h5"
               >
                 Lead
               </Typography>
 
-              <Grid item gridColumn={"3"} justifySelf={"end"}>
+              <Grid
+                item
+                gridColumn={{ sm: "3", xs: "2" }}
+                gridRow={{ sm: "1", xs: 2 }}
+                justifySelf={{ sm: "end", xs: "center" }}
+              >
                 <SelectFilter
                   page="progression"
                   dateFilter={true}
@@ -182,20 +194,26 @@ function ProgressionPage() {
               display={"grid"}
               gridAutoRows={"auto"}
               gridTemplateColumns={"1fr 1fr 1fr"}
+              paddingLeft={{ sm: 0, xs: 2 }}
             >
               <Typography
                 color={ThemeColors.darkShade}
                 fontFamily={"poppins"}
-                gridColumn={{ sm: "2", xs: "1" }}
+                gridColumn={"2"}
+                gridRow={"1"}
                 gutterBottom
-                justifySelf={{ sm: "center", xs: "start" }}
-                paddingLeft={{ sm: 0, xs: 2 }}
+                justifySelf={"center"}
                 variant="h5"
               >
                 Top Rope
               </Typography>
 
-              <Grid item gridColumn={"3"} justifySelf={"end"}>
+              <Grid
+                item
+                gridColumn={{ sm: "3", xs: "2" }}
+                gridRow={{ sm: "1", xs: 2 }}
+                justifySelf={{ sm: "end", xs: "center" }}
+              >
                 <SelectFilter
                   page="progression"
                   dateFilter={true}
