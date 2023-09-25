@@ -122,7 +122,7 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
       } else {
         return (
           <Card>
-            <p>Deez nuts</p>
+            <p>--</p>
           </Card>
         )
       }
