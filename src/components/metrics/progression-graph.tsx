@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../types"
-import { Card, Typography, useTheme } from "@mui/material"
+import { Box, Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { CLIMB_TYPES, DateFilters, GYM_CLIMB_TYPES } from "../../constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
@@ -93,23 +93,30 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
       if (payload) {
         return (
           <Card sx={{ fontFamily: "poppins", padding: 2 }}>
-            <p
-              style={{ fontWeight: "bold", textAlign: "center" }}
-            >{`${graphXAxis[label]}`}</p>
-            <p>
+            <Typography
+              component="div"
+              fontWeight={"bold"}
+              textAlign={"center"}
+            >
+              {`${graphXAxis[label]}`}
+            </Typography>
+            <Typography component="div">
               Highest grade climbed:{" "}
-              {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
-            </p>
-
-            <p>
+              <Box fontWeight="bold" display="inline">
+                {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
+              </Box>
+            </Typography>
+            <Typography component="div">
               Highest grade attempted:{" "}
-              {`${
-                gradeSystem[
-                  graphData[label].hardestClimbIdx +
-                    graphData[label].hardestAttemptIdx
-                ]
-              }`}
-            </p>
+              <Box fontWeight="bold" display="inline">
+                {`${
+                  gradeSystem[
+                    graphData[label].hardestClimbIdx +
+                      graphData[label].hardestAttemptIdx
+                  ]
+                }`}
+              </Box>
+            </Typography>
           </Card>
         )
       } else {
