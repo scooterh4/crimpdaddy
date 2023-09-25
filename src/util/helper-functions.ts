@@ -4,8 +4,6 @@ import {
   INDOOR_SPORT_GRADES,
   GradePyramidFilter,
   DateFilters,
-  MINIMUM_DATE_FOR_DATA,
-  TICK_TYPES,
   BOULDER_GRADES,
 } from "../constants"
 import {
@@ -16,36 +14,27 @@ import {
 } from "../types"
 
 export function getMinimumMoment(dateFilter: number) {
-  const minDataMoment = moment(
-    MINIMUM_DATE_FOR_DATA.dateString,
-    MINIMUM_DATE_FOR_DATA.formatString
-  )
   let minMoment = moment()
 
   switch (dateFilter) {
     case DateFilters.ThisWeek:
       minMoment = minMoment.subtract(7, "days")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
     case DateFilters.ThisMonth:
       minMoment = minMoment.subtract(1, "month")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
     case DateFilters.LastMonth:
       minMoment = minMoment.subtract(2, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
     case DateFilters.Last6Months:
       minMoment = minMoment.subtract(6, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
 
     case DateFilters.Last12Months:
       minMoment = minMoment.subtract(12, "months")
-      minMoment = minMoment < minDataMoment ? minDataMoment : minMoment
       break
   }
 

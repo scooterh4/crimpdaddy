@@ -69,9 +69,9 @@ function ProgressionPage() {
             Progression
           </Typography>
 
-          <Grid container direction={"row"} marginBottom={2}>
+          {/* <Grid container direction={"row"} marginBottom={2}>
             <SectionLegend section="progression" />
-          </Grid>
+          </Grid> */}
 
           <Grid
             border={1}

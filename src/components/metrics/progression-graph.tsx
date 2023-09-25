@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from "react"
 import {
+  Bar,
   CartesianGrid,
+  ComposedChart,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../types"
-import { Typography, useTheme } from "@mui/material"
+import { Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES, GYM_CLIMB_TYPES } from "../../constants"
+import { CLIMB_TYPES, DateFilters, GYM_CLIMB_TYPES } from "../../constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
-import { GraphColors } from "../../styles/styles"
+import { AppColors, GraphColors, ThemeColors } from "../../styles/styles"
 import { useUserContext } from "../../user-context"
 import moment, { Moment } from "moment"
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent"
+import AppLoading from "../common/app-loading"
 
 export type MonthlyClimbsGraphProps = {
   climbType: number
   filter: number
 }
 
-export type HardestClimbGraphData = {
-  Month: string
-  Onsight: string
-  Flash: string
-  Redpoint: string
-  [key: string]: string
+export type ProgressionGraphData = {
+  monthIdx: number
+  month: string
+  hardestClimbIdx: number
+  hardestAttemptIdx: number
+  progressionLine: number
 }
 
 export type ProgressionGraphDateRange = {
@@ -42,8 +49,10 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
     userLeadLogs,
     userTopRopeLogs,
   } = useUserContext()
-  const [graphData, setGraphData] = useState<HardestClimbGraphData[]>([])
-  const [gradeRange, setGradeRange] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [graphData, setGraphData] = useState<ProgressionGraphData[]>([])
+  const [gradeRange, setGradeRange] = useState<number[]>([])
+  const [graphXAxis, setGraphXAxis] = useState<string[]>([])
   const gradeSystem =
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
@@ -58,96 +67,163 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
   useEffect(() => {
     switch (climbType) {
       case GYM_CLIMB_TYPES.Boulder:
-        if (userBoulderLogs) {
+        if (userBoulderLogs && userBoulderLogs.length > 0) {
           filterRawClimbingData(userBoulderLogs)
         }
         break
       case GYM_CLIMB_TYPES.Lead:
-        if (userLeadLogs) {
+        if (userLeadLogs && userLeadLogs.length > 0) {
           filterRawClimbingData(userLeadLogs)
         }
         break
       case GYM_CLIMB_TYPES.TopRope:
-        if (userTopRopeLogs) {
+        if (userTopRopeLogs && userTopRopeLogs.length > 0) {
           filterRawClimbingData(userTopRopeLogs)
         }
         break
     }
-  }, [userClimbingLogs])
+  }, [userClimbingLogs, filter])
+
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: TooltipProps<ValueType, NameType>) => {
+    if (active) {
+      if (payload) {
+        return (
+          <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+            <p
+              style={{ fontWeight: "bold", textAlign: "center" }}
+            >{`${graphXAxis[label]}`}</p>
+            <p>
+              Highest grade climbed:{" "}
+              {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
+            </p>
+
+            <p>
+              Highest grade attempted:{" "}
+              {`${
+                gradeSystem[
+                  graphData[label].hardestClimbIdx +
+                    graphData[label].hardestAttemptIdx
+                ]
+              }`}
+            </p>
+          </Card>
+        )
+      } else {
+        return (
+          <Card>
+            <p>Deez nuts</p>
+          </Card>
+        )
+      }
+    } else {
+      return null
+    }
+  }
 
   function setResultDates(startMoment: Moment) {
-    let result: HardestClimbGraphData[] = []
-
-    while (startMoment.month() <= moment().month()) {
+    let result: ProgressionGraphData[] = []
+    let xAxis: string[] = []
+    let month = 0
+    while (
+      startMoment.month() <= moment().month() ||
+      startMoment.year() < moment().year()
+    ) {
       const monthToAdd = startMoment.format("MMM YYYY").toString()
 
+      xAxis.push(monthToAdd)
       result.push({
-        Month: monthToAdd,
-        Onsight: "",
-        Flash: "",
-        Redpoint: "",
-      })
-
+        month: monthToAdd,
+        monthIdx: month,
+        hardestClimbIdx: 0,
+        hardestAttemptIdx: 0,
+        progressionLine: 0,
+      } as ProgressionGraphData)
       startMoment = startMoment.add(1, "month")
+      month++
     }
-
+    setGraphXAxis(xAxis)
     return result
   }
 
   function filterRawClimbingData(climbingData: ClimbLog[]) {
-    // Get the first date that data is available
-    const times = [
-      ...climbingData.map((climb) => {
-        return climb.UnixTime
-      }),
-    ]
-    const startTime = Math.min.apply(null, times)
-
-    let result = setResultDates(moment.unix(startTime))
-
+    const startTime =
+      filter === DateFilters.Last6Months
+        ? moment().subtract(6, "months")
+        : moment().subtract(12, "months")
+    let result = setResultDates(startTime)
     // for the y-axis range
     let gradeMaxIndex = 0
-    let gradeMinIndex = gradeSystem.length
 
     climbingData.forEach((climb) => {
       // All climbs should be in the correct date range
-
       const month = moment
         .unix(climb.UnixTime)
         .format("MMM YYYY")
         .toString()
 
-      const climbMonthAdded = result.find((r) => r.Month === month)
+      const climbMonthAdded = result.find((r) => r.month === month)
 
       if (climbMonthAdded) {
+        const climbIdx = gradeSystem.indexOf(climb.Grade)
+        if (climb.Tick !== "Attempt") {
+          if (climbMonthAdded.hardestClimbIdx > climbIdx) {
+            return
+          } else {
+            climbMonthAdded.hardestClimbIdx = climbIdx
+            climbMonthAdded.progressionLine = climbIdx
+          }
+        } else {
+          if (climbMonthAdded.hardestAttemptIdx > climbIdx) {
+            return
+          } else {
+            climbMonthAdded.hardestAttemptIdx = climbIdx
+          }
+        }
+
         // update the grade index for the y-axis range
-        gradeMaxIndex =
-          gradeMaxIndex < gradeSystem.indexOf(climb.Grade)
-            ? gradeSystem.indexOf(climb.Grade)
-            : gradeMaxIndex
+        gradeMaxIndex = gradeMaxIndex < climbIdx ? climbIdx : gradeMaxIndex
+      }
+    })
 
-        gradeMinIndex =
-          gradeMinIndex > gradeSystem.indexOf(climb.Grade)
-            ? gradeSystem.indexOf(climb.Grade)
-            : gradeMinIndex
+    const firstBarIdx = result.findIndex((x) => x.progressionLine)
 
+    result.forEach((obj, index) => {
+      // calculate the hardestAttempts as the difference between hardestAttemptIdx and hardestClimbIdx
+      const attemptValue = Math.max(
+        0,
+        obj.hardestAttemptIdx - obj.hardestClimbIdx
+      )
+      obj.hardestAttemptIdx = attemptValue
+
+      // handle empty values after a bar
+      if (
+        index > 0 &&
+        result[index - 1].hardestClimbIdx > obj.hardestClimbIdx
+      ) {
+        obj.progressionLine = result[index - 1].hardestClimbIdx
+      } else if (index < result.length - 1) {
+        // handle empty values before a bar
         if (
-          gradeSystem.indexOf(climb.Grade) >
-          gradeSystem.indexOf(climbMonthAdded[climb.Tick])
+          result[index + 1].hardestClimbIdx > obj.hardestClimbIdx &&
+          index > firstBarIdx
         ) {
-          climbMonthAdded[climb.Tick] = climb.Grade
+          obj.progressionLine = result[index + 1].hardestClimbIdx
         }
       }
     })
 
-    gradeMaxIndex += 2
-    gradeMinIndex = gradeMinIndex > 0 ? gradeMinIndex - 1 : 0
-
-    setGradeRange(gradeSystem.slice(gradeMinIndex, gradeMaxIndex))
+    setGradeRange([0, gradeMaxIndex + 2])
     setGraphData(result)
+    setIsLoading(false)
   }
 
-  if (graphData.length <= 0) {
+  if (isLoading) {
+    return <AppLoading />
+  } else if (graphData.length <= 0) {
     return (
       <Typography
         fontFamily={"poppins"}
@@ -161,46 +237,56 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
   } else {
     return (
       <ResponsiveContainer aspect={graphAspectRatio}>
-        <LineChart
+        <ComposedChart
           data={graphData}
           margin={{
             top: 20,
-            right: 0,
+            right: 10,
             left: graphLeftMargin,
             bottom: 5,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="category" dataKey="Month" fontSize={graphFontSize} />
-          <YAxis
-            type="category"
-            dataKey="Grade"
-            domain={gradeRange}
+          <CartesianGrid />
+          <XAxis
+            type="number"
+            domain={[0, graphXAxis.length - 1]}
+            dataKey="monthIdx"
             fontSize={graphFontSize}
+            tickFormatter={(tick) => {
+              return graphXAxis[tick]
+            }}
+            scale={"auto"}
           />
-          <Tooltip />
-          <Line
+          <YAxis
+            type="number"
+            domain={gradeRange}
+            tickFormatter={(tick) => {
+              return gradeSystem[tick]
+            }}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Bar
+            stackId={"a"}
             type="monotone"
-            dataKey="Onsight"
-            stroke={GraphColors.Onsight}
-            fill={GraphColors.Onsight}
+            dataKey="hardestClimbIdx"
+            stroke="black"
+            fill={AppColors.success}
+          />
+          <Bar
+            stackId={"a"}
+            type="monotone"
+            dataKey="hardestAttemptIdx"
+            stroke="black"
+            fill={GraphColors.Attempts}
+          />
+          <Line
+            type="bump"
+            dataKey="progressionLine"
+            fill="white"
+            stroke="black"
             strokeWidth={3}
           />
-          <Line
-            type="monotone"
-            dataKey="Flash"
-            stroke={GraphColors.Flash}
-            fill={GraphColors.Flash}
-            strokeWidth={3}
-          />
-          <Line
-            type="monotone"
-            dataKey="Redpoint"
-            stroke={GraphColors.Redpoint}
-            fill={GraphColors.Redpoint}
-            strokeWidth={3}
-          />
-        </LineChart>
+        </ComposedChart>
       </ResponsiveContainer>
     )
   }
