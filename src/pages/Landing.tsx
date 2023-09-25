@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useLayoutEffect } from "react"
 import background from "../images/quickdraws-unsplash.jpg"
 import {
   Box,
@@ -10,13 +10,21 @@ import {
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { AppColors, ThemeColors } from "../styles/styles"
+import { useUserContext } from "../user-context"
 
 function Landing() {
+  const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const navigate = useNavigate()
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
   const backdropFilter = xsScreen ? "" : "blur(5px) saturate(140%)"
   const boxShadow = xsScreen ? "" : "0px 25px 5px 0px rgba(0, 0, 0, 0.75)"
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import {
   Avatar,
@@ -19,10 +19,17 @@ import { AppColors } from "../styles/styles"
 import { useUserContext } from "../user-context"
 
 function SignIn() {
+  const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
   const { updateUser } = useUserContext()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   function Submit() {
     signInWithEmailAndPassword(auth, email, password)

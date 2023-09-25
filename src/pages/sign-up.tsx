@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { auth } from "../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import {
@@ -17,6 +17,7 @@ import AppToolbar from "../components/common/app-toolbar"
 import { AppColors } from "../styles/styles"
 
 function SignUp() {
+  const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -28,6 +29,12 @@ function SignUp() {
     confirmPassword: "",
   })
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   function Submit() {
     if (input.password.length < 6) {
