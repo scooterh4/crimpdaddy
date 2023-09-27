@@ -15,6 +15,8 @@ import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
 import { GYM_CLIMB_TYPES } from "../../constants"
 import { getGradePyramidGraphData } from "../../util/helper-functions"
+import { usePromiseTracker } from "react-promise-tracker"
+import AppLoading from "../common/app-loading"
 
 export type GradeGraphProps = {
   climbType: number
@@ -23,6 +25,7 @@ export type GradeGraphProps = {
 }
 
 function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
+  const { promiseInProgress } = usePromiseTracker()
   const {
     userBoulderGradePyramidData,
     userLeadGradePyramidData,
@@ -70,39 +73,45 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
     setGraphData(formattedData)
   }, [tickFilter, dateFilter])
 
-  return graphData.length <= 0 ? (
-    <Typography
-      variant="h3"
-      padding={10}
-      sx={{ textAlign: "center", fontWeight: "bold" }}
-    >
-      --
-    </Typography>
-  ) : (
-    <ResponsiveContainer aspect={graphAspectRatio}>
-      <BarChart
-        layout="vertical"
-        data={graphData}
-        barSize={30}
-        //style={{ marginLeft: -20 }}
+  console.log("pyramidGraph promiseInProgress", promiseInProgress)
+
+  if (promiseInProgress) {
+    return <AppLoading />
+  } else {
+    return graphData.length <= 0 ? (
+      <Typography
+        variant="h3"
+        padding={10}
+        sx={{ textAlign: "center", fontWeight: "bold" }}
       >
-        <XAxis type="number" />
-        <YAxis
-          type="category"
-          tickCount={graphData.length}
-          dataKey="Grade"
-          tickLine={false}
-          fontSize={12}
-        />
-        <Tooltip />
-        <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-        <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
-        <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
-        <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
-        <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+        --
+      </Typography>
+    ) : (
+      <ResponsiveContainer aspect={graphAspectRatio}>
+        <BarChart
+          layout="vertical"
+          data={graphData}
+          barSize={30}
+          //style={{ marginLeft: -20 }}
+        >
+          <XAxis type="number" />
+          <YAxis
+            type="category"
+            tickCount={graphData.length}
+            dataKey="Grade"
+            tickLine={false}
+            fontSize={12}
+          />
+          <Tooltip />
+          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+          <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
+          <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
+          <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
+          <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  }
 }
 
 export default GradePyramid

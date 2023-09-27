@@ -16,6 +16,7 @@ import { useUserContext } from "../../user-context"
 import AppLoading from "../common/app-loading"
 import { ClimbLog } from "../../types"
 import { DateFilters } from "../../constants"
+import { usePromiseTracker } from "react-promise-tracker"
 
 type MonthlyClimbsGraphProps = {
   filter: number
@@ -35,6 +36,7 @@ type VolumeGraphDateRange = {
 
 function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
   const { userClimbingLogs } = useUserContext()
+  const { promiseInProgress } = usePromiseTracker()
   const [graphData, setGraphData] = useState<ClimbsByDate[]>([])
   const [graphMaxRange, setGraphMaxRange] = useState<number>(15)
 
@@ -277,7 +279,7 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
     return result
   }
 
-  if (!graphData) {
+  if (promiseInProgress) {
     return <AppLoading />
   }
 

@@ -15,6 +15,7 @@ import {
   findNewRedpointGrades,
   getGradePyramidGraphData,
 } from "./util/helper-functions"
+import { trackPromise } from "react-promise-tracker"
 
 interface IUserContext {
   user: AppUser | null
@@ -273,26 +274,29 @@ export const UserDataProvider = ({
   const updateDateRange = (saveRange: number | null) => {
     setDateRange(saveRange)
     if (saveRange && user) {
-      getAllUserClimbingData(user.id, saveRange).then((res) => {
-        setUserClimbingLogs(res.climbingLogs.allClimbs)
-        setUserBoulderLogs(res.climbingLogs.boulderLogs)
-        setUserLeadLogs(res.climbingLogs.leadLogs)
-        setUserTopRopeLogs(res.climbingLogs.topRopeLogs)
-        setUserBoulderGradePyramidData(res.gradePyramidData.boulderData)
-        setUserLeadGradePyramidData(res.gradePyramidData.leadData)
-        setUserTrGradePyramidData(res.gradePyramidData.trData)
-        setUserIndoorRedpointGrades(res.summaryStats.indoorRedpointGrades)
+      console.log("context tracking promise")
+      trackPromise(
+        getAllUserClimbingData(user.id, saveRange).then((res) => {
+          setUserClimbingLogs(res.climbingLogs.allClimbs)
+          setUserBoulderLogs(res.climbingLogs.boulderLogs)
+          setUserLeadLogs(res.climbingLogs.leadLogs)
+          setUserTopRopeLogs(res.climbingLogs.topRopeLogs)
+          setUserBoulderGradePyramidData(res.gradePyramidData.boulderData)
+          setUserLeadGradePyramidData(res.gradePyramidData.leadData)
+          setUserTrGradePyramidData(res.gradePyramidData.trData)
+          setUserIndoorRedpointGrades(res.summaryStats.indoorRedpointGrades)
 
-        sessionStorage.setItem(
-          sessionDataKey,
-          JSON.stringify({
-            timeRange: DateFilters[saveRange],
-            climbingData: res.climbingLogs,
-            gradePyramidData: res.gradePyramidData,
-            summaryStats: res.summaryStats,
-          })
-        )
-      })
+          sessionStorage.setItem(
+            sessionDataKey,
+            JSON.stringify({
+              timeRange: DateFilters[saveRange],
+              climbingData: res.climbingLogs,
+              gradePyramidData: res.gradePyramidData,
+              summaryStats: res.summaryStats,
+            })
+          )
+        })
+      )
     } else {
       console.log(
         "WARNING! UpdateDateRange in context-api doesn't have both a user and a saveRange"

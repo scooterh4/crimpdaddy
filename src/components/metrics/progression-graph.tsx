@@ -23,6 +23,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent"
 import AppLoading from "../common/app-loading"
+import { usePromiseTracker } from "react-promise-tracker"
 
 export type MonthlyClimbsGraphProps = {
   climbType: number
@@ -43,13 +44,13 @@ export type ProgressionGraphDateRange = {
 }
 
 function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
+  const { promiseInProgress } = usePromiseTracker()
   const {
     userClimbingLogs,
     userBoulderLogs,
     userLeadLogs,
     userTopRopeLogs,
   } = useUserContext()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [graphData, setGraphData] = useState<ProgressionGraphData[]>([])
   const [gradeRange, setGradeRange] = useState<number[]>([])
   const [graphXAxis, setGraphXAxis] = useState<string[]>([])
@@ -225,10 +226,9 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
 
     setGradeRange([0, gradeMaxIndex + 2])
     setGraphData(result)
-    setIsLoading(false)
   }
 
-  if (isLoading) {
+  if (promiseInProgress) {
     return <AppLoading />
   } else if (graphData.length <= 0) {
     return (
