@@ -71,6 +71,8 @@ const Dashboard = () => {
                 background: ThemeColors.darkAccent,
                 fontFamily: "poppins",
                 ":hover": { backgroundColor: ThemeColors.darkShade },
+                textTransform: "none",
+                fontSize: "14pt",
               }}
             >
               Log a climb

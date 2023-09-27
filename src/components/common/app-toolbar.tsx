@@ -46,14 +46,16 @@ function ToolBar({ title }: ToolBarProps) {
         }}
       >
         <Toolbar>
-          {user && (
+          {user.user && (
             <IconButton
               aria-label="menu"
               color="inherit"
               edge="start"
               onClick={handleDrawerToggle}
               size="large"
-              sx={{ display: { lg: "none" } }}
+              sx={{
+                display: { lg: "none" },
+              }}
             >
               <MenuIcon />
             </IconButton>

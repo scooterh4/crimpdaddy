@@ -15,7 +15,7 @@ import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import AppToolbar from "../components/common/app-toolbar"
-import { AppColors } from "../styles/styles"
+import { AppColors, ThemeColors } from "../styles/styles"
 import { useUserContext } from "../user-context"
 
 function SignIn() {
@@ -78,7 +78,9 @@ function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: AppColors.info, color: "white" }}>
+          <Avatar
+            sx={{ m: 1, bgcolor: ThemeColors.darkAccent, color: "white" }}
+          >
             <LockIcon />
           </Avatar>
           <Typography component="h1" fontFamily="poppins" variant="h5">
@@ -112,10 +114,16 @@ function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, fontFamily: "poppins" }}
+              sx={{
+                backgroundColor: ThemeColors.darkAccent,
+                ":hover": { backgroundColor: AppColors.info },
+                mt: 3,
+                mb: 2,
+                fontFamily: "poppins",
+              }}
               onClick={Submit}
             >
-              Sign In
+              Login
             </Button>
             <Grid container>
               {/* <Grid item xs>

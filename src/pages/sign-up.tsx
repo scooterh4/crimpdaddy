@@ -14,7 +14,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import AppToolbar from "../components/common/app-toolbar"
-import { AppColors } from "../styles/styles"
+import { AppColors, ThemeColors } from "../styles/styles"
 
 function SignUp() {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
@@ -151,7 +151,7 @@ function SignUp() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: AppColors.success }}>
+          <Avatar sx={{ m: 1, bgcolor: AppColors.info }}>
             <PersonAddIcon />
           </Avatar>
           <Typography component="h1" fontFamily={"poppins"} variant="h5">
@@ -208,7 +208,13 @@ function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, fontFamily: "poppins" }}
+              sx={{
+                backgroundColor: ThemeColors.darkAccent,
+                ":hover": { backgroundColor: ThemeColors.lightAccent },
+                mt: 3,
+                mb: 2,
+                fontFamily: "poppins",
+              }}
               onClick={Submit}
             >
               Sign Up

@@ -21,6 +21,7 @@ export default function LabelBottomNavigation({
         background: AppColors.primary,
         alignContent: "center",
         position: "relative",
+        height: "100%",
         width: {
           lg: isAuthenticated ? `calc(100% - ${drawerWidth}px)` : "100%",
         },
@@ -30,20 +31,17 @@ export default function LabelBottomNavigation({
       <Grid
         container
         direction={"column"}
+        display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
+        padding={1}
       >
-        <Typography
-          // marginLeft={{
-          //   xl: 5,
-          //   lg: 35,
-          // }}
-          color={"white"}
-          fontFamily={"poppins"}
-        >
+        <Typography color={"white"} fontFamily={"poppins"} variant="body1">
           CrimpDaddy
         </Typography>
-
+        <Typography color={"white"} fontFamily={"poppins"} variant="body2">
+          2023
+        </Typography>
         {/* <a href="https://www.flaticon.com/free-icons/rock" title="rock icons">
           Rock icons created by Freepik - Flaticon
         </a> */}
