@@ -418,7 +418,7 @@ function LogClimbPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   )
 }

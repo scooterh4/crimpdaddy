@@ -36,7 +36,7 @@ const Dashboard = () => {
           <AppLoading />
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   ) : (
     <>
@@ -158,7 +158,7 @@ const Dashboard = () => {
           </Grid>
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   )
 }

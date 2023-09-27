@@ -8,15 +8,23 @@ import LocationOnIcon from "@mui/icons-material/LocationOn"
 import { Grid, Typography } from "@mui/material"
 import { AppColors, drawerWidth } from "../../styles/styles"
 
-export default function LabelBottomNavigation() {
+export type appFooterProps = {
+  isAuthenticated: boolean
+}
+
+export default function LabelBottomNavigation({
+  isAuthenticated,
+}: appFooterProps) {
   return (
     <BottomNavigation
       sx={{
         background: AppColors.primary,
         alignContent: "center",
         position: "relative",
-        width: { lg: `calc(100% - ${drawerWidth}px)` },
-        ml: { lg: `${drawerWidth}px` },
+        width: {
+          lg: isAuthenticated ? `calc(100% - ${drawerWidth}px)` : "100%",
+        },
+        ml: { lg: isAuthenticated ? `${drawerWidth}px` : 0 },
       }}
     >
       <Grid

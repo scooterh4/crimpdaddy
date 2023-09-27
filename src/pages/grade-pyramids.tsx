@@ -51,7 +51,7 @@ function GradePyramidPage() {
           <AppLoading />
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   ) : (
     <>
@@ -237,7 +237,7 @@ function GradePyramidPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   )
 }

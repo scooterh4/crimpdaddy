@@ -43,7 +43,7 @@ function ProgressionPage() {
           <AppLoading />
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   ) : (
     <>
@@ -105,7 +105,7 @@ function ProgressionPage() {
               <Grid
                 item
                 gridColumn={{ sm: "3", xs: "2" }}
-                gridRow={{ sm: "1", xs: 2 }}
+                gridRow={{ sm: "1", xs: "2" }}
                 justifySelf={{ sm: "end", xs: "center" }}
               >
                 <SelectFilter
@@ -232,7 +232,7 @@ function ProgressionPage() {
           </Grid>
         </Box>
       </Box>
-      <AppFooter />
+      <AppFooter isAuthenticated={true} />
     </>
   )
 }
