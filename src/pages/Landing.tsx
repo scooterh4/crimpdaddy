@@ -175,7 +175,12 @@ function Landing() {
         Try hard and see results
       </Typography>
 
-      <Grid container direction={"row"} marginTop={5} marginBottom={10}>
+      <Grid
+        container
+        direction={"row"}
+        marginTop={{ lg: 10, xs: 5 }}
+        marginBottom={10}
+      >
         {additionalInfo.map((item) => (
           <Grid
             key={item.title}
