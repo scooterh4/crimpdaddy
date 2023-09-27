@@ -166,6 +166,7 @@ function Landing() {
 
       <Typography
         gridRow={"1"}
+        fontFamily={"poppins"}
         marginTop={10}
         textAlign={"center"}
         variant={"h3"}
@@ -190,19 +191,24 @@ function Landing() {
               container
               display={"flex"}
               direction={"column"}
-              marginTop={{ lg: 0, xs: 2 }}
+              marginTop={{ lg: 0, xs: 5 }}
               width={{ lg: "30vw", xs: "100%" }}
               padding={2}
             >
               {item.icon}
               <Typography
+                fontFamily={"poppins"}
                 marginBottom={2}
                 variant={"h4"}
                 color={AppColors.primary}
               >
                 {item.title}
               </Typography>
-              <Typography variant={"h6"} color={AppColors.primary}>
+              <Typography
+                fontFamily={"poppins"}
+                variant={"h6"}
+                color={AppColors.primary}
+              >
                 {item.body}
               </Typography>
             </Grid>
