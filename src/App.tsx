@@ -15,7 +15,7 @@ import { UserDataProvider } from "./user-context"
 
 const App = () => {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
-    authenticationPath: "/signin",
+    authenticationPath: "/login",
   }
 
   return (
@@ -25,7 +25,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route
             path="/dashboard"

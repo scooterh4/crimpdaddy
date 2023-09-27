@@ -85,7 +85,7 @@ const mainButtons: ButtonStyle[] = [
     title: "Login",
     color: AppColors.primary,
     hoverColor: ThemeColors.lightAccent,
-    navigatePath: "/signup",
+    navigatePath: "/login",
   },
 ]
 

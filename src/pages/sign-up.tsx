@@ -51,7 +51,7 @@ function SignUp() {
     ) {
       createUserWithEmailAndPassword(auth, input.email, input.password)
         .then((userCredential) => {
-          navigate("/signin")
+          navigate("/login")
           toast.success(
             "Registration successful! Please login with your credentials"
           )
@@ -215,8 +215,8 @@ function SignUp() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link style={{ fontFamily: "poppins" }} to={"/signin"}>
-                  Already have an account? Sign in
+                <Link style={{ fontFamily: "poppins" }} to={"/login"}>
+                  Already have an account? Login
                 </Link>
               </Grid>
             </Grid>

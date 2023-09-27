@@ -82,7 +82,7 @@ function SignIn() {
             <LockIcon />
           </Avatar>
           <Typography component="h1" fontFamily="poppins" variant="h5">
-            Sign in
+            Login
           </Typography>
           <Box sx={{ mt: 3 }}>
             <TextField
