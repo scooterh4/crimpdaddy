@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Box, Button, FormControl, Grid, Typography } from "@mui/material"
 import { useUserContext } from "../user-context"
 import AppLoading from "../components/common/app-loading"
@@ -10,13 +10,12 @@ import SelectFilter from "../components/metrics/select-filter"
 import ActivityGraph from "../components/metrics/activity-graph"
 import SectionLegend from "../components/metrics/section-legend"
 import AppToolbar from "../components/common/app-toolbar"
-import { DateFilters } from "../constants"
+import { DateFilters, PromiseTrackerArea } from "../constants"
 import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
 
 const Dashboard = () => {
   const { userClimbingLogs } = useUserContext()
   const navigate = useNavigate()
-  const handleClimbTypeSelectorOpen = () => navigate("/logClimb")
   const [activityFilter, setActivityFilter] = useState<number>(
     DateFilters.ThisWeek
   )
@@ -64,7 +63,7 @@ const Dashboard = () => {
 
           <FormControl fullWidth sx={{ marginBottom: 2 }}>
             <Button
-              onClick={handleClimbTypeSelectorOpen}
+              onClick={() => navigate("/logClimb")}
               size="large"
               variant="contained"
               sx={{
@@ -144,7 +143,7 @@ const Dashboard = () => {
 
               <Grid item gridColumn={"3"} gridRow={"1"} justifySelf={"end"}>
                 <SelectFilter
-                  page="activity"
+                  graph={PromiseTrackerArea.Activity}
                   dateFilter={true}
                   selectedFilter={activityFilter}
                   setFilter={setActivityFilter}

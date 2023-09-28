@@ -214,10 +214,11 @@ function SignUp() {
                 mt: 3,
                 mb: 2,
                 fontFamily: "poppins",
+                textTransform: "none",
               }}
               onClick={Submit}
             >
-              Sign Up
+              Sign up
             </Button>
             <Grid container>
               <Grid item>

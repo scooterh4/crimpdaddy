@@ -67,14 +67,14 @@ const additionalInfo: AdditionalInfo[] = [
   },
 ]
 
-type ButtonStyle = {
+type ButtonProps = {
   title: string
   color: string
   hoverColor: string
   navigatePath: string
 }
 
-const mainButtons: ButtonStyle[] = [
+const mainButtons: ButtonProps[] = [
   {
     title: "Let's go",
     color: ThemeColors.darkAccent,

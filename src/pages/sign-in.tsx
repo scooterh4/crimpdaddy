@@ -120,15 +120,13 @@ function SignIn() {
                 mt: 3,
                 mb: 2,
                 fontFamily: "poppins",
+                textTransform: "none",
               }}
               onClick={Submit}
             >
               Login
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link to={"/"}>Forgot password?</Link>
-              </Grid> */}
               <Grid item>
                 <Link style={{ fontFamily: "poppins" }} to={"/signup"}>
                   {"Don't have an account? Sign Up"}
