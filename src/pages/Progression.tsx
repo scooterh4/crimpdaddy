@@ -56,6 +56,7 @@ function ProgressionPage() {
         <Box
           component="main"
           marginTop={5}
+          marginBottom={2}
           sx={{
             flexGrow: 1,
             p: 3,
@@ -66,15 +67,12 @@ function ProgressionPage() {
             color={ThemeColors.darkShade}
             fontFamily={"poppins"}
             gutterBottom
+            marginBottom={5}
             paddingTop={2}
             variant="h3"
           >
             Progression
           </Typography>
-
-          {/* <Grid container direction={"row"} marginBottom={2}>
-            <SectionLegend section="progression" />
-          </Grid> */}
 
           <Grid
             border={1}
@@ -134,7 +132,7 @@ function ProgressionPage() {
             borderRadius={5}
             container
             direction={"column"}
-            marginTop={2}
+            marginTop={5}
             padding={2}
           >
             <Grid
@@ -187,7 +185,7 @@ function ProgressionPage() {
             borderRadius={5}
             container
             direction={"column"}
-            marginTop={2}
+            marginTop={5}
             padding={2}
           >
             <Grid

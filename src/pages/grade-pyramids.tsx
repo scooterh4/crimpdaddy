@@ -18,14 +18,7 @@ enum GradePyramidFilter {
 }
 
 function GradePyramidPage() {
-  const {
-    dataDateRange,
-    updateDateRange,
-    userClimbingLogs,
-    userBoulderGradePyramidData,
-    userLeadGradePyramidData,
-    userTrGradePyramidData,
-  } = useUserContext()
+  const { dataDateRange, updateDateRange } = useUserContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
   })
@@ -59,7 +52,7 @@ function GradePyramidPage() {
     </>
   ) : (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box minHeight={"94.2vh"} marginBottom={2} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -75,7 +68,7 @@ function GradePyramidPage() {
             container
             direction={"row"}
             alignContent={"center"}
-            marginBottom={2}
+            marginBottom={5}
           >
             <Grid container item direction={"row"}>
               <Typography
@@ -109,7 +102,7 @@ function GradePyramidPage() {
             </Grid>
           </Grid>
 
-          <Grid container direction={"row"} marginBottom={2}>
+          <Grid container direction={"row"} marginBottom={5}>
             <SectionLegend section="gradePyramids" />
           </Grid>
 
@@ -133,26 +126,11 @@ function GradePyramidPage() {
                 Bouldering
               </Typography>
 
-              <Grid
-                container
-                item
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                marginLeft={
-                  userBoulderGradePyramidData
-                    ? userBoulderGradePyramidData.length > 0
-                      ? -5
-                      : 0
-                    : 0
-                }
-              >
-                <GradePyramid
-                  climbType={GYM_CLIMB_TYPES.Boulder}
-                  tickFilter={gradePyramidFilter}
-                  dateFilter={dateFilter}
-                />
-              </Grid>
+              <GradePyramid
+                climbType={GYM_CLIMB_TYPES.Boulder}
+                tickFilter={gradePyramidFilter}
+                dateFilter={dateFilter}
+              />
             </Grid>
 
             <Grid
@@ -176,26 +154,11 @@ function GradePyramidPage() {
                 Lead
               </Typography>
 
-              <Grid
-                container
-                item
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                marginLeft={
-                  userLeadGradePyramidData
-                    ? userLeadGradePyramidData.length > 0
-                      ? -5
-                      : 0
-                    : 0
-                }
-              >
-                <GradePyramid
-                  climbType={GYM_CLIMB_TYPES.Lead}
-                  tickFilter={gradePyramidFilter}
-                  dateFilter={dateFilter}
-                />
-              </Grid>
+              <GradePyramid
+                climbType={GYM_CLIMB_TYPES.Lead}
+                tickFilter={gradePyramidFilter}
+                dateFilter={dateFilter}
+              />
             </Grid>
 
             <Grid
@@ -217,26 +180,11 @@ function GradePyramidPage() {
                 Top Rope
               </Typography>
 
-              <Grid
-                container
-                item
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                marginLeft={
-                  userTrGradePyramidData
-                    ? userTrGradePyramidData.length > 0
-                      ? -5
-                      : 0
-                    : 0
-                }
-              >
-                <GradePyramid
-                  climbType={GYM_CLIMB_TYPES.TopRope}
-                  tickFilter={gradePyramidFilter}
-                  dateFilter={dateFilter}
-                />
-              </Grid>
+              <GradePyramid
+                climbType={GYM_CLIMB_TYPES.TopRope}
+                tickFilter={gradePyramidFilter}
+                dateFilter={dateFilter}
+              />
             </Grid>
           </Grid>
         </Box>

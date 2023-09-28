@@ -10,7 +10,7 @@ import {
 } from "recharts"
 import { ClimbLog, GradePyramidGraphData } from "../../types"
 import { GraphColors } from "../../styles/styles"
-import { Typography, useTheme } from "@mui/material"
+import { Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
 import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../constants"
@@ -76,7 +76,11 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
   }, [tickFilter, dateFilter])
 
   if (promiseInProgress) {
-    return <AppLoading />
+    return (
+      <Grid container direction={"column"} justifyContent={"center"}>
+        <AppLoading />
+      </Grid>
+    )
   } else {
     return graphData.length <= 0 ? (
       <Typography
@@ -87,29 +91,33 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
         --
       </Typography>
     ) : (
-      <ResponsiveContainer aspect={graphAspectRatio}>
-        <BarChart
-          layout="vertical"
-          data={graphData}
-          barSize={30}
-          //style={{ marginLeft: -20 }}
-        >
-          <XAxis type="number" />
-          <YAxis
-            type="category"
-            tickCount={graphData.length}
-            dataKey="Grade"
-            tickLine={false}
-            fontSize={12}
-          />
-          <Tooltip />
-          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-          <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
-          <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
-          <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
-          <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
-        </BarChart>
-      </ResponsiveContainer>
+      <Grid
+        container
+        item
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        marginLeft={-5}
+      >
+        <ResponsiveContainer aspect={graphAspectRatio}>
+          <BarChart layout="vertical" data={graphData} barSize={30}>
+            <XAxis type="number" />
+            <YAxis
+              type="category"
+              tickCount={graphData.length}
+              dataKey="Grade"
+              tickLine={false}
+              fontSize={12}
+            />
+            <Tooltip />
+            <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+            <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
+            <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
+            <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
+            <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
+          </BarChart>
+        </ResponsiveContainer>
+      </Grid>
     )
   }
 }
