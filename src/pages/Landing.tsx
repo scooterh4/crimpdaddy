@@ -177,41 +177,33 @@ function Landing() {
 
       <Grid
         container
-        direction={"row"}
+        direction="row"
         marginTop={{ lg: 10, xs: 5 }}
         marginBottom={10}
       >
         {additionalInfo.map((item) => (
-          <Grid
-            key={item.title}
-            item
-            container
-            direction={"column"}
-            alignItems={"center"}
-            lg={4}
-            xs={12}
-          >
+          <Grid key={item.title} item lg={4} xs={12}>
             <Grid
-              alignItems={{ lg: "start", xs: "center" }}
               container
-              display={"flex"}
-              direction={"column"}
+              direction="column"
+              alignItems={{ lg: "start", xs: "center" }}
+              display="flex"
               marginTop={{ lg: 0, xs: 5 }}
               width={{ lg: "30vw", xs: "100%" }}
               padding={2}
             >
               {item.icon}
               <Typography
-                fontFamily={"poppins"}
+                fontFamily="poppins"
                 marginBottom={2}
-                variant={"h4"}
+                variant="h4"
                 color={AppColors.primary}
               >
                 {item.title}
               </Typography>
               <Typography
-                fontFamily={"poppins"}
-                variant={"h6"}
+                fontFamily="poppins"
+                variant="h6"
                 color={AppColors.primary}
               >
                 {item.body}
