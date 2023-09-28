@@ -22,6 +22,14 @@ function SelectFilter({
   setFilter,
 }: SelectFilterProps) {
   const { dataDateRange, updateDateRange } = useUserContext()
+  const [defaultValue, setDefaultValue] = useState<string>(
+    dateFilter
+      ? graph === "activity"
+        ? DateFilters.ThisWeek.toString()
+        : DateFilters.Last6Months.toString()
+      : GradePyramidFilter.ClimbsAndAttempts.toString()
+  )
+
   const activityDateList = [
     { value: DateFilters.ThisWeek, label: "This week" },
     { value: DateFilters.ThisMonth, label: "This month" },
@@ -62,19 +70,27 @@ function SelectFilter({
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     const value = parseInt(event.target.value)
-    if (dateFilter) {
-      // the graph needs data that's farther back in time than the data available
-      if (!dataDateRange || value > dataDateRange) {
-        updateDateRange(value, graph)
+    if (value !== undefined && value !== null) {
+      if (dateFilter) {
+        // the graph needs data that's farther back in time than the data available
+        if (!dataDateRange || value > dataDateRange) {
+          updateDateRange(value, graph)
+        }
       }
+      setFilter(value)
     }
-    setFilter(value)
   }
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120, background: "white" }}>
       <Select
-        defaultValue={selectedFilter.toString()}
+        defaultValue={
+          dateFilter
+            ? graph === "activity"
+              ? DateFilters.ThisWeek.toString()
+              : DateFilters.Last6Months.toString()
+            : GradePyramidFilter.ClimbsAndAttempts.toString()
+        }
         onChange={handleFilterChange}
         sx={{ fontFamily: "poppins" }}
       >
