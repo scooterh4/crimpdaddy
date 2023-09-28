@@ -182,7 +182,15 @@ function Landing() {
         marginBottom={10}
       >
         {additionalInfo.map((item) => (
-          <Grid key={item.title} item lg={4} xs={12}>
+          <Grid
+            key={item.title}
+            container
+            flexDirection={"row"}
+            justifyContent={"center"}
+            item
+            lg={4}
+            xs={12}
+          >
             <Grid
               container
               direction="column"
@@ -196,8 +204,11 @@ function Landing() {
               <Typography
                 fontFamily="poppins"
                 marginBottom={2}
+                paddingLeft={{ sm: 0, xs: 2 }}
+                paddingRight={{ sm: 0, xs: 2 }}
                 variant="h4"
                 color={AppColors.primary}
+                textAlign={{ lg: "start", xs: "center" }}
               >
                 {item.title}
               </Typography>
@@ -205,6 +216,7 @@ function Landing() {
                 fontFamily="poppins"
                 variant="h6"
                 color={AppColors.primary}
+                textAlign={{ lg: "start", xs: "center" }}
               >
                 {item.body}
               </Typography>
