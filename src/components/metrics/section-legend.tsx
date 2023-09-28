@@ -33,37 +33,35 @@ function SectionLegend({ section }: SectionLegendProps) {
   }
 
   return (
-    <>
-      <Grid
-        container
-        justifyContent={"center"}
-        direction={"row"}
-        spacing={2}
-        sx={{ display: "inline-flex" }}
-      >
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Onsight }} />
-          <Typography fontFamily={"poppins"}>Onsight</Typography>
-        </Grid>
-
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Flash }} />
-          <Typography fontFamily={"poppins"}>Flash</Typography>
-        </Grid>
-
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Redpoint }} />
-          <Typography fontFamily={"poppins"}>Redpoint</Typography>
-        </Grid>
-
-        {section === "gradePyramids" && (
-          <Grid item sx={{ display: "inline-flex" }}>
-            <Square sx={{ color: GraphColors.Attempts }} />
-            <Typography fontFamily={"poppins"}>Attempts</Typography>
-          </Grid>
-        )}
+    <Grid
+      container
+      justifyContent={"center"}
+      direction={"row"}
+      spacing={2}
+      sx={{ display: "inline-flex" }}
+    >
+      <Grid item sx={{ display: "inline-flex" }}>
+        <Square sx={{ color: GraphColors.Onsight }} />
+        <Typography fontFamily={"poppins"}>Onsight</Typography>
       </Grid>
-    </>
+
+      <Grid item sx={{ display: "inline-flex" }}>
+        <Square sx={{ color: GraphColors.Flash }} />
+        <Typography fontFamily={"poppins"}>Flash</Typography>
+      </Grid>
+
+      <Grid item sx={{ display: "inline-flex" }}>
+        <Square sx={{ color: GraphColors.Redpoint }} />
+        <Typography fontFamily={"poppins"}>Redpoint</Typography>
+      </Grid>
+
+      {section === "gradePyramids" && (
+        <Grid item sx={{ display: "inline-flex" }}>
+          <Square sx={{ color: GraphColors.Attempts }} />
+          <Typography fontFamily={"poppins"}>Attempts</Typography>
+        </Grid>
+      )}
+    </Grid>
   )
 }
 

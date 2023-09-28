@@ -22,7 +22,10 @@ const Dashboard = () => {
 
   return !userClimbingLogs ? (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -39,7 +42,10 @@ const Dashboard = () => {
     </>
   ) : (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -78,34 +84,32 @@ const Dashboard = () => {
             </Button>
           </FormControl>
 
-          <Typography
-            color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
-            gutterBottom
-            textAlign={"center"}
-            variant="h4"
-          >
-            Redpoint Grades
-          </Typography>
           <Grid
             container
-            item
             direction={"row"}
             justifyContent={"center"}
+            justifySelf={{ md: "center" }}
             padding={2}
             border={1}
-            borderColor={AppColors.primary}
-            sx={{ borderRadius: 5 }}
+            borderColor={ThemeColors.darkShade}
+            sx={{ backgroundColor: "white", borderRadius: 5 }}
           >
+            <Typography
+              color={ThemeColors.darkShade}
+              fontFamily={"poppins"}
+              gutterBottom
+              textAlign={"center"}
+              variant="h5"
+            >
+              Redpoint Grades
+            </Typography>
             <Grid container direction={"row"} justifyContent={"center"}>
               <Grid item xs>
                 <HardestGradeDisplay climbType="Boulder" />
               </Grid>
-
-              <Grid item xs={4}>
+              <Grid item md={2} xs={4}>
                 <HardestGradeDisplay climbType="Lead" />
               </Grid>
-
               <Grid item xs>
                 <HardestGradeDisplay climbType="TopRope" />
               </Grid>
@@ -115,11 +119,12 @@ const Dashboard = () => {
           <Grid
             container
             direction={"column"}
-            marginTop={6}
+            marginTop={2}
             padding={2}
             border={1}
-            borderColor={AppColors.primary}
+            borderColor={ThemeColors.darkShade}
             borderRadius={5}
+            sx={{ backgroundColor: "white" }}
           >
             <Grid
               alignItems={"center"}

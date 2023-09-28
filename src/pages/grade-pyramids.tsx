@@ -35,7 +35,10 @@ function GradePyramidPage() {
 
   return promiseInProgress ? (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -52,7 +55,11 @@ function GradePyramidPage() {
     </>
   ) : (
     <>
-      <Box minHeight={"94.2vh"} marginBottom={2} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        marginBottom={2}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -110,11 +117,12 @@ function GradePyramidPage() {
             <Grid
               alignItems={"center"}
               border={1}
-              borderColor={AppColors.primary}
+              borderColor={ThemeColors.darkShade}
               borderRadius={5}
               container
               direction={"column"}
               gridAutoRows="auto"
+              sx={{ backgroundColor: "white" }}
             >
               <Typography
                 fontFamily={"poppins"}
@@ -136,13 +144,14 @@ function GradePyramidPage() {
             <Grid
               alignItems={"center"}
               border={1}
-              borderColor={AppColors.primary}
+              borderColor={ThemeColors.darkShade}
               borderRadius={5}
               container
               direction={"column"}
               gridAutoRows="auto"
               marginBottom={5}
               marginTop={5}
+              sx={{ backgroundColor: "white" }}
             >
               <Typography
                 fontFamily={"poppins"}
@@ -164,11 +173,12 @@ function GradePyramidPage() {
             <Grid
               alignItems={"center"}
               border={1}
-              borderColor={AppColors.primary}
+              borderColor={ThemeColors.darkShade}
               borderRadius={5}
               container
               direction={"column"}
               gridAutoRows="auto"
+              sx={{ backgroundColor: "white" }}
             >
               <Typography
                 fontFamily={"poppins"}

@@ -33,7 +33,10 @@ function ProgressionPage() {
 
   return promiseInProgress ? (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -50,7 +53,10 @@ function ProgressionPage() {
     </>
   ) : (
     <>
-      <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
+      <Box
+        minHeight={"94.2vh"}
+        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      >
         <AppToolbar title="Dashboard" />
 
         <Box
@@ -76,11 +82,12 @@ function ProgressionPage() {
 
           <Grid
             border={1}
-            borderColor={AppColors.primary}
+            borderColor={ThemeColors.darkShade}
             borderRadius={5}
             container
             direction={"column"}
             padding={2}
+            sx={{ backgroundColor: "white" }}
           >
             <Grid
               alignItems={"center"}
@@ -128,12 +135,13 @@ function ProgressionPage() {
 
           <Grid
             border={1}
-            borderColor={AppColors.primary}
+            borderColor={ThemeColors.darkShade}
             borderRadius={5}
             container
             direction={"column"}
             marginTop={5}
             padding={2}
+            sx={{ backgroundColor: "white" }}
           >
             <Grid
               alignItems={"center"}
@@ -181,12 +189,13 @@ function ProgressionPage() {
 
           <Grid
             border={1}
-            borderColor={AppColors.primary}
+            borderColor={ThemeColors.darkShade}
             borderRadius={5}
             container
             direction={"column"}
             marginTop={5}
             padding={2}
+            sx={{ backgroundColor: "white" }}
           >
             <Grid
               alignItems={"center"}

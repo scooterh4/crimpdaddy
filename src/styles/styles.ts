@@ -11,6 +11,7 @@ export const ThemeColors = {
   lightAccent: "#92A7AA",
   darkAccent: "#A08ABD",
   darkShade: "#29212B",
+  backgroundColor: "#FAF9F6",
 }
 
 export const GraphColors = {
