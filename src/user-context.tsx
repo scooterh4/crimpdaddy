@@ -33,7 +33,7 @@ interface IUserContext {
   clearAppData: () => void
   addClimbLogData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
-  updateDateRange: (newRange: number | null) => void
+  updateDateRange: (newRange: number | null, fromComponent: string) => void
   userIndoorRedpointGrades: UserIndoorRedpointGradesDoc | null
 }
 
@@ -271,10 +271,9 @@ export const UserDataProvider = ({
   }
 
   // after initializing, we want this to be the only place to call firestore
-  const updateDateRange = (saveRange: number | null) => {
+  const updateDateRange = (saveRange: number | null, fromComponent: string) => {
     setDateRange(saveRange)
     if (saveRange && user) {
-      console.log("context tracking promise")
       trackPromise(
         getAllUserClimbingData(user.id, saveRange).then((res) => {
           setUserClimbingLogs(res.climbingLogs.allClimbs)
@@ -295,7 +294,8 @@ export const UserDataProvider = ({
               summaryStats: res.summaryStats,
             })
           )
-        })
+        }),
+        fromComponent
       )
     } else {
       console.log(

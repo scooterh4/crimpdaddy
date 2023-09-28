@@ -66,3 +66,13 @@ export enum GradePyramidFilter {
   AttemptsOnly,
   ClimbsOnly,
 }
+
+export enum PromiseTrackerArea {
+  Activity = "activity",
+  GradePyramids = "gradePyramids",
+  GradePyramidGraph = "gradePyramidGraph",
+  Progression = "progression",
+  BoulderProgression = "boulderProgression",
+  LeadProgression = "leadProgression",
+  TopRopeProgression = "topRopeProgression",
+}

@@ -7,8 +7,9 @@ import { useUserContext } from "../user-context"
 import AppToolbar from "../components/common/app-toolbar"
 import AppLoading from "../components/common/app-loading"
 import AppFooter from "../components/common/app-footer"
-import { DateFilters, GYM_CLIMB_TYPES } from "../constants"
+import { DateFilters, GYM_CLIMB_TYPES, PromiseTrackerArea } from "../constants"
 import SelectFilter from "../components/metrics/select-filter"
+import { usePromiseTracker } from "react-promise-tracker"
 
 enum GradePyramidFilter {
   AttemptsAndClimbs,
@@ -25,6 +26,9 @@ function GradePyramidPage() {
     userLeadGradePyramidData,
     userTrGradePyramidData,
   } = useUserContext()
+  const { promiseInProgress } = usePromiseTracker({
+    area: PromiseTrackerArea.GradePyramids,
+  })
   const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
   const [gradePyramidFilter, setGradePyramidFilter] = useState<number>(
     GradePyramidFilter.AttemptsAndClimbs
@@ -32,11 +36,11 @@ function GradePyramidPage() {
 
   useEffect(() => {
     if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
-      updateDateRange(DateFilters.Last6Months)
+      updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.GradePyramids)
     }
   }, [])
 
-  return !userClimbingLogs ? (
+  return promiseInProgress ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -91,14 +95,14 @@ function GradePyramidPage() {
 
             <Grid container item direction={"row"} justifyContent={"center"}>
               <SelectFilter
-                page="gradePyramids"
+                graph={PromiseTrackerArea.GradePyramidGraph}
                 dateFilter={true}
                 selectedFilter={dateFilter}
                 setFilter={setDateFilter}
               />
               <SelectFilter
+                graph={PromiseTrackerArea.GradePyramidGraph}
                 dateFilter={false}
-                page="gradePyramids"
                 selectedFilter={gradePyramidFilter}
                 setFilter={setGradePyramidFilter}
               />

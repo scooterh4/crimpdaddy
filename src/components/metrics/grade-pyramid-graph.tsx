@@ -13,7 +13,7 @@ import { GraphColors } from "../../styles/styles"
 import { Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
-import { GYM_CLIMB_TYPES } from "../../constants"
+import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../constants"
 import { getGradePyramidGraphData } from "../../util/helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../common/app-loading"
@@ -25,7 +25,9 @@ export type GradeGraphProps = {
 }
 
 function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
-  const { promiseInProgress } = usePromiseTracker()
+  const { promiseInProgress } = usePromiseTracker({
+    area: PromiseTrackerArea.GradePyramidGraph,
+  })
   const {
     userBoulderGradePyramidData,
     userLeadGradePyramidData,
@@ -72,8 +74,6 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
     )
     setGraphData(formattedData)
   }, [tickFilter, dateFilter])
-
-  console.log("pyramidGraph promiseInProgress", promiseInProgress)
 
   if (promiseInProgress) {
     return <AppLoading />

@@ -13,9 +13,14 @@ import {
 import { ClimbLog } from "../../types"
 import { Box, Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { CLIMB_TYPES, DateFilters, GYM_CLIMB_TYPES } from "../../constants"
+import {
+  CLIMB_TYPES,
+  DateFilters,
+  GYM_CLIMB_TYPES,
+  PromiseTrackerArea,
+} from "../../constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../constants"
-import { AppColors, GraphColors, ThemeColors } from "../../styles/styles"
+import { AppColors, GraphColors } from "../../styles/styles"
 import { useUserContext } from "../../user-context"
 import moment, { Moment } from "moment"
 import {
@@ -44,7 +49,14 @@ export type ProgressionGraphDateRange = {
 }
 
 function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
-  const { promiseInProgress } = usePromiseTracker()
+  const { promiseInProgress } = usePromiseTracker({
+    area:
+      climbType === GYM_CLIMB_TYPES.Boulder
+        ? PromiseTrackerArea.BoulderProgression
+        : climbType === GYM_CLIMB_TYPES.Lead
+        ? PromiseTrackerArea.LeadProgression
+        : PromiseTrackerArea.TopRopeProgression,
+  })
   const {
     userClimbingLogs,
     userBoulderLogs,
@@ -60,7 +72,6 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
   const theme = useTheme()
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
-
   const graphAspectRatio = mdScreenAndUp ? 4.0 : smScreenOnly ? 2 : 1.1
   const graphLeftMargin = climbType === CLIMB_TYPES.Boulder ? -20 : -10
   const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11

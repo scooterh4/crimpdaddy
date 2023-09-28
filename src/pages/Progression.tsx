@@ -1,17 +1,20 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUserContext } from "../user-context"
-import { DateFilters, GYM_CLIMB_TYPES } from "../constants"
+import { DateFilters, GYM_CLIMB_TYPES, PromiseTrackerArea } from "../constants"
 import AppToolbar from "../components/common/app-toolbar"
 import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
 import AppLoading from "../components/common/app-loading"
 import AppFooter from "../components/common/app-footer"
-import SectionLegend from "../components/metrics/section-legend"
 import SelectFilter from "../components/metrics/select-filter"
 import ProgressionGraph from "../components/metrics/progression-graph"
+import { usePromiseTracker } from "react-promise-tracker"
 
 function ProgressionPage() {
-  const { userClimbingLogs, dataDateRange, updateDateRange } = useUserContext()
+  const { dataDateRange, updateDateRange } = useUserContext()
+  const { promiseInProgress } = usePromiseTracker({
+    area: PromiseTrackerArea.Progression,
+  })
   const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
     number
   >(DateFilters.Last6Months)
@@ -24,11 +27,11 @@ function ProgressionPage() {
 
   useEffect(() => {
     if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
-      updateDateRange(DateFilters.Last6Months)
+      updateDateRange(DateFilters.Last6Months, "progression")
     }
   }, [])
 
-  return userClimbingLogs === null ? (
+  return promiseInProgress ? (
     <>
       <Box minHeight={"94.2vh"} sx={{ display: "flex" }}>
         <AppToolbar title="Dashboard" />
@@ -109,7 +112,7 @@ function ProgressionPage() {
                 justifySelf={{ sm: "end", xs: "center" }}
               >
                 <SelectFilter
-                  page="progression"
+                  graph={PromiseTrackerArea.BoulderProgression}
                   dateFilter={true}
                   selectedFilter={boulderProgressionFilter}
                   setFilter={setBoulderProgressionFilter}
@@ -162,7 +165,7 @@ function ProgressionPage() {
                 justifySelf={{ sm: "end", xs: "center" }}
               >
                 <SelectFilter
-                  page="progression"
+                  graph={PromiseTrackerArea.LeadProgression}
                   dateFilter={true}
                   selectedFilter={leadProgressionFilter}
                   setFilter={setLeadProgressionFilter}
@@ -215,7 +218,7 @@ function ProgressionPage() {
                 justifySelf={{ sm: "end", xs: "center" }}
               >
                 <SelectFilter
-                  page="progression"
+                  graph={PromiseTrackerArea.TopRopeProgression}
                   dateFilter={true}
                   selectedFilter={trProgressionFilter}
                   setFilter={setTrProgressionFilter}

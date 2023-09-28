@@ -4,7 +4,7 @@ import { useUserContext } from "../../user-context"
 import { DateFilters, GradePyramidFilter } from "../../constants"
 
 type SelectFilterProps = {
-  page: string
+  graph: string
   dateFilter: boolean
   selectedFilter: number
   setFilter: React.Dispatch<React.SetStateAction<number>>
@@ -16,7 +16,7 @@ type filterObj = {
 }
 
 function SelectFilter({
-  page,
+  graph,
   dateFilter,
   selectedFilter,
   setFilter,
@@ -38,7 +38,7 @@ function SelectFilter({
   ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
-    page === "activity"
+    graph === "activity"
       ? activityDateList
       : dateFilter
       ? otherDateList
@@ -49,14 +49,11 @@ function SelectFilter({
     if (!dateFilter) {
       setSelectList(gradePyramidSelectList)
     } else {
-      switch (page) {
+      switch (graph) {
         case "activity":
           setSelectList(activityDateList)
           break
-        case "gradePyramids":
-          setSelectList(otherDateList)
-          break
-        case "progression":
+        default:
           setSelectList(otherDateList)
           break
       }
@@ -68,7 +65,7 @@ function SelectFilter({
     if (dateFilter) {
       // the graph needs data that's farther back in time than the data available
       if (!dataDateRange || value > dataDateRange) {
-        updateDateRange(value)
+        updateDateRange(value, graph)
       }
     }
     setFilter(value)
