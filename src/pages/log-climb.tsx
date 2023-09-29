@@ -23,6 +23,7 @@ import AppFooter from "../components/common/app-footer"
 import moment from "moment"
 import GradeSelector from "../components/metrics/grade-selector"
 import TickSelector from "../components/metrics/tick-selector"
+import { toast } from "react-toastify"
 
 function LogClimbPage() {
   const navigate = useNavigate()
@@ -77,25 +78,38 @@ function LogClimbPage() {
         newClimbLogData.push(climbData)
         logClimb(climbData, user.id)
 
+        let toastMessage = `Climb logged: `
+        toastMessage +=
+          selectedTick === "Attempt"
+            ? `${parseInt(attemptCount.toString())} ${
+                climbData.Grade
+              } Attempt ${parseInt(attemptCount.toString()) > 1 ? "s" : ""}`
+            : `${climbData.Grade} ${climbData.Tick}`
+
+        const attempts = parseInt(attemptCount.toString()) - 1
         if (
           (selectedTick === "Redpoint" || selectedTick === "Repeat") &&
-          parseInt(attemptCount.toString()) > 1
+          attempts > 1
         ) {
           const attemptData: ClimbLog = {
             ClimbType: climbType,
             Grade: selectedGrade,
             Tick: "Attempt",
-            Count: parseInt(attemptCount.toString()) - 1,
+            Count: attempts,
             UnixTime: moment().unix(),
           }
 
           newClimbLogData.push(attemptData)
           logClimb(attemptData, user.id)
+          toastMessage += ` with ${attempts} failed Attempt${
+            attempts > 1 ? "s" : ""
+          }`
         }
 
         // We are assuming the climbs got logged properly in the db
         addClimbLogData(newClimbLogData)
         navigate("/dashboard")
+        toast.success(toastMessage, { toastId: "climbLogged" })
       }
     } else {
       console.log("logClimb formHasError")
