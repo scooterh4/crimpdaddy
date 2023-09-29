@@ -13,7 +13,13 @@ import { GraphColors } from "../../styles/styles"
 import { Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
-import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../constants"
+import {
+  BOULDER_GRADES,
+  CLIMB_TYPES,
+  GYM_CLIMB_TYPES,
+  INDOOR_SPORT_GRADES,
+  PromiseTrackerArea,
+} from "../../constants"
 import { assembleGradePyramidGraphData } from "../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../common/app-loading"
@@ -41,6 +47,8 @@ export default function GradePyramid({
     userTopRopeLogs,
     userClimbingLogs,
   } = useUserContext()
+  const gradeSystem =
+    climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
   const [graphData, setGraphData] = useState<GradePyramidGraphData[]>([])
   const theme = useTheme()
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
@@ -79,6 +87,8 @@ export default function GradePyramid({
     setGraphData(formattedData)
   }, [tickFilter, dateFilter])
 
+  console.log("graphData:", graphData)
+
   if (promiseInProgress) {
     return (
       <Grid container direction={"column"} justifyContent={"center"}>
@@ -109,6 +119,7 @@ export default function GradePyramid({
             <YAxis
               type="category"
               tickCount={graphData.length}
+              // domain={gradeSystem}
               dataKey="Grade"
               tickLine={false}
               fontSize={12}

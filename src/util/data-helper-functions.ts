@@ -74,7 +74,9 @@ export function assembleGradePyramidGraphData(
 
   // Sort the list of the grades in descending order
   if (climbType === GYM_CLIMB_TYPES.Boulder) {
-    grades.sort((a, b) => b.localeCompare(a))
+    grades
+      .sort((a, b) => BOULDER_GRADES.indexOf(a) - BOULDER_GRADES.indexOf(b))
+      .reverse()
   } else {
     grades
       .sort(
