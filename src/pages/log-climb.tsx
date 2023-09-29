@@ -74,16 +74,16 @@ function LogClimbPage() {
             selectedTick === "Attempt" ? parseInt(attemptCount.toString()) : 1,
           UnixTime: moment().unix(),
         }
-        console.log("climbData", climbData)
+
         newClimbLogData.push(climbData)
         logClimb(climbData, user.id)
 
         let toastMessage = `Climb logged: `
         toastMessage +=
           selectedTick === "Attempt"
-            ? `${parseInt(attemptCount.toString())} ${
-                climbData.Grade
-              } Attempt ${parseInt(attemptCount.toString()) > 1 ? "s" : ""}`
+            ? `${climbData.Grade} Attempt${
+                parseInt(attemptCount.toString()) > 1 ? "s" : ""
+              } (${parseInt(attemptCount.toString())})`
             : `${climbData.Grade} ${climbData.Tick}`
 
         const attempts = parseInt(attemptCount.toString()) - 1

@@ -70,9 +70,7 @@ export const updateUserIndoorRedpointGrades = async (
 
     const docRef = doc(firestore, docPath)
 
-    await setDoc(docRef, updateGrades).then((document) => {
-      console.log("RedpointGrades doc updated for user: ", userId, document)
-    })
+    await setDoc(docRef, updateGrades)
   } catch (error) {
     console.log(
       `FIRESTORE Error updating UserIndoorRedpointGrades data:`,
