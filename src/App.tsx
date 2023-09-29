@@ -13,7 +13,7 @@ import { CssBaseline } from "@mui/material"
 import { ToastContainer } from "react-toastify"
 import { UserDataProvider } from "./user-context"
 
-const App = () => {
+export default function App() {
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
     authenticationPath: "/login",
   }
@@ -68,5 +68,3 @@ const App = () => {
     </UserDataProvider>
   )
 }
-
-export default App

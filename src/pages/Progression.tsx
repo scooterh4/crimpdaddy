@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react"
 import { useUserContext } from "../user-context"
 import { DateFilters, GYM_CLIMB_TYPES, PromiseTrackerArea } from "../constants"
 import AppToolbar from "../components/common/app-toolbar"
-import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
+import { ThemeColors, drawerWidth } from "../styles/styles"
 import AppLoading from "../components/common/app-loading"
 import AppFooter from "../components/common/app-footer"
 import SelectFilter from "../components/metrics/select-filter"
 import ProgressionGraph from "../components/metrics/progression-graph"
 import { usePromiseTracker } from "react-promise-tracker"
 
-function ProgressionPage() {
+export default function ProgressionPage() {
   const { dataDateRange, updateDateRange } = useUserContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Progression,
@@ -119,7 +119,6 @@ function ProgressionPage() {
                 <SelectFilter
                   graph={PromiseTrackerArea.BoulderProgression}
                   dateFilter={true}
-                  selectedFilter={boulderProgressionFilter}
                   setFilter={setBoulderProgressionFilter}
                 />
               </Grid>
@@ -173,7 +172,6 @@ function ProgressionPage() {
                 <SelectFilter
                   graph={PromiseTrackerArea.LeadProgression}
                   dateFilter={true}
-                  selectedFilter={leadProgressionFilter}
                   setFilter={setLeadProgressionFilter}
                 />
               </Grid>
@@ -227,7 +225,6 @@ function ProgressionPage() {
                 <SelectFilter
                   graph={PromiseTrackerArea.TopRopeProgression}
                   dateFilter={true}
-                  selectedFilter={trProgressionFilter}
                   setFilter={setTrProgressionFilter}
                 />
               </Grid>
@@ -246,5 +243,3 @@ function ProgressionPage() {
     </>
   )
 }
-
-export default ProgressionPage

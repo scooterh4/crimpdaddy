@@ -16,7 +16,7 @@ import { toast } from "react-toastify"
 import AppToolbar from "../components/common/app-toolbar"
 import { AppColors, ThemeColors } from "../styles/styles"
 
-function SignUp() {
+export default function SignUp() {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const [input, setInput] = useState({
     email: "",
@@ -233,5 +233,3 @@ function SignUp() {
     </>
   )
 }
-
-export default SignUp

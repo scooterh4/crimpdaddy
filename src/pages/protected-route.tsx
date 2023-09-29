@@ -9,7 +9,10 @@ export type ProtectedRouteProps = {
   outlet: JSX.Element
 }
 
-function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  authenticationPath,
+  outlet,
+}: ProtectedRouteProps) {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const { user, updateUser } = useUserContext()
 
@@ -39,5 +42,3 @@ function ProtectedRoute({ authenticationPath, outlet }: ProtectedRouteProps) {
     return <Navigate to={{ pathname: authenticationPath }} />
   }
 }
-
-export default ProtectedRoute

@@ -3,7 +3,7 @@ import React from "react"
 import ReactLoading from "react-loading"
 import { ThemeColors } from "../../styles/styles"
 
-function AppLoading() {
+export default function AppLoading() {
   return (
     <Grid
       container
@@ -22,5 +22,3 @@ function AppLoading() {
     </Grid>
   )
 }
-
-export default AppLoading

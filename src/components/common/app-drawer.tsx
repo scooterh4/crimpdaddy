@@ -20,7 +20,7 @@ import { auth } from "../../firebase"
 import { useUserContext } from "../../user-context"
 import { useNavigate } from "react-router-dom"
 
-function AppDrawer() {
+export default function AppDrawer() {
   const { user, updateUser, clearAppData } = useUserContext()
   const navigate = useNavigate()
 
@@ -123,5 +123,3 @@ function AppDrawer() {
     </div>
   )
 }
-
-export default AppDrawer

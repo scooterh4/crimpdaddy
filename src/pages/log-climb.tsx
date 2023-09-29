@@ -25,7 +25,7 @@ import GradeSelector from "../components/metrics/grade-selector"
 import TickSelector from "../components/metrics/tick-selector"
 import { toast } from "react-toastify"
 
-function LogClimbPage() {
+export default function LogClimbPage() {
   const navigate = useNavigate()
   const { user, addClimbLogData } = useUserContext()
   const [climbType, setClimbType] = useState("")
@@ -290,5 +290,3 @@ function LogClimbPage() {
     </>
   )
 }
-
-export default LogClimbPage

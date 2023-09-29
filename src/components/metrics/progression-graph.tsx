@@ -30,12 +30,12 @@ import {
 import AppLoading from "../common/app-loading"
 import { usePromiseTracker } from "react-promise-tracker"
 
-export type MonthlyClimbsGraphProps = {
+type Props = {
   climbType: number
   filter: number
 }
 
-export type ProgressionGraphData = {
+type ProgressionGraphData = {
   monthIdx: number
   month: string
   hardestClimbIdx: number
@@ -43,12 +43,7 @@ export type ProgressionGraphData = {
   progressionLine: number
 }
 
-export type ProgressionGraphDateRange = {
-  minDate: Date
-  maxDate: Date
-}
-
-function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
+export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
   const { promiseInProgress } = usePromiseTracker({
     area:
       climbType === GYM_CLIMB_TYPES.Boulder
@@ -309,5 +304,3 @@ function MonthlyClimbsGraph({ climbType, filter }: MonthlyClimbsGraphProps) {
     )
   }
 }
-
-export default MonthlyClimbsGraph

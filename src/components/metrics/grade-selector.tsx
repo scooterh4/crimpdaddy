@@ -8,7 +8,7 @@ import React from "react"
 import { AppColors, ThemeColors } from "../../styles/styles"
 import Icon from "../../images/belay.png"
 
-interface GradeSelectorProps {
+type Props = {
   gradesList: string[]
   selectedGrade: string
   setSelectedGrade: React.Dispatch<React.SetStateAction<string>>
@@ -18,7 +18,7 @@ export default function GradeSelector({
   gradesList,
   selectedGrade,
   setSelectedGrade,
-}: GradeSelectorProps) {
+}: Props) {
   return (
     <ImageList
       sx={{

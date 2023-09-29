@@ -3,11 +3,11 @@ import { Square } from "@mui/icons-material"
 import { Grid, Typography } from "@mui/material"
 import { GraphColors } from "../../styles/styles"
 
-export type SectionLegendProps = {
+type Props = {
   section: string
 }
 
-function SectionLegend({ section }: SectionLegendProps) {
+export default function SectionLegend({ section }: Props) {
   if (section === "activity") {
     return (
       <>
@@ -64,5 +64,3 @@ function SectionLegend({ section }: SectionLegendProps) {
     </Grid>
   )
 }
-
-export default SectionLegend

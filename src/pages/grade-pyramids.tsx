@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import SectionLegend from "../components/metrics/section-legend"
 import GradePyramid from "../components/metrics/grade-pyramid-graph"
-import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
+import { ThemeColors, drawerWidth } from "../styles/styles"
 import { useUserContext } from "../user-context"
 import AppToolbar from "../components/common/app-toolbar"
 import AppLoading from "../components/common/app-loading"
@@ -17,7 +17,7 @@ enum GradePyramidFilter {
   ClimbsOnly,
 }
 
-function GradePyramidPage() {
+export default function GradePyramidPage() {
   const { dataDateRange, updateDateRange } = useUserContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
@@ -97,13 +97,11 @@ function GradePyramidPage() {
               <SelectFilter
                 graph={PromiseTrackerArea.GradePyramidGraph}
                 dateFilter={true}
-                selectedFilter={dateFilter}
                 setFilter={setDateFilter}
               />
               <SelectFilter
                 graph={PromiseTrackerArea.GradePyramidGraph}
                 dateFilter={false}
-                selectedFilter={gradePyramidFilter}
                 setFilter={setGradePyramidFilter}
               />
             </Grid>
@@ -203,5 +201,3 @@ function GradePyramidPage() {
     </>
   )
 }
-
-export default GradePyramidPage

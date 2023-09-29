@@ -1,20 +1,13 @@
 import * as React from "react"
 import BottomNavigation from "@mui/material/BottomNavigation"
-import BottomNavigationAction from "@mui/material/BottomNavigationAction"
-import FolderIcon from "@mui/icons-material/Folder"
-import RestoreIcon from "@mui/icons-material/Restore"
-import FavoriteIcon from "@mui/icons-material/Favorite"
-import LocationOnIcon from "@mui/icons-material/LocationOn"
 import { Grid, Typography } from "@mui/material"
 import { AppColors, drawerWidth } from "../../styles/styles"
 
-export type appFooterProps = {
+type Props = {
   isAuthenticated: boolean
 }
 
-export default function LabelBottomNavigation({
-  isAuthenticated,
-}: appFooterProps) {
+export default function LabelBottomNavigation({ isAuthenticated }: Props) {
   return (
     <BottomNavigation
       sx={{

@@ -26,7 +26,7 @@ const tickDescriptions = {
   Attempt: "You did not completed the route.",
 }
 
-interface TickSelectorProps {
+type Props = {
   selectedTick: string
   setSelectedTick: React.Dispatch<React.SetStateAction<string>>
   setAttemptInputVisibility: React.Dispatch<React.SetStateAction<boolean>>
@@ -38,7 +38,7 @@ export default function TickSelector({
   setSelectedTick,
   setAttemptInputVisibility,
   setSelectedTickDescription,
-}: TickSelectorProps) {
+}: Props) {
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 

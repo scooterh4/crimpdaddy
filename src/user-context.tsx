@@ -12,9 +12,9 @@ import {
 } from "./util/db"
 import { DateFilters, GYM_CLIMB_TYPES, GradePyramidFilter } from "./constants"
 import {
+  assembleGradePyramidGraphData,
   findNewRedpointGrades,
-  getGradePyramidGraphData,
-} from "./util/helper-functions"
+} from "./util/data-helper-functions"
 import { trackPromise } from "react-promise-tracker"
 
 interface IUserContext {
@@ -189,7 +189,7 @@ export const UserDataProvider = ({
         setUserBoulderLogs(
           userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd
         )
-        const newBoulderData = getGradePyramidGraphData(
+        const newBoulderData = assembleGradePyramidGraphData(
           userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.Boulder,
           GradePyramidFilter.ClimbsAndAttempts,
@@ -205,7 +205,7 @@ export const UserDataProvider = ({
         setUserLeadLogs(
           userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd
         )
-        const newLeadData = getGradePyramidGraphData(
+        const newLeadData = assembleGradePyramidGraphData(
           userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.Lead,
           GradePyramidFilter.ClimbsAndAttempts,
@@ -221,7 +221,7 @@ export const UserDataProvider = ({
         setUserTopRopeLogs(
           userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd
         )
-        const newTrData = getGradePyramidGraphData(
+        const newTrData = assembleGradePyramidGraphData(
           userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd,
           GYM_CLIMB_TYPES.TopRope,
           GradePyramidFilter.ClimbsAndAttempts,

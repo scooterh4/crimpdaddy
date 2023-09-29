@@ -11,9 +11,9 @@ import ActivityGraph from "../components/metrics/activity-graph"
 import SectionLegend from "../components/metrics/section-legend"
 import AppToolbar from "../components/common/app-toolbar"
 import { DateFilters, PromiseTrackerArea } from "../constants"
-import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
+import { ThemeColors, drawerWidth } from "../styles/styles"
 
-const Dashboard = () => {
+export default function Dashboard() {
   const { userClimbingLogs } = useUserContext()
   const navigate = useNavigate()
   const [activityFilter, setActivityFilter] = useState<number>(
@@ -150,7 +150,6 @@ const Dashboard = () => {
                 <SelectFilter
                   graph={PromiseTrackerArea.Activity}
                   dateFilter={true}
-                  selectedFilter={activityFilter}
                   setFilter={setActivityFilter}
                 />
               </Grid>
@@ -168,5 +167,3 @@ const Dashboard = () => {
     </>
   )
 }
-
-export default Dashboard

@@ -20,7 +20,10 @@ import {
 } from "../types"
 import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../constants"
 import moment from "moment"
-import { getGradePyramidGraphData, getMinimumMoment } from "./helper-functions"
+import {
+  assembleGradePyramidGraphData,
+  getMinimumMoment,
+} from "./data-helper-functions"
 
 const collectionName = "climbingLogs"
 
@@ -213,19 +216,19 @@ export const getAllUserClimbingData = async (
       rawClimbingData.push(addDoc)
     })
 
-    boulderPyramidData = getGradePyramidGraphData(
+    boulderPyramidData = assembleGradePyramidGraphData(
       rawBoulderData,
       GYM_CLIMB_TYPES.Boulder,
       GradePyramidFilter.ClimbsAndAttempts,
       filterRange
     )
-    leadPyramidData = getGradePyramidGraphData(
+    leadPyramidData = assembleGradePyramidGraphData(
       rawLeadData,
       GYM_CLIMB_TYPES.Lead,
       GradePyramidFilter.ClimbsAndAttempts,
       filterRange
     )
-    trPyramidData = getGradePyramidGraphData(
+    trPyramidData = assembleGradePyramidGraphData(
       rawTrData,
       GYM_CLIMB_TYPES.TopRope,
       GradePyramidFilter.ClimbsAndAttempts,

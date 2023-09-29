@@ -18,7 +18,7 @@ import { ClimbLog } from "../../types"
 import { DateFilters, PromiseTrackerArea } from "../../constants"
 import { usePromiseTracker } from "react-promise-tracker"
 
-type MonthlyClimbsGraphProps = {
+type Props = {
   filter: number
 }
 
@@ -29,12 +29,12 @@ type ClimbsByDate = {
   Timestamp: number
 }
 
-type VolumeGraphDateRange = {
+type ActivityGraphDateRange = {
   minTimestamp: number
   maxTimestamp: number
 }
 
-function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
+export default function ActivityGraph({ filter }: Props) {
   const { userClimbingLogs } = useUserContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Activity,
@@ -98,7 +98,7 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
     setGraphData(result)
   }
 
-  function getDateRange(range: number): VolumeGraphDateRange {
+  function getDateRange(range: number): ActivityGraphDateRange {
     const today = new Date()
     let minTimestamp = 0
     let maxTimestamp = moment().unix()
@@ -306,5 +306,3 @@ function ActivityGraph({ filter }: MonthlyClimbsGraphProps) {
     </ResponsiveContainer>
   )
 }
-
-export default ActivityGraph

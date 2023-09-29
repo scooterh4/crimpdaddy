@@ -14,17 +14,21 @@ import { Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../../user-context"
 import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../constants"
-import { getGradePyramidGraphData } from "../../util/helper-functions"
+import { assembleGradePyramidGraphData } from "../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../common/app-loading"
 
-export type GradeGraphProps = {
+type Props = {
   climbType: number
   tickFilter: number
   dateFilter: number
 }
 
-function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
+export default function GradePyramid({
+  climbType,
+  tickFilter,
+  dateFilter,
+}: Props) {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramidGraph,
   })
@@ -66,7 +70,7 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
       [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
     }
 
-    const formattedData = getGradePyramidGraphData(
+    const formattedData = assembleGradePyramidGraphData(
       logsMapping[climbType as GYM_CLIMB_TYPES],
       climbType,
       tickFilter,
@@ -121,5 +125,3 @@ function GradePyramid({ climbType, tickFilter, dateFilter }: GradeGraphProps) {
     )
   }
 }
-
-export default GradePyramid

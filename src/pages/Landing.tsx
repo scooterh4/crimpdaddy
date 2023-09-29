@@ -67,14 +67,14 @@ const additionalInfo: AdditionalInfo[] = [
   },
 ]
 
-type ButtonProps = {
+type ButtonStyles = {
   title: string
   color: string
   hoverColor: string
   navigatePath: string
 }
 
-const mainButtons: ButtonProps[] = [
+const mainButtons: ButtonStyles[] = [
   {
     title: "Let's go",
     color: ThemeColors.darkAccent,
@@ -89,7 +89,7 @@ const mainButtons: ButtonProps[] = [
   },
 ]
 
-function Landing() {
+export default function Landing() {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const navigate = useNavigate()
   const theme = useTheme()
@@ -228,5 +228,3 @@ function Landing() {
     </Box>
   )
 }
-
-export default Landing

@@ -18,7 +18,7 @@ import AppToolbar from "../components/common/app-toolbar"
 import { AppColors, ThemeColors } from "../styles/styles"
 import { useUserContext } from "../user-context"
 
-function SignIn() {
+export default function SignIn() {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -139,5 +139,3 @@ function SignIn() {
     </>
   )
 }
-
-export default SignIn

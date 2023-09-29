@@ -3,10 +3,9 @@ import React, { useEffect, useState } from "react"
 import { useUserContext } from "../../user-context"
 import { DateFilters, GradePyramidFilter } from "../../constants"
 
-type SelectFilterProps = {
+type Props = {
   graph: string
   dateFilter: boolean
-  selectedFilter: number
   setFilter: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -15,20 +14,8 @@ type filterObj = {
   label: string
 }
 
-function SelectFilter({
-  graph,
-  dateFilter,
-  selectedFilter,
-  setFilter,
-}: SelectFilterProps) {
+export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
   const { dataDateRange, updateDateRange } = useUserContext()
-  const [defaultValue, setDefaultValue] = useState<string>(
-    dateFilter
-      ? graph === "activity"
-        ? DateFilters.ThisWeek.toString()
-        : DateFilters.Last6Months.toString()
-      : GradePyramidFilter.ClimbsAndAttempts.toString()
-  )
 
   const activityDateList = [
     { value: DateFilters.ThisWeek, label: "This week" },
@@ -107,5 +94,3 @@ function SelectFilter({
     </FormControl>
   )
 }
-
-export default SelectFilter

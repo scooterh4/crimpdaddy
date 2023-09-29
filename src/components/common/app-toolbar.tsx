@@ -13,11 +13,11 @@ import { AppColors, drawerWidth } from "../../styles/styles"
 import { useNavigate } from "react-router-dom"
 import { useUserContext } from "../../user-context"
 
-type ToolBarProps = {
+type Props = {
   title: string
 }
 
-function ToolBar({ title }: ToolBarProps) {
+export default function ToolBar({ title }: Props) {
   const user = useUserContext()
   const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
   const cursor = title === "Dashboard" ? "" : "pointer"
@@ -121,5 +121,3 @@ function ToolBar({ title }: ToolBarProps) {
     </>
   )
 }
-
-export default ToolBar
