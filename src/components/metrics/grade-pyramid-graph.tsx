@@ -84,10 +84,9 @@ export default function GradePyramid({
       tickFilter,
       dateFilter
     )
+
     setGraphData(formattedData)
   }, [tickFilter, dateFilter])
-
-  console.log("graphData:", graphData)
 
   if (promiseInProgress) {
     return (
@@ -115,7 +114,18 @@ export default function GradePyramid({
       >
         <ResponsiveContainer aspect={graphAspectRatio}>
           <BarChart layout="vertical" data={graphData} barSize={30}>
-            <XAxis type="number" />
+            <XAxis
+              type="number"
+              tickFormatter={(tick) => {
+                if (tick % 1 === 0) {
+                  if (climbType === GYM_CLIMB_TYPES.Lead) {
+                    // console.log("tick", tick)
+                  }
+                  return tick
+                }
+              }}
+              tickLine={false}
+            />
             <YAxis
               type="category"
               tickCount={graphData.length}
