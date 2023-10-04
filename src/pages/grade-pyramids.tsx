@@ -105,10 +105,10 @@ export default function GradePyramidPage() {
                 setFilter={setGradePyramidFilter}
               />
             </Grid>
-          </Grid>
 
-          <Grid container direction={"row"} marginBottom={5}>
-            <SectionLegend section="gradePyramids" />
+            <Grid container direction={"row"} marginTop={2}>
+              <SectionLegend section="gradePyramids" />
+            </Grid>
           </Grid>
 
           <Grid container direction={"row"}>

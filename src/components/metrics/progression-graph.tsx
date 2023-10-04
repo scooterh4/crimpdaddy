@@ -45,12 +45,7 @@ type ProgressionGraphData = {
 
 export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
   const { promiseInProgress } = usePromiseTracker({
-    area:
-      climbType === GYM_CLIMB_TYPES.Boulder
-        ? PromiseTrackerArea.BoulderProgression
-        : climbType === GYM_CLIMB_TYPES.Lead
-        ? PromiseTrackerArea.LeadProgression
-        : PromiseTrackerArea.TopRopeProgression,
+    area: PromiseTrackerArea.ProgressionGraph,
   })
   const {
     userClimbingLogs,
@@ -72,23 +67,13 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
   const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11
 
   useEffect(() => {
-    switch (climbType) {
-      case GYM_CLIMB_TYPES.Boulder:
-        if (userBoulderLogs && userBoulderLogs.length > 0) {
-          filterRawClimbingData(userBoulderLogs)
-        }
-        break
-      case GYM_CLIMB_TYPES.Lead:
-        if (userLeadLogs && userLeadLogs.length > 0) {
-          filterRawClimbingData(userLeadLogs)
-        }
-        break
-      case GYM_CLIMB_TYPES.TopRope:
-        if (userTopRopeLogs && userTopRopeLogs.length > 0) {
-          filterRawClimbingData(userTopRopeLogs)
-        }
-        break
+    const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
+      [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
+      [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
+      [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
     }
+
+    filterRawClimbingData(logsMapping[climbType as GYM_CLIMB_TYPES])
   }, [userClimbingLogs, filter])
 
   const CustomTooltip = ({

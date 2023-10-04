@@ -1,7 +1,7 @@
 import React from "react"
 import { Square } from "@mui/icons-material"
 import { Grid, Typography } from "@mui/material"
-import { GraphColors } from "../../styles/styles"
+import { AppColors, GraphColors } from "../../styles/styles"
 
 type Props = {
   section: string
@@ -19,7 +19,7 @@ export default function SectionLegend({ section }: Props) {
           sx={{ display: "inline-flex" }}
         >
           <Grid item sx={{ display: "inline-flex" }}>
-            <Square sx={{ color: GraphColors.Climbs }} />
+            <Square sx={{ color: AppColors.success }} />
             <Typography fontFamily={"poppins"}>Climbs</Typography>
           </Grid>
 

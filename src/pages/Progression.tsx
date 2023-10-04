@@ -9,25 +9,27 @@ import AppFooter from "../components/common/app-footer"
 import SelectFilter from "../components/metrics/select-filter"
 import ProgressionGraph from "../components/metrics/progression-graph"
 import { usePromiseTracker } from "react-promise-tracker"
+import SectionLegend from "../components/metrics/section-legend"
 
 export default function ProgressionPage() {
   const { dataDateRange, updateDateRange } = useUserContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Progression,
   })
-  const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
-    number
-  >(DateFilters.Last6Months)
-  const [leadProgressionFilter, setLeadProgressionFilter] = useState<number>(
-    DateFilters.Last6Months
-  )
-  const [trProgressionFilter, setTrProgressionFilter] = useState<number>(
-    DateFilters.Last6Months
-  )
+  const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
+  // const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
+  //   number
+  // >(DateFilters.Last6Months)
+  // const [leadProgressionFilter, setLeadProgressionFilter] = useState<number>(
+  //   DateFilters.Last6Months
+  // )
+  // const [trProgressionFilter, setTrProgressionFilter] = useState<number>(
+  //   DateFilters.Last6Months
+  // )
 
   useEffect(() => {
     if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
-      updateDateRange(DateFilters.Last6Months, "progression")
+      updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.Progression)
     }
   }, [])
 
@@ -69,16 +71,40 @@ export default function ProgressionPage() {
             width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
           }}
         >
-          <Typography
-            color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
-            gutterBottom
+          <Grid
+            container
+            direction={"row"}
+            alignContent={"center"}
             marginBottom={5}
-            paddingTop={2}
-            variant="h3"
           >
-            Progression
-          </Typography>
+            <Grid container item direction={"row"}>
+              <Typography
+                color={ThemeColors.darkShade}
+                fontFamily={"poppins"}
+                gutterBottom
+                gridColumn={"1"}
+                justifySelf={"start"}
+                paddingLeft={0}
+                paddingTop={2}
+                variant="h3"
+                sx={{ columnSpan: "2" }}
+              >
+                Progression
+              </Typography>
+            </Grid>
+
+            <Grid container item direction={"row"} justifyContent={"center"}>
+              <SelectFilter
+                graph={PromiseTrackerArea.ProgressionGraph}
+                dateFilter={true}
+                setFilter={setDateFilter}
+              />
+            </Grid>
+
+            <Grid container direction={"row"} marginTop={2}>
+              <SectionLegend section="activity" />
+            </Grid>
+          </Grid>
 
           <Grid
             border={1}
@@ -110,7 +136,7 @@ export default function ProgressionPage() {
                 Bouldering
               </Typography>
 
-              <Grid
+              {/* <Grid
                 item
                 gridColumn={{ sm: "3", xs: "2" }}
                 gridRow={{ sm: "1", xs: "2" }}
@@ -121,13 +147,13 @@ export default function ProgressionPage() {
                   dateFilter={true}
                   setFilter={setBoulderProgressionFilter}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Boulder}
-                filter={boulderProgressionFilter}
+                filter={dateFilter}
               />
             </Grid>
           </Grid>
@@ -163,7 +189,7 @@ export default function ProgressionPage() {
                 Lead
               </Typography>
 
-              <Grid
+              {/* <Grid
                 item
                 gridColumn={{ sm: "3", xs: "2" }}
                 gridRow={{ sm: "1", xs: 2 }}
@@ -174,13 +200,13 @@ export default function ProgressionPage() {
                   dateFilter={true}
                   setFilter={setLeadProgressionFilter}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.Lead}
-                filter={leadProgressionFilter}
+                filter={dateFilter}
               />
             </Grid>
           </Grid>
@@ -216,7 +242,7 @@ export default function ProgressionPage() {
                 Top Rope
               </Typography>
 
-              <Grid
+              {/* <Grid
                 item
                 gridColumn={{ sm: "3", xs: "2" }}
                 gridRow={{ sm: "1", xs: 2 }}
@@ -227,13 +253,13 @@ export default function ProgressionPage() {
                   dateFilter={true}
                   setFilter={setTrProgressionFilter}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>
               <ProgressionGraph
                 climbType={GYM_CLIMB_TYPES.TopRope}
-                filter={trProgressionFilter}
+                filter={dateFilter}
               />
             </Grid>
           </Grid>

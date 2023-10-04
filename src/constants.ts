@@ -72,7 +72,5 @@ export enum PromiseTrackerArea {
   GradePyramids = "gradePyramids",
   GradePyramidGraph = "gradePyramidGraph",
   Progression = "progression",
-  BoulderProgression = "boulderProgression",
-  LeadProgression = "leadProgression",
-  TopRopeProgression = "topRopeProgression",
+  ProgressionGraph = "progressionGraph",
 }

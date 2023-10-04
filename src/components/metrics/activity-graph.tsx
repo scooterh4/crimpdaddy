@@ -11,7 +11,7 @@ import {
 import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment from "moment"
-import { GraphColors } from "../../styles/styles"
+import { AppColors, GraphColors } from "../../styles/styles"
 import { useUserContext } from "../../user-context"
 import AppLoading from "../common/app-loading"
 import { ClimbLog } from "../../types"
@@ -305,7 +305,7 @@ export default function ActivityGraph({ filter }: Props) {
           allowDecimals={false}
         />
         <Tooltip />
-        <Bar dataKey="Climbs" stackId="a" fill={GraphColors.Climbs} />
+        <Bar dataKey="Climbs" stackId="a" fill={AppColors.success} />
         <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
       </BarChart>
     </ResponsiveContainer>
