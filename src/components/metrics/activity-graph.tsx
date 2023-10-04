@@ -298,7 +298,12 @@ export default function ActivityGraph({ filter }: Props) {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="category" dataKey="Date" />
-        <YAxis type="number" dataKey="Attempts" domain={[0, graphMaxRange]} />
+        <YAxis
+          type="number"
+          dataKey="Attempts"
+          domain={[0, graphMaxRange]}
+          allowDecimals={false}
+        />
         <Tooltip />
         <Bar dataKey="Climbs" stackId="a" fill={GraphColors.Climbs} />
         <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />

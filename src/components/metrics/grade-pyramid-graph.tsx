@@ -114,18 +114,7 @@ export default function GradePyramid({
       >
         <ResponsiveContainer aspect={graphAspectRatio}>
           <BarChart layout="vertical" data={graphData} barSize={30}>
-            <XAxis
-              type="number"
-              tickFormatter={(tick) => {
-                if (tick % 1 === 0) {
-                  if (climbType === GYM_CLIMB_TYPES.Lead) {
-                    // console.log("tick", tick)
-                  }
-                  return tick
-                }
-              }}
-              tickLine={false}
-            />
+            <XAxis type="number" allowDecimals={false} tickLine={false} />
             <YAxis
               type="category"
               tickCount={graphData.length}
