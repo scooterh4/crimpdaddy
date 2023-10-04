@@ -89,7 +89,7 @@ export default function LogClimbPage() {
         const attempts = parseInt(attemptCount.toString()) - 1
         if (
           (selectedTick === "Redpoint" || selectedTick === "Repeat") &&
-          attempts > 1
+          attempts > 0
         ) {
           const attemptData: ClimbLog = {
             ClimbType: climbType,
