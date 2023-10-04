@@ -121,6 +121,7 @@ export default function Landing() {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundImage: `url(${darkenedBackground})`,
+          marginTop: xsScreen ? -1 : 0,
         }}
       >
         <Grid
@@ -169,6 +170,7 @@ export default function Landing() {
         fontFamily={"poppins"}
         marginTop={10}
         textAlign={"center"}
+        padding={2}
         variant={"h3"}
         color={AppColors.primary}
       >
