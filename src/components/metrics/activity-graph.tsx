@@ -15,7 +15,7 @@ import { AppColors, GraphColors } from "../../styles/styles"
 import { useUserContext } from "../../user-context"
 import AppLoading from "../common/app-loading"
 import { ClimbLog } from "../../types"
-import { DateFilters, PromiseTrackerArea } from "../../constants"
+import { PromiseTrackerArea } from "../../constants"
 import { usePromiseTracker } from "react-promise-tracker"
 import { getMinimumMoment } from "../../util/data-helper-functions"
 
@@ -28,11 +28,6 @@ type ClimbsByDate = {
   Attempts: number
   Date: string
   Timestamp: number
-}
-
-type ActivityGraphDateRange = {
-  minTimestamp: number
-  maxTimestamp: number
 }
 
 export default function ActivityGraph({ filter }: Props) {
