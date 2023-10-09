@@ -18,9 +18,8 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
   const { dataDateRange, updateDateRange } = useUserContext()
 
   const activityDateList = [
-    { value: DateFilters.ThisWeek, label: "This week" },
-    { value: DateFilters.ThisMonth, label: "This month" },
-    { value: DateFilters.LastMonth, label: "Last month" },
+    { value: DateFilters.ThisWeek, label: "Last week" },
+    { value: DateFilters.ThisMonth, label: "Last month" },
   ]
   const otherDateList = [
     { value: DateFilters.Last6Months, label: "Last 6 months" },

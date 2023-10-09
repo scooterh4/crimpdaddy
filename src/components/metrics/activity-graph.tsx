@@ -10,13 +10,14 @@ import {
 } from "recharts"
 import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import moment from "moment"
+import moment, { Moment } from "moment"
 import { AppColors, GraphColors } from "../../styles/styles"
 import { useUserContext } from "../../user-context"
 import AppLoading from "../common/app-loading"
 import { ClimbLog } from "../../types"
 import { DateFilters, PromiseTrackerArea } from "../../constants"
 import { usePromiseTracker } from "react-promise-tracker"
+import { getMinimumMoment } from "../../util/data-helper-functions"
 
 type Props = {
   filter: number
@@ -61,16 +62,13 @@ export default function ActivityGraph({ filter }: Props) {
   }, [userClimbingLogs])
 
   function filterRawClimbingData(data: ClimbLog[], range: number): void {
-    const dateRange = getDateRange(range)
-    let result = setResultDates(range)
+    const minMoment = getMinimumMoment(range)
+    let result = setResultDates(minMoment.clone(), moment())
     let yAxisRange = 0
 
     data.forEach((climb) => {
       // check if the climb is within the date range first
-      if (
-        climb.UnixTime < dateRange.minTimestamp ||
-        climb.UnixTime > dateRange.maxTimestamp
-      ) {
+      if (climb.UnixTime < minMoment.unix()) {
         return
       }
 
@@ -98,184 +96,21 @@ export default function ActivityGraph({ filter }: Props) {
     setGraphData(result)
   }
 
-  function getDateRange(range: number): ActivityGraphDateRange {
-    const today = new Date()
-    let minTimestamp = 0
-    let maxTimestamp = moment().unix()
-
-    // set the date range we want the data for
-    switch (range) {
-      case DateFilters.ThisWeek:
-        const firstDayOfWeek = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        )
-        const lastDayOfWeek = new Date(
-          today.setDate(today.getDate() - today.getDay() + 6)
-        )
-
-        minTimestamp = moment(
-          `${firstDayOfWeek.getFullYear()}-${firstDayOfWeek.getMonth() +
-            1}-${firstDayOfWeek.getDate()} 00:00:00`,
-          "YYYY-MM-DD kk:mm:ss"
-        ).unix()
-        maxTimestamp = moment(
-          `${lastDayOfWeek.getFullYear()}-${lastDayOfWeek.getMonth() +
-            1}-${lastDayOfWeek.getDate()} 23:59:59`,
-          "YYYY-MM-DD kk:mm:ss"
-        ).unix()
-        break
-
-      case DateFilters.ThisMonth:
-        // the .getMonth() method returns the month in a zero-based format
-        minTimestamp = moment(
-          `${today.getFullYear()}-${today.getMonth() + 1}-01 00:00:00`,
-          "YYYY-MM-DD kk:mm:ss"
-        ).unix()
-        maxTimestamp = moment().unix()
-        break
-
-      case DateFilters.ThisYear:
-        minTimestamp = moment(
-          `${today.getFullYear()}-01-01 00:00:00`,
-          "YYYY-MM-DD kk:mm:ss"
-        ).unix()
-        maxTimestamp = moment().unix()
-        break
-
-      // alltime
-      default:
-        break
-    }
-
-    return { minTimestamp: minTimestamp, maxTimestamp: maxTimestamp }
-  }
-
-  function pushDateToResult(
-    result: ClimbsByDate[],
-    year: number,
-    month: number,
-    day: number
-  ): void {
-    result.push({
-      Climbs: 0,
-      Attempts: 0,
-      Date: moment(`${year}-${month}-${day}`, "YYYY-MM-DD")
-        .format("MMM DD, YYYY")
-        .toString(),
-      Timestamp: moment(`${year}-${month}-${day}`, "YYYY-MM-DD").unix(),
-    })
-  }
-
-  function setResultDates(range: number): ClimbsByDate[] {
+  function setResultDates(
+    minMoment: Moment,
+    maxMoment: Moment
+  ): ClimbsByDate[] {
     let result: ClimbsByDate[] = []
-    const today = new Date()
 
-    switch (range) {
-      case DateFilters.ThisWeek:
-        const firstDayOfWeek = new Date(
-          today.setDate(today.getDate() - today.getDay())
-        )
-        const lastDayOfWeek = new Date(
-          today.setDate(today.getDate() - today.getDay() + 6)
-        )
+    while (minMoment <= maxMoment) {
+      result.push({
+        Climbs: 0,
+        Attempts: 0,
+        Date: minMoment.format("MMM DD, YYYY").toString(),
+        Timestamp: minMoment.unix(),
+      })
 
-        // Check if the month changes during the week
-        if (firstDayOfWeek.getMonth() === lastDayOfWeek.getMonth()) {
-          let d = firstDayOfWeek.getDate()
-
-          while (d <= lastDayOfWeek.getDate()) {
-            pushDateToResult(
-              result,
-              firstDayOfWeek.getFullYear(),
-              firstDayOfWeek.getMonth() + 1,
-              d
-            )
-            d++
-          }
-        } else {
-          // The month changes midweek so we'll add the dates in two separate loops
-          const lastDayOfMonth = new Date(
-            firstDayOfWeek.getFullYear(),
-            firstDayOfWeek.getMonth() + 1,
-            0
-          )
-
-          let dayCounter = firstDayOfWeek.getDate()
-          while (dayCounter <= lastDayOfMonth.getDate()) {
-            pushDateToResult(
-              result,
-              firstDayOfWeek.getFullYear(),
-              firstDayOfWeek.getMonth() + 1,
-              dayCounter
-            )
-            dayCounter++
-          }
-
-          let newMonthDayCounter = 1
-          while (newMonthDayCounter <= lastDayOfWeek.getDate()) {
-            pushDateToResult(
-              result,
-              lastDayOfWeek.getFullYear(),
-              lastDayOfWeek.getMonth() + 1,
-              newMonthDayCounter
-            )
-            newMonthDayCounter++
-          }
-        }
-        break
-
-      case DateFilters.ThisMonth:
-        let day = 1
-        while (day <= today.getDate()) {
-          pushDateToResult(
-            result,
-            today.getFullYear(),
-            today.getMonth() + 1,
-            day
-          )
-          day++
-        }
-        break
-
-      case DateFilters.LastMonth:
-        const lastDayOfLastMonth = new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          0
-        )
-
-        let dCount = 1
-        while (dCount < lastDayOfLastMonth.getDate()) {
-          pushDateToResult(
-            result,
-            lastDayOfLastMonth.getFullYear(),
-            lastDayOfLastMonth.getMonth() + 1,
-            dCount
-          )
-          dCount++
-        }
-        break
-
-      case DateFilters.ThisYear:
-        // loop through the months
-        let monthCounter = 1
-        while (monthCounter <= 12) {
-          let lastDayOfMonth = new Date(today.getFullYear(), monthCounter, 0)
-
-          // loop through the days in each month
-          let dayCounter = 1
-          while (dayCounter <= lastDayOfMonth.getDate()) {
-            pushDateToResult(
-              result,
-              lastDayOfMonth.getFullYear(),
-              lastDayOfMonth.getMonth() + 1,
-              dayCounter
-            )
-            dayCounter++
-          }
-          monthCounter++
-        }
-        break
+      minMoment.add(1, "days")
     }
 
     return result

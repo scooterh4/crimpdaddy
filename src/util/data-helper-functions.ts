@@ -18,23 +18,19 @@ export function getMinimumMoment(dateFilter: number) {
 
   switch (dateFilter) {
     case DateFilters.ThisWeek:
-      minMoment = minMoment.subtract(7, "days")
+      minMoment = moment().subtract(6, "days")
       break
 
     case DateFilters.ThisMonth:
-      minMoment = minMoment.subtract(1, "month")
-      break
-
-    case DateFilters.LastMonth:
-      minMoment = minMoment.subtract(2, "months")
+      minMoment = moment().subtract(1, "months")
       break
 
     case DateFilters.Last6Months:
-      minMoment = minMoment.subtract(6, "months")
+      minMoment = moment().subtract(6, "months")
       break
 
     case DateFilters.Last12Months:
-      minMoment = minMoment.subtract(12, "months")
+      minMoment = moment().subtract(12, "months")
       break
   }
 

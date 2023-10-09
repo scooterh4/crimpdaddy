@@ -55,7 +55,6 @@ export const INDOOR_SPORT_GRADES = [
 export enum DateFilters {
   ThisWeek,
   ThisMonth,
-  LastMonth,
   ThisYear,
   Last6Months,
   Last12Months,
