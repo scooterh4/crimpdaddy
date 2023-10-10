@@ -73,7 +73,9 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
       [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
     }
 
-    filterRawClimbingData(logsMapping[climbType as GYM_CLIMB_TYPES])
+    if (logsMapping[climbType as GYM_CLIMB_TYPES].length > 0) {
+      filterRawClimbingData(logsMapping[climbType as GYM_CLIMB_TYPES])
+    }
   }, [userClimbingLogs, filter])
 
   const CustomTooltip = ({
