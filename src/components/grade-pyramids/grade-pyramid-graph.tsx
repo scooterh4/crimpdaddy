@@ -47,8 +47,6 @@ export default function GradePyramid({
     userTopRopeLogs,
     userClimbingLogs,
   } = useUserContext()
-  const gradeSystem =
-    climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
   const [graphData, setGraphData] = useState<GradePyramidGraphData[]>([])
   const theme = useTheme()
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
@@ -118,7 +116,6 @@ export default function GradePyramid({
             <YAxis
               type="category"
               tickCount={graphData.length}
-              // domain={gradeSystem}
               dataKey="Grade"
               tickLine={false}
               fontSize={12}

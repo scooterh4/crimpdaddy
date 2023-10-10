@@ -61,9 +61,9 @@ export enum DateFilters {
 }
 
 export enum GradePyramidFilter {
-  ClimbsAndAttempts,
-  AttemptsOnly,
   ClimbsOnly,
+  AttemptsOnly,
+  ClimbsAndAttempts,
 }
 
 export enum PromiseTrackerArea {

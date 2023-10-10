@@ -26,9 +26,9 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
     { value: DateFilters.Last12Months, label: "Last 12 months" },
   ]
   const gradePyramidSelectList = [
-    { value: GradePyramidFilter.ClimbsAndAttempts, label: "Attempts & Climbs" },
-    { value: GradePyramidFilter.AttemptsOnly, label: "Attempts only" },
     { value: GradePyramidFilter.ClimbsOnly, label: "Climbs only" },
+    { value: GradePyramidFilter.AttemptsOnly, label: "Attempts only" },
+    { value: GradePyramidFilter.ClimbsAndAttempts, label: "Attempts & Climbs" },
   ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
@@ -75,7 +75,7 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
             ? graph === "activity"
               ? DateFilters.ThisWeek.toString()
               : DateFilters.Last6Months.toString()
-            : GradePyramidFilter.ClimbsAndAttempts.toString()
+            : GradePyramidFilter.ClimbsOnly.toString()
         }
         onChange={handleFilterChange}
         sx={{ fontFamily: "poppins" }}

@@ -10,16 +10,11 @@ import AppFooter from "../common/footer"
 import {
   DateFilters,
   GYM_CLIMB_TYPES,
+  GradePyramidFilter,
   PromiseTrackerArea,
 } from "../../static/constants"
 import SelectFilter from "../common/select-filter"
 import { usePromiseTracker } from "react-promise-tracker"
-
-enum GradePyramidFilter {
-  AttemptsAndClimbs,
-  AttemptsOnly,
-  ClimbsOnly,
-}
 
 export default function GradePyramidPage() {
   const { dataDateRange, updateDateRange } = useUserContext()
@@ -28,7 +23,7 @@ export default function GradePyramidPage() {
   })
   const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
   const [gradePyramidFilter, setGradePyramidFilter] = useState<number>(
-    GradePyramidFilter.AttemptsAndClimbs
+    GradePyramidFilter.ClimbsOnly
   )
 
   useEffect(() => {
