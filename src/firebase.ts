@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app"
-import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth"
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  GoogleAuthProvider,
+} from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const app = initializeApp({
@@ -13,12 +18,14 @@ const app = initializeApp({
 
 const authentication = getAuth(app)
 
-setPersistence(authentication, browserLocalPersistence)
-  .then(() => {})
-  .catch((error) => {
-    console.log("Error setting auth persistence:", error.message)
-  })
+setPersistence(authentication, browserLocalPersistence).catch((error) => {
+  console.log("Error setting auth persistence:", error.message)
+})
 
+const prov = new GoogleAuthProvider()
+prov.setCustomParameters({ prompt: "select_account" })
+
+export const provider = prov
 export const auth = authentication
 export const firestore = getFirestore(app)
 export default app

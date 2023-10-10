@@ -1,5 +1,5 @@
 import React from "react"
-import SignIn from "./pages/sign-in"
+import Login from "./pages/login"
 import SignUp from "./pages/sign-up"
 import Landing from "./pages/landing"
 import ProtectedRoute, { ProtectedRouteProps } from "./pages/protected-route"
@@ -25,7 +25,7 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<SignIn />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route
             path="/dashboard"
