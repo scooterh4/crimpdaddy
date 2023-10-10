@@ -21,15 +21,6 @@ export default function ProgressionPage() {
     area: PromiseTrackerArea.Progression,
   })
   const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
-  // const [boulderProgressionFilter, setBoulderProgressionFilter] = useState<
-  //   number
-  // >(DateFilters.Last6Months)
-  // const [leadProgressionFilter, setLeadProgressionFilter] = useState<number>(
-  //   DateFilters.Last6Months
-  // )
-  // const [trProgressionFilter, setTrProgressionFilter] = useState<number>(
-  //   DateFilters.Last6Months
-  // )
 
   useEffect(() => {
     if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
@@ -139,19 +130,6 @@ export default function ProgressionPage() {
               >
                 Bouldering
               </Typography>
-
-              {/* <Grid
-                item
-                gridColumn={{ sm: "3", xs: "2" }}
-                gridRow={{ sm: "1", xs: "2" }}
-                justifySelf={{ sm: "end", xs: "center" }}
-              >
-                <SelectFilter
-                  graph={PromiseTrackerArea.BoulderProgression}
-                  dateFilter={true}
-                  setFilter={setBoulderProgressionFilter}
-                />
-              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>
@@ -192,19 +170,6 @@ export default function ProgressionPage() {
               >
                 Lead
               </Typography>
-
-              {/* <Grid
-                item
-                gridColumn={{ sm: "3", xs: "2" }}
-                gridRow={{ sm: "1", xs: 2 }}
-                justifySelf={{ sm: "end", xs: "center" }}
-              >
-                <SelectFilter
-                  graph={PromiseTrackerArea.LeadProgression}
-                  dateFilter={true}
-                  setFilter={setLeadProgressionFilter}
-                />
-              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>
@@ -245,19 +210,6 @@ export default function ProgressionPage() {
               >
                 Top Rope
               </Typography>
-
-              {/* <Grid
-                item
-                gridColumn={{ sm: "3", xs: "2" }}
-                gridRow={{ sm: "1", xs: 2 }}
-                justifySelf={{ sm: "end", xs: "center" }}
-              >
-                <SelectFilter
-                  graph={PromiseTrackerArea.TopRopeProgression}
-                  dateFilter={true}
-                  setFilter={setTrProgressionFilter}
-                />
-              </Grid> */}
             </Grid>
 
             <Grid container item direction={"row"} justifyContent={"center"}>

@@ -221,11 +221,6 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     setGraphData(result)
   }
 
-  if (climbType !== GYM_CLIMB_TYPES.Boulder) {
-    console.log(GYM_CLIMB_TYPES[climbType])
-    console.log("graphData", graphData)
-  }
-
   if (promiseInProgress) {
     return <AppLoading />
   } else if (graphData.length <= 0) {
