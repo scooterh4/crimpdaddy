@@ -13,13 +13,7 @@ import { GraphColors } from "../../static/styles"
 import { Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../context/user-context"
-import {
-  BOULDER_GRADES,
-  CLIMB_TYPES,
-  GYM_CLIMB_TYPES,
-  INDOOR_SPORT_GRADES,
-  PromiseTrackerArea,
-} from "../../static/constants"
+import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../static/constants"
 import { assembleGradePyramidGraphData } from "../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../common/loading"
