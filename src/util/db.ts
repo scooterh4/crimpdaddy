@@ -17,8 +17,8 @@ import {
   ClimbLogDocument,
   UserClimbingData,
   UserIndoorRedpointGradesDoc,
-} from "../types"
-import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../constants"
+} from "../static/types"
+import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../static/constants"
 import moment from "moment"
 import {
   assembleGradePyramidGraphData,

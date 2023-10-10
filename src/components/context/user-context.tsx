@@ -5,16 +5,20 @@ import {
   SessionStorageData,
   GradePyramidGraphData,
   UserIndoorRedpointGradesDoc,
-} from "./types"
+} from "../../static/types"
 import {
   getAllUserClimbingData,
   updateUserIndoorRedpointGrades,
-} from "./util/db"
-import { DateFilters, GYM_CLIMB_TYPES, GradePyramidFilter } from "./constants"
+} from "../../util/db"
+import {
+  DateFilters,
+  GYM_CLIMB_TYPES,
+  GradePyramidFilter,
+} from "../../static/constants"
 import {
   assembleGradePyramidGraphData,
   findNewRedpointGrades,
-} from "./util/data-helper-functions"
+} from "../../util/data-helper-functions"
 import { trackPromise } from "react-promise-tracker"
 
 interface IUserContext {

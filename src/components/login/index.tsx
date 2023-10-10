@@ -10,11 +10,11 @@ import {
 } from "@mui/material"
 import GoogleIcon from "@mui/icons-material/Google"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
-import { auth, provider } from "../firebase"
+import { auth, provider } from "../../firebase"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { AppColors, ThemeColors } from "../styles/styles"
-import { useUserContext } from "../user-context"
+import { AppColors, ThemeColors } from "../../static/styles"
+import { useUserContext } from "../context/user-context"
 
 export default function SignIn() {
   const isAuthenticated = !!sessionStorage.getItem("Auth Token")

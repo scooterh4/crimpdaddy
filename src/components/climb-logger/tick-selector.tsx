@@ -1,12 +1,12 @@
 import { Button, Grid, SvgIcon, useMediaQuery, useTheme } from "@mui/material"
 import React from "react"
-import { TICK_TYPES } from "../../constants"
+import { TICK_TYPES } from "../../static/constants"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
-import { AppColors, GraphColors, ThemeColors } from "../../styles/styles"
+import { AppColors, GraphColors, ThemeColors } from "../../static/styles"
 
 const tickIcons = [VisibilityIcon, BoltIcon, CircleIcon, ReplayIcon, CancelIcon]
 const tickColors = [

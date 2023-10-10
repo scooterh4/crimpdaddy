@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { auth, provider } from "../firebase"
+import { auth, provider } from "../../firebase"
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import {
   Box,
@@ -12,8 +12,8 @@ import {
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import { AppColors, ThemeColors } from "../styles/styles"
-import { useUserContext } from "../user-context"
+import { AppColors, ThemeColors } from "../../static/styles"
+import { useUserContext } from "../context/user-context"
 
 export default function SignUp() {
   const { updateUser } = useUserContext()

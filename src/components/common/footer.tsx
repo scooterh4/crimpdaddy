@@ -1,7 +1,7 @@
 import * as React from "react"
 import BottomNavigation from "@mui/material/BottomNavigation"
 import { Grid, Typography } from "@mui/material"
-import { AppColors, drawerWidth } from "../../styles/styles"
+import { AppColors, drawerWidth } from "../../static/styles"
 
 type Props = {
   isAuthenticated: boolean

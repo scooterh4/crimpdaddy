@@ -12,17 +12,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { useNavigate } from "react-router-dom"
-import AppToolbar from "../components/common/app-toolbar"
-import { useUserContext } from "../user-context"
-import { AppColors, ThemeColors, drawerWidth } from "../styles/styles"
-import { ClimbLog } from "../types"
-import { logClimb } from "../util/db"
-import AppFooter from "../components/common/app-footer"
+import AppToolbar from "../common/toolbar"
+import { useUserContext } from "../context/user-context"
+import { AppColors, ThemeColors, drawerWidth } from "../../static/styles"
+import { ClimbLog } from "../../static/types"
+import { logClimb } from "../../util/db"
+import AppFooter from "../common/footer"
 import moment from "moment"
-import GradeSelector from "../components/metrics/grade-selector"
-import TickSelector from "../components/metrics/tick-selector"
+import GradeSelector from "./grade-selector"
+import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
 
 export default function LogClimbPage() {

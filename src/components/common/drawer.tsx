@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { AppColors } from "../../styles/styles"
+import { AppColors } from "../../static/styles"
 import DashboardIcon from "@mui/icons-material/Dashboard"
 import EqualizerIcon from "@mui/icons-material/Equalizer"
 import LogoutIcon from "@mui/icons-material/Logout"
@@ -17,7 +17,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import { auth } from "../../firebase"
-import { useUserContext } from "../../user-context"
+import { useUserContext } from "../context/user-context"
 import { useNavigate } from "react-router-dom"
 
 export default function AppDrawer() {

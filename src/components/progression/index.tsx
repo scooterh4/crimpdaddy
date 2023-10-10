@@ -1,15 +1,19 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../user-context"
-import { DateFilters, GYM_CLIMB_TYPES, PromiseTrackerArea } from "../constants"
-import AppToolbar from "../components/common/app-toolbar"
-import { ThemeColors, drawerWidth } from "../styles/styles"
-import AppLoading from "../components/common/app-loading"
-import AppFooter from "../components/common/app-footer"
-import SelectFilter from "../components/metrics/select-filter"
-import ProgressionGraph from "../components/metrics/progression-graph"
+import { useUserContext } from "../context/user-context"
+import {
+  DateFilters,
+  GYM_CLIMB_TYPES,
+  PromiseTrackerArea,
+} from "../../static/constants"
+import AppToolbar from "../common/toolbar"
+import { ThemeColors, drawerWidth } from "../../static/styles"
+import AppLoading from "../common/loading"
+import AppFooter from "../common/footer"
+import SelectFilter from "../common/select-filter"
+import ProgressionGraph from "./progression-graph"
 import { usePromiseTracker } from "react-promise-tracker"
-import SectionLegend from "../components/metrics/section-legend"
+import SectionLegend from "../common/section-legend"
 
 export default function ProgressionPage() {
   const { dataDateRange, updateDateRange } = useUserContext()

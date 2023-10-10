@@ -1,14 +1,18 @@
 import { Box, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import SectionLegend from "../components/metrics/section-legend"
-import GradePyramid from "../components/metrics/grade-pyramid-graph"
-import { ThemeColors, drawerWidth } from "../styles/styles"
-import { useUserContext } from "../user-context"
-import AppToolbar from "../components/common/app-toolbar"
-import AppLoading from "../components/common/app-loading"
-import AppFooter from "../components/common/app-footer"
-import { DateFilters, GYM_CLIMB_TYPES, PromiseTrackerArea } from "../constants"
-import SelectFilter from "../components/metrics/select-filter"
+import SectionLegend from "../common/section-legend"
+import GradePyramid from "./grade-pyramid-graph"
+import { ThemeColors, drawerWidth } from "../../static/styles"
+import { useUserContext } from "../context/user-context"
+import AppToolbar from "../common/toolbar"
+import AppLoading from "../common/loading"
+import AppFooter from "../common/footer"
+import {
+  DateFilters,
+  GYM_CLIMB_TYPES,
+  PromiseTrackerArea,
+} from "../../static/constants"
+import SelectFilter from "../common/select-filter"
 import { usePromiseTracker } from "react-promise-tracker"
 
 enum GradePyramidFilter {

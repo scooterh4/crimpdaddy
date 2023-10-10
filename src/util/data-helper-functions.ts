@@ -5,13 +5,13 @@ import {
   GradePyramidFilter,
   DateFilters,
   BOULDER_GRADES,
-} from "../constants"
+} from "../static/constants"
 import {
   GradePyramidGraphData,
   ClimbLog,
   TickTypes,
   UserIndoorRedpointGradesDoc,
-} from "../types"
+} from "../static/types"
 
 export function getMinimumMoment(dateFilter: number) {
   let minMoment = moment()

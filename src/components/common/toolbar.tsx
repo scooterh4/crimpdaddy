@@ -8,10 +8,10 @@ import {
   Typography,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
-import AppDrawer from "./app-drawer"
-import { AppColors, drawerWidth } from "../../styles/styles"
+import AppDrawer from "./drawer"
+import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
-import { useUserContext } from "../../user-context"
+import { useUserContext } from "../context/user-context"
 
 type Props = {
   title: string

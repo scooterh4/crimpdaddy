@@ -5,7 +5,7 @@ import {
   ImageListItemBar,
 } from "@mui/material"
 import React from "react"
-import { AppColors, ThemeColors } from "../../styles/styles"
+import { AppColors, ThemeColors } from "../../static/styles"
 import Icon from "../../images/belay.png"
 
 type Props = {
