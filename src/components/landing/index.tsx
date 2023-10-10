@@ -109,61 +109,62 @@ export default function Landing() {
         display: "flex",
       }}
     >
-      <Grid
-        container
-        alignContent={"center"}
-        justifyContent={"center"}
-        direction={"row"}
-        height={"100vh"}
-        sx={{
-          position: "relative",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundImage: `url(${darkenedBackground})`,
-          marginTop: xsScreen ? -1 : 0,
-        }}
-      >
+      <div style={{ backgroundColor: ThemeColors.darkShade }}>
         <Grid
-          item
-          gridColumn={"1"}
-          gridRow={{ sm: "1", xs: "2" }}
           container
-          direction={"column"}
           alignContent={"center"}
           justifyContent={"center"}
+          direction={"row"}
+          height={"100vh"}
+          sx={{
+            position: "relative",
+            backgroundSize: { xl: "contain", xs: "cover" },
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundImage: `url(${darkenedBackground})`,
+          }}
         >
-          <Typography
-            variant={headerSize}
-            color={"white"}
-            fontFamily={"poppins"}
-            textAlign={"center"}
-            padding={2}
+          <Grid
+            item
+            gridColumn={"1"}
+            gridRow={{ sm: "1", xs: "2" }}
+            container
+            direction={"column"}
+            alignContent={"center"}
+            justifyContent={"center"}
           >
-            Log Your Climbing Journey
-          </Typography>
-        </Grid>
-
-        {mainButtons.map((button) => (
-          <Button
-            key={button.title}
-            variant="contained"
-            size="large"
-            onClick={() => navigate(button.navigatePath)}
-            sx={{
-              alignSelf: "center",
-              backgroundColor: button.color,
-              color: "white",
-              ":hover": { backgroundColor: button.hoverColor },
-              margin: 2,
-            }}
-          >
-            <Typography variant={"h6"} sx={{ textTransform: "none" }}>
-              {button.title}
+            <Typography
+              variant={headerSize}
+              color={"white"}
+              fontFamily={"poppins"}
+              textAlign={"center"}
+              padding={2}
+            >
+              Log Your Climbing Journey
             </Typography>
-          </Button>
-        ))}
-      </Grid>
+          </Grid>
+
+          {mainButtons.map((button) => (
+            <Button
+              key={button.title}
+              variant="contained"
+              size="large"
+              onClick={() => navigate(button.navigatePath)}
+              sx={{
+                alignSelf: "center",
+                backgroundColor: button.color,
+                color: "white",
+                ":hover": { backgroundColor: button.hoverColor },
+                margin: 2,
+              }}
+            >
+              <Typography variant={"h6"} sx={{ textTransform: "none" }}>
+                {button.title}
+              </Typography>
+            </Button>
+          ))}
+        </Grid>
+      </div>
 
       <Typography
         gridRow={"1"}
