@@ -11,7 +11,10 @@ import {
   SelectChangeEvent,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { useNavigate } from "react-router-dom"
 import AppToolbar from "../common/toolbar"
@@ -36,6 +39,8 @@ export default function LogClimbPage() {
   const [showAttemptInput, setAttemptInputVisibility] = useState(false)
   const [attemptCount, setAttemptCount] = useState<number | string>("")
   const [attemptError, setAttemptError] = useState(false)
+  const theme = useTheme()
+  const lgAndDownScreen = useMediaQuery(theme.breakpoints.down("lg"))
 
   useEffect(() => {
     setGradesList(
@@ -149,11 +154,30 @@ export default function LogClimbPage() {
               display: "flex",
             }}
           >
+            {lgAndDownScreen && (
+              <Button
+                fullWidth={false}
+                onClick={() => navigate("/dashboard")}
+                sx={{
+                  alignSelf: "start",
+                  background: "none",
+                  border: "none",
+                  color: AppColors.danger,
+                  fontFamily: "poppins",
+                  marginTop: 2,
+                  textTransform: "none",
+                }}
+              >
+                <ArrowBackIcon sx={{ marginRight: 1 }} />
+                Cancel
+              </Button>
+            )}
+
             <Typography
               color={ThemeColors.darkShade}
               fontFamily={"poppins"}
               gutterBottom
-              paddingTop={2}
+              marginTop={2}
               variant="h3"
             >
               Log a climb
