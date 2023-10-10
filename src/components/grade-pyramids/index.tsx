@@ -120,7 +120,7 @@ export default function GradePyramidPage() {
               alignItems={"center"}
               border={1}
               borderColor={ThemeColors.darkShade}
-              borderRadius={5}
+              borderRadius={2}
               container
               direction={"column"}
               gridAutoRows="auto"
@@ -147,7 +147,7 @@ export default function GradePyramidPage() {
               alignItems={"center"}
               border={1}
               borderColor={ThemeColors.darkShade}
-              borderRadius={5}
+              borderRadius={2}
               container
               direction={"column"}
               gridAutoRows="auto"
@@ -176,7 +176,7 @@ export default function GradePyramidPage() {
               alignItems={"center"}
               border={1}
               borderColor={ThemeColors.darkShade}
-              borderRadius={5}
+              borderRadius={2}
               container
               direction={"column"}
               gridAutoRows="auto"

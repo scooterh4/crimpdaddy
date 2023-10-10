@@ -230,7 +230,7 @@ export default function LogClimbPage() {
             {selectedTickDescription !== "" && (
               <Typography
                 border={1}
-                borderRadius={5}
+                borderRadius={2}
                 fontWeight={"bold"}
                 marginTop={5}
                 textAlign={"center"}

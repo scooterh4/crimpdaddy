@@ -113,7 +113,7 @@ export default function ProgressionPage() {
           <Grid
             border={1}
             borderColor={ThemeColors.darkShade}
-            borderRadius={5}
+            borderRadius={2}
             container
             direction={"column"}
             padding={2}
@@ -165,7 +165,7 @@ export default function ProgressionPage() {
           <Grid
             border={1}
             borderColor={ThemeColors.darkShade}
-            borderRadius={5}
+            borderRadius={2}
             container
             direction={"column"}
             marginTop={5}
@@ -218,7 +218,7 @@ export default function ProgressionPage() {
           <Grid
             border={1}
             borderColor={ThemeColors.darkShade}
-            borderRadius={5}
+            borderRadius={2}
             container
             direction={"column"}
             marginTop={5}

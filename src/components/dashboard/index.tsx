@@ -92,7 +92,7 @@ export default function Dashboard() {
             padding={2}
             border={1}
             borderColor={ThemeColors.darkShade}
-            sx={{ backgroundColor: "white", borderRadius: 5 }}
+            sx={{ backgroundColor: "white", borderRadius: 2 }}
           >
             <Typography
               color={ThemeColors.darkShade}
@@ -123,7 +123,7 @@ export default function Dashboard() {
             padding={2}
             border={1}
             borderColor={ThemeColors.darkShade}
-            borderRadius={5}
+            borderRadius={2}
             sx={{ backgroundColor: "white" }}
           >
             <Grid
