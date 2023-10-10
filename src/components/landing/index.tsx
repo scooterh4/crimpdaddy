@@ -183,12 +183,15 @@ export default function Landing() {
         marginTop={{ lg: 10, xs: 5 }}
         marginBottom={10}
       >
-        {additionalInfo.map((item) => (
+        {additionalInfo.map((item, index) => (
           <Grid
             key={item.title}
             container
             flexDirection={"row"}
-            justifyContent={"center"}
+            justifyContent={{
+              lg: index === 1 ? "center" : "end",
+              xs: "center",
+            }}
             item
             lg={4}
             xs={12}
