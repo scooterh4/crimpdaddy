@@ -6,6 +6,7 @@ import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./components/app/protected-route"
 import NotFound from "./components/app/not-found"
+import ResetPassword from "./components/app/reset-password"
 import Dashboard from "./components/dashboard"
 import LogClimbPage from "./components/climb-logger"
 import GradePyramids from "./components/grade-pyramids"
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           <Route
             path="/dashboard"
             element={

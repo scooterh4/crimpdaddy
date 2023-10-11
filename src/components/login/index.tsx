@@ -162,13 +162,26 @@ export default function SignIn() {
             background: "none",
             border: "none",
             fontFamily: "poppins",
-            marginTop: 2,
+            marginTop: 3,
+            marginBottom: 2,
             textTransform: "none",
           }}
         >
           <GoogleIcon sx={{ marginRight: 1 }} />
           Login with Google
         </Button>
+        <Link
+          to={"/resetPassword"}
+          style={{
+            background: "none",
+            border: "none",
+            color: "black",
+            fontFamily: "poppins",
+            fontSize: 12,
+          }}
+        >
+          {"Forgot password?"}
+        </Link>
       </Box>
 
       <Box
