@@ -5,6 +5,7 @@ import Landing from "./components/landing"
 import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./components/app/protected-route"
+import NotFound from "./components/app/not-found"
 import Dashboard from "./components/dashboard"
 import LogClimbPage from "./components/climb-logger"
 import GradePyramids from "./components/grade-pyramids"
@@ -26,6 +27,7 @@ export default function App() {
       <ToastContainer position="top-right" />
       <Router>
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
