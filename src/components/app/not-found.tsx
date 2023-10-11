@@ -15,8 +15,16 @@ export default function NotFound() {
         display: "flex",
       }}
     >
-      <HelpIcon sx={{ color: AppColors.danger, fontSize: "36px" }} />
-      <Typography fontFamily={"poppins"} padding={2} variant="h4">
+      <HelpIcon sx={{ color: AppColors.danger, fontSize: "40pt" }} />
+      <Typography
+        fontFamily={"poppins"}
+        marginBottom={2}
+        marginTop={2}
+        paddingLeft={5}
+        paddingRight={5}
+        textAlign={"center"}
+        variant="h4"
+      >
         Hmmm... we couldn't find the page you're looking for.
       </Typography>
       <Link to={"/"} style={{ fontFamily: "poppins" }}>
