@@ -11,7 +11,7 @@ export default function AppLoading() {
       alignItems={"center"}
       direction="row"
       marginTop={8}
-      sx={{ height: "100%" }}
+      // minHeight={"87vh"}
     >
       <ReactLoading
         type="spin"

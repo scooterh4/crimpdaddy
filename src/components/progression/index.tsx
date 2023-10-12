@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUserContext } from "../context/user-context"
 import {
@@ -6,10 +6,8 @@ import {
   GYM_CLIMB_TYPES,
   PromiseTrackerArea,
 } from "../../static/constants"
-import AppToolbar from "../common/toolbar"
-import { ThemeColors, drawerWidth } from "../../static/styles"
+import { ThemeColors } from "../../static/styles"
 import AppLoading from "../common/loading"
-import AppFooter from "../common/footer"
 import SelectFilter from "../common/select-filter"
 import ProgressionGraph from "./progression-graph"
 import { usePromiseTracker } from "react-promise-tracker"
@@ -29,199 +27,162 @@ export default function ProgressionPage() {
   }, [])
 
   return promiseInProgress ? (
-    <>
-      <Box
-        minHeight={"94.2vh"}
-        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
-      >
-        <AppToolbar title="Dashboard" />
-
-        <Box
-          component="main"
-          flexDirection={"column"}
-          sx={{
-            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
-          }}
-        >
-          <AppLoading />
-        </Box>
-      </Box>
-      <AppFooter isAuthenticated={true} />
-    </>
+    <AppLoading />
   ) : (
     <>
-      <Box
-        minHeight={"94.2vh"}
-        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
+      <Grid
+        container
+        direction={"row"}
+        alignContent={"center"}
+        marginBottom={5}
       >
-        <AppToolbar title="Dashboard" />
+        <Grid container item direction={"row"}>
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gutterBottom
+            gridColumn={"1"}
+            justifySelf={"start"}
+            paddingLeft={0}
+            paddingTop={2}
+            variant="h3"
+            sx={{ columnSpan: "2" }}
+          >
+            Progression
+          </Typography>
+        </Grid>
 
-        <Box
-          component="main"
-          marginTop={5}
-          marginBottom={2}
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
-          }}
+        <Grid container item direction={"row"} justifyContent={"center"}>
+          <SelectFilter
+            graph={PromiseTrackerArea.ProgressionGraph}
+            dateFilter={true}
+            setFilter={setDateFilter}
+          />
+        </Grid>
+
+        <Grid container direction={"row"} marginTop={2}>
+          <SectionLegend section="activity" />
+        </Grid>
+      </Grid>
+
+      <Grid
+        border={1}
+        borderColor={ThemeColors.darkShade}
+        borderRadius={2}
+        container
+        direction={"column"}
+        padding={2}
+        sx={{ backgroundColor: "white" }}
+      >
+        <Grid
+          alignItems={"center"}
+          container
+          direction={"row"}
+          display={"grid"}
+          gridAutoRows={"auto"}
+          gridTemplateColumns={"1fr 1fr 1fr"}
+          paddingLeft={{ sm: 0, xs: 2 }}
         >
-          <Grid
-            container
-            direction={"row"}
-            alignContent={"center"}
-            marginBottom={5}
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gridColumn={"2"}
+            gridRow={"1"}
+            gutterBottom
+            justifySelf={"center"}
+            variant="h5"
           >
-            <Grid container item direction={"row"}>
-              <Typography
-                color={ThemeColors.darkShade}
-                fontFamily={"poppins"}
-                gutterBottom
-                gridColumn={"1"}
-                justifySelf={"start"}
-                paddingLeft={0}
-                paddingTop={2}
-                variant="h3"
-                sx={{ columnSpan: "2" }}
-              >
-                Progression
-              </Typography>
-            </Grid>
+            Bouldering
+          </Typography>
+        </Grid>
 
-            <Grid container item direction={"row"} justifyContent={"center"}>
-              <SelectFilter
-                graph={PromiseTrackerArea.ProgressionGraph}
-                dateFilter={true}
-                setFilter={setDateFilter}
-              />
-            </Grid>
+        <Grid container item direction={"row"} justifyContent={"center"}>
+          <ProgressionGraph
+            climbType={GYM_CLIMB_TYPES.Boulder}
+            filter={dateFilter}
+          />
+        </Grid>
+      </Grid>
 
-            <Grid container direction={"row"} marginTop={2}>
-              <SectionLegend section="activity" />
-            </Grid>
-          </Grid>
-
-          <Grid
-            border={1}
-            borderColor={ThemeColors.darkShade}
-            borderRadius={2}
-            container
-            direction={"column"}
-            padding={2}
-            sx={{ backgroundColor: "white" }}
+      <Grid
+        border={1}
+        borderColor={ThemeColors.darkShade}
+        borderRadius={2}
+        container
+        direction={"column"}
+        marginTop={5}
+        padding={2}
+        sx={{ backgroundColor: "white" }}
+      >
+        <Grid
+          alignItems={"center"}
+          container
+          direction={"row"}
+          display={"grid"}
+          gridAutoRows={"auto"}
+          gridTemplateColumns={"1fr 1fr 1fr"}
+          paddingLeft={{ sm: 0, xs: 2 }}
+        >
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gridColumn={"2"}
+            gridRow={"1"}
+            gutterBottom
+            justifySelf={"center"}
+            variant="h5"
           >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"row"}
-              display={"grid"}
-              gridAutoRows={"auto"}
-              gridTemplateColumns={"1fr 1fr 1fr"}
-              paddingLeft={{ sm: 0, xs: 2 }}
-            >
-              <Typography
-                color={ThemeColors.darkShade}
-                fontFamily={"poppins"}
-                gridColumn={"2"}
-                gridRow={"1"}
-                gutterBottom
-                justifySelf={"center"}
-                variant="h5"
-              >
-                Bouldering
-              </Typography>
-            </Grid>
+            Lead
+          </Typography>
+        </Grid>
 
-            <Grid container item direction={"row"} justifyContent={"center"}>
-              <ProgressionGraph
-                climbType={GYM_CLIMB_TYPES.Boulder}
-                filter={dateFilter}
-              />
-            </Grid>
-          </Grid>
+        <Grid container item direction={"row"} justifyContent={"center"}>
+          <ProgressionGraph
+            climbType={GYM_CLIMB_TYPES.Lead}
+            filter={dateFilter}
+          />
+        </Grid>
+      </Grid>
 
-          <Grid
-            border={1}
-            borderColor={ThemeColors.darkShade}
-            borderRadius={2}
-            container
-            direction={"column"}
-            marginTop={5}
-            padding={2}
-            sx={{ backgroundColor: "white" }}
+      <Grid
+        border={1}
+        borderColor={ThemeColors.darkShade}
+        borderRadius={2}
+        container
+        direction={"column"}
+        marginTop={5}
+        padding={2}
+        sx={{ backgroundColor: "white" }}
+      >
+        <Grid
+          alignItems={"center"}
+          container
+          direction={"row"}
+          display={"grid"}
+          gridAutoRows={"auto"}
+          gridTemplateColumns={"1fr 1fr 1fr"}
+          paddingLeft={{ sm: 0, xs: 2 }}
+        >
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gridColumn={"2"}
+            gridRow={"1"}
+            gutterBottom
+            justifySelf={"center"}
+            variant="h5"
           >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"row"}
-              display={"grid"}
-              gridAutoRows={"auto"}
-              gridTemplateColumns={"1fr 1fr 1fr"}
-              paddingLeft={{ sm: 0, xs: 2 }}
-            >
-              <Typography
-                color={ThemeColors.darkShade}
-                fontFamily={"poppins"}
-                gridColumn={"2"}
-                gridRow={"1"}
-                gutterBottom
-                justifySelf={"center"}
-                variant="h5"
-              >
-                Lead
-              </Typography>
-            </Grid>
+            Top Rope
+          </Typography>
+        </Grid>
 
-            <Grid container item direction={"row"} justifyContent={"center"}>
-              <ProgressionGraph
-                climbType={GYM_CLIMB_TYPES.Lead}
-                filter={dateFilter}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid
-            border={1}
-            borderColor={ThemeColors.darkShade}
-            borderRadius={2}
-            container
-            direction={"column"}
-            marginTop={5}
-            padding={2}
-            sx={{ backgroundColor: "white" }}
-          >
-            <Grid
-              alignItems={"center"}
-              container
-              direction={"row"}
-              display={"grid"}
-              gridAutoRows={"auto"}
-              gridTemplateColumns={"1fr 1fr 1fr"}
-              paddingLeft={{ sm: 0, xs: 2 }}
-            >
-              <Typography
-                color={ThemeColors.darkShade}
-                fontFamily={"poppins"}
-                gridColumn={"2"}
-                gridRow={"1"}
-                gutterBottom
-                justifySelf={"center"}
-                variant="h5"
-              >
-                Top Rope
-              </Typography>
-            </Grid>
-
-            <Grid container item direction={"row"} justifyContent={"center"}>
-              <ProgressionGraph
-                climbType={GYM_CLIMB_TYPES.TopRope}
-                filter={dateFilter}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-      <AppFooter isAuthenticated={true} />
+        <Grid container item direction={"row"} justifyContent={"center"}>
+          <ProgressionGraph
+            climbType={GYM_CLIMB_TYPES.TopRope}
+            filter={dateFilter}
+          />
+        </Grid>
+      </Grid>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import darkenedBackground from "../../images/quickdraws-unsplash_dark.svg"
 import {
   Box,
@@ -90,17 +90,10 @@ const mainButtons: ButtonStyles[] = [
 ]
 
 export default function Landing() {
-  const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const navigate = useNavigate()
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
   const headerSize = xsScreen ? "h2" : "h1"
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard")
-    }
-  }, [])
 
   return (
     <Box

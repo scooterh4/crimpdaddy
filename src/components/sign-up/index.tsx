@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { auth, provider } from "../../firebase"
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import {
@@ -17,7 +17,6 @@ import { useUserContext } from "../context/user-context"
 
 export default function SignUp() {
   const { updateUser } = useUserContext()
-  const isAuthenticated = !!sessionStorage.getItem("Auth Token")
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -29,12 +28,6 @@ export default function SignUp() {
     confirmPassword: "",
   })
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard")
-    }
-  }, [])
 
   function Submit() {
     if (input.password.length < 6) {

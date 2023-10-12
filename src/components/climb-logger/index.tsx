@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import {
-  Box,
   Button,
   FormControl,
   FormHelperText,
@@ -17,12 +16,10 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
 import { useNavigate } from "react-router-dom"
-import AppToolbar from "../common/toolbar"
 import { useUserContext } from "../context/user-context"
-import { AppColors, ThemeColors, drawerWidth } from "../../static/styles"
+import { AppColors, ThemeColors } from "../../static/styles"
 import { ClimbLog } from "../../static/types"
 import { logClimb } from "../../util/db"
-import AppFooter from "../common/footer"
 import moment from "moment"
 import GradeSelector from "./grade-selector"
 import TickSelector from "./tick-selector"
@@ -131,186 +128,153 @@ export default function LogClimbPage() {
   }
 
   return (
-    <>
-      <Box
-        minHeight={"94.2vh"}
-        sx={{ backgroundColor: ThemeColors.backgroundColor, display: "flex" }}
-      >
-        <AppToolbar title="Dashboard" />
-
-        <Box
-          component="main"
-          marginTop={5}
+    <Grid
+      container
+      direction={"column"}
+      style={{
+        display: "flex",
+      }}
+    >
+      {lgAndDownScreen && (
+        <Button
+          fullWidth={false}
+          onClick={() => navigate("/dashboard")}
           sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+            alignSelf: "start",
+            background: "none",
+            border: "none",
+            color: AppColors.danger,
+            fontFamily: "poppins",
+            marginTop: 2,
+            textTransform: "none",
           }}
         >
-          <Grid
-            container
-            direction={"column"}
-            style={{
-              display: "flex",
-            }}
+          <ArrowBackIcon sx={{ marginRight: 1 }} />
+          Cancel
+        </Button>
+      )}
+
+      <Typography
+        color={ThemeColors.darkShade}
+        fontFamily={"poppins"}
+        gutterBottom
+        marginTop={2}
+        variant="h3"
+      >
+        Log a climb
+      </Typography>
+
+      <FormControl fullWidth sx={{ backgroundColor: "white", marginTop: 2 }}>
+        <InputLabel id="climb_type_label">Climb Type</InputLabel>
+        <Select
+          id="climbTypeSelect"
+          label={"Climb Type"}
+          labelId="climb_type_label"
+          onChange={handleFilterChange}
+          value={climbType}
+          sx={{ fontFamily: "poppins" }}
+        >
+          <MenuItem
+            key={"boulder"}
+            value={"Boulder"}
+            sx={{ fontFamily: "poppins" }}
           >
-            {lgAndDownScreen && (
-              <Button
-                fullWidth={false}
-                onClick={() => navigate("/dashboard")}
-                sx={{
-                  alignSelf: "start",
-                  background: "none",
-                  border: "none",
-                  color: AppColors.danger,
-                  fontFamily: "poppins",
-                  marginTop: 2,
-                  textTransform: "none",
-                }}
-              >
-                <ArrowBackIcon sx={{ marginRight: 1 }} />
-                Cancel
-              </Button>
-            )}
+            Boulder
+          </MenuItem>
+          <MenuItem key={"lead"} value={"Lead"} sx={{ fontFamily: "poppins" }}>
+            Lead
+          </MenuItem>
+          <MenuItem
+            key={"topRope"}
+            value={"TopRope"}
+            sx={{ fontFamily: "poppins" }}
+          >
+            Top Rope
+          </MenuItem>
+        </Select>
+      </FormControl>
 
-            <Typography
-              color={ThemeColors.darkShade}
-              fontFamily={"poppins"}
-              gutterBottom
-              marginTop={2}
-              variant="h3"
-            >
-              Log a climb
-            </Typography>
+      {climbType !== "" && (
+        <Grid container direction={"column"} marginTop={4}>
+          <Typography fontFamily={"poppins"}>What was the grade?</Typography>
+          <GradeSelector
+            gradesList={gradesList}
+            selectedGrade={selectedGrade}
+            setSelectedGrade={setSelectedGrade}
+          />
+        </Grid>
+      )}
 
-            <FormControl
-              fullWidth
-              sx={{ backgroundColor: "white", marginTop: 2 }}
-            >
-              <InputLabel id="climb_type_label">Climb Type</InputLabel>
-              <Select
-                id="climbTypeSelect"
-                label={"Climb Type"}
-                labelId="climb_type_label"
-                onChange={handleFilterChange}
-                value={climbType}
-                sx={{ fontFamily: "poppins" }}
-              >
-                <MenuItem
-                  key={"boulder"}
-                  value={"Boulder"}
-                  sx={{ fontFamily: "poppins" }}
-                >
-                  Boulder
-                </MenuItem>
-                <MenuItem
-                  key={"lead"}
-                  value={"Lead"}
-                  sx={{ fontFamily: "poppins" }}
-                >
-                  Lead
-                </MenuItem>
-                <MenuItem
-                  key={"topRope"}
-                  value={"TopRope"}
-                  sx={{ fontFamily: "poppins" }}
-                >
-                  Top Rope
-                </MenuItem>
-              </Select>
-            </FormControl>
+      {selectedGrade !== "" && (
+        <Grid container direction={"column"}>
+          <Typography fontFamily={"poppins"} marginTop={2} marginBottom={2}>
+            Select a tick:
+          </Typography>
+          <TickSelector
+            selectedTick={selectedTick}
+            setSelectedTick={setSelectedTick}
+            setAttemptInputVisibility={setAttemptInputVisibility}
+            setSelectedTickDescription={setSelectedTickDescription}
+          />
+        </Grid>
+      )}
 
-            {climbType !== "" && (
-              <Grid container direction={"column"} marginTop={4}>
-                <Typography fontFamily={"poppins"}>
-                  What was the grade?
-                </Typography>
-                <GradeSelector
-                  gradesList={gradesList}
-                  selectedGrade={selectedGrade}
-                  setSelectedGrade={setSelectedGrade}
-                />
-              </Grid>
-            )}
+      {selectedTickDescription !== "" && (
+        <Typography
+          border={1}
+          borderRadius={2}
+          fontWeight={"bold"}
+          marginTop={5}
+          textAlign={"center"}
+          padding={2}
+          variant="h6"
+          sx={{ color: AppColors.info, backgroundColor: "white" }}
+        >
+          {selectedTickDescription}
+        </Typography>
+      )}
 
-            {selectedGrade !== "" && (
-              <Grid container direction={"column"}>
-                <Typography
-                  fontFamily={"poppins"}
-                  marginTop={2}
-                  marginBottom={2}
-                >
-                  Select a tick:
-                </Typography>
-                <TickSelector
-                  selectedTick={selectedTick}
-                  setSelectedTick={setSelectedTick}
-                  setAttemptInputVisibility={setAttemptInputVisibility}
-                  setSelectedTickDescription={setSelectedTickDescription}
-                />
-              </Grid>
-            )}
+      {showAttemptInput && (
+        <FormControl fullWidth sx={{ marginTop: 5 }}>
+          <TextField
+            error={attemptError}
+            label={"Number of attempts"}
+            onChange={(e) =>
+              setAttemptCount(
+                e.target.value !== "" ? parseInt(e.target.value) : ""
+              )
+            }
+            type="number"
+            value={attemptCount}
+            variant="outlined"
+            sx={{ backgroundColor: "white" }}
+          >
+            {attemptCount}
+          </TextField>
+          {attemptError && (
+            <FormHelperText sx={{ color: AppColors.danger }}>
+              This is required!
+            </FormHelperText>
+          )}
+        </FormControl>
+      )}
 
-            {selectedTickDescription !== "" && (
-              <Typography
-                border={1}
-                borderRadius={2}
-                fontWeight={"bold"}
-                marginTop={5}
-                textAlign={"center"}
-                padding={2}
-                variant="h6"
-                sx={{ color: AppColors.info, backgroundColor: "white" }}
-              >
-                {selectedTickDescription}
-              </Typography>
-            )}
-
-            {showAttemptInput && (
-              <FormControl fullWidth sx={{ marginTop: 5 }}>
-                <TextField
-                  error={attemptError}
-                  label={"Number of attempts"}
-                  onChange={(e) =>
-                    setAttemptCount(
-                      e.target.value !== "" ? parseInt(e.target.value) : ""
-                    )
-                  }
-                  type="number"
-                  value={attemptCount}
-                  variant="outlined"
-                  sx={{ backgroundColor: "white" }}
-                >
-                  {attemptCount}
-                </TextField>
-                {attemptError && (
-                  <FormHelperText sx={{ color: AppColors.danger }}>
-                    This is required!
-                  </FormHelperText>
-                )}
-              </FormControl>
-            )}
-
-            {selectedTick !== "" && (
-              <Button
-                onClick={submitForm}
-                size="large"
-                variant="contained"
-                sx={{
-                  backgroundColor: ThemeColors.darkAccent,
-                  color: "white",
-                  ":hover": { backgroundColor: ThemeColors.darkShade },
-                  marginBottom: 5,
-                  marginTop: 5,
-                }}
-              >
-                Submit
-              </Button>
-            )}
-          </Grid>
-        </Box>
-      </Box>
-      <AppFooter isAuthenticated={true} />
-    </>
+      {selectedTick !== "" && (
+        <Button
+          onClick={submitForm}
+          size="large"
+          variant="contained"
+          sx={{
+            backgroundColor: ThemeColors.darkAccent,
+            color: "white",
+            ":hover": { backgroundColor: ThemeColors.darkShade },
+            marginBottom: 5,
+            marginTop: 5,
+          }}
+        >
+          Submit
+        </Button>
+      )}
+    </Grid>
   )
 }

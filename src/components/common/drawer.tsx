@@ -51,7 +51,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="dashboard"
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/user/dashboard")}
         >
           <ListItemButton>
             <ListItemIcon>
@@ -66,7 +66,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="grades"
-          onClick={() => navigate("/gradePyramids")}
+          onClick={() => navigate("/user/gradePyramids")}
         >
           <ListItemButton>
             <ListItemIcon>
@@ -81,7 +81,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="progress"
-          onClick={() => navigate("/progression")}
+          onClick={() => navigate("/user/progression")}
         >
           <ListItemButton>
             <ListItemIcon>
