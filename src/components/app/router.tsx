@@ -15,11 +15,11 @@ import Dashboard from "../dashboard/index"
 import LogClimbPage from "../climb-logger"
 import GradePyramids from "../grade-pyramids/index"
 import ProgressionPage from "../progression"
+import { AuthLayout } from "./auth-layout"
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
-      {/* <Route element={<AuthLayout />}> */}
+    <Route element={<AuthLayout />}>
       <Route element={<PublicLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Landing />} />
@@ -33,7 +33,6 @@ export const router = createBrowserRouter(
         <Route path="gradePyramids" element={<GradePyramids />} />
         <Route path="progression" element={<ProgressionPage />} />
       </Route>
-      {/* </Route> */}
-    </>
+    </Route>
   )
 )

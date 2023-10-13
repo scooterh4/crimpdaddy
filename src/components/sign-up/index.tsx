@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { auth, provider } from "../../firebase"
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth"
+import { auth } from "../../firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth"
 import {
   Box,
   Button,
@@ -13,10 +13,10 @@ import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AppColors, ThemeColors } from "../../static/styles"
-import { useUserContext } from "../context/user-context"
+import { useAuthContext } from "../context/auth-context"
 
 export default function SignUp() {
-  const { updateUser } = useUserContext()
+  const { googleLogin } = useAuthContext()
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -28,54 +28,6 @@ export default function SignUp() {
     confirmPassword: "",
   })
   const navigate = useNavigate()
-
-  function Submit() {
-    if (input.password.length < 6) {
-      setError((inputObj) => {
-        const stateObj = { ...inputObj, ["password"]: "" }
-        stateObj["password"] =
-          "Your password must be at least 6 characters long."
-        return stateObj
-      })
-    } else if (
-      error.email === "" &&
-      error.password === "" &&
-      error.confirmPassword === ""
-    ) {
-      createUserWithEmailAndPassword(auth, input.email, input.password)
-        .then((userCredential) => {
-          navigate("/login")
-          toast.success(
-            "Registration successful! Please login with your credentials"
-          )
-        })
-        .catch((error) => {
-          if (error.code === "auth/email-already-in-use") {
-            setError((inputObj) => {
-              const stateObj = { ...inputObj, ["email"]: "" }
-              stateObj["email"] = "This email is already in use."
-              return stateObj
-            })
-          } else if (error.code === "auth/invalid-email") {
-            setError((inputObj) => {
-              const stateObj = { ...inputObj, ["email"]: "" }
-              stateObj["email"] = "The email entered is invalid."
-              return stateObj
-            })
-          } else if (error.code === "auth/weak-password") {
-            setError((inputObj) => {
-              const stateObj = { ...inputObj, ["password"]: "" }
-              stateObj["password"] =
-                "Your password must be atleast 6 characters long."
-              return stateObj
-            })
-          } else {
-            toast.error("Uh oh! An unexpected error occurred")
-            console.log(error.code, error.message)
-          }
-        })
-    }
-  }
 
   function onInputChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -131,15 +83,52 @@ export default function SignUp() {
     })
   }
 
-  function googleSignIn() {
-    signInWithPopup(auth, provider).then((userCredential) => {
-      sessionStorage.setItem("Auth Token", userCredential.user.refreshToken)
-      updateUser({
-        id: userCredential.user.uid,
-        email: userCredential.user.email ? userCredential.user.email : "",
+  function Submit() {
+    if (input.password.length < 6) {
+      setError((inputObj) => {
+        const stateObj = { ...inputObj, ["password"]: "" }
+        stateObj["password"] =
+          "Your password must be at least 6 characters long."
+        return stateObj
       })
-      navigate("/dashboard")
-    })
+    } else if (
+      error.email === "" &&
+      error.password === "" &&
+      error.confirmPassword === ""
+    ) {
+      createUserWithEmailAndPassword(auth, input.email, input.password)
+        .then(() => {
+          navigate("/login")
+          toast.success(
+            "Registration successful! Please login with your credentials"
+          )
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            setError((inputObj) => {
+              const stateObj = { ...inputObj, ["email"]: "" }
+              stateObj["email"] = "This email is already in use."
+              return stateObj
+            })
+          } else if (error.code === "auth/invalid-email") {
+            setError((inputObj) => {
+              const stateObj = { ...inputObj, ["email"]: "" }
+              stateObj["email"] = "The email entered is invalid."
+              return stateObj
+            })
+          } else if (error.code === "auth/weak-password") {
+            setError((inputObj) => {
+              const stateObj = { ...inputObj, ["password"]: "" }
+              stateObj["password"] =
+                "Your password must be atleast 6 characters long."
+              return stateObj
+            })
+          } else {
+            toast.error("Uh oh! An unexpected error occurred")
+            console.log(error.code, error.message)
+          }
+        })
+    }
   }
 
   return (
@@ -247,7 +236,7 @@ export default function SignUp() {
           OR
         </Divider>
         <Button
-          onClick={googleSignIn}
+          onClick={googleLogin}
           sx={{
             background: "none",
             border: "none",

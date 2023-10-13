@@ -11,14 +11,14 @@ import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./drawer"
 import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
-import { useUserContext } from "../context/user-context"
+import { useAuthContext } from "../context/auth-context"
 
 type Props = {
   title: string
 }
 
 export default function ToolBar({ title }: Props) {
-  const user = useUserContext()
+  const user = useAuthContext()
   const header = title === "Dashboard" ? "Gym Climbing" : "CrimpDaddy"
   const cursor = title === "Dashboard" ? "" : "pointer"
   const [mobileOpen, setMobileOpen] = React.useState(false)

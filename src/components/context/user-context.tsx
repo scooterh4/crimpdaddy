@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import {
-  AppUser,
   ClimbLog,
   SessionStorageData,
   GradePyramidGraphData,
@@ -20,10 +19,9 @@ import {
   findNewRedpointGrades,
 } from "../../util/data-helper-functions"
 import { trackPromise } from "react-promise-tracker"
+import { useAuthContext } from "./auth-context"
 
 interface IUserContext {
-  user: AppUser | null
-  updateUser: (newUser: AppUser | null) => void
   userClimbingLogs: ClimbLog[] | null
   userBoulderLogs: ClimbLog[] | null
   setUserBoulderLogs: (logs: ClimbLog[] | null) => void
@@ -34,7 +32,6 @@ interface IUserContext {
   userBoulderGradePyramidData: GradePyramidGraphData[] | null
   userLeadGradePyramidData: GradePyramidGraphData[] | null
   userTrGradePyramidData: GradePyramidGraphData[] | null
-  clearAppData: () => void
   addClimbLogData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
   updateDateRange: (newRange: number | null, fromComponent: string) => void
@@ -42,8 +39,6 @@ interface IUserContext {
 }
 
 const userDefaultState: IUserContext = {
-  user: null,
-  updateUser: () => {},
   userClimbingLogs: null,
   userBoulderLogs: null,
   setUserBoulderLogs: () => {},
@@ -54,7 +49,6 @@ const userDefaultState: IUserContext = {
   userBoulderGradePyramidData: null,
   userLeadGradePyramidData: null,
   userTrGradePyramidData: null,
-  clearAppData: () => {},
   addClimbLogData: () => {},
   dataDateRange: null,
   updateDateRange: () => {},
@@ -70,7 +64,7 @@ export const UserDataProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [user, setUser] = useState<AppUser | null>(null)
+  const { user } = useAuthContext()
   const [userClimbingLogs, setUserClimbingLogs] = useState<ClimbLog[] | null>(
     null
   )
@@ -98,77 +92,56 @@ export const UserDataProvider = ({
   ] = useState<UserIndoorRedpointGradesDoc | null>(null)
   const sessionData = sessionStorage.getItem(sessionDataKey)
 
-  const updateUser = (saveUser: AppUser | null) => {
-    setUser(saveUser)
-    if (saveUser !== null) {
-      if (userClimbingLogs === null && sessionData === null) {
-        // We want this to happen once when the user initially logs in
-        getAllUserClimbingData(saveUser.id, DateFilters.ThisWeek).then(
-          (res) => {
-            setUserClimbingLogs(res.climbingLogs.allClimbs)
-            setUserBoulderLogs(res.climbingLogs.boulderLogs)
-            setUserLeadLogs(res.climbingLogs.leadLogs)
-            setUserTopRopeLogs(res.climbingLogs.topRopeLogs)
-            setDateRange(DateFilters.ThisWeek)
-            setUserBoulderGradePyramidData(res.gradePyramidData.boulderData)
-            setUserLeadGradePyramidData(res.gradePyramidData.leadData)
-            setUserTrGradePyramidData(res.gradePyramidData.trData)
-            setUserIndoorRedpointGrades(res.summaryStats.indoorRedpointGrades)
+  // We want this to happen once when the user initially logs in
+  useEffect(() => {
+    console.log("userContext useEffect")
+    if (user && userClimbingLogs === null && sessionData === null) {
+      console.log("user context fetching user data")
+      getAllUserClimbingData(user.id, DateFilters.ThisWeek).then((res) => {
+        setUserClimbingLogs(res.climbingLogs.allClimbs)
+        setUserBoulderLogs(res.climbingLogs.boulderLogs)
+        setUserLeadLogs(res.climbingLogs.leadLogs)
+        setUserTopRopeLogs(res.climbingLogs.topRopeLogs)
+        setDateRange(DateFilters.ThisWeek)
+        setUserBoulderGradePyramidData(res.gradePyramidData.boulderData)
+        setUserLeadGradePyramidData(res.gradePyramidData.leadData)
+        setUserTrGradePyramidData(res.gradePyramidData.trData)
+        setUserIndoorRedpointGrades(res.summaryStats.indoorRedpointGrades)
 
-            sessionStorage.setItem(
-              sessionDataKey,
-              JSON.stringify({
-                timeRange: DateFilters[DateFilters.ThisWeek],
-                climbingData: res.climbingLogs,
-                gradePyramidData: res.gradePyramidData,
-                summaryStats: res.summaryStats,
-              })
-            )
-          }
+        sessionStorage.setItem(
+          sessionDataKey,
+          JSON.stringify({
+            timeRange: DateFilters[DateFilters.ThisWeek],
+            climbingData: res.climbingLogs,
+            gradePyramidData: res.gradePyramidData,
+            summaryStats: res.summaryStats,
+          })
         )
-      } else {
-        if (sessionData !== null) {
-          const persistentData: SessionStorageData = JSON.parse(sessionData)
-          setUserClimbingLogs(persistentData.climbingData.allClimbs)
-          setUserBoulderLogs(persistentData.climbingData.boulderLogs)
-          setUserLeadLogs(persistentData.climbingData.leadLogs)
-          setUserTopRopeLogs(persistentData.climbingData.topRopeLogs)
-          const persistentRange = Object.values(DateFilters).indexOf(
-            persistentData.timeRange
-          )
-          setDateRange(persistentRange)
-          setUserBoulderGradePyramidData(
-            persistentData.gradePyramidData.boulderData
-          )
-          setUserLeadGradePyramidData(persistentData.gradePyramidData.leadData)
-          setUserTrGradePyramidData(persistentData.gradePyramidData.trData)
-          setUserIndoorRedpointGrades(
-            persistentData.summaryStats.indoorRedpointGrades
-          )
-        } else {
-          console.log(
-            "WARNING!",
-            "Odd case where sessionData is null and climbingData is not null"
-          )
-        }
+      })
+    } else {
+      if (sessionData !== null) {
+        console.log("user context getting persistent data")
+        const persistentData: SessionStorageData = JSON.parse(sessionData)
+        setUserClimbingLogs(persistentData.climbingData.allClimbs)
+        setUserBoulderLogs(persistentData.climbingData.boulderLogs)
+        setUserLeadLogs(persistentData.climbingData.leadLogs)
+        setUserTopRopeLogs(persistentData.climbingData.topRopeLogs)
+        const persistentRange = Object.values(DateFilters).indexOf(
+          persistentData.timeRange
+        )
+        setDateRange(persistentRange)
+        setUserBoulderGradePyramidData(
+          persistentData.gradePyramidData.boulderData
+        )
+        setUserLeadGradePyramidData(persistentData.gradePyramidData.leadData)
+        setUserTrGradePyramidData(persistentData.gradePyramidData.trData)
+        setUserIndoorRedpointGrades(
+          persistentData.summaryStats.indoorRedpointGrades
+        )
       }
     }
-  }
+  }, [])
 
-  // used when logging out
-  const clearAppData = () => {
-    setUserClimbingLogs(null)
-    setUserBoulderLogs(null)
-    setUserLeadLogs(null)
-    setUserTopRopeLogs(null)
-    setUserBoulderGradePyramidData(null)
-    setUserLeadGradePyramidData(null)
-    setUserTrGradePyramidData(null)
-    setUserIndoorRedpointGrades(null)
-    sessionStorage.removeItem("climbingData")
-  }
-
-  // used when logging a climb. Adds the doc to the climbing data instead of calling firestore again
   const addClimbLogData = (logsToAdd: ClimbLog[]) => {
     let boulderLogsReturn: ClimbLog[] | null = null
     let leadLogsReturn: ClimbLog[] | null = null
@@ -309,8 +282,6 @@ export const UserDataProvider = ({
   }
 
   const authUserContextValue: IUserContext = {
-    user,
-    updateUser,
     userClimbingLogs,
     userBoulderLogs,
     setUserBoulderLogs,
@@ -321,7 +292,6 @@ export const UserDataProvider = ({
     userBoulderGradePyramidData,
     userLeadGradePyramidData,
     userTrGradePyramidData,
-    clearAppData,
     addClimbLogData,
     dataDateRange,
     updateDateRange,

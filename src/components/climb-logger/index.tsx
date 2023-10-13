@@ -24,10 +24,12 @@ import moment from "moment"
 import GradeSelector from "./grade-selector"
 import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
+import { useAuthContext } from "../context/auth-context"
 
 export default function LogClimbPage() {
   const navigate = useNavigate()
-  const { user, addClimbLogData } = useUserContext()
+  const { user } = useAuthContext()
+  const { addClimbLogData } = useUserContext()
   const [climbType, setClimbType] = useState("")
   const [gradesList, setGradesList] = useState<string[]>([])
   const [selectedGrade, setSelectedGrade] = useState("")

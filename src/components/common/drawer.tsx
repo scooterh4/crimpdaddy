@@ -14,30 +14,12 @@ import DashboardIcon from "@mui/icons-material/Dashboard"
 import EqualizerIcon from "@mui/icons-material/Equalizer"
 import LogoutIcon from "@mui/icons-material/Logout"
 import ShowChartIcon from "@mui/icons-material/ShowChart"
-import { signOut } from "firebase/auth"
-import { toast } from "react-toastify"
-import { auth } from "../../firebase"
-import { useUserContext } from "../context/user-context"
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../context/auth-context"
 
 export default function AppDrawer() {
-  const { user, updateUser, clearAppData } = useUserContext()
+  const { user, logoutUser } = useAuthContext()
   const navigate = useNavigate()
-
-  function handleLogout() {
-    if (user) {
-      signOut(auth)
-        .then(() => {
-          sessionStorage.removeItem("Auth Token")
-          updateUser(null)
-          clearAppData()
-          toast.success("Goodbye!", { toastId: "logoutSuccess" })
-        })
-        .catch((error) => {
-          console.log(error.code, error.message)
-        })
-    }
-  }
 
   return (
     <div>
@@ -96,7 +78,7 @@ export default function AppDrawer() {
       </List>
       <Divider />
       <List sx={{ background: "white", color: AppColors.primary }}>
-        <ListItem disablePadding key="logout" onClick={handleLogout}>
+        <ListItem disablePadding key="logout" onClick={logoutUser}>
           <ListItemButton>
             <ListItemIcon>
               <LogoutIcon />
