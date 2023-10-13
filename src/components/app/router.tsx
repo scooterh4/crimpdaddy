@@ -17,21 +17,33 @@ import GradePyramids from "../grade-pyramids/index"
 import ProgressionPage from "../progression"
 import { AuthLayout } from "./auth-layout"
 
+const protectedLayout = "/user"
+export const Routes = {
+  landing: "/",
+  login: "/login",
+  signup: "/signup",
+  resetPassword: "/resetPassword",
+  dashboard: `${protectedLayout}/dashboard`,
+  logClimb: `${protectedLayout}/logClimb`,
+  gradePyramids: `${protectedLayout}/gradePyramids`,
+  progression: `${protectedLayout}/progression`,
+}
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<AuthLayout />}>
       <Route element={<PublicLayout />}>
         <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path={Routes.landing} element={<Landing />} />
+        <Route path={Routes.login} element={<Login />} />
+        <Route path={Routes.signup} element={<SignUp />} />
+        <Route path={Routes.resetPassword} element={<ResetPassword />} />
       </Route>
-      <Route path="/user" element={<ProtectedLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="logClimb" element={<LogClimbPage />} />
-        <Route path="gradePyramids" element={<GradePyramids />} />
-        <Route path="progression" element={<ProgressionPage />} />
+      <Route path={protectedLayout} element={<ProtectedLayout />}>
+        <Route path={Routes.dashboard} element={<Dashboard />} />
+        <Route path={Routes.logClimb} element={<LogClimbPage />} />
+        <Route path={Routes.gradePyramids} element={<GradePyramids />} />
+        <Route path={Routes.progression} element={<ProgressionPage />} />
       </Route>
     </Route>
   )

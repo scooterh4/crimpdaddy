@@ -6,6 +6,7 @@ import { auth } from "../../firebase"
 import { sendPasswordResetEmail } from "firebase/auth"
 import { toast } from "react-toastify"
 import LockRoundedIcon from "@mui/icons-material/LockRounded"
+import { Routes } from "./router"
 
 export default function PasswordReset() {
   const navigate = useNavigate()
@@ -15,7 +16,7 @@ export default function PasswordReset() {
     sendPasswordResetEmail(auth, email)
       .then(() => {
         toast.success("Check your inbox to reset your password")
-        navigate("/login")
+        navigate(Routes.login)
       })
       .catch((error) => {
         if (
@@ -98,7 +99,7 @@ export default function PasswordReset() {
       </Box>
       <Button
         fullWidth
-        onClick={() => navigate("/login")}
+        onClick={() => navigate(Routes.login)}
         sx={{
           border: 1,
           borderColor: ThemeColors.lightAccent,

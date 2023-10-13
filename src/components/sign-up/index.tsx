@@ -14,6 +14,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AppColors, ThemeColors } from "../../static/styles"
 import { useAuthContext } from "../context/auth-context"
+import { Routes } from "../app/router"
 
 export default function SignUp() {
   const { googleLogin } = useAuthContext()
@@ -98,7 +99,7 @@ export default function SignUp() {
     ) {
       createUserWithEmailAndPassword(auth, input.email, input.password)
         .then(() => {
-          navigate("/login")
+          navigate(Routes.login)
           toast.success(
             "Registration successful! Please login with your credentials"
           )
@@ -159,7 +160,7 @@ export default function SignUp() {
             component="div"
             gutterBottom
             color={AppColors.primary}
-            onClick={() => navigate("/")}
+            onClick={() => navigate(Routes.landing)}
             sx={{
               cursor: "pointer",
               fontWeight: "bold",

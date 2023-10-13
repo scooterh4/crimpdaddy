@@ -16,6 +16,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/auth-context"
+import { Routes } from "../app/router"
 
 export default function AppDrawer() {
   const { user, logoutUser } = useAuthContext()
@@ -33,7 +34,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="dashboard"
-          onClick={() => navigate("/user/dashboard")}
+          onClick={() => navigate(Routes.dashboard)}
         >
           <ListItemButton>
             <ListItemIcon>
@@ -48,7 +49,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="grades"
-          onClick={() => navigate("/user/gradePyramids")}
+          onClick={() => navigate(Routes.gradePyramids)}
         >
           <ListItemButton>
             <ListItemIcon>
@@ -63,7 +64,7 @@ export default function AppDrawer() {
         <ListItem
           disablePadding
           key="progress"
-          onClick={() => navigate("/user/progression")}
+          onClick={() => navigate(Routes.progression)}
         >
           <ListItemButton>
             <ListItemIcon>

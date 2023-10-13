@@ -12,6 +12,7 @@ import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate } from "react-router-dom"
 import { AppColors, ThemeColors } from "../../static/styles"
 import { useAuthContext } from "../context/auth-context"
+import { Routes } from "../app/router"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
@@ -53,7 +54,7 @@ export default function SignIn() {
             component="div"
             gutterBottom
             color={AppColors.primary}
-            onClick={() => navigate("/")}
+            onClick={() => navigate(Routes.landing)}
             sx={{
               cursor: "pointer",
               fontWeight: "bold",

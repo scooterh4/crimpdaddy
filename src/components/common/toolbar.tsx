@@ -12,6 +12,7 @@ import AppDrawer from "./drawer"
 import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/auth-context"
+import { Routes } from "../app/router"
 
 type Props = {
   title: string
@@ -30,7 +31,7 @@ export default function ToolBar({ title }: Props) {
 
   function headerClicked() {
     if (header === "CrimpDaddy") {
-      navigate("/")
+      navigate(Routes.landing)
     }
   }
 

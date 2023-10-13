@@ -11,6 +11,7 @@ import {
 } from "firebase/auth"
 import { auth, provider } from "../../firebase"
 import { toast } from "react-toastify"
+import { Routes } from "../app/router"
 
 interface IAuthContext {
   user: AppUser | null
@@ -63,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           id: userCredential.user.uid,
           email: userCredential.user.email ? userCredential.user.email : "",
         })
-        navigate("/dashboard")
+        navigate(Routes.dashboard)
       })
       .catch((error) => {
         if (
@@ -83,7 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       })
     setUser(user)
-    navigate("/user/dashboard")
+    navigate(Routes.dashboard)
   }
 
   const googleLogin = async () => {
@@ -93,7 +94,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         id: userCredential.user.uid,
         email: userCredential.user.email ? userCredential.user.email : "",
       })
-      navigate("/user/dashboard")
+      navigate(Routes.dashboard)
     })
   }
 
@@ -105,7 +106,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(null)
         sessionStorage.removeItem("climbingData") // clear app data
         toast.success("Goodbye!", { toastId: "logoutSuccess" })
-        navigate("/login")
+        navigate(Routes.login)
       })
       .catch((error) => {
         console.log(error.code, error.message)

@@ -25,6 +25,7 @@ import GradeSelector from "./grade-selector"
 import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
 import { useAuthContext } from "../context/auth-context"
+import { Routes } from "../app/router"
 
 export default function LogClimbPage() {
   const navigate = useNavigate()
@@ -112,7 +113,7 @@ export default function LogClimbPage() {
 
         // We are assuming the climbs got logged properly in the db
         addClimbLogData(newClimbLogData)
-        navigate("/dashboard")
+        navigate(Routes.dashboard)
         toast.success(toastMessage, { toastId: "climbLogged" })
       }
     } else {
@@ -140,7 +141,7 @@ export default function LogClimbPage() {
       {lgAndDownScreen && (
         <Button
           fullWidth={false}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate(Routes.dashboard)}
           sx={{
             alignSelf: "start",
             background: "none",

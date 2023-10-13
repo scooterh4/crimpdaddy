@@ -10,6 +10,7 @@ import ActivityGraph from "./activity-graph"
 import SectionLegend from "../common/section-legend"
 import { DateFilters, PromiseTrackerArea } from "../../static/constants"
 import { ThemeColors } from "../../static/styles"
+import { Routes } from "../app/router"
 
 export default function Dashboard() {
   const { userClimbingLogs } = useUserContext()
@@ -34,7 +35,7 @@ export default function Dashboard() {
 
       <FormControl fullWidth sx={{ marginBottom: 2 }}>
         <Button
-          onClick={() => navigate("/user/logClimb")}
+          onClick={() => navigate(Routes.logClimb)}
           size="large"
           variant="contained"
           sx={{
