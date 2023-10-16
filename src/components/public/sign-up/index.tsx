@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { auth } from "../../firebase"
+import { auth } from "../../../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import {
   Box,
@@ -12,9 +12,9 @@ import {
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import { AppColors, ThemeColors } from "../../static/styles"
-import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../../router"
+import { AppColors, ThemeColors } from "../../../static/styles"
+import { useAuthContext } from "../../app/auth-context"
+import { Routes } from "../../../router"
 
 export default function SignUp() {
   const { googleLogin } = useAuthContext()

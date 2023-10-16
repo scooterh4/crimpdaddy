@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog } from "../../static/types"
+import { ClimbLog } from "../../../static/types"
 import { Box, Card, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import {
@@ -18,16 +18,16 @@ import {
   DateFilters,
   GYM_CLIMB_TYPES,
   PromiseTrackerArea,
-} from "../../static/constants"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
-import { AppColors, GraphColors } from "../../static/styles"
-import { useUserContext } from "../context/user-context"
+} from "../../../static/constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
+import { AppColors, GraphColors } from "../../../static/styles"
+import { useUserContext } from "../user-context"
 import moment, { Moment } from "moment"
 import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent"
-import AppLoading from "../common/loading"
+import AppLoading from "../../common/loading"
 import { usePromiseTracker } from "react-promise-tracker"
 
 type Props = {

@@ -8,15 +8,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { ClimbLog, GradePyramidGraphData } from "../../static/types"
-import { GraphColors } from "../../static/styles"
+import { ClimbLog, GradePyramidGraphData } from "../../../static/types"
+import { GraphColors } from "../../../static/styles"
 import { Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-import { useUserContext } from "../context/user-context"
-import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../static/constants"
-import { assembleGradePyramidGraphData } from "../../util/data-helper-functions"
+import { useUserContext } from "../user-context"
+import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../../static/constants"
+import { assembleGradePyramidGraphData } from "../../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
-import AppLoading from "../common/loading"
+import AppLoading from "../../common/loading"
 
 type Props = {
   climbType: number

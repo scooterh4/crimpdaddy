@@ -1,6 +1,6 @@
 import React from "react"
 import { useOutlet } from "react-router-dom"
-import { AuthProvider } from "../context/auth-context"
+import { AuthProvider } from "./auth-context"
 
 export const AuthLayout = () => {
   const outlet = useOutlet()

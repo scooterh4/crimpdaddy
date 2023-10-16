@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
 import HelpIcon from "@mui/icons-material/Help"
-import { AppColors } from "../../static/styles"
+import { AppColors } from "../../../static/styles"
 
 export default function NotFound() {
   return (

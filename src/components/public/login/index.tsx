@@ -10,9 +10,9 @@ import {
 } from "@mui/material"
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../static/styles"
-import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../../router"
+import { AppColors, ThemeColors } from "../../../static/styles"
+import { useAuthContext } from "../../app/auth-context"
+import { Routes } from "../../../router"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")

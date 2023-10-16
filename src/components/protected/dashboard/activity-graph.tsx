@@ -11,13 +11,13 @@ import {
 import { useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment, { Moment } from "moment"
-import { AppColors, GraphColors } from "../../static/styles"
-import { useUserContext } from "../context/user-context"
-import AppLoading from "../common/loading"
-import { ClimbLog } from "../../static/types"
-import { PromiseTrackerArea } from "../../static/constants"
+import { AppColors, GraphColors } from "../../../static/styles"
+import { useUserContext } from "../user-context"
+import AppLoading from "../../common/loading"
+import { ClimbLog } from "../../../static/types"
+import { PromiseTrackerArea } from "../../../static/constants"
 import { usePromiseTracker } from "react-promise-tracker"
-import { getMinimumMoment } from "../../util/data-helper-functions"
+import { getMinimumMoment } from "../../../util/data-helper-functions"
 
 type Props = {
   filter: number

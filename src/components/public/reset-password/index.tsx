@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import { Box, Button, Container, Divider, TextField } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../static/styles"
-import { auth } from "../../firebase"
+import { AppColors, ThemeColors } from "../../../static/styles"
+import { auth } from "../../../firebase"
 import { sendPasswordResetEmail } from "firebase/auth"
 import { toast } from "react-toastify"
 import LockRoundedIcon from "@mui/icons-material/LockRounded"
-import { Routes } from "../../router"
+import { Routes } from "../../../router"
 
 export default function PasswordReset() {
   const navigate = useNavigate()

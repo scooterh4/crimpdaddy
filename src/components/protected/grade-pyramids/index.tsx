@@ -2,15 +2,15 @@ import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./grade-pyramid-graph"
-import { ThemeColors } from "../../static/styles"
-import { useUserContext } from "../context/user-context"
-import AppLoading from "../common/loading"
+import { ThemeColors } from "../../../static/styles"
+import { useUserContext } from "../user-context"
+import AppLoading from "../../common/loading"
 import {
   DateFilters,
   GYM_CLIMB_TYPES,
   GradePyramidFilter,
   PromiseTrackerArea,
-} from "../../static/constants"
+} from "../../../static/constants"
 import SelectFilter from "../common/select-filter"
 import { usePromiseTracker } from "react-promise-tracker"
 

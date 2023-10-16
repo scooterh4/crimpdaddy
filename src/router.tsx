@@ -4,17 +4,17 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom"
-import PublicLayout from "./components/app/public-layout"
-import NotFound from "./components/app/not-found"
-import Landing from "./components/landing"
-import Login from "./components/login"
-import SignUp from "./components/sign-up"
-import ResetPassword from "./components/app/reset-password"
-import ProtectedLayout from "./components/app/protected-layout"
-import Dashboard from "./components/dashboard/index"
-import LogClimbPage from "./components/climb-logger"
-import GradePyramids from "./components/grade-pyramids/index"
-import ProgressionPage from "./components/progression"
+import PublicLayout from "./components/public/public-layout"
+import NotFound from "./components/public/not-found"
+import Landing from "./components/public/landing"
+import Login from "./components/public/login"
+import SignUp from "./components/public/sign-up"
+import ResetPassword from "./components/public/reset-password"
+import UserLayout from "./components/protected/user-layout"
+import Dashboard from "./components/protected/dashboard/index"
+import LogClimbPage from "./components/protected/climb-logger"
+import GradePyramids from "./components/protected/grade-pyramids/index"
+import ProgressionPage from "./components/protected/progression"
 import { AuthLayout } from "./components/app/auth-layout"
 
 const protectedLayout = "/user"
@@ -39,7 +39,7 @@ export const router = createBrowserRouter(
         <Route path={Routes.signup} element={<SignUp />} />
         <Route path={Routes.resetPassword} element={<ResetPassword />} />
       </Route>
-      <Route path={protectedLayout} element={<ProtectedLayout />}>
+      <Route path={protectedLayout} element={<UserLayout />}>
         <Route path={Routes.dashboard} element={<Dashboard />} />
         <Route path={Routes.logClimb} element={<LogClimbPage />} />
         <Route path={Routes.gradePyramids} element={<GradePyramids />} />

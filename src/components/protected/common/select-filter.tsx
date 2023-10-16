@@ -1,7 +1,7 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../context/user-context"
-import { DateFilters, GradePyramidFilter } from "../../static/constants"
+import { useUserContext } from "../user-context"
+import { DateFilters, GradePyramidFilter } from "../../../static/constants"
 
 type Props = {
   graph: string

@@ -1,6 +1,6 @@
 import React from "react"
 import { useOutlet } from "react-router-dom"
-import { UserDataProvider } from "../context/user-context"
+import { UserDataProvider } from "./user-context"
 import { Box, styled } from "@mui/material"
 import AppToolbar from "../common/toolbar"
 import AppFooter from "../common/footer"

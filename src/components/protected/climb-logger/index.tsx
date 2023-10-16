@@ -14,18 +14,18 @@ import {
   useTheme,
 } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../static/constants"
+import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { useNavigate } from "react-router-dom"
-import { useUserContext } from "../context/user-context"
-import { AppColors, ThemeColors } from "../../static/styles"
-import { ClimbLog } from "../../static/types"
-import { logClimb } from "../../util/db"
+import { useUserContext } from "../user-context"
+import { AppColors, ThemeColors } from "../../../static/styles"
+import { ClimbLog } from "../../../static/types"
+import { logClimb } from "../../../util/db"
 import moment from "moment"
 import GradeSelector from "./grade-selector"
 import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
-import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../../router"
+import { useAuthContext } from "../../app/auth-context"
+import { Routes } from "../../../router"
 
 export default function LogClimbPage() {
   const navigate = useNavigate()

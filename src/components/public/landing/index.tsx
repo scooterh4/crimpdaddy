@@ -1,5 +1,5 @@
 import React from "react"
-import darkenedBackground from "../../images/quickdraws-unsplash_dark.svg"
+import darkenedBackground from "../../../images/quickdraws-unsplash_dark.svg"
 import {
   Box,
   Button,
@@ -12,8 +12,8 @@ import CheckIcon from "@mui/icons-material/Check"
 import TrendingUpIcon from "@mui/icons-material/TrendingUp"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import { useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../static/styles"
-import AppFooter from "../common/footer"
+import { AppColors, ThemeColors } from "../../../static/styles"
+import AppFooter from "../../common/footer"
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
 
 type AdditionalInfo = {

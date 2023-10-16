@@ -19,7 +19,7 @@ import {
   findNewRedpointGrades,
 } from "../../util/data-helper-functions"
 import { trackPromise } from "react-promise-tracker"
-import { useAuthContext } from "./auth-context"
+import { useAuthContext } from "../app/auth-context"
 
 interface IUserContext {
   userClimbingLogs: ClimbLog[] | null

@@ -1,7 +1,7 @@
 import React from "react"
 import { Square } from "@mui/icons-material"
 import { Grid, Typography } from "@mui/material"
-import { AppColors, GraphColors } from "../../static/styles"
+import { AppColors, GraphColors } from "../../../static/styles"
 
 type Props = {
   section: string
