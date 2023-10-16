@@ -111,7 +111,7 @@ export default function Landing() {
           height={"100vh"}
           sx={{
             position: "relative",
-            backgroundSize: { xl: "contain", xs: "cover" },
+            backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             backgroundImage: `url(${darkenedBackground})`,
