@@ -11,11 +11,10 @@ import {
 } from "firebase/auth"
 import { auth, provider } from "../../firebase"
 import { toast } from "react-toastify"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 interface IAuthContext {
   user: AppUser | null
-  setUser: (user: AppUser | null) => void
   loginUser: (email: string, password: string) => void
   googleLogin: () => void
   logoutUser: () => void
@@ -23,7 +22,6 @@ interface IAuthContext {
 
 const authDefaultState: IAuthContext = {
   user: null,
-  setUser: () => {},
   loginUser: () => {},
   googleLogin: () => {},
   logoutUser: () => {},
@@ -36,14 +34,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log("Auth context rendered")
-    console.log("Auth context user", user)
-
     const subscriber: Unsubscribe = onAuthStateChanged(
       auth,
       (persistedUser) => {
         if (persistedUser && !user) {
-          console.log("Auth context resetting user")
           setUser({
             id: persistedUser.uid,
             email: persistedUser.email ? persistedUser.email : "",
@@ -98,7 +92,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     })
   }
 
-  // call this function to sign out logged in user
   const logoutUser = async () => {
     signOut(auth)
       .then(() => {
@@ -115,7 +108,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const authContextValue: IAuthContext = {
     user,
-    setUser,
     loginUser,
     googleLogin,
     logoutUser,
