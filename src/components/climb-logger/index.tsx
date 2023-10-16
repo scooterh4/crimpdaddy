@@ -25,7 +25,7 @@ import GradeSelector from "./grade-selector"
 import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
 import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 export default function LogClimbPage() {
   const navigate = useNavigate()

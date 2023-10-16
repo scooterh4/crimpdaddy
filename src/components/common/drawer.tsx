@@ -16,7 +16,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 export default function AppDrawer() {
   const { user, logoutUser } = useAuthContext()

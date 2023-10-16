@@ -14,7 +14,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { AppColors, ThemeColors } from "../../static/styles"
 import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 export default function SignUp() {
   const { googleLogin } = useAuthContext()

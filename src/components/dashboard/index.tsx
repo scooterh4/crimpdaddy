@@ -10,7 +10,7 @@ import ActivityGraph from "./activity-graph"
 import SectionLegend from "../common/section-legend"
 import { DateFilters, PromiseTrackerArea } from "../../static/constants"
 import { ThemeColors } from "../../static/styles"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 export default function Dashboard() {
   const { userClimbingLogs } = useUserContext()

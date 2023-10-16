@@ -12,7 +12,7 @@ import AppDrawer from "./drawer"
 import { AppColors, drawerWidth } from "../../static/styles"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/auth-context"
-import { Routes } from "../app/router"
+import { Routes } from "../../router"
 
 type Props = {
   title: string

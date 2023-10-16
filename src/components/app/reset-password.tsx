@@ -6,7 +6,7 @@ import { auth } from "../../firebase"
 import { sendPasswordResetEmail } from "firebase/auth"
 import { toast } from "react-toastify"
 import LockRoundedIcon from "@mui/icons-material/LockRounded"
-import { Routes } from "./router"
+import { Routes } from "../../router"
 
 export default function PasswordReset() {
   const navigate = useNavigate()
