@@ -94,9 +94,7 @@ export const UserDataProvider = ({
 
   // We want this to happen once when the user initially logs in
   useEffect(() => {
-    console.log("userContext useEffect")
     if (user && userClimbingLogs === null && sessionData === null) {
-      console.log("user context fetching user data")
       getAllUserClimbingData(user.id, DateFilters.ThisWeek).then((res) => {
         setUserClimbingLogs(res.climbingLogs.allClimbs)
         setUserBoulderLogs(res.climbingLogs.boulderLogs)
@@ -140,7 +138,7 @@ export const UserDataProvider = ({
         )
       }
     }
-  }, [])
+  }, [user])
 
   const addClimbLogData = (logsToAdd: ClimbLog[]) => {
     let boulderLogsReturn: ClimbLog[] | null = null
