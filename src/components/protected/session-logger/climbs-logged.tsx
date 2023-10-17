@@ -63,37 +63,50 @@ export function ClimbsLogged({ title }: Props) {
       padding={2}
       sx={{ backgroundColor: "white" }}
     >
-      <Grid container direction={"row"}>
-        <IconButton
-          onClick={addClimb}
-          edge="end"
-          sx={{
-            ":hover": {
-              cursor: "pointer",
-              backgroundColor: ThemeColors.darkAccent,
-              color: "white",
-            },
-            fontSize: "5px",
-          }}
-        >
-          <AddIcon />
-        </IconButton>
-        <Typography
-          component="div"
-          fontFamily={"poppins"}
+      <Grid
+        container
+        direction={"row"}
+        display={"grid"}
+        gridTemplateColumns={"1fr 16fr"}
+      >
+        <Grid item gridColumn={"1"} justifySelf={"start"}>
+          <IconButton
+            onClick={addClimb}
+            edge="end"
+            sx={{
+              ":hover": {
+                cursor: "pointer",
+                backgroundColor: ThemeColors.darkAccent,
+                color: "white",
+              },
+              fontSize: "5px",
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+        </Grid>
+        <Grid
+          alignItems={"center"}
+          container
+          gridColumn={"2"}
+          display={"grid"}
+          gridTemplateColumns={"5fr 1fr"}
           onClick={handleExpand}
-          variant="h6"
           sx={{
-            alignSelf: "center",
-            ml: 2,
-            mr: 1,
+            ml: 1,
+            pl: 1,
+            pr: 2,
             ":hover": { backgroundColor: "lightgray", cursor: "pointer" },
           }}
         >
-          {title} ({sessionData ? sessionData.length : 0})
-        </Typography>
-        <Grid item alignSelf={"center"}>
-          {expand ? <ExpandLess /> : <ExpandMore />}
+          <Grid item gridColumn={"1"} justifySelf={"start"}>
+            <Typography component="div" fontFamily={"poppins"} variant="h6">
+              {title} ({sessionData ? sessionData.length : 0})
+            </Typography>
+          </Grid>
+          <Grid item gridColumn={"2"} justifySelf={"end"}>
+            {expand ? <ExpandLess /> : <ExpandMore />}
+          </Grid>
         </Grid>
       </Grid>
       <Divider sx={{ marginTop: 2 }} />
