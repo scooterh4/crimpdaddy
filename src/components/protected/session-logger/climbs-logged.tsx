@@ -44,6 +44,8 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
     setDense(xsScreen)
   }, [xsScreen])
 
+  console.log("Climbs-logged component render")
+
   return (
     <Grid
       border={1}
@@ -97,7 +99,7 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
               <ListItemButton>
                 <ListItemText
                   primary={climb.Grade}
-                  secondary="Secondary text"
+                  secondary={climb.Tick}
                   sx={{ fontFamily: "poppins" }}
                 />
               </ListItemButton>

@@ -38,12 +38,14 @@ export function LogClimbDialog({ climbType, open, addClimb, cancel }: Props) {
     const climbData: ClimbLog = {
       ClimbType: GYM_CLIMB_TYPES[climbType],
       Grade: selectedGrade,
-      Tick: "Replace this",
+      Tick: "Redpoint (or something)",
       Count: 1,
       UnixTime: moment().unix(),
     }
     addClimb(climbType, climbData)
   }
+
+  console.log("Log-climb-dialog render")
 
   return (
     <Dialog open={open}>

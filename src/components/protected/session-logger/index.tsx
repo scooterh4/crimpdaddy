@@ -145,6 +145,8 @@ export default function SessionLoggerPage() {
   //   }
   // }
 
+  console.log("Session-logger page render")
+
   return (
     <Grid
       container
@@ -221,7 +223,7 @@ export default function SessionLoggerPage() {
           textTransform: "none",
         }}
       >
-        End session
+        Log session
       </Button>
     </Grid>
   )
