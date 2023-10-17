@@ -3,9 +3,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  TextField,
 } from "@mui/material"
 import React, { useMemo, useState } from "react"
 import GradeSelector from "./grade-selector"
@@ -16,15 +14,16 @@ import {
   INDOOR_SPORT_GRADES,
 } from "../../../static/constants"
 import moment from "moment"
+import {
+  useAddClimbTypeContext,
+  useOpenAddClimbDialog,
+  useSessionAPI,
+} from "./session-logger-context"
 
-type Props = {
-  climbType: number
-  open: boolean
-  addClimb: (climbType: number, climb: ClimbLog) => void
-  cancel: () => void
-}
-
-export function LogClimbDialog({ climbType, open, addClimb, cancel }: Props) {
+export function LogClimbDialog() {
+  const open = useOpenAddClimbDialog()
+  const climbType = useAddClimbTypeContext()
+  const { onClimbAdded, onCloseAddClimbDialog } = useSessionAPI()
   const [gradesList, setGradesList] = useState<string[]>([])
   const [selectedGrade, setSelectedGrade] = useState<string>("")
 
@@ -42,7 +41,8 @@ export function LogClimbDialog({ climbType, open, addClimb, cancel }: Props) {
       Count: 1,
       UnixTime: moment().unix(),
     }
-    addClimb(climbType, climbData)
+    onClimbAdded(climbType, climbData)
+    onCloseAddClimbDialog()
   }
 
   console.log("Log-climb-dialog render")
@@ -58,7 +58,7 @@ export function LogClimbDialog({ climbType, open, addClimb, cancel }: Props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={cancel}>Cancel</Button>
+        <Button onClick={onCloseAddClimbDialog}>Cancel</Button>
         <Button onClick={submitForm}>Add</Button>
       </DialogActions>
     </Dialog>

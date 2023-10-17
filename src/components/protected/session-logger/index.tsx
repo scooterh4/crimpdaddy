@@ -29,43 +29,16 @@ import { Routes } from "../../../router"
 import { ConfirmDialog } from "../../common/confirm-dialog"
 import { ClimbsLogged } from "./climbs-logged"
 import { LogClimbDialog } from "./log-climb-dialog"
+import {
+  SessionLoggerProvider,
+  useBoulderData,
+  useRouteData,
+} from "./session-logger-context"
 
-export default function SessionLoggerPage() {
-  const navigate = useNavigate()
+function SessionLogger() {
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
-  const { user } = useAuthContext()
-  const { addClimbLogData } = useUserContext()
-  const [gradesList, setGradesList] = useState<string[]>([])
-  const [showAttemptInput, setAttemptInputVisibility] = useState(false)
-  const [attemptCount, setAttemptCount] = useState<number | string>("")
-  const [attemptError, setAttemptError] = useState(false)
   const theme = useTheme()
   const lgAndDownScreen = useMediaQuery(theme.breakpoints.down("lg"))
-
-  const [addClimbDialog, setAddClimbDialog] = useState<boolean>(false)
-  const [addClimbType, setAddClimbType] = useState<number>(0)
-  const [boulderData, setBoulderData] = useState<ClimbLog[]>([])
-  const [routeData, setRouteData] = useState<ClimbLog[]>([])
-
-  function addClimb(climbType: number, climb: ClimbLog) {
-    switch (climbType) {
-      case 0:
-        setBoulderData([...boulderData, climb])
-        break
-      default:
-        setRouteData([...routeData, climb])
-        break
-    }
-  }
-
-  function cancelAddClimb() {
-    setAddClimbDialog(false)
-  }
-
-  function openAddClimbDialog(climbType: number) {
-    setAddClimbType(climbType)
-    setAddClimbDialog(true)
-  }
 
   // function formHasError() {
   //   let hasError = false
@@ -160,12 +133,7 @@ export default function SessionLoggerPage() {
         setOpen={setOpenConfirmDialog}
         confirmRoute={Routes.dashboard}
       />
-      <LogClimbDialog
-        climbType={addClimbType}
-        open={addClimbDialog}
-        addClimb={addClimb}
-        cancel={cancelAddClimb}
-      />
+      <LogClimbDialog />
 
       {lgAndDownScreen && (
         <Button
@@ -196,17 +164,9 @@ export default function SessionLoggerPage() {
         Add climbs
       </Typography>
 
-      <Grid container direction={"row"}>
-        <ClimbsLogged
-          title="Boulders"
-          sessionData={boulderData}
-          openDialog={openAddClimbDialog}
-        />
-        <ClimbsLogged
-          title="Routes"
-          sessionData={routeData}
-          openDialog={openAddClimbDialog}
-        />
+      <Grid container direction={"column"}>
+        <ClimbsLogged title="Boulders" />
+        <ClimbsLogged title="Routes" />
       </Grid>
 
       <Button
@@ -226,5 +186,13 @@ export default function SessionLoggerPage() {
         Log session
       </Button>
     </Grid>
+  )
+}
+
+export default function SessionLoggerPage() {
+  return (
+    <SessionLoggerProvider>
+      <SessionLogger />
+    </SessionLoggerProvider>
   )
 }

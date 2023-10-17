@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
   Collapse,
   Divider,
@@ -18,14 +18,21 @@ import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
 import { AppColors, ThemeColors } from "../../../static/styles"
 import { ClimbLog } from "../../../static/types"
+import {
+  useBoulderData,
+  useRouteData,
+  useSessionAPI,
+} from "./session-logger-context"
 
 type Props = {
   title: string
-  sessionData: ClimbLog[]
-  openDialog(climbType: number): void
+  // sessionData: ClimbLog[]
+  // openDialog(climbType: number): void
 }
 
-export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
+export function ClimbsLogged({ title }: Props) {
+  const sessionData = title === "Boulders" ? useBoulderData() : useRouteData()
+  const { onOpenAddClimbDialog } = useSessionAPI()
   const [dense, setDense] = useState(false)
   const [expand, setExpand] = React.useState(true)
   const [secondary, setSecondary] = useState(false)
@@ -37,7 +44,7 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
   }
 
   function addClimb() {
-    title === "Boulders" ? openDialog(0) : openDialog(1)
+    title === "Boulders" ? onOpenAddClimbDialog(0) : onOpenAddClimbDialog(1)
   }
 
   useEffect(() => {
@@ -51,8 +58,6 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
       border={1}
       borderRadius={2}
       item
-      xs={12}
-      md={6}
       marginBottom={1}
       marginTop={1}
       padding={2}
@@ -85,7 +90,7 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
             ":hover": { backgroundColor: "lightgray", cursor: "pointer" },
           }}
         >
-          {title} ({sessionData.length})
+          {title} ({sessionData ? sessionData.length : 0})
         </Typography>
         <Grid item alignSelf={"center"}>
           {expand ? <ExpandLess /> : <ExpandMore />}
@@ -94,20 +99,21 @@ export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
       <Divider sx={{ marginTop: 2 }} />
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <List dense={dense}>
-          {sessionData.map((climb) => (
-            <ListItem>
-              <ListItemButton>
-                <ListItemText
-                  primary={climb.Grade}
-                  secondary={climb.Tick}
-                  sx={{ fontFamily: "poppins" }}
-                />
-              </ListItemButton>
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItem>
-          ))}
+          {sessionData &&
+            sessionData.map((climb, index) => (
+              <ListItem key={index}>
+                <ListItemButton>
+                  <ListItemText
+                    primary={climb.Grade}
+                    secondary={climb.Tick}
+                    sx={{ fontFamily: "poppins" }}
+                  />
+                </ListItemButton>
+                <IconButton edge="end" aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            ))}
         </List>
       </Collapse>
     </Grid>
