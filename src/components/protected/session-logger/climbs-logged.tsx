@@ -21,18 +21,23 @@ import { ClimbLog } from "../../../static/types"
 
 type Props = {
   title: string
+  sessionData: ClimbLog[]
+  openDialog(climbType: number): void
 }
 
-export function ClimbsLogged({ title }: Props) {
+export function ClimbsLogged({ title, sessionData, openDialog }: Props) {
   const [dense, setDense] = useState(false)
   const [expand, setExpand] = React.useState(true)
   const [secondary, setSecondary] = useState(false)
-  const [sessionData, setSessionData] = useState<ClimbLog[]>([])
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
   const handleExpand = () => {
     setExpand(!expand)
+  }
+
+  function addClimb() {
+    title === "Boulders" ? openDialog(0) : openDialog(1)
   }
 
   useEffect(() => {
@@ -53,6 +58,7 @@ export function ClimbsLogged({ title }: Props) {
     >
       <Grid container direction={"row"}>
         <IconButton
+          onClick={addClimb}
           edge="end"
           sx={{
             ":hover": {
