@@ -13,6 +13,7 @@ import ResetPassword from "./components/public/reset-password"
 import UserLayout from "./components/protected/user-layout"
 import Dashboard from "./components/protected/dashboard/index"
 import LogClimbPage from "./components/protected/climb-logger"
+import SessionLogger from "./components/protected/session-logger"
 import GradePyramids from "./components/protected/grade-pyramids/index"
 import ProgressionPage from "./components/protected/progression"
 import { AuthLayout } from "./components/app/auth-layout"
@@ -25,6 +26,7 @@ export const Routes = {
   resetPassword: "/resetPassword",
   dashboard: `${protectedLayout}/dashboard`,
   logClimb: `${protectedLayout}/logClimb`,
+  climbSession: `${protectedLayout}/session`,
   gradePyramids: `${protectedLayout}/gradePyramids`,
   progression: `${protectedLayout}/progression`,
 }
@@ -42,6 +44,7 @@ export const router = createBrowserRouter(
       <Route path={protectedLayout} element={<UserLayout />}>
         <Route path={Routes.dashboard} element={<Dashboard />} />
         <Route path={Routes.logClimb} element={<LogClimbPage />} />
+        <Route path={Routes.climbSession} element={<SessionLogger />} />
         <Route path={Routes.gradePyramids} element={<GradePyramids />} />
         <Route path={Routes.progression} element={<ProgressionPage />} />
       </Route>

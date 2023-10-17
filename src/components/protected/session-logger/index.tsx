@@ -15,20 +15,23 @@ import {
 } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
-import { useNavigate } from "react-router-dom"
+import { Route, useNavigate } from "react-router-dom"
 import { useUserContext } from "../user-context"
 import { AppColors, ThemeColors } from "../../../static/styles"
 import { ClimbLog } from "../../../static/types"
 import { logClimb } from "../../../util/db"
 import moment from "moment"
-import GradeSelector from "../session-logger/grade-selector"
-import TickSelector from "../session-logger/tick-selector"
+import GradeSelector from "./grade-selector"
+import TickSelector from "./tick-selector"
 import { toast } from "react-toastify"
 import { useAuthContext } from "../../app/auth-context"
 import { Routes } from "../../../router"
+import { ConfirmDialog } from "../../common/confirm-dialog"
+import { ClimbsLogged } from "./climbs-logged"
 
-export default function LogClimbPage() {
+export default function SessionLoggerPage() {
   const navigate = useNavigate()
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
   const { user } = useAuthContext()
   const { addClimbLogData } = useUserContext()
   const [climbType, setClimbType] = useState("")
@@ -138,10 +141,16 @@ export default function LogClimbPage() {
         display: "flex",
       }}
     >
+      <ConfirmDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        confirmRoute={Routes.dashboard}
+      />
+
       {lgAndDownScreen && (
         <Button
           fullWidth={false}
-          onClick={() => navigate(Routes.dashboard)}
+          onClick={() => setOpenDialog(true)}
           sx={{
             alignSelf: "start",
             background: "none",
@@ -153,7 +162,7 @@ export default function LogClimbPage() {
           }}
         >
           <ArrowBackIcon sx={{ marginRight: 1 }} />
-          Cancel
+          Cancel session
         </Button>
       )}
 
@@ -164,120 +173,30 @@ export default function LogClimbPage() {
         marginTop={2}
         variant="h3"
       >
-        Log a climb
+        Add climbs
       </Typography>
 
-      <FormControl fullWidth sx={{ backgroundColor: "white", marginTop: 2 }}>
-        <InputLabel id="climb_type_label">Climb Type</InputLabel>
-        <Select
-          id="climbTypeSelect"
-          label={"Climb Type"}
-          labelId="climb_type_label"
-          onChange={handleFilterChange}
-          value={climbType}
-          sx={{ fontFamily: "poppins" }}
-        >
-          <MenuItem
-            key={"boulder"}
-            value={"Boulder"}
-            sx={{ fontFamily: "poppins" }}
-          >
-            Boulder
-          </MenuItem>
-          <MenuItem key={"lead"} value={"Lead"} sx={{ fontFamily: "poppins" }}>
-            Lead
-          </MenuItem>
-          <MenuItem
-            key={"topRope"}
-            value={"TopRope"}
-            sx={{ fontFamily: "poppins" }}
-          >
-            Top Rope
-          </MenuItem>
-        </Select>
-      </FormControl>
+      <Grid container direction={"row"}>
+        <ClimbsLogged title="Boulders" />
+        <ClimbsLogged title="Routes" />
+      </Grid>
 
-      {climbType !== "" && (
-        <Grid container direction={"column"} marginTop={4}>
-          <Typography fontFamily={"poppins"}>What was the grade?</Typography>
-          <GradeSelector
-            gradesList={gradesList}
-            selectedGrade={selectedGrade}
-            setSelectedGrade={setSelectedGrade}
-          />
-        </Grid>
-      )}
-
-      {selectedGrade !== "" && (
-        <Grid container direction={"column"}>
-          <Typography fontFamily={"poppins"} marginTop={2} marginBottom={2}>
-            Select a tick:
-          </Typography>
-          <TickSelector
-            selectedTick={selectedTick}
-            setSelectedTick={setSelectedTick}
-            setAttemptInputVisibility={setAttemptInputVisibility}
-            setSelectedTickDescription={setSelectedTickDescription}
-          />
-        </Grid>
-      )}
-
-      {selectedTickDescription !== "" && (
-        <Typography
-          border={1}
-          borderRadius={2}
-          fontWeight={"bold"}
-          marginTop={5}
-          textAlign={"center"}
-          padding={2}
-          variant="h6"
-          sx={{ color: AppColors.info, backgroundColor: "white" }}
-        >
-          {selectedTickDescription}
-        </Typography>
-      )}
-
-      {showAttemptInput && (
-        <FormControl fullWidth sx={{ marginTop: 5 }}>
-          <TextField
-            error={attemptError}
-            label={"Number of attempts"}
-            onChange={(e) =>
-              setAttemptCount(
-                e.target.value !== "" ? parseInt(e.target.value) : ""
-              )
-            }
-            type="number"
-            value={attemptCount}
-            variant="outlined"
-            sx={{ backgroundColor: "white" }}
-          >
-            {attemptCount}
-          </TextField>
-          {attemptError && (
-            <FormHelperText sx={{ color: AppColors.danger }}>
-              This is required!
-            </FormHelperText>
-          )}
-        </FormControl>
-      )}
-
-      {selectedTick !== "" && (
-        <Button
-          onClick={submitForm}
-          size="large"
-          variant="contained"
-          sx={{
-            backgroundColor: ThemeColors.darkAccent,
-            color: "white",
-            ":hover": { backgroundColor: ThemeColors.darkShade },
-            marginBottom: 5,
-            marginTop: 5,
-          }}
-        >
-          Submit
-        </Button>
-      )}
+      <Button
+        onClick={submitForm}
+        size="large"
+        variant="contained"
+        sx={{
+          backgroundColor: ThemeColors.darkAccent,
+          color: "white",
+          ":hover": { backgroundColor: ThemeColors.darkShade },
+          fontFamily: "poppins",
+          marginBottom: 5,
+          marginTop: 3,
+          textTransform: "none",
+        }}
+      >
+        End session
+      </Button>
     </Grid>
   )
 }

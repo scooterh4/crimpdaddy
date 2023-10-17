@@ -35,7 +35,7 @@ export default function Dashboard() {
 
       <FormControl fullWidth sx={{ marginBottom: 2 }}>
         <Button
-          onClick={() => navigate(Routes.logClimb)}
+          onClick={() => navigate(Routes.climbSession)}
           size="large"
           variant="contained"
           sx={{
@@ -46,7 +46,7 @@ export default function Dashboard() {
             fontSize: "14pt",
           }}
         >
-          Log a climb
+          Start a session
         </Button>
       </FormControl>
 
