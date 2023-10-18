@@ -5,17 +5,17 @@ import React, {
   useMemo,
   useContext,
 } from "react"
-import { ClimbLog } from "../../../static/types"
+import { SessionClimb } from "../../../static/constants"
 
 type State = {
-  boulderData: ClimbLog[]
-  routeData: ClimbLog[]
+  boulderData: SessionClimb[]
+  routeData: SessionClimb[]
   openAddClimbDialog: boolean
   addClimbType: number
 }
 
 type API = {
-  onClimbAdded: (climbType: number, climb: ClimbLog) => void
+  onClimbAdded: (climbType: number, climb: SessionClimb) => void
   onOpenAddClimbDialog: (climbType: number) => void
   // onChangeAddClimbType: (climbType: number) => void
   onCloseAddClimbDialog: () => void
@@ -37,7 +37,7 @@ const AddClimbTypeContext = createContext<State["addClimbType"]>(
 const APIContext = createContext<API>({} as API)
 
 type Actions =
-  | { type: "updateClimbData"; climbType: number; climb: ClimbLog }
+  | { type: "updateClimbData"; climbType: number; climb: SessionClimb }
   | { type: "openAddClimbDialog"; open: boolean; climbType: number }
   | { type: "closeAddClimbDialog"; open: boolean }
 
@@ -76,7 +76,7 @@ export const SessionLoggerProvider = ({
   const [state, dispatch] = useReducer(reducer, {} as State)
 
   const api = useMemo(() => {
-    const onClimbAdded = (climbType: number, climb: ClimbLog) => {
+    const onClimbAdded = (climbType: number, climb: SessionClimb) => {
       dispatch({ type: "updateClimbData", climbType, climb })
     }
 

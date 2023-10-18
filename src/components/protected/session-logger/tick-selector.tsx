@@ -16,29 +16,20 @@ const tickColors = [
   AppColors.info,
   AppColors.danger,
 ]
-const tickDescriptions = {
-  Onsight:
-    "You completed the route on your first attempt without any prior knowledge of how to complete it.",
-  Flash:
-    "You completed the route on your first attempt but had prior knowledge of how to complete it.",
-  Redpoint: "You completed the route but it was not your first attempt.",
-  Repeat: "You have already completed the route and sent it again.",
-  Attempt: "You did not completed the route.",
-}
 
 type Props = {
   selectedTick: string
   setSelectedTick: React.Dispatch<React.SetStateAction<string>>
   setAttemptInputVisibility: React.Dispatch<React.SetStateAction<boolean>>
-  setSelectedTickDescription: React.Dispatch<React.SetStateAction<string>>
+  // setSelectedTickDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function TickSelector({
   selectedTick,
   setSelectedTick,
   setAttemptInputVisibility,
-  setSelectedTickDescription,
-}: Props) {
+}: // setSelectedTickDescription,
+Props) {
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
@@ -52,31 +43,31 @@ export default function TickSelector({
         ? setAttemptInputVisibility(true)
         : setAttemptInputVisibility(false)
 
-      switch (value.toString()) {
-        case "Onsight":
-          setSelectedTickDescription(tickDescriptions.Onsight)
-          break
+      // switch (value.toString()) {
+      //   case "Onsight":
+      //     setSelectedTickDescription(tickDescriptions.Onsight)
+      //     break
 
-        case "Flash":
-          setSelectedTickDescription(tickDescriptions.Flash)
-          break
+      //   case "Flash":
+      //     setSelectedTickDescription(tickDescriptions.Flash)
+      //     break
 
-        case "Redpoint":
-          setSelectedTickDescription(tickDescriptions.Redpoint)
-          break
+      //   case "Redpoint":
+      //     setSelectedTickDescription(tickDescriptions.Redpoint)
+      //     break
 
-        case "Repeat":
-          setSelectedTickDescription(tickDescriptions.Repeat)
-          break
+      //   case "Repeat":
+      //     setSelectedTickDescription(tickDescriptions.Repeat)
+      //     break
 
-        case "Attempt":
-          setSelectedTickDescription(tickDescriptions.Attempt)
-          break
+      //   case "Attempt":
+      //     setSelectedTickDescription(tickDescriptions.Attempt)
+      //     break
 
-        default:
-          setSelectedTickDescription("")
-          break
-      }
+      //   default:
+      //     setSelectedTickDescription("")
+      //     break
+      // }
     }
   }
 

@@ -217,7 +217,7 @@ export default function LogClimbPage() {
             selectedTick={selectedTick}
             setSelectedTick={setSelectedTick}
             setAttemptInputVisibility={setAttemptInputVisibility}
-            setSelectedTickDescription={setSelectedTickDescription}
+            // setSelectedTickDescription={setSelectedTickDescription}
           />
         </Grid>
       )}

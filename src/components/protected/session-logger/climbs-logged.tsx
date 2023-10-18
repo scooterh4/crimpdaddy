@@ -118,7 +118,13 @@ export function ClimbsLogged({ title }: Props) {
                 <ListItemButton>
                   <ListItemText
                     primary={climb.Grade}
-                    secondary={climb.Tick}
+                    secondary={`${climb.Tick}${
+                      climb.AttemptCount > 1
+                        ? ` (with ${climb.AttemptCount - 1} failed attempt${
+                            climb.AttemptCount > 2 ? "s" : ""
+                          })`
+                        : ""
+                    }`}
                     sx={{ fontFamily: "poppins" }}
                   />
                 </ListItemButton>

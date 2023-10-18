@@ -10,8 +10,9 @@ import GradeSelector from "./grade-selector"
 import { ClimbLog } from "../../../static/types"
 import {
   BOULDER_GRADES,
-  GYM_CLIMB_TYPES,
+  CLIMB_TYPES,
   INDOOR_SPORT_GRADES,
+  SessionClimb,
 } from "../../../static/constants"
 import moment from "moment"
 import {
@@ -19,6 +20,10 @@ import {
   useOpenAddClimbDialog,
   useSessionAPI,
 } from "./session-logger-context"
+import TickSelector from "./tick-selector"
+import { ThemeColors } from "../../../static/styles"
+import TickDescription from "./tick-description"
+import AttemptInput from "./attempt-input"
 
 export function LogClimbDialog() {
   const open = useOpenAddClimbDialog()
@@ -26,6 +31,10 @@ export function LogClimbDialog() {
   const { onClimbAdded, onCloseAddClimbDialog } = useSessionAPI()
   const [gradesList, setGradesList] = useState<string[]>([])
   const [selectedGrade, setSelectedGrade] = useState<string>("")
+  const [selectedTick, setSelectedTick] = useState("")
+  const [showAttemptInput, setAttemptInputVisibility] = useState(false)
+  const [attemptCount, setAttemptCount] = useState<number | string>("")
+  const [attemptError, setAttemptError] = useState(false)
 
   useMemo(() => {
     climbType === 0
@@ -34,13 +43,15 @@ export function LogClimbDialog() {
   }, [climbType])
 
   function submitForm() {
-    const climbData: ClimbLog = {
-      ClimbType: GYM_CLIMB_TYPES[climbType],
+    const climbData: SessionClimb = {
+      ClimbType: CLIMB_TYPES[climbType],
       Grade: selectedGrade,
-      Tick: "Redpoint (or something)",
-      Count: 1,
+      Tick: selectedTick,
+      AttemptCount: parseInt(attemptCount.toString()),
       UnixTime: moment().unix(),
     }
+
+    console.log("ClimbData added:", climbData)
     onClimbAdded(climbType, climbData)
     onCloseAddClimbDialog()
   }
@@ -49,17 +60,49 @@ export function LogClimbDialog() {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Add {climbType > 0 ? "route" : "boulder"}</DialogTitle>
+      <DialogTitle fontFamily={"poppins"} fontWeight={"bold"}>
+        Add {climbType > 0 ? "route" : "boulder"}
+      </DialogTitle>
       <DialogContent>
+        Select grade:
         <GradeSelector
           gradesList={gradesList}
           selectedGrade={selectedGrade}
           setSelectedGrade={setSelectedGrade}
         />
+        {selectedGrade !== "" && (
+          <div>
+            Select tick:
+            <TickSelector
+              selectedTick={selectedTick}
+              setSelectedTick={setSelectedTick}
+              setAttemptInputVisibility={setAttemptInputVisibility}
+              // setSelectedTickDescription={setSelectedTickDescription}
+            />
+          </div>
+        )}
+        {selectedTick !== "" && <TickDescription selectedTick={selectedTick} />}
+        {showAttemptInput && (
+          <AttemptInput
+            attemptCount={attemptCount}
+            setAttemptCount={setAttemptCount}
+            attemptError={attemptError}
+          />
+        )}
       </DialogContent>
       <DialogActions>
+        {selectedTick !== "" && (
+          <Button
+            onClick={submitForm}
+            style={{
+              backgroundColor: ThemeColors.darkAccent,
+              color: "white",
+            }}
+          >
+            Add
+          </Button>
+        )}
         <Button onClick={onCloseAddClimbDialog}>Cancel</Button>
-        <Button onClick={submitForm}>Add</Button>
       </DialogActions>
     </Dialog>
   )
