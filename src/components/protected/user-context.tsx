@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useMemo, useState } from "react"
 import {
   ClimbLog,
   SessionStorageData,
@@ -93,7 +93,7 @@ export const UserDataProvider = ({
   const sessionData = sessionStorage.getItem(sessionDataKey)
 
   // We want this to happen once when the user initially logs in
-  useEffect(() => {
+  useMemo(() => {
     if (user && userClimbingLogs === null && sessionData === null) {
       getAllUserClimbingData(user.id, DateFilters.ThisWeek).then((res) => {
         setUserClimbingLogs(res.climbingLogs.allClimbs)

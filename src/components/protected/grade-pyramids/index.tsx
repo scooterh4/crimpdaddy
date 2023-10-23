@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useMemo, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./grade-pyramid-graph"
 import { ThemeColors } from "../../../static/styles"
@@ -24,7 +24,7 @@ export default function GradePyramidPage() {
     GradePyramidFilter.ClimbsOnly
   )
 
-  useEffect(() => {
+  useMemo(() => {
     if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
       updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.GradePyramids)
     }

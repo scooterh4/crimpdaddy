@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useMemo } from "react"
 import { createContext, useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { AppUser } from "../../static/types"
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AppUser | null>(null)
   const navigate = useNavigate()
 
-  useEffect(() => {
+  useMemo(() => {
     const subscriber: Unsubscribe = onAuthStateChanged(
       auth,
       (persistedUser) => {
