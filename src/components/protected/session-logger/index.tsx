@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Button,
   Grid,
@@ -10,7 +10,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { AppColors, ThemeColors } from "../../../static/styles"
 import { Routes } from "../../../router"
 import { ConfirmDialog } from "../../common/confirm-dialog"
-import { ClimbsLogged } from "./climbs-logged"
+import { ClimbsLoggedDisplay } from "./climbs-logged-display"
 import { LogClimbDialog } from "./log-climb-dialog"
 import { SessionLoggerProvider } from "./session-logger-context"
 
@@ -31,6 +31,8 @@ function SessionLogger() {
     // process the data into ClimbLog[] format and send it to the API
     console.log("Submit form")
   }
+
+  console.log("session logging page render")
 
   return (
     <Grid
@@ -77,8 +79,8 @@ function SessionLogger() {
       </Typography>
 
       <Grid container direction={"column"}>
-        <ClimbsLogged title="Boulders" />
-        <ClimbsLogged title="Routes" />
+        <ClimbsLoggedDisplay title="Boulders" />
+        <ClimbsLoggedDisplay title="Routes" />
       </Grid>
 
       <Button

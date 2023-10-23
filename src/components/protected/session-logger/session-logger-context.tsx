@@ -12,13 +12,17 @@ type State = {
   routeData: SessionClimb[]
   openAddClimbDialog: boolean
   addClimbType: number
+  deleteClimbDialogVisible: boolean
+  climbToDelete: { climb: SessionClimb; index: number }
 }
 
 type API = {
   onClimbAdded: (climbType: number, climb: SessionClimb) => void
   onOpenAddClimbDialog: (climbType: number) => void
-  // onChangeAddClimbType: (climbType: number) => void
   onCloseAddClimbDialog: () => void
+  onOpenDeleteClimbDialog: (climb: SessionClimb, index: number) => void
+  onCloseDeleteClimbDialog: () => void
+  onRemoveClimb: (climbType: number, index: number) => void
   onSave: () => void
 }
 
@@ -34,16 +38,30 @@ const OpenAddClimbDialogContext = createContext<State["openAddClimbDialog"]>(
 const AddClimbTypeContext = createContext<State["addClimbType"]>(
   {} as State["addClimbType"]
 )
+const DeleteClimbDialogVisibilityContext = createContext<
+  State["deleteClimbDialogVisible"]
+>({} as State["deleteClimbDialogVisible"])
+const ClimbToDeleteContext = createContext<State["climbToDelete"]>(
+  {} as State["climbToDelete"]
+)
+
 const APIContext = createContext<API>({} as API)
 
 type Actions =
-  | { type: "updateClimbData"; climbType: number; climb: SessionClimb }
+  | { type: "addClimbData"; climbType: number; climb: SessionClimb }
   | { type: "openAddClimbDialog"; open: boolean; climbType: number }
   | { type: "closeAddClimbDialog"; open: boolean }
+  | {
+      type: "changeDeleteClimbDialogVisibility"
+      open: boolean
+      climb: SessionClimb
+      index: number
+    }
+  | { type: "removeClimb"; climbType: number; index: number }
 
 const reducer = (state: State, action: Actions): State => {
   switch (action.type) {
-    case "updateClimbData":
+    case "addClimbData":
       return action.climbType === 0
         ? {
             ...state,
@@ -65,6 +83,32 @@ const reducer = (state: State, action: Actions): State => {
       }
     case "closeAddClimbDialog":
       return { ...state, openAddClimbDialog: action.open }
+    case "changeDeleteClimbDialogVisibility":
+      return {
+        ...state,
+        deleteClimbDialogVisible: action.open,
+        climbToDelete: { climb: action.climb, index: action.index },
+      }
+    case "removeClimb":
+      console.log("context action", action)
+      if (action.climbType === 0) {
+        state.boulderData.splice(action.index, 1)
+        console.log("remaining boulders", [...state.boulderData])
+        return {
+          ...state,
+          boulderData: [...state.boulderData],
+          deleteClimbDialogVisible: false,
+          climbToDelete: { climb: {} as SessionClimb, index: -1 },
+        }
+      }
+      state.routeData.splice(action.index, 1)
+      console.log("remaining routes", [...state.routeData])
+      return {
+        ...state,
+        routeData: [...state.routeData],
+        deleteClimbDialogVisible: false,
+        climbToDelete: { climb: {} as SessionClimb, index: -1 },
+      }
   }
 }
 
@@ -77,29 +121,52 @@ export const SessionLoggerProvider = ({
 
   const api = useMemo(() => {
     const onClimbAdded = (climbType: number, climb: SessionClimb) => {
-      dispatch({ type: "updateClimbData", climbType, climb })
+      dispatch({ type: "addClimbData", climbType, climb })
     }
 
     const onOpenAddClimbDialog = (climbType: number) => {
       dispatch({ type: "openAddClimbDialog", open: true, climbType })
-      // setAddClimbType(climbType)
-      // setAddClimbDialog(true)
     }
 
     const onCloseAddClimbDialog = () => {
       dispatch({ type: "closeAddClimbDialog", open: false })
     }
 
-    // const onCancelAddClimb = () => {
-    //   dispatch({ type: "updateOpenAddClimbDialog", false })
-    //   // setAddClimbDialog(false)
-    // }
+    const onOpenDeleteClimbDialog = (climb: SessionClimb, index: number) => {
+      dispatch({
+        type: "changeDeleteClimbDialogVisibility",
+        open: true,
+        climb,
+        index,
+      })
+    }
+
+    const onCloseDeleteClimbDialog = () => {
+      dispatch({
+        type: "changeDeleteClimbDialogVisibility",
+        open: false,
+        climb: {} as SessionClimb,
+        index: -1,
+      })
+    }
+
+    const onRemoveClimb = (climbType: number, index: number) => {
+      dispatch({ type: "removeClimb", climbType, index })
+    }
 
     const onSave = () => {
       // send the request to the backend here
     }
 
-    return { onClimbAdded, onOpenAddClimbDialog, onCloseAddClimbDialog, onSave }
+    return {
+      onClimbAdded,
+      onOpenAddClimbDialog,
+      onCloseAddClimbDialog,
+      onOpenDeleteClimbDialog,
+      onCloseDeleteClimbDialog,
+      onRemoveClimb,
+      onSave,
+    }
   }, [])
 
   return (
@@ -108,7 +175,13 @@ export const SessionLoggerProvider = ({
         <RouteDataContext.Provider value={state.routeData}>
           <OpenAddClimbDialogContext.Provider value={state.openAddClimbDialog}>
             <AddClimbTypeContext.Provider value={state.addClimbType}>
-              {children}
+              <DeleteClimbDialogVisibilityContext.Provider
+                value={state.deleteClimbDialogVisible}
+              >
+                <ClimbToDeleteContext.Provider value={state.climbToDelete}>
+                  {children}
+                </ClimbToDeleteContext.Provider>
+              </DeleteClimbDialogVisibilityContext.Provider>
             </AddClimbTypeContext.Provider>
           </OpenAddClimbDialogContext.Provider>
         </RouteDataContext.Provider>
@@ -122,3 +195,6 @@ export const useBoulderData = () => useContext(BoulderDataContext)
 export const useRouteData = () => useContext(RouteDataContext)
 export const useOpenAddClimbDialog = () => useContext(OpenAddClimbDialogContext)
 export const useAddClimbTypeContext = () => useContext(AddClimbTypeContext)
+export const useDeleteClimbDialogVisibilityContext = () =>
+  useContext(DeleteClimbDialogVisibilityContext)
+export const useClimbToDeleteContext = () => useContext(ClimbToDeleteContext)

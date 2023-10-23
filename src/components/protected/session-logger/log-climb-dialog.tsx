@@ -7,7 +7,6 @@ import {
 } from "@mui/material"
 import React, { useMemo, useState } from "react"
 import GradeSelector from "./grade-selector"
-import { ClimbLog } from "../../../static/types"
 import {
   BOULDER_GRADES,
   CLIMB_TYPES,
@@ -47,16 +46,23 @@ export function LogClimbDialog() {
       ClimbType: CLIMB_TYPES[climbType],
       Grade: selectedGrade,
       Tick: selectedTick,
-      AttemptCount: parseInt(attemptCount.toString()),
+      AttemptCount:
+        attemptCount.toString() === "" ? 1 : parseInt(attemptCount.toString()),
       UnixTime: moment().unix(),
     }
 
     console.log("ClimbData added:", climbData)
     onClimbAdded(climbType, climbData)
-    onCloseAddClimbDialog()
+    resetDialog()
   }
 
-  console.log("Log-climb-dialog render")
+  function resetDialog() {
+    onCloseAddClimbDialog()
+    setSelectedGrade("")
+    setSelectedTick("")
+    setAttemptCount("")
+    setAttemptInputVisibility(false)
+  }
 
   return (
     <Dialog open={open}>
@@ -77,7 +83,6 @@ export function LogClimbDialog() {
               selectedTick={selectedTick}
               setSelectedTick={setSelectedTick}
               setAttemptInputVisibility={setAttemptInputVisibility}
-              // setSelectedTickDescription={setSelectedTickDescription}
             />
           </div>
         )}
@@ -102,7 +107,7 @@ export function LogClimbDialog() {
             Add
           </Button>
         )}
-        <Button onClick={onCloseAddClimbDialog}>Cancel</Button>
+        <Button onClick={resetDialog}>Cancel</Button>
       </DialogActions>
     </Dialog>
   )

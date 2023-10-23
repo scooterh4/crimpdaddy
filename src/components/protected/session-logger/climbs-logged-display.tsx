@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Collapse,
   Divider,
@@ -16,28 +16,35 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import AddIcon from "@mui/icons-material/Add"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
-import { AppColors, ThemeColors } from "../../../static/styles"
-import { ClimbLog } from "../../../static/types"
+import { ThemeColors } from "../../../static/styles"
 import {
   useBoulderData,
   useRouteData,
   useSessionAPI,
 } from "./session-logger-context"
+import { GYM_CLIMB_TYPES, SessionClimb } from "../../../static/constants"
+import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
 
 type Props = {
   title: string
-  // sessionData: ClimbLog[]
-  // openDialog(climbType: number): void
 }
 
-export function ClimbsLogged({ title }: Props) {
+export function ClimbsLoggedDisplay({ title }: Props) {
+  const { onOpenAddClimbDialog, onOpenDeleteClimbDialog } = useSessionAPI()
   const sessionData = title === "Boulders" ? useBoulderData() : useRouteData()
-  const { onOpenAddClimbDialog } = useSessionAPI()
   const [dense, setDense] = useState(false)
   const [expand, setExpand] = React.useState(true)
-  const [secondary, setSecondary] = useState(false)
+  const [deleteDialogVisibility, setDeleteDialogVisibility] = useState<boolean>(
+    false
+  )
+  const [deleteClimb, setDeleteClimb] = useState<SessionClimb | null>(null)
+  const [index, setIndex] = useState<number | null>(null)
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+
+  useEffect(() => {
+    setDense(xsScreen)
+  }, [xsScreen])
 
   const handleExpand = () => {
     setExpand(!expand)
@@ -47,11 +54,11 @@ export function ClimbsLogged({ title }: Props) {
     title === "Boulders" ? onOpenAddClimbDialog(0) : onOpenAddClimbDialog(1)
   }
 
-  useEffect(() => {
-    setDense(xsScreen)
-  }, [xsScreen])
+  function openDeleteDialog(climb: SessionClimb, index: number) {
+    onOpenDeleteClimbDialog(climb, index)
+  }
 
-  console.log("Climbs-logged component render")
+  console.log("climbs-logged-display render")
 
   return (
     <Grid
@@ -63,6 +70,8 @@ export function ClimbsLogged({ title }: Props) {
       padding={2}
       sx={{ backgroundColor: "white" }}
     >
+      <ConfirmDeleteClimbDialog />
+
       <Grid
         container
         direction={"row"}
@@ -128,7 +137,11 @@ export function ClimbsLogged({ title }: Props) {
                     sx={{ fontFamily: "poppins" }}
                   />
                 </ListItemButton>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => openDeleteDialog(climb, index)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItem>
