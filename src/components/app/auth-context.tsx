@@ -77,8 +77,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.log(error.code, error.message)
         }
       })
-    setUser(user)
-    navigate(Routes.dashboard)
   }
 
   const googleLogin = async () => {
