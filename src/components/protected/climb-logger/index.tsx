@@ -72,12 +72,12 @@ export default function LogClimbPage() {
       if (user) {
         // If they picked repeat or redpoint, log the climb and the attempts seperately
         const climbData: ClimbLog = {
-          ClimbType: climbType,
-          Grade: selectedGrade,
-          Tick: selectedTick,
-          Count:
+          climbType: climbType,
+          grade: selectedGrade,
+          tick: selectedTick,
+          count:
             selectedTick === "Attempt" ? parseInt(attemptCount.toString()) : 1,
-          UnixTime: moment().unix(),
+          unixTime: moment().unix(),
         }
 
         newClimbLogData.push(climbData)
@@ -86,10 +86,10 @@ export default function LogClimbPage() {
         let toastMessage = `Climb logged: `
         toastMessage +=
           selectedTick === "Attempt"
-            ? `${climbData.Grade} Attempt${
+            ? `${climbData.grade} Attempt${
                 parseInt(attemptCount.toString()) > 1 ? "s" : ""
               } (${parseInt(attemptCount.toString())})`
-            : `${climbData.Grade} ${climbData.Tick}`
+            : `${climbData.grade} ${climbData.tick}`
 
         const attempts = parseInt(attemptCount.toString()) - 1
         if (
@@ -97,11 +97,11 @@ export default function LogClimbPage() {
           attempts > 0
         ) {
           const attemptData: ClimbLog = {
-            ClimbType: climbType,
-            Grade: selectedGrade,
-            Tick: "Attempt",
-            Count: attempts,
-            UnixTime: moment().unix(),
+            climbType: climbType,
+            grade: selectedGrade,
+            tick: "Attempt",
+            count: attempts,
+            unixTime: moment().unix(),
           }
 
           newClimbLogData.push(attemptData)

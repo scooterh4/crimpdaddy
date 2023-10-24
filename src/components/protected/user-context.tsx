@@ -158,7 +158,7 @@ export const UserDataProvider = ({
     }
     setUserIndoorRedpointGrades(redpointGrades)
 
-    const climbType = logsToAdd[0].ClimbType
+    const climbType = logsToAdd[0].climbType
     switch (climbType) {
       case "Boulder":
         setUserBoulderLogs(

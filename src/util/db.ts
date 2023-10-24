@@ -38,9 +38,9 @@ export const getUserIndoorRedpointGrades = async (
   userId: string
 ): Promise<UserIndoorRedpointGradesDoc> => {
   let redpointGrades: UserIndoorRedpointGradesDoc = {
-    Boulder: "",
-    Lead: "",
-    TopRope: "",
+    boulder: "",
+    lead: "",
+    topRope: "",
   }
   const collectionPath = `/${collectionName}/${userId}/indoor_summary_stats`
 
@@ -88,14 +88,14 @@ export const logClimb = async (
   climbData: ClimbLog,
   userId: string
 ): Promise<void> => {
-  const collectionPath = `/${collectionName}/${userId}/indoor_${climbData.ClimbType[0].toLowerCase() +
-    climbData.ClimbType.slice(1)}`
+  const collectionPath = `/${collectionName}/${userId}/indoor_${climbData.climbType[0].toLowerCase() +
+    climbData.climbType.slice(1)}`
 
   const newDocument: ClimbLogDocument = {
-    Grade: climbData.Grade,
-    Tick: climbData.Tick,
-    Count: climbData.Count,
-    Timestamp: Timestamp.fromMillis(climbData.UnixTime * 1000),
+    grade: climbData.grade,
+    tick: climbData.tick,
+    count: climbData.count,
+    timestamp: Timestamp.fromMillis(climbData.unixTime * 1000),
   }
 
   try {
@@ -194,8 +194,8 @@ export const getAllUserClimbingData = async (
   try {
     boulderData.forEach((log) => {
       const addDoc: ClimbLog = {
-        ClimbType: GYM_CLIMB_TYPES[0],
-        UnixTime: log.Timestamp.seconds,
+        climbType: GYM_CLIMB_TYPES[0],
+        unixTime: log.timestamp.seconds,
         ...log,
       }
       rawBoulderData.push(addDoc)
@@ -204,8 +204,8 @@ export const getAllUserClimbingData = async (
 
     leadData.forEach((log) => {
       const addDoc: ClimbLog = {
-        ClimbType: GYM_CLIMB_TYPES[1],
-        UnixTime: log.Timestamp.seconds,
+        climbType: GYM_CLIMB_TYPES[1],
+        unixTime: log.timestamp.seconds,
         ...log,
       }
       rawLeadData.push(addDoc)
@@ -214,8 +214,8 @@ export const getAllUserClimbingData = async (
 
     trData.forEach((log) => {
       const addDoc: ClimbLog = {
-        ClimbType: GYM_CLIMB_TYPES[2],
-        UnixTime: log.Timestamp.seconds,
+        climbType: GYM_CLIMB_TYPES[2],
+        unixTime: log.timestamp.seconds,
         ...log,
       }
       rawTrData.push(addDoc)

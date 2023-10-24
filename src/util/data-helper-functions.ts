@@ -54,15 +54,15 @@ export function assembleGradePyramidGraphData(
     if (gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts) {
       if (
         (gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
-          climb.Tick === "Attempt") ||
+          climb.tick === "Attempt") ||
         (gradePyramidFilter === GradePyramidFilter.AttemptsOnly &&
-          climb.Tick !== "Attempt")
+          climb.tick !== "Attempt")
       ) {
         return
       }
     }
     // Check the date filter
-    if (climb.UnixTime < minMoment.unix()) {
+    if (climb.unixTime < minMoment.unix()) {
       return
     }
 
@@ -94,32 +94,32 @@ export function addGradePyramidDataToMap(
   climb: ClimbLog,
   gradeAttemptMap: Map<string, TickTypes>
 ) {
-  const ticks = gradeAttemptMap.get(climb.Grade) || {
-    Onsight: 0,
-    Flash: 0,
-    Redpoint: 0,
-    Attempts: 0,
+  const ticks = gradeAttemptMap.get(climb.grade) || {
+    onsight: 0,
+    flash: 0,
+    redpoint: 0,
+    attempts: 0,
   }
 
   // Repeats are not added to grade pyramids
-  switch (climb.Tick) {
+  switch (climb.tick) {
     case "Onsight":
-      ticks.Onsight += climb.Count
+      ticks.onsight += climb.count
       break
     case "Flash":
-      ticks.Flash += climb.Count
+      ticks.flash += climb.count
       break
     case "Redpoint":
-      ticks.Redpoint += climb.Count
+      ticks.redpoint += climb.count
       break
     case "Attempt":
-      ticks.Attempts += climb.Count
+      ticks.attempts += climb.count
       break
     default:
       break
   }
 
-  gradeAttemptMap.set(climb.Grade, ticks)
+  gradeAttemptMap.set(climb.grade, ticks)
 }
 
 export function assembleGradePyramidData(
@@ -130,18 +130,18 @@ export function assembleGradePyramidData(
 
   gradesArray.forEach((grade) => {
     const ticks: TickTypes = gradeAttemptMap.get(grade) || {
-      Onsight: 0,
-      Flash: 0,
-      Redpoint: 0,
-      Attempts: 0,
+      onsight: 0,
+      flash: 0,
+      redpoint: 0,
+      attempts: 0,
     }
 
     graphData.push({
-      Grade: grade,
-      Onsight: ticks.Onsight,
-      Flash: ticks.Flash,
-      Redpoint: ticks.Redpoint,
-      Attempts: ticks.Attempts,
+      grade: grade,
+      onsight: ticks.onsight,
+      flash: ticks.flash,
+      redpoint: ticks.redpoint,
+      attempts: ticks.attempts,
     })
   })
 
@@ -154,81 +154,81 @@ export function findNewRedpointGrades(
 ): UserIndoorRedpointGradesDoc {
   let returnGrades = currentHardestGrades
     ? currentHardestGrades
-    : { Boulder: "", Lead: "", TopRope: "" }
+    : { boulder: "", lead: "", topRope: "" }
   let updateGrade = ""
   // Assuming all climbs are of the same type
   // with the current climb-logging design this should be true
   const gradeSystem =
-    climbLogs[0].ClimbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
+    climbLogs[0].climbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
       ? BOULDER_GRADES
       : INDOOR_SPORT_GRADES
 
   climbLogs.forEach((climb) => {
-    if (climb.Tick === "Attempt") {
+    if (climb.tick === "Attempt") {
       return
     } else {
       if (!currentHardestGrades) {
-        switch (climb.ClimbType) {
+        switch (climb.climbType) {
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
             returnGrades = {
-              Boulder: climb.Grade,
-              Lead: "",
-              TopRope: "",
+              boulder: climb.grade,
+              lead: "",
+              topRope: "",
             }
             break
 
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
             returnGrades = {
-              Boulder: "",
-              Lead: climb.Grade,
-              TopRope: "",
+              boulder: "",
+              lead: climb.grade,
+              topRope: "",
             }
             break
 
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
             returnGrades = {
-              Boulder: "",
-              Lead: "",
-              TopRope: climb.Grade,
+              boulder: "",
+              lead: "",
+              topRope: climb.grade,
             }
             break
         }
       } else {
-        switch (climb.ClimbType) {
+        switch (climb.climbType) {
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
-            const boulderGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const boulderGradeIndex = gradeSystem.indexOf(climb.grade)
             const boulderHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.Boulder
+              currentHardestGrades.boulder
             )
             updateGrade =
               boulderGradeIndex > boulderHardestGradeIndex
-                ? climb.Grade
-                : currentHardestGrades.Boulder
-            returnGrades.Boulder = updateGrade
+                ? climb.grade
+                : currentHardestGrades.boulder
+            returnGrades.boulder = updateGrade
             break
 
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
-            const leadGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const leadGradeIndex = gradeSystem.indexOf(climb.grade)
             const leadHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.Lead
+              currentHardestGrades.lead
             )
             updateGrade =
               leadGradeIndex > leadHardestGradeIndex
-                ? climb.Grade
-                : currentHardestGrades.Lead
-            returnGrades.Lead = updateGrade
+                ? climb.grade
+                : currentHardestGrades.lead
+            returnGrades.lead = updateGrade
             break
 
           case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
-            const trGradeIndex = gradeSystem.indexOf(climb.Grade)
+            const trGradeIndex = gradeSystem.indexOf(climb.grade)
             const trHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.TopRope
+              currentHardestGrades.topRope
             )
             updateGrade =
               trGradeIndex > trHardestGradeIndex
-                ? climb.Grade
-                : currentHardestGrades.TopRope
-            returnGrades.TopRope = updateGrade
+                ? climb.grade
+                : currentHardestGrades.topRope
+            returnGrades.topRope = updateGrade
             break
         }
       }
@@ -277,27 +277,27 @@ export function assembleUserSessionData(
 
     if (climb.tick === "Attempt") {
       data.climbs.push({
-        Grade: climb.grade,
-        Tick: climb.tick,
-        Count: climb.attemptCount,
-        Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+        grade: climb.grade,
+        tick: climb.tick,
+        count: climb.attemptCount,
+        timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
       })
     } else {
       data.climbs.push({
-        Grade: climb.grade,
-        Tick: climb.tick,
-        Count: 1,
-        Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+        grade: climb.grade,
+        tick: climb.tick,
+        count: 1,
+        timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
       })
       if (
         climb.attemptCount > 1 &&
         (climb.tick === "Redpoint" || climb.tick === "Repeat")
       ) {
         data.climbs.push({
-          Grade: climb.grade,
-          Tick: "Attempt",
-          Count: climb.attemptCount - 1,
-          Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+          grade: climb.grade,
+          tick: "Attempt",
+          count: climb.attemptCount - 1,
+          timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
         })
       }
     }

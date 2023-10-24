@@ -63,21 +63,21 @@ export default function ActivityGraph({ filter }: Props) {
 
     data.forEach((climb) => {
       // check if the climb is within the date range first
-      if (climb.UnixTime < minMoment.unix()) {
+      if (climb.unixTime < minMoment.unix()) {
         return
       }
 
       const date = moment
-        .unix(climb.UnixTime)
+        .unix(climb.unixTime)
         .format("MMM DD, YYYY")
         .toString()
 
       const dateAlreadyAdded = result.find((r) => r.Date === date)
       if (dateAlreadyAdded) {
-        if (climb.Tick === "Attempt") {
-          dateAlreadyAdded.Attempts += climb.Count
+        if (climb.tick === "Attempt") {
+          dateAlreadyAdded.Attempts += climb.count
         } else {
-          dateAlreadyAdded.Climbs += climb.Count
+          dateAlreadyAdded.Climbs += climb.count
         }
 
         // update the maxRange for the y-axis

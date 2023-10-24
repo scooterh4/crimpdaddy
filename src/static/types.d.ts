@@ -23,33 +23,33 @@ export type UserClimbingData = {
 }
 
 export type ClimbLogDocument = {
-  Grade: string
-  Tick: string
-  Count: number
-  Timestamp: Timestamp
+  grade: string
+  tick: string
+  count: number
+  timestamp: Timestamp
 }
 
 export type ClimbLog = {
-  ClimbType: string
-  Grade: string
-  Tick: string
-  Count: number
-  UnixTime: number
+  climbType: string
+  grade: string
+  tick: string
+  count: number
+  unixTime: number
 }
 
 export type TickTypes = {
-  Onsight: number
-  Flash: number
-  Redpoint: number
-  Attempts: number
+  onsight: number
+  flash: number
+  redpoint: number
+  attempts: number
 }
 
 export type GradePyramidGraphData = {
-  Grade: string
-  Onsight: number
-  Flash: number
-  Redpoint: number
-  Attempts: number
+  grade: string
+  onsight: number
+  flash: number
+  redpoint: number
+  attempts: number
 }
 
 export type SessionStorageData = {
@@ -71,9 +71,9 @@ export type SessionStorageData = {
 }
 
 export type UserIndoorRedpointGradesDoc = {
-  Boulder: string
-  Lead: string
-  TopRope: string
+  boulder: string
+  lead: string
+  topRope: string
 }
 
 export type SessionClimb = {

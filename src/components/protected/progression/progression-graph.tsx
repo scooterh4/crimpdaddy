@@ -162,15 +162,15 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     climbingData.forEach((climb) => {
       // All climbs should be in the correct date range
       const month = moment
-        .unix(climb.UnixTime)
+        .unix(climb.unixTime)
         .format("MMM YYYY")
         .toString()
 
       const climbMonthAdded = result.find((r) => r.month === month)
 
       if (climbMonthAdded) {
-        const climbIdx = gradeSystem.indexOf(climb.Grade)
-        if (climb.Tick !== "Attempt") {
+        const climbIdx = gradeSystem.indexOf(climb.grade)
+        if (climb.tick !== "Attempt") {
           if (climbMonthAdded.hardestClimbIdx > climbIdx) {
             return
           } else {

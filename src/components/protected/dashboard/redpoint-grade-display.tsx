@@ -19,20 +19,20 @@ export default function HardestGradeDisplay({ climbType }: Props) {
       switch (climbType) {
         case "Boulder":
           setHardestGrade(
-            userIndoorRedpointGrades.Boulder
-              ? userIndoorRedpointGrades.Boulder
+            userIndoorRedpointGrades.boulder
+              ? userIndoorRedpointGrades.boulder
               : "--"
           )
           break
         case "Lead":
           setHardestGrade(
-            userIndoorRedpointGrades.Lead ? userIndoorRedpointGrades.Lead : "--"
+            userIndoorRedpointGrades.lead ? userIndoorRedpointGrades.lead : "--"
           )
           break
         case "TopRope":
           setHardestGrade(
-            userIndoorRedpointGrades.TopRope
-              ? userIndoorRedpointGrades.TopRope
+            userIndoorRedpointGrades.topRope
+              ? userIndoorRedpointGrades.topRope
               : "--"
           )
           break
