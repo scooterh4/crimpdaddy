@@ -60,8 +60,6 @@ function SessionLogger() {
     }
   }
 
-  console.log("session logging page render")
-
   return (
     <Grid
       container
@@ -75,6 +73,7 @@ function SessionLogger() {
         setOpen={setOpenConfirmDialog}
         confirmRoute={Routes.dashboard}
       />
+
       <LogClimbDialog />
 
       {lgAndDownScreen && (

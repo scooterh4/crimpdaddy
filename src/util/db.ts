@@ -108,8 +108,6 @@ export const logClimb = async (
         const addUser = doc(firestore, `${collectionName}`, userId)
 
         setDoc(addUser, { userId: userId }).then(() => {
-          console.log("User doc created for user: ", userId)
-
           addDoc(collection(firestore, collectionPath), newDocument)
         })
       } else {

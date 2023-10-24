@@ -85,6 +85,15 @@ export type SessionClimb = {
   unixTime: number
 }
 
+export type EditSessionClimb = {
+  index: number
+  climbType: string
+  grade: string
+  tick: string
+  attemptCount: number
+  unixTime: number
+}
+
 export type ClimbingSessionMetadata = {
   hardestBoulderClimbed: string
   hardestRouteClimbed: string

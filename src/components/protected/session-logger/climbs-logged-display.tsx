@@ -22,7 +22,7 @@ import {
   useRouteData,
   useSessionAPI,
 } from "./session-logger-context"
-import { SessionClimb } from "../../../static/types"
+import { EditSessionClimb, SessionClimb } from "../../../static/types"
 import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
 
@@ -31,15 +31,14 @@ type Props = {
 }
 
 export function ClimbsLoggedDisplay({ title }: Props) {
-  const { onOpenAddClimbDialog, onOpenDeleteClimbDialog } = useSessionAPI()
+  const {
+    onOpenAddClimbDialog,
+    onOpenEditClimbDialog,
+    onOpenDeleteClimbDialog,
+  } = useSessionAPI()
   const sessionData = title === "Boulders" ? useBoulderData() : useRouteData()
   const [dense, setDense] = useState(false)
   const [expand, setExpand] = React.useState(true)
-  const [deleteDialogVisibility, setDeleteDialogVisibility] = useState<boolean>(
-    false
-  )
-  const [deleteClimb, setDeleteClimb] = useState<SessionClimb | null>(null)
-  const [index, setIndex] = useState<number | null>(null)
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
@@ -55,17 +54,21 @@ export function ClimbsLoggedDisplay({ title }: Props) {
     title === "Boulders" ? onOpenAddClimbDialog(0) : onOpenAddClimbDialog(1)
   }
 
+  function editClimb(climb: SessionClimb, index: number) {
+    onOpenEditClimbDialog({ ...climb, index: index } as EditSessionClimb)
+  }
+
   function openDeleteDialog(climb: SessionClimb, index: number) {
     onOpenDeleteClimbDialog(climb, index)
   }
 
   function getPrimaryText(climb: SessionClimb) {
     return climb.climbType !== GYM_CLIMB_TYPES[0]
-      ? `${climb.grade} ${climb.climbType}`
+      ? climb.climbType === GYM_CLIMB_TYPES[1]
+        ? `${climb.grade} ${climb.climbType}`
+        : `${climb.grade} Top rope`
       : climb.grade
   }
-
-  console.log("climbs-logged-display render")
 
   return (
     <Grid
@@ -131,7 +134,7 @@ export function ClimbsLoggedDisplay({ title }: Props) {
           {sessionData &&
             sessionData.map((climb, index) => (
               <ListItem key={index}>
-                <ListItemButton>
+                <ListItemButton onClick={() => editClimb(climb, index)}>
                   <ListItemText
                     primary={getPrimaryText(climb)}
                     secondary={`${climb.tick}${

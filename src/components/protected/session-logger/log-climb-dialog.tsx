@@ -15,34 +15,58 @@ import {
 import moment from "moment"
 import {
   useAddClimbTypeContext,
+  useEditClimbContext,
   useOpenAddClimbDialog,
+  useOpenEditClimbDialogContext,
   useSessionAPI,
 } from "./session-logger-context"
 import TickSelector from "./tick-selector"
 import { ThemeColors } from "../../../static/styles"
 import TickDescription from "./tick-description"
 import AttemptInput from "./attempt-input"
-import { SessionClimb } from "../../../static/types"
+import { EditSessionClimb, SessionClimb } from "../../../static/types"
 import RouteTypeSelector from "./route-type-selector"
 
 export function LogClimbDialog() {
-  const open = useOpenAddClimbDialog()
+  const add = useOpenAddClimbDialog()
+  const edit = useOpenEditClimbDialogContext()
+  const editClimb = useEditClimbContext()
   const climbType = useAddClimbTypeContext()
-  const { onClimbAdded, onCloseAddClimbDialog } = useSessionAPI()
+  const {
+    onClimbAdded,
+    onCloseAddClimbDialog,
+    onCloseEditClimbDialog,
+    onUpdateClimb,
+  } = useSessionAPI()
   const [gradesList, setGradesList] = useState<string[]>([])
   const [routeClimbType, setRouteClimbType] = useState<string>("")
   const [selectedGrade, setSelectedGrade] = useState<string>("")
-  const [selectedTick, setSelectedTick] = useState("")
+  const [selectedTick, setSelectedTick] = useState<string>("")
   const [showAttemptInput, setAttemptInputVisibility] = useState(false)
   const [attemptCount, setAttemptCount] = useState<number | string>("")
-  const [attemptError, setAttemptError] = useState(false)
+  const [attemptError, setAttemptError] = useState<boolean>(false)
+  const [unixTime, setUnixTime] = useState<number>(0)
+
+  useMemo(() => {
+    if (editClimb && Object.keys(editClimb).length !== 0) {
+      editClimb.climbType !== GYM_CLIMB_TYPES[0]
+        ? setRouteClimbType(editClimb.climbType)
+        : setRouteClimbType("")
+      setSelectedGrade(editClimb.grade)
+      setSelectedTick(editClimb.tick)
+      setAttemptCount(editClimb.attemptCount)
+      setAttemptInputVisibility(
+        editClimb.tick !== "Onsight" && editClimb.tick !== "Flash"
+      )
+      setUnixTime(editClimb.unixTime)
+    }
+  }, [editClimb])
 
   useMemo(() => {
     climbType === 0
       ? setGradesList(BOULDER_GRADES)
       : setGradesList(INDOOR_SPORT_GRADES)
   }, [climbType])
-
   function formHasError() {
     let hasError = false
 
@@ -66,30 +90,35 @@ export function LogClimbDialog() {
           attemptCount.toString() === ""
             ? 1
             : parseInt(attemptCount.toString()),
-        unixTime: moment().unix(),
+        unixTime: unixTime !== 0 ? unixTime : moment().unix(),
       }
 
-      console.log("ClimbData added:", climbData)
-      onClimbAdded(climbType, climbData)
+      add
+        ? onClimbAdded(climbType, climbData)
+        : onUpdateClimb({
+            ...climbData,
+            index: editClimb.index,
+          } as EditSessionClimb)
+
       resetDialog()
-    } else {
-      console.log("Form has error")
     }
   }
 
   function resetDialog() {
     onCloseAddClimbDialog()
+    onCloseEditClimbDialog()
     setRouteClimbType("")
     setSelectedGrade("")
     setSelectedTick("")
     setAttemptCount("")
     setAttemptInputVisibility(false)
+    setUnixTime(0)
   }
 
   return (
-    <Dialog open={open}>
+    <Dialog open={add || edit}>
       <DialogTitle fontFamily={"poppins"} fontWeight={"bold"}>
-        Add {climbType > 0 ? "route" : "boulder"}
+        {add ? "Add " : "Edit "} {climbType > 0 ? "route" : "boulder"}
       </DialogTitle>
       <DialogContent>
         {climbType > GYM_CLIMB_TYPES.Boulder && (
@@ -110,7 +139,7 @@ export function LogClimbDialog() {
         )}
         {selectedGrade !== "" && (
           <div>
-            Select tick:
+            <b>Select tick:</b>
             <TickSelector
               selectedTick={selectedTick}
               setSelectedTick={setSelectedTick}
@@ -136,7 +165,7 @@ export function LogClimbDialog() {
               color: "white",
             }}
           >
-            Add
+            {add ? "Add" : "Edit"}
           </Button>
         )}
         <Button onClick={resetDialog}>Cancel</Button>

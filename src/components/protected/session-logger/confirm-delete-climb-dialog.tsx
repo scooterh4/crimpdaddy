@@ -33,7 +33,6 @@ export default function ConfirmDeleteClimbDialog() {
   }
 
   const handleConfirm = () => {
-    console.log("Removing climb confirmed")
     onRemoveClimb(
       climbToDelete.climb.climbType === GYM_CLIMB_TYPES[0]
         ? GYM_CLIMB_TYPES.Boulder
