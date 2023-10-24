@@ -4,7 +4,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
 } from "@mui/material"
 import React, { useMemo, useState } from "react"
 import GradeSelector from "./grade-selector"
@@ -20,7 +19,7 @@ import {
   useSessionAPI,
 } from "./session-logger-context"
 import TickSelector from "./tick-selector"
-import { AppColors, ThemeColors } from "../../../static/styles"
+import { ThemeColors } from "../../../static/styles"
 import TickDescription from "./tick-description"
 import AttemptInput from "./attempt-input"
 import { SessionClimb } from "../../../static/types"
