@@ -180,7 +180,7 @@ export const SessionLoggerProvider = ({
     ) => {
       const data = assembleUserSessionData(sessionStart, climbs)
       console.log("heres the assembled data", data)
-      //logClimbingSession(data, userId)
+      logClimbingSession(data, userId)
     }
 
     return {

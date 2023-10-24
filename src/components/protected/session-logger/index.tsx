@@ -20,6 +20,8 @@ import {
 } from "./session-logger-context"
 import moment, { Moment } from "moment"
 import { useAuthContext } from "../../app/auth-context"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 export default function SessionLoggerPage() {
   return (
@@ -31,6 +33,7 @@ export default function SessionLoggerPage() {
 
 function SessionLogger() {
   const { onSessionStart, onLogSession } = useSessionAPI()
+  const navigate = useNavigate()
   const [sessionStart] = useState<Moment>(moment())
   const { user } = useAuthContext()
   const boulderClimbs = useBoulderData()
@@ -52,6 +55,8 @@ function SessionLogger() {
         : routeClimbs
 
       onLogSession(sessionStart, data, user.id)
+      toast.success("Session logged!")
+      navigate(Routes.dashboard)
     }
   }
 

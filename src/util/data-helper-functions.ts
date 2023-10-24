@@ -243,34 +243,37 @@ export function assembleUserSessionData(
   sessionClimbs: SessionClimb[]
 ): ClimbingSessionData {
   let data = {
-    numberOfBoulders: 0,
-    numberOfRoutes: 0,
-    hardestBoulderClimbed: "",
-    hardestRouteClimbed: "",
-    timestamp: Timestamp.fromMillis(sessionStart.unix() * 1000),
+    sessionMetadata: {
+      numberOfBoulders: 0,
+      numberOfRoutes: 0,
+      hardestBoulderClimbed: "",
+      hardestRouteClimbed: "",
+      timestamp: Timestamp.fromMillis(sessionStart.unix() * 1000),
+    },
     climbs: [],
   } as ClimbingSessionData
 
   sessionClimbs.forEach((climb) => {
     switch (climb.climbType) {
       case GYM_CLIMB_TYPES[0]:
-        data.numberOfBoulders += 1
+        data.sessionMetadata.numberOfBoulders += 1
         if (climb.tick !== "Attempt") {
-          data.hardestBoulderClimbed =
-            BOULDER_GRADES.indexOf(data.hardestBoulderClimbed) <
+          data.sessionMetadata.hardestBoulderClimbed =
+            BOULDER_GRADES.indexOf(data.sessionMetadata.hardestBoulderClimbed) <
             BOULDER_GRADES.indexOf(climb.grade)
               ? climb.grade
-              : data.hardestBoulderClimbed
+              : data.sessionMetadata.hardestBoulderClimbed
         }
         break
       default:
-        data.numberOfRoutes += 1
+        data.sessionMetadata.numberOfRoutes += 1
         if (climb.tick !== "Attempt") {
-          data.hardestRouteClimbed =
-            INDOOR_SPORT_GRADES.indexOf(data.hardestRouteClimbed) <
-            INDOOR_SPORT_GRADES.indexOf(climb.grade)
+          data.sessionMetadata.hardestRouteClimbed =
+            INDOOR_SPORT_GRADES.indexOf(
+              data.sessionMetadata.hardestRouteClimbed
+            ) < INDOOR_SPORT_GRADES.indexOf(climb.grade)
               ? climb.grade
-              : data.hardestRouteClimbed
+              : data.sessionMetadata.hardestRouteClimbed
         }
         break
     }

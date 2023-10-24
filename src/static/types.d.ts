@@ -84,11 +84,15 @@ export type SessionClimb = {
   unixTime: number
 }
 
-export type ClimbingSessionData = {
+export type ClimbingSessionMetadata = {
   hardestBoulderClimbed: string
   hardestRouteClimbed: string
   numberOfBoulders: number
   numberOfRoutes: number
   timestamp: Timestamp
+}
+
+export type ClimbingSessionData = {
+  sessionMetadata: ClimbingSessionMetaData
   climbs: ClimbLogDocument[]
 }

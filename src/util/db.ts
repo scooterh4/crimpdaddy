@@ -124,7 +124,23 @@ export const logClimb = async (
 export const logClimbingSession = async (
   climbData: ClimbingSessionData,
   userId: string
-): Promise<void> => {}
+): Promise<void> => {
+  const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
+
+  try {
+    await addDoc(
+      collection(firestore, collectionPath),
+      climbData.sessionMetadata
+    ).then((res) => {
+      const climbsPath = collectionPath + `/${res.id}/climbs`
+      climbData.climbs.forEach((climb) => {
+        addDoc(collection(firestore, climbsPath), climb)
+      })
+    })
+  } catch (error) {
+    console.log("FIRESTORE Error logging climbing session: ", error)
+  }
+}
 
 // get all climbs for a user by type
 export const getAllUserClimbsByType = async (
