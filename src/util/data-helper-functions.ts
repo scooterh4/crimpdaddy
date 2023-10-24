@@ -280,15 +280,13 @@ export function assembleUserSessionData(
 
     if (climb.tick === "Attempt") {
       data.climbs.push({
-        grade: climb.grade,
-        tick: climb.tick,
+        ...climb,
         count: climb.attemptCount,
         timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
       })
     } else {
       data.climbs.push({
-        grade: climb.grade,
-        tick: climb.tick,
+        ...climb,
         count: 1,
         timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
       })
@@ -297,8 +295,7 @@ export function assembleUserSessionData(
         (climb.tick === "Redpoint" || climb.tick === "Repeat")
       ) {
         data.climbs.push({
-          grade: climb.grade,
-          tick: "Attempt",
+          ...climb,
           count: climb.attemptCount - 1,
           timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
         })

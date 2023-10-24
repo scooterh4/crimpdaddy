@@ -23,6 +23,7 @@ export type UserClimbingData = {
 }
 
 export type ClimbLogDocument = {
+  climbType: string
   grade: string
   tick: string
   count: number

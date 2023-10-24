@@ -92,6 +92,7 @@ export const logClimb = async (
     climbData.climbType.slice(1)}`
 
   const newDocument: ClimbLogDocument = {
+    climbType: climbData.climbType,
     grade: climbData.grade,
     tick: climbData.tick,
     count: climbData.count,
@@ -184,22 +185,46 @@ export const getAllUserClimbingData = async (
   const rawBoulderData: ClimbLog[] = []
   const rawLeadData: ClimbLog[] = []
   const rawTrData: ClimbLog[] = []
+  const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
+  const minMoment = getMinimumMoment(filterRange)
 
-  const boulderData = await getAllUserClimbsByType(
-    userId,
-    GYM_CLIMB_TYPES.Boulder,
-    filterRange
-  )
-  const leadData = await getAllUserClimbsByType(
-    userId,
-    GYM_CLIMB_TYPES.Lead,
-    filterRange
-  )
-  const trData = await getAllUserClimbsByType(
-    userId,
-    GYM_CLIMB_TYPES.TopRope,
-    filterRange
-  )
+  try {
+    console.log("FIRESTORE READ CALL")
+
+    const sessionQuery = query(
+      collection(firestore, collectionPath).withConverter(converter()),
+      where("timestamp", ">=", Timestamp.fromDate(minMoment.toDate()))
+    )
+    const sessions = await getDocs(sessionQuery)
+
+    sessions.forEach((session) => {
+      const sessionClimbsPath = collectionPath + `/${session.id}/climbs`
+      const docQuery = query(
+        collection(firestore, sessionClimbsPath).withConverter(converter())
+      )
+
+      getDocs(docQuery).then((docs) => {
+        docs.forEach((doc) => {
+          const data = doc.data() as ClimbLogDocument
+          rawClimbingData.push({ ...data, unixTime: data.timestamp.seconds })
+
+          switch (data.climbType) {
+            case GYM_CLIMB_TYPES[0]:
+              rawBoulderData.push({ ...data, unixTime: data.timestamp.seconds })
+              break
+            case GYM_CLIMB_TYPES[1]:
+              rawLeadData.push({ ...data, unixTime: data.timestamp.seconds })
+              break
+            case GYM_CLIMB_TYPES[2]:
+              rawTrData.push({ ...data, unixTime: data.timestamp.seconds })
+              break
+          }
+        })
+      })
+    })
+  } catch (error) {
+    console.log(`FIRESTORE Error retreiving session data:`, error)
+  }
 
   const indoorRedpointGrades = await getUserIndoorRedpointGrades(userId)
 
@@ -207,58 +232,24 @@ export const getAllUserClimbingData = async (
   let leadPyramidData: GradePyramidGraphData[] = []
   let trPyramidData: GradePyramidGraphData[] = []
 
-  try {
-    boulderData.forEach((log) => {
-      const addDoc: ClimbLog = {
-        climbType: GYM_CLIMB_TYPES[0],
-        unixTime: log.timestamp.seconds,
-        ...log,
-      }
-      rawBoulderData.push(addDoc)
-      rawClimbingData.push(addDoc)
-    })
-
-    leadData.forEach((log) => {
-      const addDoc: ClimbLog = {
-        climbType: GYM_CLIMB_TYPES[1],
-        unixTime: log.timestamp.seconds,
-        ...log,
-      }
-      rawLeadData.push(addDoc)
-      rawClimbingData.push(addDoc)
-    })
-
-    trData.forEach((log) => {
-      const addDoc: ClimbLog = {
-        climbType: GYM_CLIMB_TYPES[2],
-        unixTime: log.timestamp.seconds,
-        ...log,
-      }
-      rawTrData.push(addDoc)
-      rawClimbingData.push(addDoc)
-    })
-
-    boulderPyramidData = assembleGradePyramidGraphData(
-      rawBoulderData,
-      GYM_CLIMB_TYPES.Boulder,
-      GradePyramidFilter.ClimbsAndAttempts,
-      filterRange
-    )
-    leadPyramidData = assembleGradePyramidGraphData(
-      rawLeadData,
-      GYM_CLIMB_TYPES.Lead,
-      GradePyramidFilter.ClimbsAndAttempts,
-      filterRange
-    )
-    trPyramidData = assembleGradePyramidGraphData(
-      rawTrData,
-      GYM_CLIMB_TYPES.TopRope,
-      GradePyramidFilter.ClimbsAndAttempts,
-      filterRange
-    )
-  } catch (error) {
-    console.log("FIRESTORE Error retreiving all climbing data:", error)
-  }
+  boulderPyramidData = assembleGradePyramidGraphData(
+    rawBoulderData,
+    GYM_CLIMB_TYPES.Boulder,
+    GradePyramidFilter.ClimbsAndAttempts,
+    filterRange
+  )
+  leadPyramidData = assembleGradePyramidGraphData(
+    rawLeadData,
+    GYM_CLIMB_TYPES.Lead,
+    GradePyramidFilter.ClimbsAndAttempts,
+    filterRange
+  )
+  trPyramidData = assembleGradePyramidGraphData(
+    rawTrData,
+    GYM_CLIMB_TYPES.TopRope,
+    GradePyramidFilter.ClimbsAndAttempts,
+    filterRange
+  )
 
   return {
     climbingLogs: {
