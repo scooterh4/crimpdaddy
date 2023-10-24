@@ -24,6 +24,7 @@ import {
 } from "./session-logger-context"
 import { SessionClimb } from "../../../static/types"
 import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
+import { GYM_CLIMB_TYPES } from "../../../static/constants"
 
 type Props = {
   title: string
@@ -56,6 +57,12 @@ export function ClimbsLoggedDisplay({ title }: Props) {
 
   function openDeleteDialog(climb: SessionClimb, index: number) {
     onOpenDeleteClimbDialog(climb, index)
+  }
+
+  function getPrimaryText(climb: SessionClimb) {
+    return climb.climbType !== GYM_CLIMB_TYPES[0]
+      ? `${climb.grade} ${climb.climbType}`
+      : climb.grade
   }
 
   console.log("climbs-logged-display render")
@@ -126,7 +133,7 @@ export function ClimbsLoggedDisplay({ title }: Props) {
               <ListItem key={index}>
                 <ListItemButton>
                   <ListItemText
-                    primary={climb.grade}
+                    primary={getPrimaryText(climb)}
                     secondary={`${climb.tick}${
                       climb.attemptCount > 1
                         ? ` (with ${climb.attemptCount - 1} failed attempt${
