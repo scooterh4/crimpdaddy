@@ -22,7 +22,7 @@ import {
   useRouteData,
   useSessionAPI,
 } from "./session-logger-context"
-import { GYM_CLIMB_TYPES, SessionClimb } from "../../../static/constants"
+import { SessionClimb } from "../../../static/types"
 import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
 
 type Props = {
@@ -126,11 +126,11 @@ export function ClimbsLoggedDisplay({ title }: Props) {
               <ListItem key={index}>
                 <ListItemButton>
                   <ListItemText
-                    primary={climb.Grade}
-                    secondary={`${climb.Tick}${
-                      climb.AttemptCount > 1
-                        ? ` (with ${climb.AttemptCount - 1} failed attempt${
-                            climb.AttemptCount > 2 ? "s" : ""
+                    primary={climb.grade}
+                    secondary={`${climb.tick}${
+                      climb.attemptCount > 1
+                        ? ` (with ${climb.attemptCount - 1} failed attempt${
+                            climb.attemptCount > 2 ? "s" : ""
                           })`
                         : ""
                     }`}

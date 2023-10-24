@@ -73,11 +73,3 @@ export enum PromiseTrackerArea {
   Progression = "progression",
   ProgressionGraph = "progressionGraph",
 }
-
-export type SessionClimb = {
-  ClimbType: string
-  Grade: string
-  Tick: string
-  AttemptCount: number
-  UnixTime: number
-}

@@ -1,5 +1,5 @@
 import React from "react"
-import { GYM_CLIMB_TYPES, SessionClimb } from "../../../static/constants"
+import { GYM_CLIMB_TYPES } from "../../../static/constants"
 import {
   Button,
   Dialog,
@@ -14,6 +14,7 @@ import {
   useDeleteClimbDialogVisibilityContext,
   useSessionAPI,
 } from "./session-logger-context"
+import { SessionClimb } from "../../../static/types"
 
 type Props = {
   open: boolean
@@ -34,7 +35,7 @@ export default function ConfirmDeleteClimbDialog() {
   const handleConfirm = () => {
     console.log("Removing climb confirmed")
     onRemoveClimb(
-      climbToDelete.climb.ClimbType === GYM_CLIMB_TYPES[0]
+      climbToDelete.climb.climbType === GYM_CLIMB_TYPES[0]
         ? GYM_CLIMB_TYPES.Boulder
         : 1,
       climbToDelete.index
@@ -58,7 +59,7 @@ export default function ConfirmDeleteClimbDialog() {
               Are you sure you want to delete the following climb:
               <br />
               <b>
-                {climbToDelete.climb.Grade} {climbToDelete.climb.Tick}
+                {climbToDelete.climb.grade} {climbToDelete.climb.tick}
               </b>
             </p>
           )}

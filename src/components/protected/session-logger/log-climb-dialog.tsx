@@ -11,7 +11,6 @@ import {
   BOULDER_GRADES,
   CLIMB_TYPES,
   INDOOR_SPORT_GRADES,
-  SessionClimb,
 } from "../../../static/constants"
 import moment from "moment"
 import {
@@ -23,6 +22,7 @@ import TickSelector from "./tick-selector"
 import { ThemeColors } from "../../../static/styles"
 import TickDescription from "./tick-description"
 import AttemptInput from "./attempt-input"
+import { SessionClimb } from "../../../static/types"
 
 export function LogClimbDialog() {
   const open = useOpenAddClimbDialog()
@@ -43,12 +43,12 @@ export function LogClimbDialog() {
 
   function submitForm() {
     const climbData: SessionClimb = {
-      ClimbType: CLIMB_TYPES[climbType],
-      Grade: selectedGrade,
-      Tick: selectedTick,
-      AttemptCount:
+      climbType: CLIMB_TYPES[climbType],
+      grade: selectedGrade,
+      tick: selectedTick,
+      attemptCount:
         attemptCount.toString() === "" ? 1 : parseInt(attemptCount.toString()),
-      UnixTime: moment().unix(),
+      unixTime: moment().unix(),
     }
 
     console.log("ClimbData added:", climbData)

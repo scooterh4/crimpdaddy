@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useMemo, useState } from "react"
 import {
   Button,
   Grid,
@@ -12,7 +12,14 @@ import { Routes } from "../../../router"
 import { ConfirmDialog } from "../../common/confirm-dialog"
 import { ClimbsLoggedDisplay } from "./climbs-logged-display"
 import { LogClimbDialog } from "./log-climb-dialog"
-import { SessionLoggerProvider } from "./session-logger-context"
+import {
+  SessionLoggerProvider,
+  useBoulderData,
+  useRouteData,
+  useSessionAPI,
+} from "./session-logger-context"
+import moment, { Moment } from "moment"
+import { useAuthContext } from "../../app/auth-context"
 
 export default function SessionLoggerPage() {
   return (
@@ -23,13 +30,29 @@ export default function SessionLoggerPage() {
 }
 
 function SessionLogger() {
+  const { onSessionStart, onLogSession } = useSessionAPI()
+  const [sessionStart] = useState<Moment>(moment())
+  const { user } = useAuthContext()
+  const boulderClimbs = useBoulderData()
+  const routeClimbs = useRouteData()
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
   const theme = useTheme()
   const lgAndDownScreen = useMediaQuery(theme.breakpoints.down("lg"))
 
+  useMemo(() => {
+    onSessionStart(sessionStart)
+  }, [])
+
   function submitForm() {
-    // process the data into ClimbLog[] format and send it to the API
-    console.log("Submit form")
+    if (user) {
+      const data = boulderClimbs
+        ? routeClimbs
+          ? boulderClimbs.concat(routeClimbs)
+          : boulderClimbs
+        : routeClimbs
+
+      onLogSession(sessionStart, data, user.id)
+    }
   }
 
   console.log("session logging page render")

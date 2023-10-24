@@ -75,3 +75,20 @@ export type UserIndoorRedpointGradesDoc = {
   Lead: string
   TopRope: string
 }
+
+export type SessionClimb = {
+  climbType: string
+  grade: string
+  tick: string
+  attemptCount: number
+  unixTime: number
+}
+
+export type ClimbingSessionData = {
+  hardestBoulderClimbed: string
+  hardestRouteClimbed: string
+  numberOfBoulders: number
+  numberOfRoutes: number
+  timestamp: Timestamp
+  climbs: ClimbLogDocument[]
+}

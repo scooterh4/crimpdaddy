@@ -17,6 +17,7 @@ import {
   ClimbLogDocument,
   UserClimbingData,
   UserIndoorRedpointGradesDoc,
+  ClimbingSessionData,
 } from "../static/types"
 import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../static/constants"
 import moment from "moment"
@@ -119,6 +120,11 @@ export const logClimb = async (
     console.log("FIRESTORE Error logging climbing data: ", error)
   }
 }
+
+export const logClimbingSession = async (
+  climbData: ClimbingSessionData,
+  userId: string
+): Promise<void> => {}
 
 // get all climbs for a user by type
 export const getAllUserClimbsByType = async (

@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment, { Moment } from "moment"
 import {
   GYM_CLIMB_TYPES,
   INDOOR_SPORT_GRADES,
@@ -11,7 +11,10 @@ import {
   ClimbLog,
   TickTypes,
   UserIndoorRedpointGradesDoc,
+  ClimbingSessionData,
+  SessionClimb,
 } from "../static/types"
+import { Timestamp } from "firebase/firestore"
 
 export function getMinimumMoment(dateFilter: number) {
   let minMoment = moment()
@@ -233,6 +236,74 @@ export function findNewRedpointGrades(
   })
 
   return returnGrades
+}
+
+export function assembleUserSessionData(
+  sessionStart: Moment,
+  sessionClimbs: SessionClimb[]
+): ClimbingSessionData {
+  let data = {
+    numberOfBoulders: 0,
+    numberOfRoutes: 0,
+    hardestBoulderClimbed: "",
+    hardestRouteClimbed: "",
+    timestamp: Timestamp.fromMillis(sessionStart.unix() * 1000),
+    climbs: [],
+  } as ClimbingSessionData
+
+  sessionClimbs.forEach((climb) => {
+    switch (climb.climbType) {
+      case GYM_CLIMB_TYPES[0]:
+        data.numberOfBoulders += 1
+        if (climb.tick !== "Attempt") {
+          data.hardestBoulderClimbed =
+            BOULDER_GRADES.indexOf(data.hardestBoulderClimbed) <
+            BOULDER_GRADES.indexOf(climb.grade)
+              ? climb.grade
+              : data.hardestBoulderClimbed
+        }
+        break
+      default:
+        data.numberOfRoutes += 1
+        if (climb.tick !== "Attempt") {
+          data.hardestRouteClimbed =
+            INDOOR_SPORT_GRADES.indexOf(data.hardestRouteClimbed) <
+            INDOOR_SPORT_GRADES.indexOf(climb.grade)
+              ? climb.grade
+              : data.hardestRouteClimbed
+        }
+        break
+    }
+
+    if (climb.tick === "Attempt") {
+      data.climbs.push({
+        Grade: climb.grade,
+        Tick: climb.tick,
+        Count: climb.attemptCount,
+        Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+      })
+    } else {
+      data.climbs.push({
+        Grade: climb.grade,
+        Tick: climb.tick,
+        Count: 1,
+        Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+      })
+      if (
+        climb.attemptCount > 1 &&
+        (climb.tick === "Redpoint" || climb.tick === "Repeat")
+      ) {
+        data.climbs.push({
+          Grade: climb.grade,
+          Tick: "Attempt",
+          Count: climb.attemptCount - 1,
+          Timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+        })
+      }
+    }
+  })
+
+  return data
 }
 
 // ------------------------

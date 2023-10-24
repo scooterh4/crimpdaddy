@@ -5,9 +5,13 @@ import React, {
   useMemo,
   useContext,
 } from "react"
-import { SessionClimb } from "../../../static/constants"
+import { SessionClimb } from "../../../static/types"
+import { Moment } from "moment"
+import { assembleUserSessionData } from "../../../util/data-helper-functions"
+import { logClimbingSession } from "../../../util/db"
 
 type State = {
+  sessionStart: Moment
   boulderData: SessionClimb[]
   routeData: SessionClimb[]
   openAddClimbDialog: boolean
@@ -17,15 +21,23 @@ type State = {
 }
 
 type API = {
+  onSessionStart: (time: Moment) => void
   onClimbAdded: (climbType: number, climb: SessionClimb) => void
   onOpenAddClimbDialog: (climbType: number) => void
   onCloseAddClimbDialog: () => void
   onOpenDeleteClimbDialog: (climb: SessionClimb, index: number) => void
   onCloseDeleteClimbDialog: () => void
   onRemoveClimb: (climbType: number, index: number) => void
-  onSave: () => void
+  onLogSession: (
+    sessionStart: Moment,
+    climbs: SessionClimb[],
+    userId: string
+  ) => void
 }
 
+const SessionStartContext = createContext<State["sessionStart"]>(
+  {} as State["sessionStart"]
+)
 const BoulderDataContext = createContext<State["boulderData"]>(
   {} as State["boulderData"]
 )
@@ -48,6 +60,7 @@ const ClimbToDeleteContext = createContext<State["climbToDelete"]>(
 const APIContext = createContext<API>({} as API)
 
 type Actions =
+  | { type: "sessionStarted"; time: Moment }
   | { type: "addClimbData"; climbType: number; climb: SessionClimb }
   | { type: "openAddClimbDialog"; open: boolean; climbType: number }
   | { type: "closeAddClimbDialog"; open: boolean }
@@ -61,6 +74,8 @@ type Actions =
 
 const reducer = (state: State, action: Actions): State => {
   switch (action.type) {
+    case "sessionStarted":
+      return { ...state, sessionStart: action.time }
     case "addClimbData":
       return action.climbType === 0
         ? {
@@ -120,6 +135,10 @@ export const SessionLoggerProvider = ({
   const [state, dispatch] = useReducer(reducer, {} as State)
 
   const api = useMemo(() => {
+    const onSessionStart = (time: Moment) => {
+      dispatch({ type: "sessionStarted", time })
+    }
+
     const onClimbAdded = (climbType: number, climb: SessionClimb) => {
       dispatch({ type: "addClimbData", climbType, climb })
     }
@@ -154,38 +173,49 @@ export const SessionLoggerProvider = ({
       dispatch({ type: "removeClimb", climbType, index })
     }
 
-    const onSave = () => {
-      // send the request to the backend here
+    const onLogSession = (
+      sessionStart: Moment,
+      climbs: SessionClimb[],
+      userId: string
+    ) => {
+      const data = assembleUserSessionData(sessionStart, climbs)
+      console.log("heres the assembled data", data)
+      //logClimbingSession(data, userId)
     }
 
     return {
+      onSessionStart,
       onClimbAdded,
       onOpenAddClimbDialog,
       onCloseAddClimbDialog,
       onOpenDeleteClimbDialog,
       onCloseDeleteClimbDialog,
       onRemoveClimb,
-      onSave,
+      onLogSession,
     }
   }, [])
 
   return (
     <APIContext.Provider value={api}>
-      <BoulderDataContext.Provider value={state.boulderData}>
-        <RouteDataContext.Provider value={state.routeData}>
-          <OpenAddClimbDialogContext.Provider value={state.openAddClimbDialog}>
-            <AddClimbTypeContext.Provider value={state.addClimbType}>
-              <DeleteClimbDialogVisibilityContext.Provider
-                value={state.deleteClimbDialogVisible}
-              >
-                <ClimbToDeleteContext.Provider value={state.climbToDelete}>
-                  {children}
-                </ClimbToDeleteContext.Provider>
-              </DeleteClimbDialogVisibilityContext.Provider>
-            </AddClimbTypeContext.Provider>
-          </OpenAddClimbDialogContext.Provider>
-        </RouteDataContext.Provider>
-      </BoulderDataContext.Provider>
+      <SessionStartContext.Provider value={state.sessionStart}>
+        <BoulderDataContext.Provider value={state.boulderData}>
+          <RouteDataContext.Provider value={state.routeData}>
+            <OpenAddClimbDialogContext.Provider
+              value={state.openAddClimbDialog}
+            >
+              <AddClimbTypeContext.Provider value={state.addClimbType}>
+                <DeleteClimbDialogVisibilityContext.Provider
+                  value={state.deleteClimbDialogVisible}
+                >
+                  <ClimbToDeleteContext.Provider value={state.climbToDelete}>
+                    {children}
+                  </ClimbToDeleteContext.Provider>
+                </DeleteClimbDialogVisibilityContext.Provider>
+              </AddClimbTypeContext.Provider>
+            </OpenAddClimbDialogContext.Provider>
+          </RouteDataContext.Provider>
+        </BoulderDataContext.Provider>
+      </SessionStartContext.Provider>
     </APIContext.Provider>
   )
 }
