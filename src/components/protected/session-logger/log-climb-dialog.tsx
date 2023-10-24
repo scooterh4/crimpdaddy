@@ -24,6 +24,7 @@ import { AppColors, ThemeColors } from "../../../static/styles"
 import TickDescription from "./tick-description"
 import AttemptInput from "./attempt-input"
 import { SessionClimb } from "../../../static/types"
+import RouteTypeSelector from "./route-type-selector"
 
 export function LogClimbDialog() {
   const open = useOpenAddClimbDialog()
@@ -43,19 +44,38 @@ export function LogClimbDialog() {
       : setGradesList(INDOOR_SPORT_GRADES)
   }, [climbType])
 
-  function submitForm() {
-    const climbData: SessionClimb = {
-      climbType: climbType > 0 ? routeClimbType : GYM_CLIMB_TYPES[climbType],
-      grade: selectedGrade,
-      tick: selectedTick,
-      attemptCount:
-        attemptCount.toString() === "" ? 1 : parseInt(attemptCount.toString()),
-      unixTime: moment().unix(),
+  function formHasError() {
+    let hasError = false
+
+    if (selectedTick !== "Onsight" && selectedTick !== "Flash") {
+      if (!attemptCount || attemptCount === "") {
+        setAttemptError(true)
+        hasError = true
+      }
     }
 
-    console.log("ClimbData added:", climbData)
-    onClimbAdded(climbType, climbData)
-    resetDialog()
+    return hasError
+  }
+
+  function submitForm() {
+    if (!formHasError()) {
+      const climbData: SessionClimb = {
+        climbType: climbType > 0 ? routeClimbType : GYM_CLIMB_TYPES[climbType],
+        grade: selectedGrade,
+        tick: selectedTick,
+        attemptCount:
+          attemptCount.toString() === ""
+            ? 1
+            : parseInt(attemptCount.toString()),
+        unixTime: moment().unix(),
+      }
+
+      console.log("ClimbData added:", climbData)
+      onClimbAdded(climbType, climbData)
+      resetDialog()
+    } else {
+      console.log("Form has error")
+    }
   }
 
   function resetDialog() {
@@ -73,51 +93,22 @@ export function LogClimbDialog() {
         Add {climbType > 0 ? "route" : "boulder"}
       </DialogTitle>
       <DialogContent>
-        {climbType > 0 && (
-          <Grid container direction={"row"} marginBottom={2}>
-            <Button
-              onClick={() => setRouteClimbType(GYM_CLIMB_TYPES[1])}
-              sx={{
-                backgroundColor:
-                  routeClimbType === GYM_CLIMB_TYPES[1]
-                    ? ThemeColors.darkAccent
-                    : AppColors.primary,
-                color: "white",
-                ":hover": {
-                  backgroundColor: ThemeColors.darkAccent,
-                  color: "white",
-                },
-                textTransform: "none",
-              }}
-            >
-              Lead
-            </Button>
-            <Button
-              onClick={() => setRouteClimbType(GYM_CLIMB_TYPES[2])}
-              sx={{
-                backgroundColor:
-                  routeClimbType === GYM_CLIMB_TYPES[2]
-                    ? ThemeColors.darkAccent
-                    : AppColors.primary,
-                ":hover": {
-                  backgroundColor: ThemeColors.darkAccent,
-                  color: "white",
-                },
-                color: "white",
-                textTransform: "none",
-                marginLeft: 1,
-              }}
-            >
-              Top rope
-            </Button>
-          </Grid>
+        {climbType > GYM_CLIMB_TYPES.Boulder && (
+          <RouteTypeSelector
+            routeClimbType={routeClimbType}
+            setRouteClimbType={setRouteClimbType}
+          />
         )}
-        Select grade:
-        <GradeSelector
-          gradesList={gradesList}
-          selectedGrade={selectedGrade}
-          setSelectedGrade={setSelectedGrade}
-        />
+        {(climbType === GYM_CLIMB_TYPES.Boulder || routeClimbType) && (
+          <div>
+            <b>Select grade:</b>
+            <GradeSelector
+              gradesList={gradesList}
+              selectedGrade={selectedGrade}
+              setSelectedGrade={setSelectedGrade}
+            />
+          </div>
+        )}
         {selectedGrade !== "" && (
           <div>
             Select tick:
