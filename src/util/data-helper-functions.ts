@@ -284,7 +284,7 @@ export function assembleUserSessionData(
         grade: climb.grade,
         tick: climb.tick,
         count: climb.attemptCount,
-        timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+        unixTime: climb.unixTime,
       })
     } else {
       data.climbs.push({
@@ -292,7 +292,7 @@ export function assembleUserSessionData(
         grade: climb.grade,
         tick: climb.tick,
         count: 1,
-        timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+        unixTime: climb.unixTime,
       })
       if (
         climb.attemptCount > 1 &&
@@ -303,7 +303,7 @@ export function assembleUserSessionData(
           grade: climb.grade,
           tick: "Attempt",
           count: climb.attemptCount - 1,
-          timestamp: Timestamp.fromMillis(climb.unixTime * 1000),
+          unixTime: climb.unixTime,
         })
       }
     }

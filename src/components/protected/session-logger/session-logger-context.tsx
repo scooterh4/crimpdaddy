@@ -5,7 +5,11 @@ import React, {
   useMemo,
   useContext,
 } from "react"
-import { EditSessionClimb, SessionClimb } from "../../../static/types"
+import {
+  ClimbingSessionData,
+  EditSessionClimb,
+  SessionClimb,
+} from "../../../static/types"
 import { Moment } from "moment"
 import { assembleUserSessionData } from "../../../util/data-helper-functions"
 import { logClimbingSession } from "../../../util/db"
@@ -34,11 +38,7 @@ type API = {
   onOpenDeleteClimbDialog: (climb: SessionClimb, index: number) => void
   onCloseDeleteClimbDialog: () => void
   onRemoveClimb: (climbType: number, index: number) => void
-  onLogSession: (
-    sessionStart: Moment,
-    climbs: SessionClimb[],
-    userId: string
-  ) => void
+  onLogSession: (climbs: ClimbingSessionData, userId: string) => void
 }
 
 const SessionStartContext = createContext<State["sessionStart"]>(
@@ -222,14 +222,8 @@ export const SessionLoggerProvider = ({
       dispatch({ type: "removeClimb", climbType, index })
     }
 
-    const onLogSession = (
-      sessionStart: Moment,
-      climbs: SessionClimb[],
-      userId: string
-    ) => {
-      const data = assembleUserSessionData(sessionStart, climbs)
-      console.log("heres the assembled data", data)
-      logClimbingSession(data, userId)
+    const onLogSession = (climbs: ClimbingSessionData, userId: string) => {
+      logClimbingSession(climbs, userId)
     }
 
     return {

@@ -30,7 +30,7 @@ import { Routes } from "../../../router"
 export default function LogClimbPage() {
   const navigate = useNavigate()
   const { user } = useAuthContext()
-  const { addClimbLogData } = useUserContext()
+  // const { addClimbLogData } = useUserContext()
   const [climbType, setClimbType] = useState("")
   const [gradesList, setGradesList] = useState<string[]>([])
   const [selectedGrade, setSelectedGrade] = useState("")
@@ -112,7 +112,7 @@ export default function LogClimbPage() {
         }
 
         // We are assuming the climbs got logged properly in the db
-        addClimbLogData(newClimbLogData)
+        // addClimbLogData(newClimbLogData)
         navigate(Routes.dashboard)
         toast.success(toastMessage, { toastId: "climbLogged" })
       }

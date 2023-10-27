@@ -32,7 +32,7 @@ interface IUserContext {
   userBoulderGradePyramidData: GradePyramidGraphData[] | null
   userLeadGradePyramidData: GradePyramidGraphData[] | null
   userTrGradePyramidData: GradePyramidGraphData[] | null
-  addClimbLogData: (logsToAdd: ClimbLog[]) => void
+  updateSessionStorageData: (logsToAdd: ClimbLog[]) => void
   dataDateRange: number | null
   updateDateRange: (newRange: number | null, fromComponent: string) => void
   userIndoorRedpointGrades: UserIndoorRedpointGradesDoc | null
@@ -49,7 +49,7 @@ const userDefaultState: IUserContext = {
   userBoulderGradePyramidData: null,
   userLeadGradePyramidData: null,
   userTrGradePyramidData: null,
-  addClimbLogData: () => {},
+  updateSessionStorageData: () => {},
   dataDateRange: null,
   updateDateRange: () => {},
   userIndoorRedpointGrades: null,
@@ -140,7 +140,7 @@ export const UserDataProvider = ({
     }
   }, [user])
 
-  const addClimbLogData = (logsToAdd: ClimbLog[]) => {
+  const updateSessionStorageData = (logsToAdd: ClimbLog[]) => {
     let boulderLogsReturn: ClimbLog[] | null = null
     let leadLogsReturn: ClimbLog[] | null = null
     let topRopeLogsReturn: ClimbLog[] | null = null
@@ -290,7 +290,7 @@ export const UserDataProvider = ({
     userBoulderGradePyramidData,
     userLeadGradePyramidData,
     userTrGradePyramidData,
-    addClimbLogData,
+    updateSessionStorageData,
     dataDateRange,
     updateDateRange,
     userIndoorRedpointGrades,

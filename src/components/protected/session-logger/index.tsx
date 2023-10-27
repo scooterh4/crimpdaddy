@@ -22,6 +22,8 @@ import moment, { Moment } from "moment"
 import { useAuthContext } from "../../app/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { assembleUserSessionData } from "../../../util/data-helper-functions"
+import { useUserContext } from "../user-context"
 
 export default function SessionLoggerPage() {
   return (
@@ -33,6 +35,7 @@ export default function SessionLoggerPage() {
 
 function SessionLogger() {
   const { onSessionStart, onLogSession } = useSessionAPI()
+  const { updateSessionStorageData } = useUserContext()
   const navigate = useNavigate()
   const [sessionStart] = useState<Moment>(moment())
   const { user } = useAuthContext()
@@ -48,13 +51,17 @@ function SessionLogger() {
 
   function submitForm() {
     if (user) {
-      const data = boulderClimbs
+      const sessionData = boulderClimbs
         ? routeClimbs
           ? boulderClimbs.concat(routeClimbs)
           : boulderClimbs
         : routeClimbs
 
-      onLogSession(sessionStart, data, user.id)
+      const data = assembleUserSessionData(sessionStart, sessionData)
+      onLogSession(data, user.id)
+
+      // We are assuming the climbs got logged properly in the db
+      updateSessionStorageData(data.climbs)
       toast.success("Session logged!")
       navigate(Routes.dashboard)
     }

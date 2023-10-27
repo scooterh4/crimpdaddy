@@ -22,13 +22,13 @@ export type UserClimbingData = {
   }
 }
 
-export type ClimbLogDocument = {
-  climbType: string
-  grade: string
-  tick: string
-  count: number
-  timestamp: Timestamp
-}
+// export type ClimbLogDocument = {
+//   climbType: string
+//   grade: string
+//   tick: string
+//   count: number
+//   timestamp: Timestamp
+// }
 
 export type ClimbLog = {
   climbType: string
@@ -104,5 +104,5 @@ export type ClimbingSessionMetadata = {
 
 export type ClimbingSessionData = {
   sessionMetadata: ClimbingSessionMetaData
-  climbs: ClimbLogDocument[]
+  climbs: ClimbLog[]
 }

@@ -14,7 +14,6 @@ import {
 import {
   ClimbLog,
   GradePyramidGraphData,
-  ClimbLogDocument,
   UserClimbingData,
   UserIndoorRedpointGradesDoc,
   ClimbingSessionData,
@@ -91,14 +90,6 @@ export const logClimb = async (
   const collectionPath = `/${collectionName}/${userId}/indoor_${climbData.climbType[0].toLowerCase() +
     climbData.climbType.slice(1)}`
 
-  const newDocument: ClimbLogDocument = {
-    climbType: climbData.climbType,
-    grade: climbData.grade,
-    tick: climbData.tick,
-    count: climbData.count,
-    timestamp: Timestamp.fromMillis(climbData.unixTime * 1000),
-  }
-
   try {
     const userDoc = doc(firestore, `/${collectionName}/${userId}`)
 
@@ -108,11 +99,11 @@ export const logClimb = async (
         const addUser = doc(firestore, `${collectionName}`, userId)
 
         setDoc(addUser, { userId: userId }).then(() => {
-          addDoc(collection(firestore, collectionPath), newDocument)
+          addDoc(collection(firestore, collectionPath), climbData)
         })
       } else {
         // user doc exists, so just add the climb
-        addDoc(collection(firestore, collectionPath), newDocument)
+        addDoc(collection(firestore, collectionPath), climbData)
       }
     })
   } catch (error) {
@@ -142,37 +133,37 @@ export const logClimbingSession = async (
 }
 
 // get all climbs for a user by type
-export const getAllUserClimbsByType = async (
-  userId: string,
-  climbType: number,
-  filter: number
-): Promise<ClimbLogDocument[]> => {
-  const rawClimbingData: ClimbLogDocument[] = []
-  const type = GYM_CLIMB_TYPES[climbType]
-  const collectionPath = `/${collectionName}/${userId}/indoor_${type[0].toLowerCase() +
-    type.slice(1)}`
-  const minMoment = getMinimumMoment(filter)
+// export const getAllUserClimbsByType = async (
+//   userId: string,
+//   climbType: number,
+//   filter: number
+// ): Promise<ClimbLogDocument[]> => {
+//   const rawClimbingData: ClimbLogDocument[] = []
+//   const type = GYM_CLIMB_TYPES[climbType]
+//   const collectionPath = `/${collectionName}/${userId}/indoor_${type[0].toLowerCase() +
+//     type.slice(1)}`
+//   const minMoment = getMinimumMoment(filter)
 
-  try {
-    console.log("FIRESTORE READ CALL")
+//   try {
+//     console.log("FIRESTORE READ CALL")
 
-    const q = query(
-      collection(firestore, collectionPath).withConverter(converter()),
-      where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
-      where("Timestamp", "<=", Timestamp.fromDate(moment().toDate()))
-    )
+//     const q = query(
+//       collection(firestore, collectionPath).withConverter(converter()),
+//       where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
+//       where("Timestamp", "<=", Timestamp.fromDate(moment().toDate()))
+//     )
 
-    const querySnapshot = await getDocs(q)
+//     const querySnapshot = await getDocs(q)
 
-    querySnapshot.forEach((doc) => {
-      rawClimbingData.push(doc.data() as ClimbLogDocument)
-    })
-  } catch (error) {
-    console.log(`FIRESTORE Error retreiving ${type} data:`, error)
-  }
+//     querySnapshot.forEach((doc) => {
+//       rawClimbingData.push(doc.data() as ClimbLogDocument)
+//     })
+//   } catch (error) {
+//     console.log(`FIRESTORE Error retreiving ${type} data:`, error)
+//   }
 
-  return rawClimbingData
-}
+//   return rawClimbingData
+// }
 
 // get all climbs for a user
 export const getAllUserClimbingData = async (
@@ -203,18 +194,18 @@ export const getAllUserClimbingData = async (
 
       getDocs(docQuery).then((docs) => {
         docs.forEach((doc) => {
-          const data = doc.data() as ClimbLogDocument
-          rawClimbingData.push({ ...data, unixTime: data.timestamp.seconds })
+          const data = doc.data() as ClimbLog
+          rawClimbingData.push(data)
 
           switch (data.climbType) {
             case GYM_CLIMB_TYPES[0]:
-              rawBoulderData.push({ ...data, unixTime: data.timestamp.seconds })
+              rawBoulderData.push(data)
               break
             case GYM_CLIMB_TYPES[1]:
-              rawLeadData.push({ ...data, unixTime: data.timestamp.seconds })
+              rawLeadData.push(data)
               break
             case GYM_CLIMB_TYPES[2]:
-              rawTrData.push({ ...data, unixTime: data.timestamp.seconds })
+              rawTrData.push(data)
               break
           }
         })
@@ -248,6 +239,8 @@ export const getAllUserClimbingData = async (
     GradePyramidFilter.ClimbsAndAttempts,
     filterRange
   )
+
+  console.log("boulderPyramidData", boulderPyramidData)
 
   return {
     climbingLogs: {
