@@ -67,41 +67,25 @@ export function LogClimbDialog() {
       ? setGradesList(BOULDER_GRADES.slice(1))
       : setGradesList(INDOOR_SPORT_GRADES.slice(1))
   }, [climbType])
-  function formHasError() {
-    let hasError = false
-
-    if (selectedTick !== "Onsight" && selectedTick !== "Flash") {
-      if (!attemptCount || attemptCount === "") {
-        setAttemptError(true)
-        hasError = true
-      }
-    }
-
-    return hasError
-  }
 
   function submitForm() {
-    if (!formHasError()) {
-      const climbData: SessionClimb = {
-        climbType: climbType > 0 ? routeClimbType : GYM_CLIMB_TYPES[climbType],
-        grade: selectedGrade,
-        tick: selectedTick,
-        attemptCount:
-          attemptCount.toString() === ""
-            ? 1
-            : parseInt(attemptCount.toString()),
-        unixTime: unixTime !== 0 ? unixTime : moment().unix(),
-      }
-
-      add
-        ? onClimbAdded(climbType, climbData)
-        : onUpdateClimb({
-            ...climbData,
-            index: editClimb.index,
-          } as EditSessionClimb)
-
-      resetDialog()
+    const climbData: SessionClimb = {
+      climbType: climbType > 0 ? routeClimbType : GYM_CLIMB_TYPES[climbType],
+      grade: selectedGrade,
+      tick: selectedTick,
+      attemptCount:
+        attemptCount.toString() === "" ? 1 : parseInt(attemptCount.toString()),
+      unixTime: unixTime !== 0 ? unixTime : moment().unix(),
     }
+
+    add
+      ? onClimbAdded(climbType, climbData)
+      : onUpdateClimb({
+          ...climbData,
+          index: editClimb.index,
+        } as EditSessionClimb)
+
+    resetDialog()
   }
 
   function resetDialog() {
