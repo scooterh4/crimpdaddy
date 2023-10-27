@@ -155,83 +155,58 @@ export function findNewRedpointGrades(
   let returnGrades = currentHardestGrades
     ? currentHardestGrades
     : { boulder: "", lead: "", topRope: "" }
-  let updateGrade = ""
-  // Assuming all climbs are of the same type
-  // with the current climb-logging design this should be true
-  const gradeSystem =
-    climbLogs[0].climbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
-      ? BOULDER_GRADES
-      : INDOOR_SPORT_GRADES
 
   climbLogs.forEach((climb) => {
+    const gradeSystem =
+      climb.climbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
+        ? BOULDER_GRADES
+        : INDOOR_SPORT_GRADES
     if (climb.tick === "Attempt") {
       return
-    } else {
-      if (!currentHardestGrades) {
-        switch (climb.climbType) {
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
-            returnGrades = {
-              boulder: climb.grade,
-              lead: "",
-              topRope: "",
-            }
-            break
-
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
-            returnGrades = {
-              boulder: "",
-              lead: climb.grade,
-              topRope: "",
-            }
-            break
-
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
-            returnGrades = {
-              boulder: "",
-              lead: "",
-              topRope: climb.grade,
-            }
-            break
+    }
+    switch (climb.climbType) {
+      case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
+        if (returnGrades.boulder === "") {
+          returnGrades.boulder = climb.grade
+          break
         }
-      } else {
-        switch (climb.climbType) {
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]:
-            const boulderGradeIndex = gradeSystem.indexOf(climb.grade)
-            const boulderHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.boulder
-            )
-            updateGrade =
-              boulderGradeIndex > boulderHardestGradeIndex
-                ? climb.grade
-                : currentHardestGrades.boulder
-            returnGrades.boulder = updateGrade
-            break
+        const boulderGradeIndex = gradeSystem.indexOf(climb.grade)
+        const boulderHardestGradeIndex = gradeSystem.indexOf(
+          returnGrades.boulder
+        )
+        returnGrades.boulder =
+          boulderGradeIndex > boulderHardestGradeIndex
+            ? climb.grade
+            : returnGrades.boulder
+        break
 
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
-            const leadGradeIndex = gradeSystem.indexOf(climb.grade)
-            const leadHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.lead
-            )
-            updateGrade =
-              leadGradeIndex > leadHardestGradeIndex
-                ? climb.grade
-                : currentHardestGrades.lead
-            returnGrades.lead = updateGrade
-            break
-
-          case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
-            const trGradeIndex = gradeSystem.indexOf(climb.grade)
-            const trHardestGradeIndex = gradeSystem.indexOf(
-              currentHardestGrades.topRope
-            )
-            updateGrade =
-              trGradeIndex > trHardestGradeIndex
-                ? climb.grade
-                : currentHardestGrades.topRope
-            returnGrades.topRope = updateGrade
-            break
+      case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Lead]:
+        if (returnGrades.lead === "") {
+          returnGrades.lead = climb.grade
+          break
         }
-      }
+        const leadGradeIndex = gradeSystem.indexOf(climb.grade)
+        const leadHardestGradeIndex = gradeSystem.indexOf(returnGrades.lead)
+        returnGrades.lead =
+          leadGradeIndex > leadHardestGradeIndex
+            ? climb.grade
+            : returnGrades.lead
+        break
+
+      case GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.TopRope]:
+        if (returnGrades.topRope === "") {
+          returnGrades.topRope = climb.grade
+          break
+        }
+        const topRopeGradeIndex = gradeSystem.indexOf(climb.grade)
+        const topRopeHardestGradeIndex = gradeSystem.indexOf(
+          returnGrades.topRope
+        )
+        returnGrades.topRope =
+          topRopeGradeIndex > topRopeHardestGradeIndex
+            ? climb.grade
+            : returnGrades.topRope
+        break
     }
   })
 
@@ -248,7 +223,7 @@ export function assembleUserSessionData(
       numberOfRoutes: 0,
       hardestBoulderClimbed: "",
       hardestRouteClimbed: "",
-      timestamp: Timestamp.fromMillis(sessionStart.unix() * 1000),
+      sessionStart: Timestamp.fromMillis(sessionStart.unix() * 1000),
     },
     climbs: [],
   } as ClimbingSessionData
@@ -311,104 +286,3 @@ export function assembleUserSessionData(
 
   return data
 }
-
-// ------------------------
-// Data migration functions
-// ------------------------
-// export const LogNewClimbStructure = async (
-//   climbData: ClimbLog
-// ): Promise<void> => {
-//   const collectionPath = `/${collectionName}/${
-//     climbData.UserId
-//   }/indoor_${climbData.ClimbType[0].toLowerCase() +
-//     climbData.ClimbType.slice(1)}`
-
-//   const newDocument: ClimbLogDocument = {
-//     Grade: climbData.Grade,
-//     Tick: climbData.Tick,
-//     Count: climbData.Count,
-//     Timestamp: climbData.Timestamp,
-//   }
-
-//   try {
-//     const userDoc = doc(db, `/${collectionName}/${climbData.UserId}`)
-
-//     await getDoc(userDoc)
-//       .then((document) => {
-//         // Check whether the user doc exists, if not, create it
-//         if (!document.exists()) {
-//           setDoc(doc(db, `${collectionName}`, climbData.UserId), {
-//             userId: climbData.UserId,
-//           })
-//         }
-//       })
-//       .then(() => {
-//         // Add the new data
-//         setDoc(
-//           doc(db, collectionPath, newDocument.Timestamp.seconds.toString()),
-//           newDocument
-//         )
-//       })
-//   } catch (error) {
-//     console.log("Error logging climbing data: ", error)
-//   }
-// }
-
-// export const MigrateUser = async (userId: string): Promise<void> => {
-//   try {
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Boulder).then(
-//       (boulderData) => {
-//         let boulders = 0
-//         boulderData.forEach((boulder) => {
-//           const addDoc: ClimbLog = {
-//             UserId: userId,
-//             ClimbType: GYM_CLIMB_TYPES[0],
-//             ...boulder,
-//           }
-//           LogNewClimbStructure(addDoc)
-//           boulders++
-//         })
-
-//         console.log("Migrated this many boulders:", boulders)
-//       }
-//     )
-
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead).then(
-//       (leadData) => {
-//         let leads = 0
-//         leadData.forEach((boulder) => {
-//           const addDoc: ClimbLog = {
-//             UserId: userId,
-//             ClimbType: GYM_CLIMB_TYPES[1],
-//             ...boulder,
-//           }
-//           LogNewClimbStructure(addDoc)
-//           leads++
-//         })
-
-//         console.log("Migrated this many leads:", leads)
-//       }
-//     )
-
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope).then(
-//       (trData) => {
-//         let trs = 0
-//         trData.forEach((boulder) => {
-//           const addDoc: ClimbLog = {
-//             UserId: userId,
-//             ClimbType: GYM_CLIMB_TYPES[2],
-//             ...boulder,
-//           }
-//           LogNewClimbStructure(addDoc)
-//           trs++
-//         })
-
-//         console.log("Migrated this many trs:", trs)
-//       }
-//     )
-//   } catch (error) {
-//     console.log("Error migrating user:", error)
-//   }
-//   console.log("It worked!")
-//   return
-// }

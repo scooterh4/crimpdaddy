@@ -141,10 +141,6 @@ export const UserDataProvider = ({
   }, [user])
 
   const updateSessionStorageData = (logsToAdd: ClimbLog[]) => {
-    let boulderLogsReturn: ClimbLog[] | null = null
-    let leadLogsReturn: ClimbLog[] | null = null
-    let topRopeLogsReturn: ClimbLog[] | null = null
-
     setUserClimbingLogs(
       userClimbingLogs ? userClimbingLogs.concat(logsToAdd) : logsToAdd
     )
@@ -158,55 +154,57 @@ export const UserDataProvider = ({
     }
     setUserIndoorRedpointGrades(redpointGrades)
 
-    const climbType = logsToAdd[0].climbType
-    switch (climbType) {
-      case "Boulder":
-        setUserBoulderLogs(
-          userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd
-        )
-        const newBoulderData = assembleGradePyramidGraphData(
-          userBoulderLogs ? userBoulderLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.Boulder,
-          GradePyramidFilter.ClimbsAndAttempts,
-          dataDateRange ? dataDateRange : DateFilters.ThisWeek
-        )
-        setUserBoulderGradePyramidData(newBoulderData)
-        boulderLogsReturn = userBoulderLogs
-          ? userBoulderLogs.concat(logsToAdd)
-          : logsToAdd
-        break
+    let newBoulderLogs = userBoulderLogs
+    let newLeadLogs = userLeadLogs
+    let newTopRopeLogs = userTopRopeLogs
 
-      case "Lead":
-        setUserLeadLogs(
-          userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd
-        )
-        const newLeadData = assembleGradePyramidGraphData(
-          userLeadLogs ? userLeadLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.Lead,
-          GradePyramidFilter.ClimbsAndAttempts,
-          dataDateRange ? dataDateRange : DateFilters.ThisWeek
-        )
-        setUserLeadGradePyramidData(newLeadData)
-        leadLogsReturn = userLeadLogs
-          ? userLeadLogs.concat(logsToAdd)
-          : logsToAdd
-        break
+    logsToAdd.forEach((climb) => {
+      switch (climb.climbType) {
+        case "Boulder":
+          newBoulderLogs = newBoulderLogs
+            ? newBoulderLogs.concat(climb)
+            : [climb]
+          break
+        case "Lead":
+          newLeadLogs = newLeadLogs ? newLeadLogs.concat(climb) : [climb]
+          break
+        case "TopRope":
+          newTopRopeLogs = newTopRopeLogs
+            ? newTopRopeLogs.concat(climb)
+            : [climb]
+          break
+      }
+    })
 
-      case "TopRope":
-        setUserTopRopeLogs(
-          userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd
-        )
-        const newTrData = assembleGradePyramidGraphData(
-          userTopRopeLogs ? userTopRopeLogs.concat(logsToAdd) : logsToAdd,
-          GYM_CLIMB_TYPES.TopRope,
-          GradePyramidFilter.ClimbsAndAttempts,
-          dataDateRange ? dataDateRange : DateFilters.ThisWeek
-        )
-        setUserTrGradePyramidData(newTrData)
-        topRopeLogsReturn = userTopRopeLogs
-          ? userTopRopeLogs.concat(logsToAdd)
-          : logsToAdd
-        break
+    if (newBoulderLogs) {
+      setUserBoulderLogs(newBoulderLogs)
+      const newBoulderData = assembleGradePyramidGraphData(
+        newBoulderLogs,
+        GYM_CLIMB_TYPES.Boulder,
+        GradePyramidFilter.ClimbsAndAttempts,
+        dataDateRange ? dataDateRange : DateFilters.ThisWeek
+      )
+      setUserBoulderGradePyramidData(newBoulderData)
+    }
+    if (newLeadLogs) {
+      setUserLeadLogs(newLeadLogs)
+      const newLeadData = assembleGradePyramidGraphData(
+        newLeadLogs,
+        GYM_CLIMB_TYPES.Lead,
+        GradePyramidFilter.ClimbsAndAttempts,
+        dataDateRange ? dataDateRange : DateFilters.ThisWeek
+      )
+      setUserLeadGradePyramidData(newLeadData)
+    }
+    if (newTopRopeLogs) {
+      setUserTopRopeLogs(newTopRopeLogs)
+      const newTrData = assembleGradePyramidGraphData(
+        newTopRopeLogs,
+        GYM_CLIMB_TYPES.TopRope,
+        GradePyramidFilter.ClimbsAndAttempts,
+        dataDateRange ? dataDateRange : DateFilters.ThisWeek
+      )
+      setUserTrGradePyramidData(newTrData)
     }
 
     sessionStorage.setItem(
@@ -217,21 +215,9 @@ export const UserDataProvider = ({
           allClimbs: userClimbingLogs
             ? userClimbingLogs.concat(logsToAdd)
             : logsToAdd,
-          boulderLogs: boulderLogsReturn
-            ? boulderLogsReturn
-            : userBoulderLogs
-            ? userBoulderLogs
-            : [],
-          leadLogs: leadLogsReturn
-            ? leadLogsReturn
-            : userLeadLogs
-            ? userLeadLogs
-            : [],
-          topRopeLogs: topRopeLogsReturn
-            ? topRopeLogsReturn
-            : userTopRopeLogs
-            ? userTopRopeLogs
-            : [],
+          boulderLogs: newBoulderLogs ? newBoulderLogs : [],
+          leadLogs: newLeadLogs ? newLeadLogs : [],
+          topRopeLogs: newTopRopeLogs ? newTopRopeLogs : [],
         },
         gradePyramidData: {
           boulderData: userBoulderGradePyramidData,

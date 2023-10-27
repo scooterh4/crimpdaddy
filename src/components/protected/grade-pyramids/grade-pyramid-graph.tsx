@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
   Bar,
   BarChart,
@@ -39,7 +39,7 @@ export default function GradePyramid({
     userBoulderLogs,
     userLeadLogs,
     userTopRopeLogs,
-    userClimbingLogs,
+    // userClimbingLogs,
   } = useUserContext()
   const [graphData, setGraphData] = useState<GradePyramidGraphData[]>([])
   const theme = useTheme()
@@ -47,7 +47,7 @@ export default function GradePyramid({
   const mdScreen = useMediaQuery(theme.breakpoints.only("md"))
   const graphAspectRatio = lgScreenAndUp ? 4 : mdScreen ? 3 : 2
 
-  useEffect(() => {
+  useMemo(() => {
     switch (climbType) {
       case GYM_CLIMB_TYPES.Boulder:
         setGraphData(
@@ -61,7 +61,7 @@ export default function GradePyramid({
         setGraphData(userTrGradePyramidData ? userTrGradePyramidData : [])
         break
     }
-  }, [userClimbingLogs])
+  }, [])
 
   useEffect(() => {
     const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
@@ -110,16 +110,16 @@ export default function GradePyramid({
             <YAxis
               type="category"
               tickCount={graphData.length}
-              dataKey="Grade"
+              dataKey="grade"
               tickLine={false}
               fontSize={12}
             />
             <Tooltip />
             <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-            <Bar dataKey="Onsight" stackId="a" fill={GraphColors.Onsight} />
-            <Bar dataKey="Flash" stackId="a" fill={GraphColors.Flash} />
-            <Bar dataKey="Redpoint" stackId="a" fill={GraphColors.Redpoint} />
-            <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
+            <Bar dataKey="onsight" stackId="a" fill={GraphColors.Onsight} />
+            <Bar dataKey="flash" stackId="a" fill={GraphColors.Flash} />
+            <Bar dataKey="redpoint" stackId="a" fill={GraphColors.Redpoint} />
+            <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
           </BarChart>
         </ResponsiveContainer>
       </Grid>
