@@ -10,7 +10,7 @@ import Landing from "./components/public/landing"
 import Login from "./components/public/login"
 import SignUp from "./components/public/sign-up"
 import ResetPassword from "./components/public/reset-password"
-import UserLayout from "./components/protected/protected-layout"
+import ProtectedLayout from "./components/protected/protected-layout"
 import Dashboard from "./components/protected/dashboard/index"
 import LogClimbPage from "./components/protected/climb-logger"
 import SessionLogger from "./components/protected/session-logger"
@@ -41,7 +41,7 @@ export const router = createBrowserRouter(
         <Route path={Routes.signup} element={<SignUp />} />
         <Route path={Routes.resetPassword} element={<ResetPassword />} />
       </Route>
-      <Route path={protectedLayout} element={<UserLayout />}>
+      <Route path={protectedLayout} element={<ProtectedLayout />}>
         <Route path={Routes.dashboard} element={<Dashboard />} />
         <Route path={Routes.logClimb} element={<LogClimbPage />} />
         <Route path={Routes.climbSession} element={<SessionLogger />} />
