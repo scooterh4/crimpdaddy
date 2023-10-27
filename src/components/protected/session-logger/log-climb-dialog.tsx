@@ -64,8 +64,8 @@ export function LogClimbDialog() {
 
   useMemo(() => {
     climbType === 0
-      ? setGradesList(BOULDER_GRADES)
-      : setGradesList(INDOOR_SPORT_GRADES)
+      ? setGradesList(BOULDER_GRADES.slice(1))
+      : setGradesList(INDOOR_SPORT_GRADES.slice(1))
   }, [climbType])
   function formHasError() {
     let hasError = false
