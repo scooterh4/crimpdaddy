@@ -13,6 +13,7 @@ export enum GYM_CLIMB_TYPES {
 export const TICK_TYPES = ["Onsight", "Flash", "Redpoint", "Repeat", "Attempt"]
 
 export const BOULDER_GRADES = [
+  "",
   "V0",
   "V1",
   "V2",
@@ -29,6 +30,7 @@ export const BOULDER_GRADES = [
 ]
 
 export const INDOOR_SPORT_GRADES = [
+  "",
   "5.6",
   "5.7",
   "5.8",
