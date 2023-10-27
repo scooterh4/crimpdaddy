@@ -1,6 +1,6 @@
 import React from "react"
 import { useOutlet } from "react-router-dom"
-import { UserDataProvider } from "./user-context"
+import { ProtectedDataProvider } from "./protected-context"
 import { Box, styled } from "@mui/material"
 import AppToolbar from "../common/toolbar"
 import AppFooter from "../common/footer"
@@ -17,7 +17,7 @@ export default function ProtectedLayout() {
   const outlet = useOutlet()
 
   return (
-    <UserDataProvider>
+    <ProtectedDataProvider>
       <PageWrapper>
         <AppToolbar title="Dashboard" />
 
@@ -37,6 +37,6 @@ export default function ProtectedLayout() {
 
         <AppFooter isAuthenticated={true} />
       </PageWrapper>
-    </UserDataProvider>
+    </ProtectedDataProvider>
   )
 }

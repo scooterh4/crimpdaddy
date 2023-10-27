@@ -16,7 +16,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { useNavigate } from "react-router-dom"
-import { useUserContext } from "../user-context"
+import { useUserContext } from "../protected-context"
 import { AppColors, ThemeColors } from "../../../static/styles"
 import { ClimbLog } from "../../../static/types"
 import { logClimb } from "../../../util/db"

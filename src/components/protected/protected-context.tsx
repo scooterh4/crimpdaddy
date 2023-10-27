@@ -55,11 +55,11 @@ const userDefaultState: IUserContext = {
   userIndoorRedpointGrades: null,
 }
 
-export const UserContext = createContext<IUserContext>(userDefaultState)
+export const ProtectedContext = createContext<IUserContext>(userDefaultState)
 
 const sessionDataKey = "climbingData"
 
-export const UserDataProvider = ({
+export const ProtectedDataProvider = ({
   children,
 }: {
   children: React.ReactNode
@@ -283,10 +283,10 @@ export const UserDataProvider = ({
   }
 
   return (
-    <UserContext.Provider value={authUserContextValue}>
+    <ProtectedContext.Provider value={authUserContextValue}>
       {children}
-    </UserContext.Provider>
+    </ProtectedContext.Provider>
   )
 }
 
-export const useUserContext = () => useContext(UserContext)
+export const useUserContext = () => useContext(ProtectedContext)

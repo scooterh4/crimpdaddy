@@ -23,7 +23,7 @@ import { useAuthContext } from "../../app/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { assembleUserSessionData } from "../../../util/data-helper-functions"
-import { useUserContext } from "../user-context"
+import { useUserContext } from "../protected-context"
 
 export default function SessionLoggerPage() {
   return (

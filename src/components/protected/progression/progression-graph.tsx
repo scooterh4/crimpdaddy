@@ -21,7 +21,7 @@ import {
 } from "../../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { AppColors, GraphColors } from "../../../static/styles"
-import { useUserContext } from "../user-context"
+import { useUserContext } from "../protected-context"
 import moment, { Moment } from "moment"
 import {
   NameType,

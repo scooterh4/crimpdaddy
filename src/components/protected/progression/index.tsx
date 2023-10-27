@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../user-context"
+import { useUserContext } from "../protected-context"
 import {
   DateFilters,
   GYM_CLIMB_TYPES,
