@@ -70,6 +70,19 @@ export function ClimbsLoggedDisplay({ title }: Props) {
       : climb.grade
   }
 
+  function getSecondaryText(climb: SessionClimb) {
+    return climb.tick === "Attempt"
+      ? `${climb.attemptCount} ${climb.tick}` +
+          (climb.attemptCount > 1 ? "s" : "")
+      : `${climb.tick}${
+          climb.attemptCount > 1
+            ? ` (with ${climb.attemptCount - 1} failed attempt${
+                climb.attemptCount > 2 ? "s" : ""
+              })`
+            : ""
+        }`
+  }
+
   return (
     <Grid
       border={1}
@@ -137,13 +150,7 @@ export function ClimbsLoggedDisplay({ title }: Props) {
                 <ListItemButton onClick={() => editClimb(climb, index)}>
                   <ListItemText
                     primary={getPrimaryText(climb)}
-                    secondary={`${climb.tick}${
-                      climb.attemptCount > 1
-                        ? ` (with ${climb.attemptCount - 1} failed attempt${
-                            climb.attemptCount > 2 ? "s" : ""
-                          })`
-                        : ""
-                    }`}
+                    secondary={getSecondaryText(climb)}
                     sx={{ fontFamily: "poppins" }}
                   />
                 </ListItemButton>
