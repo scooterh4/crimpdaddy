@@ -275,103 +275,95 @@ export const getAllUserClimbingData = async (
 //   Timestamp: Timestamp
 // }
 
-// export const LogNewClimbStructure = async (
-//   climbData: ClimbLog,
+// export const LogNewClimbSession = async (
+//   climbData: ClimbLog[],
+//   sessionDate: string,
 //   userId: string
 // ): Promise<void> => {
-//   const collectionPath = `/${collectionName}/${
-//     userId
-//   }/indoor_sessions`
+//   const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
 
-//   const climbSession = Timestamp.fromMillis(climbData.unixTime * 1000).toDate()
-//   const session = doc(firestore, `/${collectionPath}/${userId}`)
+//   const climbSession = Timestamp.fromDate(
+//     moment(sessionDate, "MM-DD-YYYY").toDate()
+//   )
 
 //   try {
-//     const q = query(
-//       collection(firestore, collectionPath).withConverter(converter()),
-//       where("sessionStart", "<=", Timestamp.fromMillis(climbData.unixTime * 1000).toDate().),
-//     )
-
-//     await getDocs(q).
-//       .then((document) => {
-//         // Check whether the user doc exists, if not, create it
-//         if (!document.exists()) {
-//           setDoc(doc(db, `${collectionName}`, climbData.UserId), {
-//             userId: climbData.UserId,
-//           })
-//         }
+//     addDoc(collection(firestore, collectionPath), {
+//       sessionStart: climbSession,
+//     }).then((docRef) => {
+//       const climbsPath = collectionPath + `/${docRef.id}/climbs`
+//       climbData.forEach((climb) => {
+//         addDoc(collection(firestore, climbsPath), climb)
 //       })
-//       .then(() => {
-//         // Add the new data
-//         setDoc(
-//           doc(db, collectionPath, newDocument.Timestamp.seconds.toString()),
-//           newDocument
-//         )
-//       })
+//     })
 //   } catch (error) {
 //     console.log("Error logging climbing data: ", error)
 //   }
 // }
 
 // export const MigrateUser = async (userId: string): Promise<void> => {
+//   let sessions: Map<string, ClimbLog[]> = new Map<string, ClimbLog[]>()
+
 //   try {
 //     await getAllUserClimbsByType(
 //       userId,
 //       GYM_CLIMB_TYPES.Boulder,
 //       DateFilters.Last12Months
-//     ).then((boulderData) => {
-//       let boulders = 0
-//       boulderData.forEach((boulder) => {
-//         const addDoc: ClimbLog = {
-//           climbType: GYM_CLIMB_TYPES[0],
-//           grade: boulder.Grade,
-//           tick: boulder.Tick,
-//           count: boulder.Count,
-//           unixTime: boulder.Timestamp.seconds
-//         }
-//         LogNewClimbStructure(addDoc)
-//         boulders++
+//     )
+//       .then((boulderData) => {
+//         boulderData.forEach((boulder) => {
+//           const boulderDate = moment
+//             .unix(boulder.Timestamp.seconds)
+//             .format("MM-DD-YYYY")
+//           const newBoulder = {
+//             climbType: "Boulder",
+//             grade: boulder.Grade,
+//             tick: boulder.Tick,
+//             count: boulder.Count,
+//             unixTime: boulder.Timestamp.seconds,
+//           }
+//           if (sessions.has(boulderDate)) {
+//             const others = sessions.get(boulderDate)
+//             sessions.set(
+//               boulderDate,
+//               others ? others.concat(newBoulder) : [newBoulder]
+//             )
+//           } else {
+//             sessions.set(boulderDate, [newBoulder])
+//           }
+//         })
+//       })
+//       .then(() => {
+//         sessions.forEach((session, key) => {
+//           LogNewClimbSession(session, key, userId)
+//         })
 //       })
 
-//       console.log("Migrated this many boulders:", boulders)
+//     await getAllUserClimbsByType(
+//       userId,
+//       GYM_CLIMB_TYPES.TopRope,
+//       DateFilters.Last12Months
+//     ).then((trData) => {
+//       trData.forEach((tr) => {
+//         const trDate = moment.unix(tr.Timestamp.seconds).format("MM-DD-YYYY")
+//         const newTr = {
+//           climbType: "TopRope",
+//           grade: tr.Grade,
+//           tick: tr.Tick,
+//           count: tr.Count,
+//           unixTime: tr.Timestamp.seconds,
+//         }
+//         if (sessions.has(trDate)) {
+//           const meow = sessions.get(trDate)
+//           sessions.set(trDate, meow ? meow.concat(newTr) : [newTr])
+//         } else {
+//           sessions.set(trDate, [newTr])
+//         }
+//       })
 //     })
-
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.Lead).then(
-//       (leadData) => {
-//         let leads = 0
-//         leadData.forEach((boulder) => {
-//           const addDoc: ClimbLog = {
-//             UserId: userId,
-//             ClimbType: GYM_CLIMB_TYPES[1],
-//             ...boulder,
-//           }
-//           LogNewClimbStructure(addDoc)
-//           leads++
-//         })
-
-//         console.log("Migrated this many leads:", leads)
-//       }
-//     )
-
-//     await GetAllUserClimbsByType(userId, GYM_CLIMB_TYPES.TopRope).then(
-//       (trData) => {
-//         let trs = 0
-//         trData.forEach((boulder) => {
-//           const addDoc: ClimbLog = {
-//             UserId: userId,
-//             ClimbType: GYM_CLIMB_TYPES[2],
-//             ...boulder,
-//           }
-//           LogNewClimbStructure(addDoc)
-//           trs++
-//         })
-
-//         console.log("Migrated this many trs:", trs)
-//       }
-//     )
 //   } catch (error) {
 //     console.log("Error migrating user:", error)
 //   }
+
 //   console.log("It worked!")
 //   return
 // }
