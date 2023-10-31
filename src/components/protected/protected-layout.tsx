@@ -1,10 +1,12 @@
 import React from "react"
-import { useOutlet } from "react-router-dom"
+import { useLocation, useOutlet } from "react-router-dom"
 import { ProtectedDataProvider } from "./protected-context"
-import { Box, styled } from "@mui/material"
+import { Box, styled, useMediaQuery } from "@mui/material"
 import AppToolbar from "../common/toolbar"
 import AppFooter from "../common/footer"
 import { ThemeColors, drawerWidth } from "../../static/styles"
+import { Routes } from "../../router"
+import { useTheme } from "@mui/material"
 
 const PageWrapper = styled("div")({
   flexDirection: "column",
@@ -15,6 +17,16 @@ const PageWrapper = styled("div")({
 
 export default function ProtectedLayout() {
   const outlet = useOutlet()
+  const location = useLocation()
+  const theme = useTheme()
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+
+  const contentWidth =
+    location.pathname !== Routes.climbSession
+      ? lgScreenAndUp
+        ? `calc(100% - ${drawerWidth}px)`
+        : "100%"
+      : "100%"
 
   return (
     <ProtectedDataProvider>
@@ -29,7 +41,7 @@ export default function ProtectedLayout() {
           sx={{
             flexGrow: 1,
             p: 3,
-            width: { lg: `calc(100% - ${drawerWidth}px)`, xs: "100%" },
+            width: contentWidth,
           }}
         >
           {outlet}

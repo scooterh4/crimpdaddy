@@ -1,13 +1,36 @@
 import * as React from "react"
 import BottomNavigation from "@mui/material/BottomNavigation"
-import { Grid, Typography } from "@mui/material"
+import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { AppColors, drawerWidth } from "../../static/styles"
+import { useLocation } from "react-router-dom"
+import { Routes } from "../../router"
 
 type Props = {
   isAuthenticated: boolean
 }
 
 export default function LabelBottomNavigation({ isAuthenticated }: Props) {
+  const location = useLocation()
+  const theme = useTheme()
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+
+  const barWidth =
+    location.pathname !== Routes.climbSession
+      ? lgScreenAndUp
+        ? isAuthenticated
+          ? `calc(100% - ${drawerWidth}px)`
+          : "100%"
+        : "100%"
+      : "100%"
+  const barMl =
+    location.pathname !== Routes.climbSession
+      ? lgScreenAndUp
+        ? isAuthenticated
+          ? `${drawerWidth}px`
+          : 0
+        : 0
+      : 0
+
   return (
     <BottomNavigation
       sx={{
@@ -15,10 +38,8 @@ export default function LabelBottomNavigation({ isAuthenticated }: Props) {
         alignContent: "center",
         position: "relative",
         height: "100%",
-        width: {
-          lg: isAuthenticated ? `calc(100% - ${drawerWidth}px)` : "100%",
-        },
-        ml: { lg: isAuthenticated ? `${drawerWidth}px` : 0 },
+        width: barWidth,
+        ml: barMl,
       }}
     >
       <Grid

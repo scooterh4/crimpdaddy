@@ -213,8 +213,6 @@ export const getAllUserClimbingData = async (
     filterRange
   )
 
-  console.log("boulderPyramidData", boulderPyramidData)
-
   return {
     climbingLogs: {
       allClimbs: rawClimbingData,

@@ -6,11 +6,13 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./drawer"
 import { AppColors, drawerWidth } from "../../static/styles"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useAuthContext } from "../app/auth-context"
 import { Routes } from "../../router"
 
@@ -24,6 +26,22 @@ export default function ToolBar({ title }: Props) {
   const cursor = title === "Dashboard" ? "" : "pointer"
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  const theme = useTheme()
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
+
+  const barWidth =
+    location.pathname !== Routes.climbSession
+      ? lgScreenAndUp
+        ? `calc(100% - ${drawerWidth}px)`
+        : "100%"
+      : "100%"
+  const barMl =
+    location.pathname !== Routes.climbSession
+      ? lgScreenAndUp
+        ? `${drawerWidth}px`
+        : 0
+      : 0
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -42,12 +60,12 @@ export default function ToolBar({ title }: Props) {
         sx={{
           background: AppColors.primary,
           color: "white",
-          width: title !== "" ? { lg: `calc(100% - ${drawerWidth}px)` } : {},
-          ml: title !== "" ? { lg: `${drawerWidth}px` } : {},
+          width: title !== "" ? barWidth : {},
+          ml: title !== "" ? barMl : {},
         }}
       >
         <Toolbar>
-          {user.user && (
+          {user.user && location.pathname !== Routes.climbSession && (
             <IconButton
               aria-label="menu"
               color="inherit"
@@ -78,7 +96,7 @@ export default function ToolBar({ title }: Props) {
         </Toolbar>
       </AppBar>
 
-      {title !== "" && (
+      {title !== "" && location.pathname !== Routes.climbSession && (
         <Box
           component="nav"
           sx={{

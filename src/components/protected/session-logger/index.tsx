@@ -83,24 +83,24 @@ function SessionLogger() {
 
       <LogClimbDialog />
 
-      {lgAndDownScreen && (
-        <Button
-          fullWidth={false}
-          onClick={() => setOpenConfirmDialog(true)}
-          sx={{
-            alignSelf: "start",
-            background: "none",
-            border: "none",
-            color: AppColors.danger,
-            fontFamily: "poppins",
-            marginTop: 2,
-            textTransform: "none",
-          }}
-        >
-          <ArrowBackIcon sx={{ marginRight: 1 }} />
-          Cancel session
-        </Button>
-      )}
+      {/* {lgAndDownScreen && ( */}
+      <Button
+        fullWidth={false}
+        onClick={() => setOpenConfirmDialog(true)}
+        sx={{
+          alignSelf: "start",
+          background: "none",
+          border: "none",
+          color: AppColors.danger,
+          fontFamily: "poppins",
+          marginTop: 2,
+          textTransform: "none",
+        }}
+      >
+        <ArrowBackIcon sx={{ marginRight: 1 }} />
+        Cancel session
+      </Button>
+      {/* )} */}
 
       <Typography
         color={ThemeColors.darkShade}
