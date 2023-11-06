@@ -12,11 +12,11 @@ import SignUp from "./components/public/sign-up"
 import ResetPassword from "./components/public/reset-password"
 import ProtectedLayout from "./components/protected/protected-layout"
 import Dashboard from "./components/protected/dashboard/index"
-// import LogClimbPage from "./components/protected/climb-logger"
 import SessionLogger from "./components/protected/session-logger"
 import GradePyramids from "./components/protected/grade-pyramids/index"
 import ProgressionPage from "./components/protected/progression"
 import { AuthLayout } from "./components/app/auth-layout"
+import SessionLogsPage from "./components/protected/session-logs"
 
 const protectedLayout = "/user"
 export const Routes = {
@@ -25,6 +25,7 @@ export const Routes = {
   signup: "/signup",
   resetPassword: "/resetPassword",
   dashboard: `${protectedLayout}/dashboard`,
+  sessionLogs: `${protectedLayout}/sessionLogs`,
   logClimb: `${protectedLayout}/logClimb`,
   climbSession: `${protectedLayout}/session`,
   gradePyramids: `${protectedLayout}/gradePyramids`,
@@ -43,7 +44,7 @@ export const router = createBrowserRouter(
       </Route>
       <Route path={protectedLayout} element={<ProtectedLayout />}>
         <Route path={Routes.dashboard} element={<Dashboard />} />
-        {/* <Route path={Routes.logClimb} element={<LogClimbPage />} /> */}
+        <Route path={Routes.sessionLogs} element={<SessionLogsPage />} />
         <Route path={Routes.climbSession} element={<SessionLogger />} />
         <Route path={Routes.gradePyramids} element={<GradePyramids />} />
         <Route path={Routes.progression} element={<ProgressionPage />} />

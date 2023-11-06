@@ -189,9 +189,6 @@ export const getAllUserClimbingData = async (
           const sesh = sessionData.filter((s) => {
             return s.sessionMetadata.sessionId === session.id
           })
-          console.log("index", sesh)
-          console.log("sessionId", session.id)
-          console.log("sessionData", sessionData)
           if (sesh) {
             sesh[0].climbs
               ? sesh[0].climbs.push(data)

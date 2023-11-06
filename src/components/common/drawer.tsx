@@ -11,6 +11,7 @@ import {
 } from "@mui/material"
 import { AppColors } from "../../static/styles"
 import DashboardIcon from "@mui/icons-material/Dashboard"
+import BallotIcon from "@mui/icons-material/Ballot"
 import EqualizerIcon from "@mui/icons-material/Equalizer"
 import LogoutIcon from "@mui/icons-material/Logout"
 import ShowChartIcon from "@mui/icons-material/ShowChart"
@@ -42,6 +43,21 @@ export default function AppDrawer() {
             </ListItemIcon>
             <ListItemText
               primary={"Dashboard"}
+              sx={{ fontFamily: "poppins" }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem
+          disablePadding
+          key="sessionLogs"
+          onClick={() => navigate(Routes.sessionLogs)}
+        >
+          <ListItemButton>
+            <ListItemIcon>
+              <BallotIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Session Logs"}
               sx={{ fontFamily: "poppins" }}
             />
           </ListItemButton>

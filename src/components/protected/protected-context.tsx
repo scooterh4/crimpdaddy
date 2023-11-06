@@ -23,6 +23,7 @@ import { trackPromise } from "react-promise-tracker"
 import { useAuthContext } from "../app/auth-context"
 
 interface IUserContext {
+  userSessions: ClimbingSessionData[] | null
   userClimbingLogs: ClimbLog[] | null
   userBoulderLogs: ClimbLog[] | null
   setUserBoulderLogs: (logs: ClimbLog[] | null) => void
@@ -40,6 +41,7 @@ interface IUserContext {
 }
 
 const userDefaultState: IUserContext = {
+  userSessions: null,
   userClimbingLogs: null,
   userBoulderLogs: null,
   setUserBoulderLogs: () => {},
@@ -100,6 +102,7 @@ export const ProtectedDataProvider = ({
   useMemo(() => {
     if (user && userClimbingLogs === null && sessionData === null) {
       getAllUserClimbingData(user.id, DateFilters.ThisWeek).then((res) => {
+        setUserSessions(res.climbingLogs.sessions)
         setUserClimbingLogs(res.climbingLogs.allClimbs)
         setUserBoulderLogs(res.climbingLogs.boulderLogs)
         setUserLeadLogs(res.climbingLogs.leadLogs)
@@ -124,6 +127,7 @@ export const ProtectedDataProvider = ({
       if (sessionData !== null) {
         console.log("user context getting persistent data")
         const persistentData: SessionStorageData = JSON.parse(sessionData)
+        setUserSessions(persistentData.climbingData.sessions)
         setUserClimbingLogs(persistentData.climbingData.allClimbs)
         setUserBoulderLogs(persistentData.climbingData.boulderLogs)
         setUserLeadLogs(persistentData.climbingData.leadLogs)
@@ -274,6 +278,7 @@ export const ProtectedDataProvider = ({
   }
 
   const authUserContextValue: IUserContext = {
+    userSessions,
     userClimbingLogs,
     userBoulderLogs,
     setUserBoulderLogs,

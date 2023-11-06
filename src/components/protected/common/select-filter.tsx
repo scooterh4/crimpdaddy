@@ -51,12 +51,6 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
       : gradePyramidSelectList
   )
 
-  console.log(
-    "Progression graph???",
-    graph === PromiseTrackerArea.ProgressionGraph
-  )
-  console.log("Progression graph list", progressionDateList)
-
   useEffect(() => {
     if (!dateFilter) {
       setSelectList(gradePyramidSelectList)
