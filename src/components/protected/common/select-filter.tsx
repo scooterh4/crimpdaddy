@@ -1,7 +1,11 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUserContext } from "../protected-context"
-import { DateFilters, GradePyramidFilter } from "../../../static/constants"
+import {
+  DateFilters,
+  GradePyramidFilter,
+  PromiseTrackerArea,
+} from "../../../static/constants"
 
 type Props = {
   graph: string
@@ -27,6 +31,10 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
     { value: DateFilters.Last6Months, label: "Last 6 months" },
     { value: DateFilters.Last12Months, label: "Last 12 months" },
   ]
+  const progressionDateList = [
+    { value: DateFilters.Last6Months, label: "Last 6 months" },
+    { value: DateFilters.Last12Months, label: "Last 12 months" },
+  ]
   const gradePyramidSelectList = [
     { value: GradePyramidFilter.ClimbsOnly, label: "Climbs only" },
     { value: GradePyramidFilter.AttemptsOnly, label: "Attempts only" },
@@ -34,22 +42,33 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
   ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
-    graph === "activity"
+    graph === PromiseTrackerArea.Activity
       ? activityDateList
+      : graph === PromiseTrackerArea.ProgressionGraph
+      ? progressionDateList
       : dateFilter
       ? gradePyramidDateList
       : gradePyramidSelectList
   )
+
+  console.log(
+    "Progression graph???",
+    graph === PromiseTrackerArea.ProgressionGraph
+  )
+  console.log("Progression graph list", progressionDateList)
 
   useEffect(() => {
     if (!dateFilter) {
       setSelectList(gradePyramidSelectList)
     } else {
       switch (graph) {
-        case "activity":
+        case PromiseTrackerArea.Activity:
           setSelectList(activityDateList)
           break
-        default:
+        case PromiseTrackerArea.ProgressionGraph:
+          setSelectList(progressionDateList)
+          break
+        case PromiseTrackerArea.GradePyramidGraph:
           setSelectList(gradePyramidDateList)
           break
       }
@@ -74,9 +93,11 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
       <Select
         defaultValue={
           dateFilter
-            ? graph === "activity"
+            ? graph === PromiseTrackerArea.Activity
               ? DateFilters.ThisWeek.toString()
-              : DateFilters.ThisMonth.toString()
+              : graph === PromiseTrackerArea.GradePyramidGraph
+              ? DateFilters.ThisMonth.toString()
+              : DateFilters.Last6Months.toString()
             : GradePyramidFilter.ClimbsOnly.toString()
         }
         onChange={handleFilterChange}
