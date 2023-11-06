@@ -21,7 +21,9 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
     { value: DateFilters.ThisWeek, label: "Last week" },
     { value: DateFilters.ThisMonth, label: "Last month" },
   ]
-  const otherDateList = [
+  const gradePyramidDateList = [
+    { value: DateFilters.ThisMonth, label: "Last month" },
+    { value: DateFilters.Last3Months, label: "Last 3 months" },
     { value: DateFilters.Last6Months, label: "Last 6 months" },
     { value: DateFilters.Last12Months, label: "Last 12 months" },
   ]
@@ -35,7 +37,7 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
     graph === "activity"
       ? activityDateList
       : dateFilter
-      ? otherDateList
+      ? gradePyramidDateList
       : gradePyramidSelectList
   )
 
@@ -48,7 +50,7 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
           setSelectList(activityDateList)
           break
         default:
-          setSelectList(otherDateList)
+          setSelectList(gradePyramidDateList)
           break
       }
     }
@@ -74,7 +76,7 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
           dateFilter
             ? graph === "activity"
               ? DateFilters.ThisWeek.toString()
-              : DateFilters.Last6Months.toString()
+              : DateFilters.ThisMonth.toString()
             : GradePyramidFilter.ClimbsOnly.toString()
         }
         onChange={handleFilterChange}

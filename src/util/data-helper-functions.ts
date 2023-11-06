@@ -28,6 +28,10 @@ export function getMinimumMoment(dateFilter: number) {
       minMoment = moment().subtract(1, "months")
       break
 
+    case DateFilters.Last3Months:
+      minMoment = moment().subtract(3, "months")
+      break
+
     case DateFilters.Last6Months:
       minMoment = moment().subtract(6, "months")
       break

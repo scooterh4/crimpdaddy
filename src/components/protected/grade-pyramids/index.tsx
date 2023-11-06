@@ -19,14 +19,14 @@ export default function GradePyramidPage() {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
   })
-  const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
+  const [dateFilter, setDateFilter] = useState<number>(DateFilters.ThisMonth)
   const [gradePyramidFilter, setGradePyramidFilter] = useState<number>(
     GradePyramidFilter.ClimbsOnly
   )
 
   useMemo(() => {
-    if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
-      updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.GradePyramids)
+    if (!dataDateRange || dataDateRange < dateFilter) {
+      updateDateRange(dateFilter, PromiseTrackerArea.GradePyramids)
     }
   }, [])
 
