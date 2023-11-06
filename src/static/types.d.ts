@@ -11,6 +11,7 @@ export type UserClimbingData = {
     boulderLogs: ClimbLog[]
     leadLogs: ClimbLog[]
     topRopeLogs: ClimbLog[]
+    sessions: ClimbingSessionData[]
   }
   gradePyramidData: {
     boulderData: ClimbGraphData[]
@@ -60,6 +61,7 @@ export type SessionStorageData = {
     boulderLogs: ClimbLog[]
     leadLogs: ClimbLog[]
     topRopeLogs: ClimbLog[]
+    sessions: ClimbingSessionData[]
   }
   gradePyramidData: {
     boulderData: ClimbGraphData[]
@@ -95,6 +97,7 @@ export type EditSessionClimb = {
 }
 
 export type ClimbingSessionMetadata = {
+  sessionId: string
   hardestBoulderClimbed: string
   hardestRouteClimbed: string
   numberOfBoulders: number

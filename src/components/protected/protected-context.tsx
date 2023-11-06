@@ -4,6 +4,7 @@ import {
   SessionStorageData,
   GradePyramidGraphData,
   UserIndoorRedpointGradesDoc,
+  ClimbingSessionData,
 } from "../../static/types"
 import {
   getAllUserClimbingData,
@@ -32,7 +33,7 @@ interface IUserContext {
   userBoulderGradePyramidData: GradePyramidGraphData[] | null
   userLeadGradePyramidData: GradePyramidGraphData[] | null
   userTrGradePyramidData: GradePyramidGraphData[] | null
-  updateSessionStorageData: (logsToAdd: ClimbLog[]) => void
+  updateSessionStorageData: (logsToAdd: ClimbingSessionData) => void
   dataDateRange: number | null
   updateDateRange: (newRange: number | null, fromComponent: string) => void
   userIndoorRedpointGrades: UserIndoorRedpointGradesDoc | null
@@ -65,6 +66,9 @@ export const ProtectedDataProvider = ({
   children: React.ReactNode
 }) => {
   const { user } = useAuthContext()
+  const [userSessions, setUserSessions] = useState<
+    ClimbingSessionData[] | null
+  >(null)
   const [userClimbingLogs, setUserClimbingLogs] = useState<ClimbLog[] | null>(
     null
   )
@@ -140,14 +144,16 @@ export const ProtectedDataProvider = ({
     }
   }, [user])
 
-  const updateSessionStorageData = (logsToAdd: ClimbLog[]) => {
+  const updateSessionStorageData = (data: ClimbingSessionData) => {
+    setUserSessions(userSessions ? userSessions.concat(data) : [data])
+
     setUserClimbingLogs(
-      userClimbingLogs ? userClimbingLogs.concat(logsToAdd) : logsToAdd
+      userClimbingLogs ? userClimbingLogs.concat(data.climbs) : data.climbs
     )
 
     const redpointGrades = findNewRedpointGrades(
       userIndoorRedpointGrades,
-      logsToAdd
+      data.climbs
     )
     if (user) {
       updateUserIndoorRedpointGrades(user.id, redpointGrades)
@@ -158,7 +164,7 @@ export const ProtectedDataProvider = ({
     let newLeadLogs = userLeadLogs
     let newTopRopeLogs = userTopRopeLogs
 
-    logsToAdd.forEach((climb) => {
+    data.climbs.forEach((climb) => {
       switch (climb.climbType) {
         case "Boulder":
           newBoulderLogs = newBoulderLogs
@@ -213,11 +219,12 @@ export const ProtectedDataProvider = ({
         timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
         climbingData: {
           allClimbs: userClimbingLogs
-            ? userClimbingLogs.concat(logsToAdd)
-            : logsToAdd,
+            ? userClimbingLogs.concat(data.climbs)
+            : data.climbs,
           boulderLogs: newBoulderLogs ? newBoulderLogs : [],
           leadLogs: newLeadLogs ? newLeadLogs : [],
           topRopeLogs: newTopRopeLogs ? newTopRopeLogs : [],
+          sessions: userSessions ? userSessions.concat(data) : [data],
         },
         gradePyramidData: {
           boulderData: userBoulderGradePyramidData,
@@ -237,6 +244,7 @@ export const ProtectedDataProvider = ({
     if (saveRange && user) {
       trackPromise(
         getAllUserClimbingData(user.id, saveRange).then((res) => {
+          setUserSessions(res.climbingLogs.sessions)
           setUserClimbingLogs(res.climbingLogs.allClimbs)
           setUserBoulderLogs(res.climbingLogs.boulderLogs)
           setUserLeadLogs(res.climbingLogs.leadLogs)

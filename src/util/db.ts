@@ -17,6 +17,7 @@ import {
   UserClimbingData,
   UserIndoorRedpointGradesDoc,
   ClimbingSessionData,
+  ClimbingSessionMetadata,
 } from "../static/types"
 import {
   DateFilters,
@@ -29,6 +30,7 @@ import {
   getMinimumMoment,
 } from "./data-helper-functions"
 import { count } from "console"
+import { Session } from "inspector"
 
 const collectionName = "climbingLogs"
 
@@ -146,6 +148,7 @@ export const getAllUserClimbingData = async (
   const rawBoulderData: ClimbLog[] = []
   const rawLeadData: ClimbLog[] = []
   const rawTrData: ClimbLog[] = []
+  const sessionData: ClimbingSessionData[] = []
   const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
   const minMoment = getMinimumMoment(filterRange)
 
@@ -159,7 +162,21 @@ export const getAllUserClimbingData = async (
 
     const sessions = await getDocs(sessionQuery)
 
+    console.log("sessions", sessions)
+
     sessions.forEach((session) => {
+      const seshData: ClimbingSessionMetadata = session.data() as ClimbingSessionMetadata
+      sessionData.push({
+        sessionMetadata: {
+          sessionId: session.id,
+          hardestBoulderClimbed: seshData.hardestBoulderClimbed,
+          hardestRouteClimbed: seshData.hardestRouteClimbed,
+          numberOfBoulders: seshData.numberOfBoulders,
+          numberOfRoutes: seshData.numberOfRoutes,
+          sessionStart: seshData.sessionStart,
+        },
+        climbs: [],
+      })
       const sessionClimbsPath = collectionPath + `/${session.id}/climbs`
       const docQuery = query(
         collection(firestore, sessionClimbsPath).withConverter(converter())
@@ -169,6 +186,17 @@ export const getAllUserClimbingData = async (
         docs.forEach((doc) => {
           const data = doc.data() as ClimbLog
           rawClimbingData.push(data)
+          const sesh = sessionData.filter((s) => {
+            return s.sessionMetadata.sessionId === session.id
+          })
+          console.log("index", sesh)
+          console.log("sessionId", session.id)
+          console.log("sessionData", sessionData)
+          if (sesh) {
+            sesh[0].climbs
+              ? sesh[0].climbs.push(data)
+              : (sesh[0].climbs = [data])
+          }
 
           switch (data.climbType) {
             case GYM_CLIMB_TYPES[0]:
@@ -213,12 +241,18 @@ export const getAllUserClimbingData = async (
     filterRange
   )
 
+  sessionData.sort(
+    (a, b) => b.sessionMetadata.sessionStart - a.sessionMetadata.sessionStart
+  )
+  // .reverse()
+
   return {
     climbingLogs: {
       allClimbs: rawClimbingData,
       boulderLogs: rawBoulderData,
       leadLogs: rawLeadData,
       topRopeLogs: rawTrData,
+      sessions: sessionData,
     },
     gradePyramidData: {
       boulderData: boulderPyramidData,

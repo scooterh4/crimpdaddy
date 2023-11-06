@@ -61,7 +61,7 @@ function SessionLogger() {
       onLogSession(data, user.id)
 
       // We are assuming the climbs got logged properly in the db
-      updateSessionStorageData(data.climbs)
+      updateSessionStorageData(data)
       toast.success("Session logged!")
       navigate(Routes.dashboard)
     }
