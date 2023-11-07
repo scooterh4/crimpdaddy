@@ -173,6 +173,7 @@ export const getAllUserClimbingData = async (
           hardestRouteClimbed: seshData.hardestRouteClimbed,
           numberOfBoulders: seshData.numberOfBoulders,
           numberOfRoutes: seshData.numberOfRoutes,
+          failedAttempts: seshData.failedAttempts,
           sessionStart: seshData.sessionStart,
           sessionEnd: seshData.sessionEnd,
         },

@@ -102,6 +102,7 @@ export type ClimbingSessionMetadata = {
   hardestRouteClimbed: string
   numberOfBoulders: number
   numberOfRoutes: number
+  failedAttempts: number
   sessionStart: Timestamp
   sessionEnd: Timestamp
 }

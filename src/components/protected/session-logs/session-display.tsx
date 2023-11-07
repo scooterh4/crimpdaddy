@@ -1,13 +1,11 @@
 import { Grid, Typography } from "@mui/material"
 import React from "react"
 import { ThemeColors } from "../../../static/styles"
-import {
-  ClimbingSessionData,
-  SessionClimb,
-  UserClimbingData,
-} from "../../../static/types"
+import { ClimbingSessionData } from "../../../static/types"
 import moment from "moment"
 import SessionGraph from "./session-graph"
+import SessionStatDisplay from "./session-stat-display"
+import AccessTimeIcon from "@mui/icons-material/AccessTime"
 
 type Props = {
   data: ClimbingSessionData
@@ -15,6 +13,39 @@ type Props = {
 
 export default function SessionDisplay({ data }: Props) {
   const metaData = data.sessionMetadata
+  const sessionDuration = moment
+    .unix(metaData.sessionEnd.seconds)
+    .diff(moment.unix(metaData.sessionStart.seconds), "minutes")
+
+  const statsToDisplay = [
+    {
+      title: "Duration",
+      stat: `${Math.floor(sessionDuration / 60)}hr ${sessionDuration % 60}min`,
+      // icon: <AccessTimeIcon />,
+    },
+    {
+      title: "Successful Climbs",
+      stat: `${metaData.numberOfBoulders + metaData.numberOfRoutes}`,
+    },
+    {
+      title: "Failed Attempts",
+      stat: `${metaData.failedAttempts}`,
+    },
+  ]
+
+  if (metaData.hardestBoulderClimbed !== "") {
+    statsToDisplay.push({
+      title: "Hardest Boulder Climbed",
+      stat: `${metaData.hardestBoulderClimbed}`,
+    })
+  }
+
+  if (metaData.hardestRouteClimbed !== "") {
+    statsToDisplay.push({
+      title: "Hardest Route Climbed",
+      stat: `${metaData.hardestRouteClimbed}`,
+    })
+  }
 
   return (
     <Grid
@@ -27,18 +58,42 @@ export default function SessionDisplay({ data }: Props) {
       gridAutoRows="auto"
       sx={{ backgroundColor: "white" }}
     >
-      <Grid container direction={"row"}>
-        <p>
-          Session start:{" "}
+      <Grid container direction={"column"} marginBottom={1}>
+        <Typography
+          marginTop={2}
+          marginLeft={2}
+          color={ThemeColors.darkShade}
+          fontFamily={"poppins"}
+          variant="h5"
+        >
           {moment
             .unix(metaData.sessionStart.seconds)
-            .format("MMM Do YYYY, h:mm:ss a")
+            .format("MMM Do, YYYY")
             .toString()}
-        </p>
-        <p>Number of boulders: {metaData.numberOfBoulders}</p>
-        <p>Number of routes: {metaData.numberOfRoutes}</p>
-        <p>Hardest boulder climbed: {metaData.hardestBoulderClimbed}</p>
-        <p>Hardest route climbed: {metaData.hardestRouteClimbed}</p>
+        </Typography>
+        <Typography
+          marginLeft={2}
+          color={ThemeColors.darkShade}
+          fontFamily={"poppins"}
+          variant="h6"
+        >
+          {moment
+            .unix(metaData.sessionStart.seconds)
+            .format("h:mm a")
+            .toString()}
+        </Typography>
+
+        <Grid
+          container
+          direction={"row"}
+          justifyContent={"center"}
+          marginTop={1}
+          marginBottom={1}
+        >
+          {statsToDisplay.map((stat) => (
+            <SessionStatDisplay title={stat.title} stat={stat.stat} />
+          ))}
+        </Grid>
       </Grid>
       {data.sessionMetadata.numberOfBoulders > 0 && (
         <Grid container direction={"row"} justifyContent={"center"}>
