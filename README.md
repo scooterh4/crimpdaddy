@@ -1,14 +1,14 @@
-# A climbing logbook web app #
+# :climbing: A Climbing Logbook Web App
 
-A react app that will allow users to log their climbs and see their progress over time. Hosted by Firebase.
+A mobile-friendly react app that will allow users to log their climbs and see their progress over time. Hosted by Firebase.
 
-The goal of the first part of the project is to enable users to log indoor gym climbs, and to show the users some basic charts of their climbing data on a dashboard. Users will be able to log the what kind of climb it was (i.e. boulder, lead or top rope), the grade of the climb, and how they did the climb / tick type (i.e. completed it on their first try, didn't complete the climb, or completed the climb on a later attempt). The charts presented on the users dashboard were selected to respresent three major areas: climbing volume, strength and progression. They are still a work in progress but what is currently being display is:
-- A climbing volume graph visualizing the users activty. This graph will show users how many climbs they've completed and attempted per day. It should give users a gauge on if their attempting harder climbs and trying to push their abilities (i.e. more strength focuesed), or if they're staying within their grade range and focusing on volume.
-- Grade pyramids for each climbing type. Grade pyramids show users what grades they have onsighted, flashed, redpointed and attempted. This will allow users to see the difficulty of climbs they have completed and will show them if they are attempting grades outside of their capabilities.
-- Progression graphs that show users the hardest climbs they have completed by month. The idea with this graph is to show users if they are progressing over time.
+Checkout my current deployment here at https://crimpdaddy-db2af.web.app/
 
-The second part of the project is aimed at allowing users to log outdoor climbs. To achieve this, an existing API will need to be tapped into for outdoor route data or a database will need to be created by scraping several climbing websites. Still to be determined.
-
-I hope you enjoy my app. This is a portfolio project so I'm learning a lot as I go and I'm sure there's lots of things that could be improved. If you have any suggestions please let me know!
+## Features
+- :bookmark_tabs: Users can log their climbs using an intuitive session-based logging system. Climbs can be added, edited or deleted within the session.
+- :clipboard: Several pages display different climbing data based on what the user has logged.
+- :bar_chart: Grade pyramids will show users what grades of climbs they've been completing and attempting.
+- :chart_with_upwards_trend: The progression page will show users if they are improving on a monthly basis over time.
+- :construction_worker: Another session page is being created that will show users breakdowns of each session they've logged.
 
 Happy climbing :)
