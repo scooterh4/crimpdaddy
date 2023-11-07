@@ -103,6 +103,7 @@ export type ClimbingSessionMetadata = {
   numberOfBoulders: number
   numberOfRoutes: number
   sessionStart: Timestamp
+  sessionEnd: Timestamp
 }
 
 export type ClimbingSessionData = {

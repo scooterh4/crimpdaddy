@@ -228,6 +228,7 @@ export function assembleUserSessionData(
       hardestBoulderClimbed: "",
       hardestRouteClimbed: "",
       sessionStart: Timestamp.fromMillis(sessionStart.unix() * 1000),
+      sessionEnd: Timestamp.fromMillis(moment().unix() * 1000),
     },
     climbs: [],
   } as ClimbingSessionData

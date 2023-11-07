@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts"
 import { AppColors, GraphColors } from "../../../static/styles"
-import { ClimbLog } from "../../../static/types"
+import { ClimbLog, ClimbingSessionData } from "../../../static/types"
 import { Box, Card, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import moment, { Moment } from "moment"
@@ -25,7 +25,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent"
 
 type Props = {
-  data: ClimbLog[]
+  data: ClimbingSessionData
   climbType: string
 }
 
@@ -49,7 +49,7 @@ export default function SessionGraph({ data, climbType }: Props) {
 
   useEffect(() => {
     if (data) {
-      filterRawClimbingData(data)
+      filterRawClimbingData(data.climbs)
     }
   }, [data])
 
@@ -126,11 +126,11 @@ export default function SessionGraph({ data, climbType }: Props) {
     return null
   }
 
-  function filterRawClimbingData(data: ClimbLog[]): void {
-    const sortedClimbs = data.sort((a, b) => a.unixTime - b.unixTime)
+  function filterRawClimbingData(climbs: ClimbLog[]): void {
+    const sortedClimbs = climbs.sort((a, b) => a.unixTime - b.unixTime)
     let result = setResultDates(
-      moment.unix(sortedClimbs[0].unixTime),
-      moment.unix(sortedClimbs[sortedClimbs.length - 1].unixTime)
+      moment.unix(data.sessionMetadata.sessionStart.seconds),
+      moment.unix(data.sessionMetadata.sessionEnd.seconds)
     )
     // for the y-axis range
     let gradeMaxIndex = 0

@@ -174,6 +174,7 @@ export const getAllUserClimbingData = async (
           numberOfBoulders: seshData.numberOfBoulders,
           numberOfRoutes: seshData.numberOfRoutes,
           sessionStart: seshData.sessionStart,
+          sessionEnd: seshData.sessionEnd,
         },
         climbs: [],
       })

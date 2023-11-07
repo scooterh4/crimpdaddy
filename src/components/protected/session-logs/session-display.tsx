@@ -45,7 +45,7 @@ export default function SessionDisplay({ data }: Props) {
           <Typography fontFamily={"poppins"} fontWeight={"bold"}>
             Bouldering
           </Typography>
-          <SessionGraph climbType={"Boulder"} data={data.climbs} />
+          <SessionGraph climbType={"Boulder"} data={data} />
         </Grid>
       )}
       {data.sessionMetadata.numberOfRoutes > 0 && (
@@ -53,7 +53,7 @@ export default function SessionDisplay({ data }: Props) {
           <Typography fontFamily={"poppins"} fontWeight={"bold"}>
             Routes
           </Typography>
-          <SessionGraph climbType={"Routes"} data={data.climbs} />
+          <SessionGraph climbType={"Routes"} data={data} />
         </Grid>
       )}
     </Grid>
