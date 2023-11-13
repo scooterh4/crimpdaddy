@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AppColors } from "../../../static/styles"
 
 const tickDescriptions = {
@@ -19,7 +19,7 @@ type Props = {
 export default function TickDescription({ selectedTick }: Props) {
   const [selectedTickDescription, setSelectedTickDescription] = useState("")
 
-  useMemo(() => {
+  useEffect(() => {
     switch (selectedTick) {
       case "Onsight":
         setSelectedTickDescription(tickDescriptions.Onsight)
@@ -45,7 +45,7 @@ export default function TickDescription({ selectedTick }: Props) {
         setSelectedTickDescription("")
         break
     }
-  }, [])
+  }, [selectedTick])
 
   return (
     <Typography
