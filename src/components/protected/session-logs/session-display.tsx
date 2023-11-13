@@ -5,7 +5,6 @@ import { ClimbingSessionData } from "../../../static/types"
 import moment from "moment"
 import SessionGraph from "./session-graph"
 import SessionStatDisplay from "./session-stat-display"
-import AccessTimeIcon from "@mui/icons-material/AccessTime"
 
 type Props = {
   data: ClimbingSessionData
@@ -56,6 +55,7 @@ export default function SessionDisplay({ data }: Props) {
       container
       direction={"column"}
       gridAutoRows="auto"
+      key={data.sessionMetadata.sessionStart.toString()}
       sx={{ backgroundColor: "white" }}
     >
       <Grid container direction={"column"} marginBottom={1}>

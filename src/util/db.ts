@@ -10,6 +10,9 @@ import {
   where,
   QueryDocumentSnapshot,
   collection,
+  orderBy,
+  QuerySnapshot,
+  DocumentData,
 } from "firebase/firestore"
 import {
   ClimbLog,
@@ -260,6 +263,65 @@ export const getAllUserClimbingData = async (
     },
     summaryStats: { indoorRedpointGrades: indoorRedpointGrades },
   } as UserClimbingData
+}
+
+export const getUserClimbingSessionsIds = async (
+  userId: string
+): Promise<ClimbingSessionMetadata[]> => {
+  const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
+  let returnData: ClimbingSessionMetadata[] = []
+  const sessionQuery = query(
+    collection(firestore, collectionPath),
+    orderBy("sessionStart", "desc")
+  )
+
+  try {
+    console.log("FIRESTORE READ CALL")
+    const res = await getDocs(sessionQuery)
+    res.forEach((r) => {
+      const data = r.data() as ClimbingSessionMetadata
+      returnData.push({ ...data, sessionId: r.id })
+    })
+  } catch (error) {
+    console.log("FIRESTORE Error getting user climbing session ids: ", error)
+  }
+
+  return returnData
+}
+
+export type ClimbingSessionDocs = {
+  sessionId: string
+  climbs: ClimbLog[]
+}
+export const getUserClimbingSessions = async (
+  userId: string,
+  sessionIds: string[]
+): Promise<ClimbingSessionDocs[]> => {
+  let returnData: ClimbingSessionDocs[] = []
+  let promises: Promise<QuerySnapshot<DocumentData>>[] = []
+
+  sessionIds.forEach((id) => {
+    returnData.push({ sessionId: id, climbs: [] })
+    const collectionPath = `/${collectionName}/${userId}/indoor_sessions/${id}/climbs`
+    const sessionQuery = query(collection(firestore, collectionPath))
+    promises.push(getDocs(sessionQuery))
+  })
+
+  try {
+    console.log("FIRESTORE READ CALL")
+    await Promise.all(promises).then((results) => {
+      // the docs claim that: Returned values will be in order of the Promises passed, regardless of completion order.
+      results.forEach((result, index) => {
+        result.forEach((doc) => {
+          returnData[index].climbs.push(doc.data() as ClimbLog)
+        })
+      })
+    })
+  } catch (error) {
+    console.log("FIRESTORE Error getting user climbing sessions: ", error)
+  }
+
+  return returnData
 }
 
 // get all climbs for a user by type
