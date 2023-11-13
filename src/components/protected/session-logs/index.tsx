@@ -103,7 +103,7 @@ export default function SessionLogsPage() {
         >
           Sessions
         </Typography>
-        <Typography>No sessions</Typography>
+        <Typography>No sessions to display.</Typography>
       </>
     )
   }
