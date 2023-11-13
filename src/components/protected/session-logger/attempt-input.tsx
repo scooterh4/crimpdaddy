@@ -17,7 +17,7 @@ export default function AttemptInput({
     <FormControl fullWidth sx={{ marginTop: 5 }}>
       <TextField
         error={attemptError}
-        label={"Number of attempts"}
+        label={"Number of failed attempts"}
         onChange={(e) =>
           setAttemptCount(e.target.value !== "" ? parseInt(e.target.value) : "")
         }

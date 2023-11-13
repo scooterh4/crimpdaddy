@@ -21,15 +21,13 @@ type Props = {
   selectedTick: string
   setSelectedTick: React.Dispatch<React.SetStateAction<string>>
   setAttemptInputVisibility: React.Dispatch<React.SetStateAction<boolean>>
-  // setSelectedTickDescription: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function TickSelector({
   selectedTick,
   setSelectedTick,
   setAttemptInputVisibility,
-}: // setSelectedTickDescription,
-Props) {
+}: Props) {
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
@@ -39,35 +37,9 @@ Props) {
     if (value !== null) {
       setSelectedTick(value.toString())
 
-      value.toString() !== "Onsight" && value.toString() !== "Flash"
+      value.toString() === "Attempt"
         ? setAttemptInputVisibility(true)
         : setAttemptInputVisibility(false)
-
-      // switch (value.toString()) {
-      //   case "Onsight":
-      //     setSelectedTickDescription(tickDescriptions.Onsight)
-      //     break
-
-      //   case "Flash":
-      //     setSelectedTickDescription(tickDescriptions.Flash)
-      //     break
-
-      //   case "Redpoint":
-      //     setSelectedTickDescription(tickDescriptions.Redpoint)
-      //     break
-
-      //   case "Repeat":
-      //     setSelectedTickDescription(tickDescriptions.Repeat)
-      //     break
-
-      //   case "Attempt":
-      //     setSelectedTickDescription(tickDescriptions.Attempt)
-      //     break
-
-      //   default:
-      //     setSelectedTickDescription("")
-      //     break
-      // }
     }
   }
 

@@ -49,15 +49,14 @@ export function LogClimbDialog() {
 
   useMemo(() => {
     if (editClimb && Object.keys(editClimb).length !== 0) {
+      console.log("this shit be going")
       editClimb.climbType !== GYM_CLIMB_TYPES[0]
         ? setRouteClimbType(editClimb.climbType)
         : setRouteClimbType("")
       setSelectedGrade(editClimb.grade)
       setSelectedTick(editClimb.tick)
       setAttemptCount(editClimb.attemptCount)
-      setAttemptInputVisibility(
-        editClimb.tick !== "Onsight" && editClimb.tick !== "Flash"
-      )
+      setAttemptInputVisibility(editClimb.tick === "Attempt")
       setUnixTime(editClimb.unixTime)
     }
   }, [editClimb])
