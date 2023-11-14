@@ -26,7 +26,7 @@ export default function GradePyramidPage() {
 
   // setup titles for displaying data
   const titles: string[] = []
-  if (userBoulderLogs && userBoulderLogs.length > 0) titles.push("Boulders")
+  if (userBoulderLogs && userBoulderLogs.length > 0) titles.push("Bouldering")
   if (userLeadLogs && userLeadLogs.length > 0) titles.push("Lead")
   if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
 
