@@ -81,6 +81,7 @@ export default function ProgressionPage() {
                 container
                 direction={"column"}
                 gridAutoRows="auto"
+                key={title}
                 marginBottom={1}
                 marginTop={1}
                 padding={2}

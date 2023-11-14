@@ -69,6 +69,14 @@ export interface BoulderGradePyramidGraphData extends GradePyramidGraphData {
   sends: number
 }
 
+export type ProgressionGraphData = {
+  monthIdx: number
+  month: string
+  hardestClimbIdx: number
+  hardestAttemptIdx: number
+  progressionLine: number
+}
+
 export type SessionStorageData = {
   timeRange: string
   climbingData: {
