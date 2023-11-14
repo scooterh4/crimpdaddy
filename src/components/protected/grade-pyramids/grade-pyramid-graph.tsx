@@ -128,44 +128,35 @@ export default function GradePyramid({
         <AppLoading />
       </Grid>
     )
-  } else {
-    return graphData.length <= 0 ? (
-      <Typography
-        variant="h3"
-        padding={10}
-        sx={{ textAlign: "center", fontWeight: "bold" }}
-      >
-        --
-      </Typography>
-    ) : (
-      <Grid
-        container
-        item
-        direction={"row"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        marginLeft={-5}
-      >
-        <ResponsiveContainer aspect={graphAspectRatio}>
-          <BarChart layout="vertical" data={graphData} barSize={30}>
-            <XAxis type="number" allowDecimals={false} tickLine={false} />
-            <YAxis
-              type="category"
-              tickCount={graphData.length}
-              dataKey="grade"
-              tickLine={false}
-              fontSize={12}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-            <Bar dataKey="onsight" stackId="a" fill={GraphColors.Onsight} />
-            <Bar dataKey="flash" stackId="a" fill={GraphColors.Flash} />
-            <Bar dataKey="sends" stackId="a" fill={GraphColors.Sends} />
-            <Bar dataKey="redpoint" stackId="a" fill={GraphColors.Redpoint} />
-            <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
-          </BarChart>
-        </ResponsiveContainer>
-      </Grid>
-    )
   }
+  return (
+    <Grid
+      container
+      item
+      direction={"row"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      marginLeft={-5}
+    >
+      <ResponsiveContainer aspect={graphAspectRatio}>
+        <BarChart layout="vertical" data={graphData} barSize={30}>
+          <XAxis type="number" allowDecimals={false} tickLine={false} />
+          <YAxis
+            type="category"
+            tickCount={graphData.length}
+            dataKey="grade"
+            tickLine={false}
+            fontSize={12}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+          <Bar dataKey="onsight" stackId="a" fill={GraphColors.Onsight} />
+          <Bar dataKey="flash" stackId="a" fill={GraphColors.Flash} />
+          <Bar dataKey="sends" stackId="a" fill={GraphColors.Sends} />
+          <Bar dataKey="redpoint" stackId="a" fill={GraphColors.Redpoint} />
+          <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
+        </BarChart>
+      </ResponsiveContainer>
+    </Grid>
+  )
 }
