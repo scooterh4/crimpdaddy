@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts"
 import { ClimbLog } from "../../../static/types"
-import { Box, Card, Typography, useTheme } from "@mui/material"
+import { Box, Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import {
   CLIMB_TYPES,
@@ -60,9 +60,11 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     climbType === CLIMB_TYPES.Boulder ? BOULDER_GRADES : INDOOR_SPORT_GRADES
 
   const theme = useTheme()
+  const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
   const mdScreenAndUp = useMediaQuery(theme.breakpoints.up("md"))
+  const mdScreenOnly = useMediaQuery(theme.breakpoints.only("md"))
   const smScreenOnly = useMediaQuery(theme.breakpoints.only("sm"))
-  const graphAspectRatio = mdScreenAndUp ? 4.0 : smScreenOnly ? 2 : 1.1
+  const graphAspectRatio = lgScreenAndUp ? 4 : mdScreenOnly ? 3 : 2
   const graphLeftMargin = climbType === CLIMB_TYPES.Boulder ? -20 : -10
   const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11
 
@@ -83,47 +85,38 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     payload,
     label,
   }: TooltipProps<ValueType, NameType>) => {
-    if (active) {
-      if (payload) {
-        console.log("progression tooltip payload", payload)
-        return (
-          <Card sx={{ fontFamily: "poppins", padding: 2 }}>
-            <Typography
-              component="div"
-              fontWeight={"bold"}
-              textAlign={"center"}
-            >
-              {`${graphXAxis[label]}`}
-            </Typography>
-            <Typography component="div">
-              Highest grade climbed:{" "}
-              <Box fontWeight="bold" display="inline">
-                {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
-              </Box>
-            </Typography>
-            <Typography component="div">
-              Highest grade attempted:{" "}
-              <Box fontWeight="bold" display="inline">
-                {`${
-                  gradeSystem[
-                    graphData[label].hardestClimbIdx +
-                      graphData[label].hardestAttemptIdx
-                  ]
-                }`}
-              </Box>
-            </Typography>
-          </Card>
-        )
-      } else {
-        return (
-          <Card>
-            <p>--</p>
-          </Card>
-        )
-      }
-    } else {
-      return null
+    if (!active || !payload) {
+      return (
+        <Card>
+          <p>--</p>
+        </Card>
+      )
     }
+
+    return (
+      <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+        <Typography component="div" fontWeight={"bold"} textAlign={"center"}>
+          {`${graphXAxis[label]}`}
+        </Typography>
+        <Typography component="div" color={AppColors.success}>
+          Highest grade climbed:{" "}
+          <Box fontWeight="bold" display="inline">
+            {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
+          </Box>
+        </Typography>
+        <Typography component="div" color={GraphColors.Attempts}>
+          Highest grade attempted:{" "}
+          <Box fontWeight="bold" display="inline">
+            {`${
+              gradeSystem[
+                graphData[label].hardestClimbIdx +
+                  graphData[label].hardestAttemptIdx
+              ]
+            }`}
+          </Box>
+        </Typography>
+      </Card>
+    )
   }
 
   function setResultDates(startMoment: Moment) {
@@ -237,58 +230,66 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     )
   } else {
     return (
-      <ResponsiveContainer aspect={graphAspectRatio}>
-        <ComposedChart
-          data={graphData}
-          margin={{
-            top: 20,
-            right: 10,
-            left: graphLeftMargin,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid />
-          <XAxis
-            type="number"
-            domain={[0, graphXAxis.length - 1]}
-            dataKey="monthIdx"
-            fontSize={graphFontSize}
-            tickFormatter={(tick) => {
-              return graphXAxis[tick]
+      <Grid
+        container
+        item
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <ResponsiveContainer aspect={graphAspectRatio}>
+          <ComposedChart
+            data={graphData}
+            margin={{
+              top: 20,
+              right: 10,
+              left: graphLeftMargin,
+              bottom: 5,
             }}
-            scale={"auto"}
-          />
-          <YAxis
-            type="number"
-            domain={gradeRange}
-            tickFormatter={(tick) => {
-              return gradeSystem[tick]
-            }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar
-            stackId={"a"}
-            type="monotone"
-            dataKey="hardestClimbIdx"
-            stroke="black"
-            fill={AppColors.success}
-          />
-          <Bar
-            stackId={"a"}
-            type="monotone"
-            dataKey="hardestAttemptIdx"
-            stroke="black"
-            fill={GraphColors.Attempts}
-          />
-          <Line
-            type="bump"
-            dataKey="progressionLine"
-            fill="white"
-            stroke="black"
-            strokeWidth={3}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
+          >
+            <CartesianGrid />
+            <XAxis
+              type="number"
+              domain={[0, graphXAxis.length - 1]}
+              dataKey="monthIdx"
+              fontSize={graphFontSize}
+              tickFormatter={(tick) => {
+                return graphXAxis[tick]
+              }}
+              scale={"auto"}
+            />
+            <YAxis
+              type="number"
+              domain={gradeRange}
+              tickFormatter={(tick) => {
+                return gradeSystem[tick]
+              }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar
+              stackId={"a"}
+              type="monotone"
+              dataKey="hardestClimbIdx"
+              stroke="black"
+              fill={AppColors.success}
+            />
+            <Bar
+              stackId={"a"}
+              type="monotone"
+              dataKey="hardestAttemptIdx"
+              stroke="black"
+              fill={GraphColors.Attempts}
+            />
+            <Line
+              type="bump"
+              dataKey="progressionLine"
+              fill="white"
+              stroke="black"
+              strokeWidth={3}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </Grid>
     )
   }
 }
