@@ -10,30 +10,6 @@ type Props = {
 }
 
 export default function SectionLegend({ section, climbType }: Props) {
-  if (section === "activity") {
-    return (
-      <>
-        <Grid
-          container
-          justifyContent={"center"}
-          direction={"row"}
-          spacing={2}
-          sx={{ display: "inline-flex" }}
-        >
-          <Grid item sx={{ display: "inline-flex" }}>
-            <Square sx={{ color: AppColors.success }} />
-            <Typography fontFamily={"poppins"}>Climbs</Typography>
-          </Grid>
-
-          <Grid item sx={{ display: "inline-flex" }}>
-            <Square sx={{ color: GraphColors.Attempts }} />
-            <Typography fontFamily={"poppins"}>Attempts</Typography>
-          </Grid>
-        </Grid>
-      </>
-    )
-  }
-
   return (
     <Grid
       container
@@ -42,38 +18,45 @@ export default function SectionLegend({ section, climbType }: Props) {
       spacing={2}
       sx={{ display: "inline-flex" }}
     >
-      {climbType !== GYM_CLIMB_TYPES.Boulder && (
+      {(section === "activity" || section === "progression") && (
+        <Grid item sx={{ display: "inline-flex" }}>
+          <Square sx={{ color: AppColors.success }} />
+          <Typography fontFamily={"poppins"}>Climbs</Typography>
+        </Grid>
+      )}
+
+      {section === "gradePyramids" && climbType !== GYM_CLIMB_TYPES.Boulder && (
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Onsight }} />
           <Typography fontFamily={"poppins"}>Onsight</Typography>
         </Grid>
       )}
 
-      <Grid item sx={{ display: "inline-flex" }}>
-        <Square sx={{ color: GraphColors.Flash }} />
-        <Typography fontFamily={"poppins"}>Flash</Typography>
-      </Grid>
+      {section === "gradePyramids" && (
+        <Grid item sx={{ display: "inline-flex" }}>
+          <Square sx={{ color: GraphColors.Flash }} />
+          <Typography fontFamily={"poppins"}>Flash</Typography>
+        </Grid>
+      )}
 
-      {climbType !== GYM_CLIMB_TYPES.Boulder && (
+      {section === "gradePyramids" && climbType !== GYM_CLIMB_TYPES.Boulder && (
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Redpoint }} />
           <Typography fontFamily={"poppins"}>Redpoint</Typography>
         </Grid>
       )}
 
-      {climbType === GYM_CLIMB_TYPES.Boulder && (
+      {section === "gradePyramids" && climbType === GYM_CLIMB_TYPES.Boulder && (
         <Grid item sx={{ display: "inline-flex" }}>
           <Square sx={{ color: GraphColors.Sends }} />
           <Typography fontFamily={"poppins"}>Sends</Typography>
         </Grid>
       )}
 
-      {section === "gradePyramids" && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Attempts }} />
-          <Typography fontFamily={"poppins"}>Attempts</Typography>
-        </Grid>
-      )}
+      <Grid item sx={{ display: "inline-flex" }}>
+        <Square sx={{ color: GraphColors.Attempts }} />
+        <Typography fontFamily={"poppins"}>Attempts</Typography>
+      </Grid>
     </Grid>
   )
 }
