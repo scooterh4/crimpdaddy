@@ -7,7 +7,6 @@ import { useUserContext } from "../protected-context"
 import AppLoading from "../../common/loading"
 import {
   DateFilters,
-  GYM_CLIMB_TYPES,
   GradePyramidFilter,
   PromiseTrackerArea,
 } from "../../../static/constants"
@@ -23,6 +22,13 @@ export default function GradePyramidPage() {
   const [gradePyramidFilter, setGradePyramidFilter] = useState<number>(
     GradePyramidFilter.ClimbsOnly
   )
+  const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
+
+  // setup titles for displaying data
+  const titles: string[] = []
+  if (userBoulderLogs && userBoulderLogs.length > 0) titles.push("Boulders")
+  if (userLeadLogs && userLeadLogs.length > 0) titles.push("Lead")
+  if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
 
   useMemo(() => {
     if (!dataDateRange || dataDateRange < dateFilter) {
@@ -34,12 +40,7 @@ export default function GradePyramidPage() {
     <AppLoading />
   ) : (
     <>
-      <Grid
-        container
-        direction={"row"}
-        alignContent={"center"}
-        marginBottom={5}
-      >
+      <Grid container direction={"row"} alignContent={"center"}>
         <Grid container item direction={"row"}>
           <Typography
             color={ThemeColors.darkShade}
@@ -47,131 +48,70 @@ export default function GradePyramidPage() {
             gutterBottom
             gridColumn={"1"}
             justifySelf={"start"}
-            paddingLeft={0}
             paddingTop={2}
             variant="h3"
-            sx={{ columnSpan: "2" }}
           >
             Grade Pyramids
           </Typography>
         </Grid>
 
-        <Grid container item direction={"row"} justifyContent={"center"}>
-          <SelectFilter
-            graph={PromiseTrackerArea.GradePyramidGraph}
-            dateFilter={true}
-            setFilter={setDateFilter}
-          />
-          <SelectFilter
-            graph={PromiseTrackerArea.GradePyramidGraph}
-            dateFilter={false}
-            setFilter={setGradePyramidFilter}
-          />
-        </Grid>
+        {titles.length === 0 && <Typography>No data to display.</Typography>}
 
-        {/* <Grid container direction={"row"} marginTop={2}>
-          <SectionLegend section="gradePyramids" />
-        </Grid> */}
-      </Grid>
+        {titles.length > 0 && (
+          <>
+            <Grid
+              container
+              item
+              direction={"row"}
+              justifyContent={"center"}
+              marginBottom={2}
+            >
+              <SelectFilter
+                graph={PromiseTrackerArea.GradePyramidGraph}
+                dateFilter={true}
+                setFilter={setDateFilter}
+              />
+              <SelectFilter
+                graph={PromiseTrackerArea.GradePyramidGraph}
+                dateFilter={false}
+                setFilter={setGradePyramidFilter}
+              />
+            </Grid>
 
-      <Grid container direction={"row"}>
-        <Grid
-          alignItems={"center"}
-          border={1}
-          borderColor={ThemeColors.darkShade}
-          borderRadius={2}
-          container
-          direction={"column"}
-          gridAutoRows="auto"
-          padding={2}
-          sx={{ backgroundColor: "white" }}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            gridRow={1}
-            variant="h5"
-            sx={{ textAlign: "center" }}
-          >
-            Bouldering
-          </Typography>
+            {titles.map((title, index) => (
+              <Grid
+                alignItems={"center"}
+                border={1}
+                borderColor={ThemeColors.darkShade}
+                borderRadius={2}
+                container
+                direction={"column"}
+                gridAutoRows="auto"
+                marginBottom={1}
+                marginTop={1}
+                padding={2}
+                sx={{ backgroundColor: "white" }}
+              >
+                <Typography
+                  fontFamily={"poppins"}
+                  gridRow={1}
+                  variant="h5"
+                  sx={{ textAlign: "center" }}
+                >
+                  {title}
+                </Typography>
 
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.Boulder}
-            tickFilter={gradePyramidFilter}
-            dateFilter={dateFilter}
-          />
+                <GradePyramid
+                  climbType={index}
+                  tickFilter={gradePyramidFilter}
+                  dateFilter={dateFilter}
+                />
 
-          <SectionLegend
-            section="gradePyramids"
-            climbType={GYM_CLIMB_TYPES.Boulder}
-          />
-        </Grid>
-
-        <Grid
-          alignItems={"center"}
-          border={1}
-          borderColor={ThemeColors.darkShade}
-          borderRadius={2}
-          container
-          direction={"column"}
-          gridAutoRows="auto"
-          padding={2}
-          marginBottom={5}
-          marginTop={5}
-          sx={{ backgroundColor: "white" }}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            gridRow={1}
-            variant="h5"
-            sx={{ textAlign: "center" }}
-          >
-            Lead
-          </Typography>
-
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.Lead}
-            tickFilter={gradePyramidFilter}
-            dateFilter={dateFilter}
-          />
-
-          <SectionLegend
-            section="gradePyramids"
-            climbType={GYM_CLIMB_TYPES.Lead}
-          />
-        </Grid>
-
-        <Grid
-          alignItems={"center"}
-          border={1}
-          borderColor={ThemeColors.darkShade}
-          borderRadius={2}
-          container
-          direction={"column"}
-          gridAutoRows="auto"
-          padding={2}
-          sx={{ backgroundColor: "white" }}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            gridRow={1}
-            variant="h5"
-            sx={{ textAlign: "center" }}
-          >
-            Top Rope
-          </Typography>
-
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.TopRope}
-            tickFilter={gradePyramidFilter}
-            dateFilter={dateFilter}
-          />
-
-          <SectionLegend
-            section="gradePyramids"
-            climbType={GYM_CLIMB_TYPES.TopRope}
-          />
-        </Grid>
+                <SectionLegend section="gradePyramids" climbType={index} />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
     </>
   )

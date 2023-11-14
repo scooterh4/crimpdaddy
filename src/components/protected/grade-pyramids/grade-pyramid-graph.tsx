@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Bar,
   BarChart,
@@ -12,7 +12,6 @@ import {
 import {
   BoulderGradePyramidGraphData,
   ClimbLog,
-  GradePyramidGraphData,
   RouteGradePyramidGraphData,
 } from "../../../static/types"
 import { GraphColors } from "../../../static/styles"
@@ -23,7 +22,6 @@ import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../../static/constants"
 import { assembleGradePyramidGraphData } from "../../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../../common/loading"
-import { ContentCopy } from "@mui/icons-material"
 import {
   NameType,
   ValueType,
@@ -43,15 +41,7 @@ export default function GradePyramid({
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramidGraph,
   })
-  const {
-    userBoulderGradePyramidData,
-    userLeadGradePyramidData,
-    userTrGradePyramidData,
-    userBoulderLogs,
-    userLeadLogs,
-    userTopRopeLogs,
-    // userClimbingLogs,
-  } = useUserContext()
+  const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
   const [graphData, setGraphData] = useState<
     BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[]
   >([])
@@ -59,22 +49,6 @@ export default function GradePyramid({
   const lgScreenAndUp = useMediaQuery(theme.breakpoints.up("lg"))
   const mdScreen = useMediaQuery(theme.breakpoints.only("md"))
   const graphAspectRatio = lgScreenAndUp ? 4 : mdScreen ? 3 : 2
-
-  // useMemo(() => {
-  //   switch (climbType) {
-  //     case GYM_CLIMB_TYPES.Boulder:
-  //       setGraphData(
-  //         userBoulderGradePyramidData ? userBoulderGradePyramidData : []
-  //       )
-  //       break
-  //     case GYM_CLIMB_TYPES.Lead:
-  //       setGraphData(userLeadGradePyramidData ? userLeadGradePyramidData : [])
-  //       break
-  //     case GYM_CLIMB_TYPES.TopRope:
-  //       setGraphData(userTrGradePyramidData ? userTrGradePyramidData : [])
-  //       break
-  //   }
-  // }, [])
 
   useEffect(() => {
     const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
