@@ -69,9 +69,9 @@ export default function GradePyramidPage() {
           />
         </Grid>
 
-        <Grid container direction={"row"} marginTop={2}>
+        {/* <Grid container direction={"row"} marginTop={2}>
           <SectionLegend section="gradePyramids" />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Grid container direction={"row"}>
@@ -83,12 +83,12 @@ export default function GradePyramidPage() {
           container
           direction={"column"}
           gridAutoRows="auto"
+          padding={2}
           sx={{ backgroundColor: "white" }}
         >
           <Typography
             fontFamily={"poppins"}
             gridRow={1}
-            padding={2}
             variant="h5"
             sx={{ textAlign: "center" }}
           >
@@ -100,34 +100,10 @@ export default function GradePyramidPage() {
             tickFilter={gradePyramidFilter}
             dateFilter={dateFilter}
           />
-        </Grid>
 
-        <Grid
-          alignItems={"center"}
-          border={1}
-          borderColor={ThemeColors.darkShade}
-          borderRadius={2}
-          container
-          direction={"column"}
-          gridAutoRows="auto"
-          marginBottom={5}
-          marginTop={5}
-          sx={{ backgroundColor: "white" }}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            gridRow={1}
-            padding={2}
-            variant="h5"
-            sx={{ textAlign: "center" }}
-          >
-            Lead
-          </Typography>
-
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.Lead}
-            tickFilter={gradePyramidFilter}
-            dateFilter={dateFilter}
+          <SectionLegend
+            section="gradePyramids"
+            climbType={GYM_CLIMB_TYPES.Boulder}
           />
         </Grid>
 
@@ -139,12 +115,46 @@ export default function GradePyramidPage() {
           container
           direction={"column"}
           gridAutoRows="auto"
+          padding={2}
+          marginBottom={5}
+          marginTop={5}
           sx={{ backgroundColor: "white" }}
         >
           <Typography
             fontFamily={"poppins"}
             gridRow={1}
-            padding={2}
+            variant="h5"
+            sx={{ textAlign: "center" }}
+          >
+            Lead
+          </Typography>
+
+          <GradePyramid
+            climbType={GYM_CLIMB_TYPES.Lead}
+            tickFilter={gradePyramidFilter}
+            dateFilter={dateFilter}
+          />
+
+          <SectionLegend
+            section="gradePyramids"
+            climbType={GYM_CLIMB_TYPES.Lead}
+          />
+        </Grid>
+
+        <Grid
+          alignItems={"center"}
+          border={1}
+          borderColor={ThemeColors.darkShade}
+          borderRadius={2}
+          container
+          direction={"column"}
+          gridAutoRows="auto"
+          padding={2}
+          sx={{ backgroundColor: "white" }}
+        >
+          <Typography
+            fontFamily={"poppins"}
+            gridRow={1}
             variant="h5"
             sx={{ textAlign: "center" }}
           >
@@ -155,6 +165,11 @@ export default function GradePyramidPage() {
             climbType={GYM_CLIMB_TYPES.TopRope}
             tickFilter={gradePyramidFilter}
             dateFilter={dateFilter}
+          />
+
+          <SectionLegend
+            section="gradePyramids"
+            climbType={GYM_CLIMB_TYPES.TopRope}
           />
         </Grid>
       </Grid>

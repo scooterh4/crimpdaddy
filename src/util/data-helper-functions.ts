@@ -5,14 +5,18 @@ import {
   GradePyramidFilter,
   DateFilters,
   BOULDER_GRADES,
+  BOULDER_TICK_TYPES,
+  ROUTE_TICK_TYPES,
 } from "../static/constants"
 import {
-  GradePyramidGraphData,
+  BoulderGradePyramidGraphData,
+  RouteGradePyramidGraphData,
   ClimbLog,
-  TickTypes,
   UserIndoorRedpointGradesDoc,
   ClimbingSessionData,
   SessionClimb,
+  BoulderTickTypes,
+  RouteTickTypes,
 } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 
@@ -44,110 +48,169 @@ export function getMinimumMoment(dateFilter: number) {
   return minMoment
 }
 
+const getGradeOrder = (climbType: number) => {
+  return climbType === GYM_CLIMB_TYPES.Boulder
+    ? BOULDER_GRADES
+    : INDOOR_SPORT_GRADES
+}
+
 export function assembleGradePyramidGraphData(
   rawData: ClimbLog[],
   climbType: number,
   gradePyramidFilter: number,
   dateFilter: number
-): GradePyramidGraphData[] {
-  const gradeAttemptMap = new Map<string, TickTypes>()
+): BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[] {
+  const gradeAttemptMap =
+    climbType === GYM_CLIMB_TYPES.Boulder
+      ? new Map<string, BoulderTickTypes>()
+      : new Map<string, RouteTickTypes>()
   const minMoment = getMinimumMoment(dateFilter)
 
   rawData.forEach((climb) => {
-    // check the gradePyramidFilter
-    if (gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts) {
-      if (
-        (gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
-          climb.tick === "Attempt") ||
-        (gradePyramidFilter === GradePyramidFilter.AttemptsOnly &&
-          climb.tick !== "Attempt")
-      ) {
-        return
-      }
-    }
     // Check the date filter
     if (climb.unixTime < minMoment.unix()) {
       return
     }
 
+    // check the gradePyramidFilter
+    if (gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts) {
+      if (
+        (gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
+          climb.tick === ROUTE_TICK_TYPES.Attempt) ||
+        (gradePyramidFilter === GradePyramidFilter.AttemptsOnly &&
+          climb.tick !== ROUTE_TICK_TYPES.Attempt)
+      ) {
+        return
+      }
+    }
+
+    // climb looks good so add it to the map
     addGradePyramidDataToMap(climb, gradeAttemptMap)
   })
 
   const grades = Array.from(gradeAttemptMap.keys())
+  const gradeOrder = getGradeOrder(climbType)
 
-  // Sort the list of the grades in descending order
-  if (climbType === GYM_CLIMB_TYPES.Boulder) {
-    grades
-      .sort((a, b) => BOULDER_GRADES.indexOf(a) - BOULDER_GRADES.indexOf(b))
-      .reverse()
-  } else {
-    grades
-      .sort(
-        (a, b) =>
-          INDOOR_SPORT_GRADES.indexOf(a) - INDOOR_SPORT_GRADES.indexOf(b)
-      )
-      .reverse()
-  }
+  grades.sort((a, b) => gradeOrder.indexOf(a) - gradeOrder.indexOf(b)).reverse()
 
-  const graphData = assembleGradePyramidData(grades, gradeAttemptMap)
-
-  return graphData
+  return assembleGradePyramidData(climbType, grades, gradeAttemptMap)
 }
 
 export function addGradePyramidDataToMap(
   climb: ClimbLog,
-  gradeAttemptMap: Map<string, TickTypes>
+  gradeAttemptMap: Map<string, BoulderTickTypes | RouteTickTypes>
 ) {
-  const ticks = gradeAttemptMap.get(climb.grade) || {
-    onsight: 0,
-    flash: 0,
-    redpoint: 0,
-    attempts: 0,
-  }
+  let ticks: BoulderTickTypes | RouteTickTypes
 
-  // Repeats are not added to grade pyramids
-  switch (climb.tick) {
-    case "Onsight":
-      ticks.onsight += climb.count
-      break
-    case "Flash":
-      ticks.flash += climb.count
-      break
-    case "Redpoint":
-      ticks.redpoint += climb.count
-      break
-    case "Attempt":
-      ticks.attempts += climb.count
-      break
-    default:
-      break
+  if (climb.climbType === GYM_CLIMB_TYPES[0]) {
+    ticks =
+      (gradeAttemptMap.get(climb.grade) as BoulderTickTypes) ||
+      ({
+        flash: 0,
+        sends: 0,
+        attempts: 0,
+      } as BoulderTickTypes)
+
+    // Repeats are not added to grade pyramids
+    switch (climb.tick) {
+      case BOULDER_TICK_TYPES.Flash:
+        ticks.flash += climb.count
+        break
+      case BOULDER_TICK_TYPES.Send:
+        ticks.sends += climb.count
+        break
+      case BOULDER_TICK_TYPES.Attempt:
+        ticks.attempts += climb.count
+        break
+      default:
+        break
+    }
+  } else {
+    ticks =
+      (gradeAttemptMap.get(climb.grade) as RouteTickTypes) ||
+      ({
+        onsight: 0,
+        flash: 0,
+        redpoint: 0,
+        attempts: 0,
+      } as RouteTickTypes)
+
+    // Repeats are not added to grade pyramids
+    switch (climb.tick) {
+      case ROUTE_TICK_TYPES.Onsight:
+        ticks.onsight += climb.count
+        break
+      case ROUTE_TICK_TYPES.Flash:
+        ticks.flash += climb.count
+        break
+      case ROUTE_TICK_TYPES.Redpoint:
+        ticks.redpoint += climb.count
+        break
+      case ROUTE_TICK_TYPES.Attempt:
+        ticks.attempts += climb.count
+        break
+      default:
+        break
+    }
   }
 
   gradeAttemptMap.set(climb.grade, ticks)
 }
 
 export function assembleGradePyramidData(
+  climbType: number,
   gradesArray: string[],
-  gradeAttemptMap: Map<string, TickTypes>
-): GradePyramidGraphData[] {
-  const graphData: GradePyramidGraphData[] = []
+  gradeAttemptMap: Map<string, BoulderTickTypes | RouteTickTypes>
+): BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[] {
+  let graphData:
+    | BoulderGradePyramidGraphData[]
+    | RouteGradePyramidGraphData[] = []
 
-  gradesArray.forEach((grade) => {
-    const ticks: TickTypes = gradeAttemptMap.get(grade) || {
-      onsight: 0,
-      flash: 0,
-      redpoint: 0,
-      attempts: 0,
-    }
+  if (climbType === GYM_CLIMB_TYPES.Boulder) {
+    let boulders = graphData as BoulderGradePyramidGraphData[]
 
-    graphData.push({
-      grade: grade,
-      onsight: ticks.onsight,
-      flash: ticks.flash,
-      redpoint: ticks.redpoint,
-      attempts: ticks.attempts,
+    gradesArray.forEach((grade) => {
+      const ticks: BoulderTickTypes =
+        (gradeAttemptMap.get(grade) as BoulderTickTypes) ||
+        ({
+          flash: 0,
+          sends: 0,
+          attempts: 0,
+        } as BoulderTickTypes)
+
+      boulders.push({
+        grade: grade,
+        flash: ticks.flash,
+        sends: ticks.sends,
+        attempts: ticks.attempts,
+      })
     })
-  })
+
+    graphData = boulders
+  } else {
+    let routes = graphData as RouteGradePyramidGraphData[]
+
+    gradesArray.forEach((grade) => {
+      const ticks: RouteTickTypes =
+        (gradeAttemptMap.get(grade) as RouteTickTypes) ||
+        ({
+          onsight: 0,
+          flash: 0,
+          redpoint: 0,
+          attempts: 0,
+        } as RouteTickTypes)
+
+      routes.push({
+        grade: grade,
+        onsight: ticks.onsight,
+        flash: ticks.flash,
+        redpoint: ticks.redpoint,
+        attempts: ticks.attempts,
+      })
+    })
+
+    graphData = routes
+  }
 
   return graphData
 }
@@ -165,7 +228,7 @@ export function findNewRedpointGrades(
       climb.climbType === GYM_CLIMB_TYPES[GYM_CLIMB_TYPES.Boulder]
         ? BOULDER_GRADES
         : INDOOR_SPORT_GRADES
-    if (climb.tick === "Attempt") {
+    if (climb.tick === ROUTE_TICK_TYPES.Attempt) {
       return
     }
     switch (climb.climbType) {
@@ -253,6 +316,7 @@ export function assembleUserSessionData(
               : data.sessionMetadata.hardestBoulderClimbed
         }
         break
+
       default:
         if (climb.tick !== "Attempt") {
           data.sessionMetadata.numberOfRoutes += 1

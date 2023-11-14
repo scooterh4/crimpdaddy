@@ -1,15 +1,43 @@
-import { Button, Grid, SvgIcon, useMediaQuery, useTheme } from "@mui/material"
-import React from "react"
-import { TICK_TYPES } from "../../../static/constants"
+import {
+  Button,
+  Grid,
+  SvgIcon,
+  SvgIconTypeMap,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
+import React, { useState } from "react"
+import {
+  BOULDER_TICK_TYPES,
+  GYM_CLIMB_TYPES,
+  ROUTE_TICK_TYPES,
+} from "../../../static/constants"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import BoltIcon from "@mui/icons-material/Bolt"
 import CircleIcon from "@mui/icons-material/Circle"
 import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
+import CheckIcon from "@mui/icons-material/Check"
 import { AppColors, GraphColors, ThemeColors } from "../../../static/styles"
+import { useAddClimbTypeContext } from "./session-logger-context"
+import { OverridableComponent } from "@mui/material/OverridableComponent"
 
-const tickIcons = [VisibilityIcon, BoltIcon, CircleIcon, ReplayIcon, CancelIcon]
-const tickColors = [
+const boulderIcons = [BoltIcon, CheckIcon, ReplayIcon, CancelIcon]
+const routeIcons = [
+  VisibilityIcon,
+  BoltIcon,
+  CircleIcon,
+  ReplayIcon,
+  CancelIcon,
+]
+
+const boulderColors = [
+  GraphColors.Flash,
+  GraphColors.Onsight,
+  AppColors.info,
+  AppColors.danger,
+]
+const routeColors = [
   GraphColors.Onsight,
   GraphColors.Flash,
   GraphColors.Redpoint,
@@ -28,6 +56,19 @@ export default function TickSelector({
   setSelectedTick,
   setAttemptInputVisibility,
 }: Props) {
+  const climbType = useAddClimbTypeContext()
+  const [ticks, setTicks] = useState<string[]>(
+    climbType === GYM_CLIMB_TYPES.Boulder
+      ? Object.keys(BOULDER_TICK_TYPES)
+      : Object.keys(ROUTE_TICK_TYPES)
+  )
+
+  const [tickColors, setTickColors] = useState<string[]>(
+    climbType === GYM_CLIMB_TYPES.Boulder ? boulderColors : routeColors
+  )
+  const [tickIcons, setTickIcons] = useState<
+    (OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string })[]
+  >(climbType === GYM_CLIMB_TYPES.Boulder ? boulderIcons : routeIcons)
   const theme = useTheme()
   const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
 
@@ -50,7 +91,7 @@ export default function TickSelector({
         direction={"row"}
         justifyContent={{ sm: "start", xs: "center" }}
       >
-        {TICK_TYPES.map((tick, index) => (
+        {ticks.map((tick, index) => (
           <Button
             key={tick}
             value={tick}

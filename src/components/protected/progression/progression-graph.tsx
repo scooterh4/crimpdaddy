@@ -85,6 +85,7 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
   }: TooltipProps<ValueType, NameType>) => {
     if (active) {
       if (payload) {
+        console.log("progression tooltip payload", payload)
         return (
           <Card sx={{ fontFamily: "poppins", padding: 2 }}>
             <Typography

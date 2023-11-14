@@ -39,19 +39,34 @@ export type ClimbLog = {
   unixTime: number
 }
 
-export type TickTypes = {
-  onsight: number
+export interface TickTypes {
   flash: number
+  attempts: number
+  repeats: number
+}
+
+export interface BoulderTickTypes extends TickTypes {
+  sends: number
+}
+
+export interface RouteTickTypes extends TickTypes {
+  onsight: number
   redpoint: number
+}
+
+interface GradePyramidGraphData {
+  grade: string
+  flash: number
   attempts: number
 }
 
-export type GradePyramidGraphData = {
-  grade: string
+export interface RouteGradePyramidGraphData extends GradePyramidGraphData {
   onsight: number
-  flash: number
   redpoint: number
-  attempts: number
+}
+
+export interface BoulderGradePyramidGraphData extends GradePyramidGraphData {
+  sends: number
 }
 
 export type SessionStorageData = {
