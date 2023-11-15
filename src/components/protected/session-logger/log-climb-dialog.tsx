@@ -11,6 +11,7 @@ import {
   BOULDER_GRADES,
   GYM_CLIMB_TYPES,
   INDOOR_SPORT_GRADES,
+  ROUTE_TICK_TYPES,
 } from "../../../static/constants"
 import moment from "moment"
 import {
@@ -72,9 +73,11 @@ export function LogClimbDialog() {
         grade: selectedGrade,
         tick: selectedTick,
         attemptCount:
-          attemptCount.toString() === ""
-            ? 1
-            : parseInt(attemptCount.toString()),
+          selectedTick === ROUTE_TICK_TYPES.Attempt
+            ? attemptCount.toString() === ""
+              ? 1
+              : parseInt(attemptCount.toString())
+            : 1,
         unixTime: unixTime !== 0 ? unixTime : moment().unix(),
       }
 

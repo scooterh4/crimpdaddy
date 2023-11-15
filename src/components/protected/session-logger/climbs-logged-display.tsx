@@ -24,7 +24,7 @@ import {
 } from "./session-logger-context"
 import { EditSessionClimb, SessionClimb } from "../../../static/types"
 import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
-import { GYM_CLIMB_TYPES } from "../../../static/constants"
+import { GYM_CLIMB_TYPES, ROUTE_TICK_TYPES } from "../../../static/constants"
 
 type Props = {
   title: string
@@ -73,16 +73,10 @@ export function ClimbsLoggedDisplay({ title }: Props) {
   }
 
   function getSecondaryText(climb: SessionClimb) {
-    return climb.tick === "Attempt"
+    return climb.tick === ROUTE_TICK_TYPES.Attempt
       ? `${climb.attemptCount} ${climb.tick}` +
           (climb.attemptCount > 1 ? "s" : "")
-      : `${climb.tick}${
-          climb.attemptCount > 1
-            ? ` (with ${climb.attemptCount - 1} failed attempt${
-                climb.attemptCount > 2 ? "s" : ""
-              })`
-            : ""
-        }`
+      : `${climb.tick}`
   }
 
   return (
