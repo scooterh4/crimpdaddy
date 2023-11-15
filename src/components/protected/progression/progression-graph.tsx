@@ -19,7 +19,7 @@ import {
   PromiseTrackerArea,
 } from "../../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
-import { AppColors, GraphColors } from "../../../static/styles"
+import { GraphColors } from "../../../static/styles"
 import { useUserContext } from "../protected-context"
 import {
   NameType,
@@ -28,6 +28,7 @@ import {
 import AppLoading from "../../common/loading"
 import { usePromiseTracker } from "react-promise-tracker"
 import { formatDataForProgressionGraph } from "../../../util/data-helper-functions"
+import { Square } from "@mui/icons-material"
 
 type Props = {
   climbType: number
@@ -94,26 +95,61 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
 
     return (
       <Card sx={{ fontFamily: "poppins", padding: 2 }}>
-        <Typography component="div" fontWeight={"bold"} textAlign={"center"}>
+        <Typography
+          component="div"
+          fontWeight={"bold"}
+          gutterBottom
+          textAlign={"center"}
+        >
           {`${graphXAxis[label]}`}
         </Typography>
-        <Typography component="div" color={AppColors.success}>
-          Highest grade climbed:{" "}
-          <Box fontWeight="bold" display="inline">
-            {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
-          </Box>
-        </Typography>
-        <Typography component="div" color={GraphColors.Attempts}>
-          Highest grade attempted:{" "}
-          <Box fontWeight="bold" display="inline">
-            {`${
-              gradeSystem[
-                graphData[label].hardestClimbIdx +
-                  graphData[label].hardestAttemptIdx
-              ]
-            }`}
-          </Box>
-        </Typography>
+
+        {gradeSystem[graphData[label].hardestClimbIdx] === "" && (
+          <Typography component="div" textAlign={"center"}>
+            --
+          </Typography>
+        )}
+
+        {gradeSystem[graphData[label].hardestClimbIdx] !== "" && (
+          <>
+            <Grid
+              container
+              direction={"row"}
+              item
+              justifyContent={"center"}
+              sx={{ display: "flex" }}
+            >
+              <Square sx={{ color: GraphColors.Sends }} />
+              <Typography component="div">
+                Highest grade climbed:{" "}
+                <Box fontWeight="bold" display="inline">
+                  {`${gradeSystem[graphData[label].hardestClimbIdx]}`}
+                </Box>
+              </Typography>
+            </Grid>
+
+            <Grid
+              container
+              direction={"row"}
+              item
+              justifyContent={"center"}
+              sx={{ display: "flex" }}
+            >
+              <Square sx={{ color: GraphColors.Attempts }} />
+              <Typography component="div">
+                Highest grade attempted:{" "}
+                <Box fontWeight="bold" display="inline">
+                  {`${
+                    gradeSystem[
+                      graphData[label].hardestClimbIdx +
+                        graphData[label].hardestAttemptIdx
+                    ]
+                  }`}
+                </Box>
+              </Typography>
+            </Grid>
+          </>
+        )}
       </Card>
     )
   }
@@ -163,7 +199,7 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
             type="monotone"
             dataKey="hardestClimbIdx"
             stroke="black"
-            fill={AppColors.success}
+            fill={GraphColors.Sends}
           />
           <Bar
             stackId={"a"}

@@ -1,8 +1,8 @@
 import React from "react"
-import { Square } from "@mui/icons-material"
-import { Grid, Typography } from "@mui/material"
-import { AppColors, GraphColors } from "../../../static/styles"
+import { Grid } from "@mui/material"
+import { GraphColors } from "../../../static/styles"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
+import LegendEntry from "./legend-entry"
 
 type Props = {
   section: string
@@ -19,44 +19,50 @@ export default function SectionLegend({ section, climbType }: Props) {
       sx={{ display: "inline-flex" }}
     >
       {(section === "activity" || section === "progression") && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: AppColors.success }} />
-          <Typography fontFamily={"poppins"}>Climbs</Typography>
-        </Grid>
+        <LegendEntry
+          title={"Climbs"}
+          color={GraphColors.Sends}
+          display={"inline-flex"}
+        />
       )}
 
       {section === "gradePyramids" && climbType !== GYM_CLIMB_TYPES.Boulder && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Onsight }} />
-          <Typography fontFamily={"poppins"}>Onsight</Typography>
-        </Grid>
+        <LegendEntry
+          title={"Onsight"}
+          color={GraphColors.Onsight}
+          display={"inline-flex"}
+        />
       )}
 
       {section === "gradePyramids" && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Flash }} />
-          <Typography fontFamily={"poppins"}>Flash</Typography>
-        </Grid>
+        <LegendEntry
+          title={"Flash"}
+          color={GraphColors.Flash}
+          display={"inline-flex"}
+        />
       )}
 
       {section === "gradePyramids" && climbType !== GYM_CLIMB_TYPES.Boulder && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Redpoint }} />
-          <Typography fontFamily={"poppins"}>Redpoint</Typography>
-        </Grid>
+        <LegendEntry
+          title={"Redpoint"}
+          color={GraphColors.Redpoint}
+          display={"inline-flex"}
+        />
       )}
 
       {section === "gradePyramids" && climbType === GYM_CLIMB_TYPES.Boulder && (
-        <Grid item sx={{ display: "inline-flex" }}>
-          <Square sx={{ color: GraphColors.Sends }} />
-          <Typography fontFamily={"poppins"}>Sends</Typography>
-        </Grid>
+        <LegendEntry
+          title="Sends"
+          color={GraphColors.Sends}
+          display="inline-flex"
+        />
       )}
 
-      <Grid item sx={{ display: "inline-flex" }}>
-        <Square sx={{ color: GraphColors.Attempts }} />
-        <Typography fontFamily={"poppins"}>Attempts</Typography>
-      </Grid>
+      <LegendEntry
+        title={"Attempts"}
+        color={GraphColors.Attempts}
+        display="inline-flex"
+      />
     </Grid>
   )
 }

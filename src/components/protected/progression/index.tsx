@@ -1,11 +1,7 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useUserContext } from "../protected-context"
-import {
-  DateFilters,
-  GYM_CLIMB_TYPES,
-  PromiseTrackerArea,
-} from "../../../static/constants"
+import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import AppLoading from "../../common/loading"
 import SelectFilter from "../common/select-filter"

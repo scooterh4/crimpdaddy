@@ -1,7 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { ThemeColors } from "../../../static/styles"
-import { useUserContext } from "../protected-context"
 import SessionDisplay from "./session-display"
 import {
   getUserClimbingSessions,

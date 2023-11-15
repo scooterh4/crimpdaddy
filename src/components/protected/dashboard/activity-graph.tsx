@@ -5,29 +5,35 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts"
-import { useTheme } from "@mui/material"
+import { Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment, { Moment } from "moment"
-import { AppColors, GraphColors } from "../../../static/styles"
+import { GraphColors } from "../../../static/styles"
 import { useUserContext } from "../protected-context"
 import AppLoading from "../../common/loading"
 import { ClimbLog } from "../../../static/types"
 import { PromiseTrackerArea } from "../../../static/constants"
 import { usePromiseTracker } from "react-promise-tracker"
 import { getMinimumMoment } from "../../../util/data-helper-functions"
+import { Square } from "@mui/icons-material"
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent"
 
 type Props = {
   filter: number
 }
 
 type ClimbsByDate = {
-  Climbs: number
-  Attempts: number
-  Date: string
-  Timestamp: number
+  climbs: number
+  attempts: number
+  date: string
+  timestamp: number
 }
 
 export default function ActivityGraph({ filter }: Props) {
@@ -72,17 +78,17 @@ export default function ActivityGraph({ filter }: Props) {
         .format("MMM DD, YYYY")
         .toString()
 
-      const dateAlreadyAdded = result.find((r) => r.Date === date)
+      const dateAlreadyAdded = result.find((r) => r.date === date)
       if (dateAlreadyAdded) {
         if (climb.tick === "Attempt") {
-          dateAlreadyAdded.Attempts += climb.count
+          dateAlreadyAdded.attempts += climb.count
         } else {
-          dateAlreadyAdded.Climbs += climb.count
+          dateAlreadyAdded.climbs += climb.count
         }
 
         // update the maxRange for the y-axis
-        if (dateAlreadyAdded.Climbs + dateAlreadyAdded.Attempts > yAxisRange) {
-          yAxisRange = dateAlreadyAdded.Climbs + dateAlreadyAdded.Attempts
+        if (dateAlreadyAdded.climbs + dateAlreadyAdded.attempts > yAxisRange) {
+          yAxisRange = dateAlreadyAdded.climbs + dateAlreadyAdded.attempts
         }
       }
     })
@@ -99,16 +105,82 @@ export default function ActivityGraph({ filter }: Props) {
 
     while (minMoment <= maxMoment) {
       result.push({
-        Climbs: 0,
-        Attempts: 0,
-        Date: minMoment.format("MMM DD, YYYY").toString(),
-        Timestamp: minMoment.unix(),
+        climbs: 0,
+        attempts: 0,
+        date: minMoment.format("MMM DD, YYYY").toString(),
+        timestamp: minMoment.unix(),
       })
 
       minMoment.add(1, "days")
     }
 
     return result
+  }
+
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: TooltipProps<ValueType, NameType>) => {
+    if (!active || !payload) {
+      return (
+        <Card>
+          <p>--</p>
+        </Card>
+      )
+    }
+
+    const climbs = payload.find((p) => p.dataKey === "climbs")
+    const attempts = payload.find((p) => p.dataKey === "attempts")
+
+    return (
+      <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+        <Typography
+          component="div"
+          fontWeight={"bold"}
+          gutterBottom
+          textAlign={"center"}
+        >
+          {payload[0].payload.date}
+        </Typography>
+
+        {!climbs ||
+          !attempts ||
+          (climbs.value === 0 && attempts.value === 0 ? (
+            <Typography component="div" textAlign={"center"}>
+              --
+            </Typography>
+          ) : (
+            <>
+              <Grid
+                container
+                direction={"row"}
+                item
+                justifyContent={"center"}
+                sx={{ display: "flex" }}
+              >
+                <Square sx={{ color: GraphColors.Sends }} />
+                <Typography component="div">
+                  Climbs: <b>{climbs.value}</b>
+                </Typography>
+              </Grid>
+
+              <Grid
+                container
+                direction={"row"}
+                item
+                justifyContent={"center"}
+                sx={{ display: "flex" }}
+              >
+                <Square sx={{ color: GraphColors.Attempts }} />
+                <Typography component="div">
+                  Attempts: <b>{attempts.value}</b>
+                </Typography>
+              </Grid>
+            </>
+          ))}
+      </Card>
+    )
   }
 
   if (promiseInProgress) {
@@ -134,9 +206,9 @@ export default function ActivityGraph({ filter }: Props) {
           domain={[0, graphMaxRange]}
           allowDecimals={false}
         />
-        <Tooltip />
-        <Bar dataKey="Climbs" stackId="a" fill={AppColors.success} />
-        <Bar dataKey="Attempts" stackId="a" fill={GraphColors.Attempts} />
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey="climbs" stackId="a" fill={GraphColors.Sends} />
+        <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
       </BarChart>
     </ResponsiveContainer>
   )

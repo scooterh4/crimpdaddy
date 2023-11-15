@@ -26,6 +26,7 @@ import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent"
+import { Square } from "@mui/icons-material"
 
 type Props = {
   climbType: number
@@ -90,33 +91,88 @@ export default function GradePyramid({
 
     return (
       <Card sx={{ fontFamily: "poppins", padding: 2 }}>
-        <Typography component="div" fontWeight={"bold"} textAlign={"center"}>
+        <Typography
+          component="div"
+          fontWeight={"bold"}
+          gutterBottom
+          textAlign={"center"}
+        >
           {label}
         </Typography>
+
         {onsight && (
-          <Typography component="div" color={GraphColors.Onsight}>
-            Onsight: <b>{onsight.value}</b>
-          </Typography>
+          <Grid
+            container
+            direction={"row"}
+            item
+            justifyContent={"center"}
+            sx={{ display: "flex" }}
+          >
+            <Square sx={{ color: GraphColors.Onsight }} />
+            <Typography component="div">
+              Onsight: <b>{onsight.value}</b>
+            </Typography>
+          </Grid>
         )}
+
         {flash && (
-          <Typography component="div" color={GraphColors.Flash}>
-            Flash: <b>{flash.value}</b>
-          </Typography>
+          <Grid
+            container
+            direction={"row"}
+            item
+            justifyContent={"center"}
+            sx={{ display: "flex" }}
+          >
+            <Square sx={{ color: GraphColors.Flash }} />
+            <Typography component="div">
+              Flash: <b>{flash.value}</b>
+            </Typography>
+          </Grid>
         )}
+
         {redpoint && (
-          <Typography component="div" color={GraphColors.Redpoint}>
-            Redpoint: <b>{redpoint.value}</b>
-          </Typography>
+          <Grid
+            container
+            direction={"row"}
+            item
+            justifyContent={"center"}
+            sx={{ display: "flex" }}
+          >
+            <Square sx={{ color: GraphColors.Redpoint }} />
+            <Typography component="div">
+              Redpoint: <b>{redpoint.value}</b>
+            </Typography>
+          </Grid>
         )}
+
         {sends && (
-          <Typography component="div" color={GraphColors.Sends}>
-            Sends: <b>{sends.value}</b>
-          </Typography>
+          <Grid
+            container
+            direction={"row"}
+            item
+            justifyContent={"center"}
+            sx={{ display: "flex" }}
+          >
+            <Square sx={{ color: GraphColors.Sends }} />
+            <Typography component="div">
+              Sends: <b>{sends.value}</b>
+            </Typography>
+          </Grid>
         )}
+
         {attempts && (
-          <Typography component="div" color={GraphColors.Attempts}>
-            Attempts: <b>{attempts.value}</b>
-          </Typography>
+          <Grid
+            container
+            direction={"row"}
+            item
+            justifyContent={"center"}
+            sx={{ display: "flex" }}
+          >
+            <Square sx={{ color: GraphColors.Attempts }} />
+            <Typography component="div">
+              Attempts: <b>{attempts.value}</b>
+            </Typography>
+          </Grid>
         )}
       </Card>
     )

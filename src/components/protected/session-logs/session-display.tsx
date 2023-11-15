@@ -71,6 +71,7 @@ export default function SessionDisplay({ data }: Props) {
             .format("MMM Do, YYYY")
             .toString()}
         </Typography>
+
         <Typography
           marginLeft={2}
           color={ThemeColors.darkShade}
@@ -91,10 +92,15 @@ export default function SessionDisplay({ data }: Props) {
           marginBottom={1}
         >
           {statsToDisplay.map((stat) => (
-            <SessionStatDisplay title={stat.title} stat={stat.stat} />
+            <SessionStatDisplay
+              key={stat.title}
+              title={stat.title}
+              stat={stat.stat}
+            />
           ))}
         </Grid>
       </Grid>
+
       {data.sessionMetadata.numberOfBoulders > 0 && (
         <Grid container direction={"row"} justifyContent={"center"}>
           <Typography fontFamily={"poppins"} fontWeight={"bold"}>
@@ -103,6 +109,7 @@ export default function SessionDisplay({ data }: Props) {
           <SessionGraph climbType={"Boulder"} data={data} />
         </Grid>
       )}
+
       {data.sessionMetadata.numberOfRoutes > 0 && (
         <Grid container direction={"row"} justifyContent={"center"}>
           <Typography fontFamily={"poppins"} fontWeight={"bold"}>

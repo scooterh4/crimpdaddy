@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { AppColors, GraphColors } from "../../../static/styles"
+import { GraphColors } from "../../../static/styles"
 import { ClimbLog, ClimbingSessionData } from "../../../static/types"
 import { Box, Card, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
@@ -236,7 +236,7 @@ export default function SessionGraph({ data, climbType }: Props) {
           }}
         />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="climbGradeIndex" stackId="a" fill={AppColors.success} />
+        <Bar dataKey="climbGradeIndex" stackId="a" fill={GraphColors.Sends} />
         <Bar
           dataKey="attemptGradeIndex"
           stackId="a"
