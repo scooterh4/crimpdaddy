@@ -44,7 +44,6 @@ export function LogClimbDialog() {
   const [selectedTick, setSelectedTick] = useState<string>("")
   const [showAttemptInput, setAttemptInputVisibility] = useState(false)
   const [attemptCount, setAttemptCount] = useState<number | string>("")
-  const [attemptError, setAttemptError] = useState<boolean>(false)
   const [unixTime, setUnixTime] = useState<number>(0)
 
   useEffect(() => {
@@ -146,7 +145,6 @@ export function LogClimbDialog() {
               <AttemptInput
                 attemptCount={attemptCount}
                 setAttemptCount={setAttemptCount}
-                attemptError={attemptError}
               />
             )}
           </DialogContent>
