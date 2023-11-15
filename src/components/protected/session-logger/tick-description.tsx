@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { AppColors } from "../../../static/styles"
-import { useAddClimbTypeContext } from "./session-logger-context"
+import { useClimbTypeContext } from "./session-logger-context"
 import {
   BOULDER_TICK_TYPES,
   GYM_CLIMB_TYPES,
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function TickDescription({ selectedTick }: Props) {
-  const climbType = useAddClimbTypeContext()
+  const climbType = useClimbTypeContext()
   const [selectedTickDescription, setSelectedTickDescription] = useState("")
   const noun = climbType === GYM_CLIMB_TYPES.Boulder ? "problem" : "route"
   const tickDescriptions = {

@@ -51,7 +51,9 @@ export function ClimbsLoggedDisplay({ title }: Props) {
   }
 
   function addClimb() {
-    title === "Boulders" ? onOpenAddClimbDialog(0) : onOpenAddClimbDialog(1)
+    title === "Boulders"
+      ? onOpenAddClimbDialog(GYM_CLIMB_TYPES.Boulder)
+      : onOpenAddClimbDialog(GYM_CLIMB_TYPES.Lead)
   }
 
   function editClimb(climb: SessionClimb, index: number) {

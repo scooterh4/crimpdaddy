@@ -11,7 +11,6 @@ import {
   SessionClimb,
 } from "../../../static/types"
 import { Moment } from "moment"
-import { assembleUserSessionData } from "../../../util/data-helper-functions"
 import { logClimbingSession } from "../../../util/db"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
 import moment from "moment"
@@ -21,7 +20,7 @@ type State = {
   boulderData: SessionClimb[]
   routeData: SessionClimb[]
   openAddClimbDialog: boolean
-  addClimbType: number
+  climbType: number | null
   openEditClimbDialog: boolean
   editClimb: EditSessionClimb
   deleteClimbDialogVisible: boolean
@@ -54,8 +53,8 @@ const RouteDataContext = createContext<State["routeData"]>(
 const OpenAddClimbDialogContext = createContext<State["openAddClimbDialog"]>(
   false as State["openAddClimbDialog"]
 )
-const AddClimbTypeContext = createContext<State["addClimbType"]>(
-  {} as State["addClimbType"]
+const ClimbTypeContext = createContext<State["climbType"]>(
+  {} as State["climbType"]
 )
 const OpenEditClimbDialogContext = createContext<State["openEditClimbDialog"]>(
   false as State["openEditClimbDialog"]
@@ -92,6 +91,7 @@ const reducer = (state: State, action: Actions): State => {
   switch (action.type) {
     case "sessionStarted":
       return { ...state, sessionStart: action.time }
+
     case "addClimbData":
       return action.climbType === 0
         ? {
@@ -106,22 +106,38 @@ const reducer = (state: State, action: Actions): State => {
               ? [...state.routeData, action.climb]
               : [action.climb],
           }
+
     case "openAddClimbDialog":
       return {
         ...state,
         openAddClimbDialog: true,
-        addClimbType: action.climbType,
+        climbType: action.climbType,
       }
+
     case "closeAddClimbDialog":
-      return { ...state, openAddClimbDialog: false }
+      return { ...state, openAddClimbDialog: false, climbType: null }
+
     case "openEditClimbDialog":
-      return { ...state, openEditClimbDialog: true, editClimb: action.climb }
+      return {
+        ...state,
+        openEditClimbDialog: true,
+        editClimb: action.climb,
+        climbType:
+          action.climb.climbType === GYM_CLIMB_TYPES[0]
+            ? 0
+            : action.climb.climbType === GYM_CLIMB_TYPES[1]
+            ? 1
+            : 2,
+      }
+
     case "closeEditClimbDialog":
       return {
         ...state,
         openEditClimbDialog: false,
         editClimb: {} as EditSessionClimb,
+        climbType: null,
       }
+
     case "updateClimb":
       if (action.climb.climbType === GYM_CLIMB_TYPES[0]) {
         state.boulderData[action.climb.index] = action.climb as SessionClimb
@@ -130,6 +146,7 @@ const reducer = (state: State, action: Actions): State => {
           boulderData: [...state.boulderData],
           openEditClimbDialog: false,
           editClimb: {} as EditSessionClimb,
+          climbType: null,
         }
       }
       state.routeData[action.climb.index] = action.climb as SessionClimb
@@ -139,12 +156,14 @@ const reducer = (state: State, action: Actions): State => {
         openEditClimbDialog: false,
         editClimb: {} as EditSessionClimb,
       }
+
     case "changeDeleteClimbDialogVisibility":
       return {
         ...state,
         deleteClimbDialogVisible: action.open,
         climbToDelete: { climb: action.climb, index: action.index },
       }
+
     case "removeClimb":
       if (action.climbType === 0) {
         state.boulderData.splice(action.index, 1)
@@ -153,6 +172,7 @@ const reducer = (state: State, action: Actions): State => {
           boulderData: [...state.boulderData],
           deleteClimbDialogVisible: false,
           climbToDelete: { climb: {} as SessionClimb, index: -1 },
+          climbType: null,
         }
       }
       state.routeData.splice(action.index, 1)
@@ -161,6 +181,7 @@ const reducer = (state: State, action: Actions): State => {
         routeData: [...state.routeData],
         deleteClimbDialogVisible: false,
         climbToDelete: { climb: {} as SessionClimb, index: -1 },
+        climbType: null,
       }
   }
 }
@@ -249,7 +270,7 @@ export const SessionLoggerProvider = ({
             <OpenAddClimbDialogContext.Provider
               value={state.openAddClimbDialog}
             >
-              <AddClimbTypeContext.Provider value={state.addClimbType}>
+              <ClimbTypeContext.Provider value={state.climbType}>
                 <OpenEditClimbDialogContext.Provider
                   value={state.openEditClimbDialog}
                 >
@@ -265,7 +286,7 @@ export const SessionLoggerProvider = ({
                     </DeleteClimbDialogVisibilityContext.Provider>
                   </EditClimbContext.Provider>
                 </OpenEditClimbDialogContext.Provider>
-              </AddClimbTypeContext.Provider>
+              </ClimbTypeContext.Provider>
             </OpenAddClimbDialogContext.Provider>
           </RouteDataContext.Provider>
         </BoulderDataContext.Provider>
@@ -279,7 +300,7 @@ export const useSessionStart = () => useContext(SessionStartContext)
 export const useBoulderData = () => useContext(BoulderDataContext)
 export const useRouteData = () => useContext(RouteDataContext)
 export const useOpenAddClimbDialog = () => useContext(OpenAddClimbDialogContext)
-export const useAddClimbTypeContext = () => useContext(AddClimbTypeContext)
+export const useClimbTypeContext = () => useContext(ClimbTypeContext)
 export const useOpenEditClimbDialogContext = () =>
   useContext(OpenEditClimbDialogContext)
 export const useEditClimbContext = () => useContext(EditClimbContext)
