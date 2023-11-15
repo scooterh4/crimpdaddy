@@ -14,6 +14,7 @@ import { Moment } from "moment"
 import { assembleUserSessionData } from "../../../util/data-helper-functions"
 import { logClimbingSession } from "../../../util/db"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
+import moment from "moment"
 
 type State = {
   sessionStart: Moment
@@ -28,7 +29,7 @@ type State = {
 }
 
 type API = {
-  onSessionStart: (time: Moment) => void
+  // onSessionStart: (time: Moment) => void
   onClimbAdded: (climbType: number, climb: SessionClimb) => void
   onOpenAddClimbDialog: (climbType: number) => void
   onCloseAddClimbDialog: () => void
@@ -172,9 +173,8 @@ export const SessionLoggerProvider = ({
   const [state, dispatch] = useReducer(reducer, {} as State)
 
   const api = useMemo(() => {
-    const onSessionStart = (time: Moment) => {
-      dispatch({ type: "sessionStarted", time })
-    }
+    // start the session
+    dispatch({ type: "sessionStarted", time: moment() })
 
     const onClimbAdded = (climbType: number, climb: SessionClimb) => {
       dispatch({ type: "addClimbData", climbType, climb })
@@ -227,7 +227,7 @@ export const SessionLoggerProvider = ({
     }
 
     return {
-      onSessionStart,
+      // onSessionStart,
       onClimbAdded,
       onOpenAddClimbDialog,
       onCloseAddClimbDialog,
@@ -275,6 +275,7 @@ export const SessionLoggerProvider = ({
 }
 
 export const useSessionAPI = () => useContext(APIContext)
+export const useSessionStart = () => useContext(SessionStartContext)
 export const useBoulderData = () => useContext(BoulderDataContext)
 export const useRouteData = () => useContext(RouteDataContext)
 export const useOpenAddClimbDialog = () => useContext(OpenAddClimbDialogContext)

@@ -49,7 +49,6 @@ export function LogClimbDialog() {
 
   useMemo(() => {
     if (editClimb && Object.keys(editClimb).length !== 0) {
-      console.log("this shit be going")
       editClimb.climbType !== GYM_CLIMB_TYPES[0]
         ? setRouteClimbType(editClimb.climbType)
         : setRouteClimbType("")
@@ -99,7 +98,7 @@ export function LogClimbDialog() {
   }
 
   return (
-    <Dialog open={add || edit}>
+    <Dialog open={add || edit ? add || edit : false}>
       <DialogTitle fontFamily={"poppins"} fontWeight={"bold"}>
         {add ? "Add " : "Edit "} {climbType > 0 ? "route" : "boulder"}
       </DialogTitle>

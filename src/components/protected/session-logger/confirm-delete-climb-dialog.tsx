@@ -42,7 +42,11 @@ export default function ConfirmDeleteClimbDialog() {
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} sx={{ fontFamily: "poppins" }}>
+    <Dialog
+      open={open ? open : false}
+      onClose={handleClose}
+      sx={{ fontFamily: "poppins" }}
+    >
       <DialogTitle
         color={"white"}
         id="alert-dialog-title"

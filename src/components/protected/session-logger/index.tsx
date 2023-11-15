@@ -1,11 +1,5 @@
-import React, { useMemo, useState } from "react"
-import {
-  Button,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material"
+import React, { useState } from "react"
+import { Button, Grid, Typography } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { AppColors, ThemeColors } from "../../../static/styles"
 import { Routes } from "../../../router"
@@ -17,8 +11,8 @@ import {
   useBoulderData,
   useRouteData,
   useSessionAPI,
+  useSessionStart,
 } from "./session-logger-context"
-import moment, { Moment } from "moment"
 import { useAuthContext } from "../../app/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -34,20 +28,14 @@ export default function SessionLoggerPage() {
 }
 
 function SessionLogger() {
-  const { onSessionStart, onLogSession } = useSessionAPI()
+  const { onLogSession } = useSessionAPI()
+  const sessionStart = useSessionStart()
   const { updateSessionStorageData } = useUserContext()
   const navigate = useNavigate()
-  const [sessionStart] = useState<Moment>(moment())
   const { user } = useAuthContext()
   const boulderClimbs = useBoulderData()
   const routeClimbs = useRouteData()
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
-  const theme = useTheme()
-  const lgAndDownScreen = useMediaQuery(theme.breakpoints.down("lg"))
-
-  useMemo(() => {
-    onSessionStart(sessionStart)
-  }, [])
 
   function submitForm() {
     if (user) {
@@ -83,7 +71,6 @@ function SessionLogger() {
 
       <LogClimbDialog />
 
-      {/* {lgAndDownScreen && ( */}
       <Button
         fullWidth={false}
         onClick={() => setOpenConfirmDialog(true)}
@@ -100,7 +87,6 @@ function SessionLogger() {
         <ArrowBackIcon sx={{ marginRight: 1 }} />
         Cancel session
       </Button>
-      {/* )} */}
 
       <Typography
         color={ThemeColors.darkShade}
