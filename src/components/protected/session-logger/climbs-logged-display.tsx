@@ -67,8 +67,8 @@ export function ClimbsLoggedDisplay({ title }: Props) {
   function getPrimaryText(climb: SessionClimb) {
     return climb.climbType !== GYM_CLIMB_TYPES[0]
       ? climb.climbType === GYM_CLIMB_TYPES[1]
-        ? `${climb.grade} ${climb.climbType}`
-        : `${climb.grade} Top rope`
+        ? `${climb.climbType}: ${climb.grade} `
+        : `Top rope: ${climb.grade}`
       : climb.grade
   }
 
