@@ -10,11 +10,11 @@ import {
 type Props = {
   graph: string
   dateFilter: boolean
-  setFilter: React.Dispatch<React.SetStateAction<number>>
+  setFilter: React.Dispatch<React.SetStateAction<string>>
 }
 
 type filterObj = {
-  value: number
+  value: string
   label: string
 }
 
@@ -40,28 +40,39 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
     { value: GradePyramidFilter.AttemptsOnly, label: "Attempts only" },
     { value: GradePyramidFilter.ClimbsAndAttempts, label: "Attempts & Climbs" },
   ]
+  const sessionGradePyramidSelectList = [
+    { value: GradePyramidFilter.AllRoutes, label: "All routes" },
+    { value: GradePyramidFilter.LeadOnly, label: "Lead" },
+    { value: GradePyramidFilter.TrOnly, label: "Top rope" },
+  ]
 
   const [selectList, setSelectList] = useState<filterObj[]>(
-    graph === PromiseTrackerArea.Activity
-      ? activityDateList
-      : graph === PromiseTrackerArea.ProgressionGraph
-      ? progressionDateList
-      : dateFilter
-      ? gradePyramidDateList
-      : gradePyramidSelectList
+    dateFilter
+      ? graph === PromiseTrackerArea.Activity
+        ? activityDateList
+        : graph === PromiseTrackerArea.ProgressionGraph
+        ? progressionDateList
+        : gradePyramidDateList
+      : graph === PromiseTrackerArea.GradePyramidGraph
+      ? gradePyramidSelectList
+      : sessionGradePyramidSelectList
   )
 
   useEffect(() => {
     if (!dateFilter) {
-      setSelectList(gradePyramidSelectList)
+      graph === PromiseTrackerArea.GradePyramidGraph
+        ? setSelectList(gradePyramidSelectList)
+        : setSelectList(sessionGradePyramidSelectList)
     } else {
       switch (graph) {
         case PromiseTrackerArea.Activity:
           setSelectList(activityDateList)
           break
+
         case PromiseTrackerArea.ProgressionGraph:
           setSelectList(progressionDateList)
           break
+
         case PromiseTrackerArea.GradePyramidGraph:
           setSelectList(gradePyramidDateList)
           break
@@ -70,11 +81,15 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
   }, [])
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    const value = parseInt(event.target.value)
+    const value = event.target.value.toString()
     if (value !== undefined && value !== null) {
       if (dateFilter) {
         // the graph needs data that's farther back in time than the data available
-        if (!dataDateRange || value > dataDateRange) {
+        if (
+          !dataDateRange ||
+          Object.keys(DateFilters).indexOf(value) >
+            Object.keys(DateFilters).indexOf(dataDateRange)
+        ) {
           updateDateRange(value, graph)
         }
       }
@@ -92,7 +107,9 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
               : graph === PromiseTrackerArea.GradePyramidGraph
               ? DateFilters.ThisMonth.toString()
               : DateFilters.Last6Months.toString()
-            : GradePyramidFilter.ClimbsOnly.toString()
+            : graph === PromiseTrackerArea.GradePyramidGraph
+            ? GradePyramidFilter.ClimbsOnly.toString()
+            : GradePyramidFilter.AllRoutes.toString()
         }
         onChange={handleFilterChange}
         sx={{ fontFamily: "poppins" }}

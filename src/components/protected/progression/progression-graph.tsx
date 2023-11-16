@@ -32,7 +32,7 @@ import { Square } from "@mui/icons-material"
 
 type Props = {
   climbType: number
-  filter: number
+  filter: string
 }
 
 export default function MonthlyClimbsGraph({ climbType, filter }: Props) {

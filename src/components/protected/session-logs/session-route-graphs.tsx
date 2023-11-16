@@ -1,17 +1,22 @@
 import { Grid, Typography } from "@mui/material"
-import React from "react"
+import React, { useState } from "react"
 import GradePyramid from "../grade-pyramids/grade-pyramid-graph"
-import { GYM_CLIMB_TYPES } from "../../../static/constants"
-import SessionGraph from "./session-graph"
+import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../../../static/constants"
 import { ClimbingSessionData } from "../../../static/types"
+import SelectFilter from "../common/select-filter"
+import SectionLegend from "../common/section-legend"
 
 type Props = {
   data: ClimbingSessionData
 }
 
 export default function SessionRouteGraphs({ data }: Props) {
+  const [gradePyramidFilter, setGradePyramidFilter] = useState<string>(
+    GradePyramidFilter.AllRoutes
+  )
+
   return (
-    <Grid container direction={"column"} justifyContent={"center"}>
+    <Grid container direction={"column"} marginTop={2}>
       <Typography
         fontFamily={"poppins"}
         marginLeft={2}
@@ -21,44 +26,24 @@ export default function SessionRouteGraphs({ data }: Props) {
         Routes
       </Typography>
 
-      <Grid container direction={"row"} alignItems={"center"}>
-        <Grid
-          direction={"column"}
-          container
-          item
-          marginLeft={-2}
-          xs={12}
-          sm={6}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            marginLeft={2}
-            marginRight={2}
-            variant="subtitle1"
-            textAlign={"center"}
-          >
-            Grades
-          </Typography>
+      <Grid item marginLeft={1}>
+        <SelectFilter
+          graph={"sessionGradePyramid"}
+          dateFilter={false}
+          setFilter={setGradePyramidFilter}
+        />
+      </Grid>
 
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.Lead}
-            sessionData={data.climbs}
-          />
-        </Grid>
+      <Grid item marginLeft={-3} paddingRight={2}>
+        <GradePyramid
+          climbType={GYM_CLIMB_TYPES.Lead}
+          sessionData={data.climbs}
+          climbTypeFilter={gradePyramidFilter}
+        />
+      </Grid>
 
-        <Grid item marginLeft={-1} xs={12} sm={6}>
-          <Typography
-            fontFamily={"poppins"}
-            marginLeft={2}
-            marginRight={2}
-            variant="subtitle1"
-            textAlign={"center"}
-          >
-            Activity
-          </Typography>
-
-          <SessionGraph climbType={"Boulder"} data={data} />
-        </Grid>
+      <Grid item>
+        <SectionLegend section={"gradePyramids"} />
       </Grid>
     </Grid>
   )

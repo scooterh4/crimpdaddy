@@ -18,8 +18,8 @@ export default function GradePyramidPage() {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
   })
-  const [dateFilter, setDateFilter] = useState<number>(DateFilters.ThisMonth)
-  const [gradePyramidFilter, setGradePyramidFilter] = useState<number>(
+  const [dateFilter, setDateFilter] = useState<string>(DateFilters.ThisMonth)
+  const [gradePyramidFilter, setGradePyramidFilter] = useState<string>(
     GradePyramidFilter.ClimbsOnly
   )
   const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
@@ -31,7 +31,11 @@ export default function GradePyramidPage() {
   if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
 
   useMemo(() => {
-    if (!dataDateRange || dataDateRange < dateFilter) {
+    if (
+      !dataDateRange ||
+      Object.keys(DateFilters).indexOf(dataDateRange) <
+        Object.keys(DateFilters).indexOf(dateFilter)
+    ) {
       updateDateRange(dateFilter, PromiseTrackerArea.GradePyramids)
     }
   }, [])

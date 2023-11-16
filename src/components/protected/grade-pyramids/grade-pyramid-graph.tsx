@@ -19,7 +19,11 @@ import { GraphColors } from "../../../static/styles"
 import { Card, Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
 import { useUserContext } from "../protected-context"
-import { GYM_CLIMB_TYPES, PromiseTrackerArea } from "../../../static/constants"
+import {
+  GYM_CLIMB_TYPES,
+  GradePyramidFilter,
+  PromiseTrackerArea,
+} from "../../../static/constants"
 import { assembleGradePyramidGraphData } from "../../../util/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../../common/loading"
@@ -31,8 +35,9 @@ import { Square } from "@mui/icons-material"
 
 type Props = {
   climbType: number
-  tickFilter?: number
-  dateFilter?: number
+  tickFilter?: string
+  dateFilter?: string
+  climbTypeFilter?: string
   sessionData?: ClimbLog[]
 }
 
@@ -40,6 +45,7 @@ export default function GradePyramid({
   climbType,
   tickFilter,
   dateFilter,
+  climbTypeFilter,
   sessionData,
 }: Props) {
   const { promiseInProgress } = usePromiseTracker({
@@ -63,7 +69,9 @@ export default function GradePyramid({
       formattedData = assembleGradePyramidGraphData(
         sessionData,
         climbType,
-        tickFilter,
+        climbTypeFilter
+          ? climbTypeFilter
+          : GradePyramidFilter.ClimbsAndAttempts,
         dateFilter
       )
     } else {
@@ -84,7 +92,7 @@ export default function GradePyramid({
     climbType === GYM_CLIMB_TYPES.Boulder
       ? setGraphData(formattedData as BoulderGradePyramidGraphData[])
       : setGraphData(formattedData as RouteGradePyramidGraphData[])
-  }, [tickFilter, dateFilter])
+  }, [tickFilter, dateFilter, climbTypeFilter])
 
   const CustomTooltip = ({
     active,

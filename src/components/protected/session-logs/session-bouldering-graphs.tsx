@@ -4,6 +4,7 @@ import GradePyramid from "../grade-pyramids/grade-pyramid-graph"
 import SessionGraph from "./session-graph"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
 import { ClimbingSessionData } from "../../../static/types"
+import SectionLegend from "../common/section-legend"
 
 type Props = {
   data: ClimbingSessionData
@@ -11,7 +12,7 @@ type Props = {
 
 export default function SessionBoulderingGraphs({ data }: Props) {
   return (
-    <Grid container direction={"column"}>
+    <Grid container direction={"column"} marginTop={2}>
       <Typography
         fontFamily={"poppins"}
         marginLeft={2}
@@ -21,51 +22,18 @@ export default function SessionBoulderingGraphs({ data }: Props) {
         Bouldering
       </Typography>
 
-      <Grid container direction={"row"} alignItems={"center"}>
-        <Grid
-          direction={"column"}
-          container
-          item
-          marginLeft={-2}
-          xs={12}
-          sm={6}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            marginLeft={2}
-            marginRight={2}
-            variant="subtitle1"
-            textAlign={"center"}
-          >
-            Grades
-          </Typography>
+      <Grid item marginLeft={-3} paddingRight={2}>
+        <GradePyramid
+          climbType={GYM_CLIMB_TYPES.Boulder}
+          sessionData={data.climbs}
+        />
+      </Grid>
 
-          <GradePyramid
-            climbType={GYM_CLIMB_TYPES.Boulder}
-            sessionData={data.climbs}
-          />
-        </Grid>
-
-        <Grid
-          container
-          direction={"column"}
-          item
-          marginLeft={-1}
-          xs={12}
-          sm={6}
-        >
-          <Typography
-            fontFamily={"poppins"}
-            marginLeft={2}
-            marginRight={2}
-            variant="subtitle1"
-            textAlign={"center"}
-          >
-            Activity
-          </Typography>
-
-          <SessionGraph climbType={"Boulder"} data={data} />
-        </Grid>
+      <Grid item>
+        <SectionLegend
+          section={"gradePyramids"}
+          climbType={GYM_CLIMB_TYPES.Boulder}
+        />
       </Grid>
     </Grid>
   )

@@ -14,7 +14,7 @@ export default function ProgressionPage() {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Progression,
   })
-  const [dateFilter, setDateFilter] = useState<number>(DateFilters.Last6Months)
+  const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
   const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
 
   // setup titles for displaying data
@@ -24,7 +24,11 @@ export default function ProgressionPage() {
   if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
 
   useEffect(() => {
-    if (!dataDateRange || dataDateRange < DateFilters.Last6Months) {
+    if (
+      !dataDateRange ||
+      Object.keys(DateFilters).indexOf(dataDateRange) <
+        Object.keys(DateFilters).indexOf(DateFilters.Last6Months)
+    ) {
       updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.Progression)
     }
   }, [])

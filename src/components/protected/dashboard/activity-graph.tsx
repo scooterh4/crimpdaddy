@@ -26,7 +26,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent"
 
 type Props = {
-  filter: number
+  filter: string
 }
 
 type ClimbsByDate = {
@@ -62,7 +62,7 @@ export default function ActivityGraph({ filter }: Props) {
     }
   }, [userClimbingLogs])
 
-  function filterRawClimbingData(data: ClimbLog[], range: number): void {
+  function filterRawClimbingData(data: ClimbLog[], range: string): void {
     const minMoment = getMinimumMoment(range)
     let result = setResultDates(minMoment.clone(), moment())
     let yAxisRange = 0

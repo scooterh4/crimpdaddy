@@ -47,6 +47,7 @@ export default function SessionDisplay({ data }: Props) {
       direction={"column"}
       gridAutoRows="auto"
       key={data.sessionMetadata.sessionStart.toString()}
+      paddingBottom={2}
       sx={{ backgroundColor: "white" }}
     >
       <Grid container direction={"column"} marginBottom={2}>
@@ -76,12 +77,7 @@ export default function SessionDisplay({ data }: Props) {
         </Typography>
       </Grid>
 
-      <Grid
-        container
-        direction={"row"}
-        justifyContent={"center"}
-        marginBottom={2}
-      >
+      <Grid container direction={"row"} justifyContent={"center"}>
         {statsToDisplay.map((stat, index) => (
           <>
             <SessionStatDisplay

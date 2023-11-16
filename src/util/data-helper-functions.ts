@@ -21,7 +21,7 @@ import {
 } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 
-export function getMinimumMoment(dateFilter: number) {
+export function getMinimumMoment(dateFilter: string) {
   let minMoment = moment()
 
   switch (dateFilter) {
@@ -210,8 +210,8 @@ const getGradeOrder = (climbType: number) => {
 export function assembleGradePyramidGraphData(
   rawData: ClimbLog[],
   climbType: number,
-  gradePyramidFilter?: number,
-  dateFilter?: number
+  gradePyramidFilter?: string,
+  dateFilter?: string
 ): BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[] {
   const gradeAttemptMap =
     climbType === GYM_CLIMB_TYPES.Boulder
@@ -221,26 +221,52 @@ export function assembleGradePyramidGraphData(
     ? getMinimumMoment(dateFilter)
     : null
 
-  rawData.forEach((climb) => {
-    // check the climb type (this is for the session logs)
-    if (climb.climbType !== GYM_CLIMB_TYPES[climbType]) return
+  console.log("gradePyramidFilter", gradePyramidFilter)
+  console.log("climbType", climbType)
 
+  rawData.forEach((climb) => {
     // Check the date filter
     if (minMoment && climb.unixTime < minMoment.unix()) return
 
-    // check the gradePyramidFilter
-    if (
-      gradePyramidFilter !== null &&
-      gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts
-    ) {
+    if (gradePyramidFilter && gradePyramidFilter !== null) {
+      // check the climb type (this is for the session logs)
+      // filters out unneeded climbs (very unreadable!)
       if (
-        (gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
+        (climb.climbType === GYM_CLIMB_TYPES[0] &&
+          climbType === GYM_CLIMB_TYPES.Lead) ||
+        (climb.climbType !== GYM_CLIMB_TYPES[0] &&
+          climbType === GYM_CLIMB_TYPES.Boulder)
+      )
+        return
+
+      // Grade pyramids page
+      if (
+        (gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts &&
+          gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
           climb.tick === ROUTE_TICK_TYPES.Attempt) ||
         (gradePyramidFilter === GradePyramidFilter.AttemptsOnly &&
           climb.tick !== ROUTE_TICK_TYPES.Attempt)
       ) {
         return
       }
+
+      // if (climb.climbType !== "Boulder") {
+      //   console.log("gradePyramidFilter", gradePyramidFilter)
+      //   console.log("climb", climb)
+      // }
+
+      // Sessions
+      if (
+        gradePyramidFilter === GradePyramidFilter.LeadOnly &&
+        climb.climbType !== GYM_CLIMB_TYPES[1]
+      )
+        return
+
+      if (
+        gradePyramidFilter === GradePyramidFilter.TrOnly &&
+        climb.climbType !== GYM_CLIMB_TYPES[2]
+      )
+        return
     }
 
     // climb looks good so add it to the map
@@ -413,7 +439,7 @@ function getProgressionGraphDataAndXAxis(startMoment: Moment) {
 
 export async function formatDataForProgressionGraph(
   climbingData: ClimbLog[],
-  filter: number,
+  filter: string,
   gradeSystem: string[]
 ) {
   const startTime =

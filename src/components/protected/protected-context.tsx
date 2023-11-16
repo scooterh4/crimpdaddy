@@ -35,8 +35,8 @@ interface IUserContext {
   userLeadGradePyramidData: GradePyramidGraphData[] | null
   userTrGradePyramidData: GradePyramidGraphData[] | null
   updateSessionStorageData: (logsToAdd: ClimbingSessionData) => void
-  dataDateRange: number | null
-  updateDateRange: (newRange: number | null, fromComponent: string) => void
+  dataDateRange: string | null
+  updateDateRange: (newRange: string | null, fromComponent: string) => void
   userIndoorRedpointGrades: UserIndoorRedpointGradesDoc | null
 }
 
@@ -91,7 +91,7 @@ export const ProtectedDataProvider = ({
   const [userTrGradePyramidData, setUserTrGradePyramidData] = useState<
     GradePyramidGraphData[] | null
   >(null)
-  const [dataDateRange, setDateRange] = useState<number | null>(null)
+  const [dataDateRange, setDateRange] = useState<string | null>(null)
   const [
     userIndoorRedpointGrades,
     setUserIndoorRedpointGrades,
@@ -132,10 +132,10 @@ export const ProtectedDataProvider = ({
         setUserBoulderLogs(persistentData.climbingData.boulderLogs)
         setUserLeadLogs(persistentData.climbingData.leadLogs)
         setUserTopRopeLogs(persistentData.climbingData.topRopeLogs)
-        const persistentRange = Object.values(DateFilters).indexOf(
-          persistentData.timeRange
-        )
-        setDateRange(persistentRange)
+        // const persistentRange = Object.values(DateFilters).indexOf(
+        //   persistentData.timeRange
+        // )
+        setDateRange(persistentData.timeRange)
         setUserBoulderGradePyramidData(
           persistentData.gradePyramidData.boulderData
         )
@@ -175,9 +175,11 @@ export const ProtectedDataProvider = ({
             ? newBoulderLogs.concat(climb)
             : [climb]
           break
+
         case "Lead":
           newLeadLogs = newLeadLogs ? newLeadLogs.concat(climb) : [climb]
           break
+
         case "TopRope":
           newTopRopeLogs = newTopRopeLogs
             ? newTopRopeLogs.concat(climb)
@@ -220,7 +222,7 @@ export const ProtectedDataProvider = ({
     sessionStorage.setItem(
       sessionDataKey,
       JSON.stringify({
-        timeRange: DateFilters[dataDateRange ? dataDateRange : 0],
+        timeRange: dataDateRange ? dataDateRange : DateFilters.ThisWeek,
         climbingData: {
           allClimbs: userClimbingLogs
             ? userClimbingLogs.concat(data.climbs)
@@ -243,7 +245,7 @@ export const ProtectedDataProvider = ({
   }
 
   // after initializing, we want this to be the only place to call firestore
-  const updateDateRange = (saveRange: number | null, fromComponent: string) => {
+  const updateDateRange = (saveRange: string | null, fromComponent: string) => {
     setDateRange(saveRange)
     if (saveRange && user) {
       trackPromise(
@@ -261,7 +263,7 @@ export const ProtectedDataProvider = ({
           sessionStorage.setItem(
             sessionDataKey,
             JSON.stringify({
-              timeRange: DateFilters[saveRange],
+              timeRange: saveRange,
               climbingData: res.climbingLogs,
               gradePyramidData: res.gradePyramidData,
               summaryStats: res.summaryStats,

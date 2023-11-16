@@ -67,17 +67,20 @@ export const INDOOR_SPORT_GRADES = [
 ]
 
 export enum DateFilters {
-  ThisWeek,
-  ThisMonth,
-  Last3Months,
-  Last6Months,
-  Last12Months,
+  ThisWeek = "ThisWeek",
+  ThisMonth = "ThisMonth",
+  Last3Months = "Last3Months",
+  Last6Months = "Last6Months",
+  Last12Months = "Last12Months",
 }
 
 export enum GradePyramidFilter {
-  ClimbsOnly,
-  AttemptsOnly,
-  ClimbsAndAttempts,
+  ClimbsOnly = "Climbs",
+  AttemptsOnly = "Attempts",
+  ClimbsAndAttempts = "ClimbsAndAttempts",
+  AllRoutes = "AllRoutes",
+  LeadOnly = "Lead",
+  TrOnly = "TopRope",
 }
 
 export enum PromiseTrackerArea {

@@ -15,7 +15,7 @@ import { Routes } from "../../../router"
 export default function Dashboard() {
   const { userClimbingLogs } = useUserContext()
   const navigate = useNavigate()
-  const [activityFilter, setActivityFilter] = useState<number>(
+  const [activityFilter, setActivityFilter] = useState<string>(
     DateFilters.ThisWeek
   )
 

@@ -145,7 +145,7 @@ export const logClimbingSession = async (
 // get all climbs for a user
 export const getAllUserClimbingData = async (
   userId: string,
-  filterRange: number
+  filterRange: string
 ): Promise<UserClimbingData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []

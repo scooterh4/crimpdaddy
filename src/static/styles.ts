@@ -18,11 +18,8 @@ export const GraphColors = {
   Onsight: "#16BA6F",
   Flash: "#FFC733",
   Redpoint: "#FF4633",
-  // Sends: "#33d1ff",
-  // Sends: "#336bff",
   Sends: "#00c6ff",
-  // Attempts: "#bcf0ff",
-  Attempts: "#d0f4ff",
+  Attempts: "#c7c7c7",
 }
 
 export const drawerWidth = 250
