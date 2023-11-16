@@ -221,9 +221,6 @@ export function assembleGradePyramidGraphData(
     ? getMinimumMoment(dateFilter)
     : null
 
-  console.log("gradePyramidFilter", gradePyramidFilter)
-  console.log("climbType", climbType)
-
   rawData.forEach((climb) => {
     // Check the date filter
     if (minMoment && climb.unixTime < minMoment.unix()) return
@@ -249,11 +246,6 @@ export function assembleGradePyramidGraphData(
       ) {
         return
       }
-
-      // if (climb.climbType !== "Boulder") {
-      //   console.log("gradePyramidFilter", gradePyramidFilter)
-      //   console.log("climb", climb)
-      // }
 
       // Sessions
       if (

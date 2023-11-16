@@ -165,8 +165,6 @@ export const getAllUserClimbingData = async (
 
     const sessions = await getDocs(sessionQuery)
 
-    console.log("sessions", sessions)
-
     sessions.forEach((session) => {
       const seshData: ClimbingSessionMetadata = session.data() as ClimbingSessionMetadata
       sessionData.push({

@@ -1,7 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 import React from "react"
 import GradePyramid from "../grade-pyramids/grade-pyramid-graph"
-import SessionGraph from "./session-graph"
 import { GYM_CLIMB_TYPES } from "../../../static/constants"
 import { ClimbingSessionData } from "../../../static/types"
 import SectionLegend from "../common/section-legend"
