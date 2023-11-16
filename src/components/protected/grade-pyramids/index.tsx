@@ -90,7 +90,8 @@ export default function GradePyramidPage() {
                 key={title}
                 marginBottom={1}
                 marginTop={1}
-                padding={2}
+                paddingBottom={2}
+                paddingTop={2}
                 sx={{ backgroundColor: "white" }}
               >
                 <Typography
@@ -102,11 +103,22 @@ export default function GradePyramidPage() {
                   {title}
                 </Typography>
 
-                <GradePyramid
-                  climbType={index}
-                  tickFilter={gradePyramidFilter}
-                  dateFilter={dateFilter}
-                />
+                <Grid
+                  item
+                  container
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  marginBottom={2}
+                  marginLeft={-5}
+                  marginTop={2}
+                >
+                  <GradePyramid
+                    climbType={index}
+                    tickFilter={gradePyramidFilter}
+                    dateFilter={dateFilter}
+                  />
+                </Grid>
 
                 <SectionLegend section="gradePyramids" climbType={index} />
               </Grid>

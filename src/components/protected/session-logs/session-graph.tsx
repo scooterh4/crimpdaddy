@@ -211,10 +211,6 @@ export default function SessionGraph({ data, climbType }: Props) {
     return result
   }
 
-  // if (promiseInProgress) {
-  //   return <AppLoading />
-  // }
-
   return (
     <ResponsiveContainer aspect={graphAspectRatio}>
       <BarChart

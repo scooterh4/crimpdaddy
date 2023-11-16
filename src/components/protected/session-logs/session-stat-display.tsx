@@ -1,5 +1,5 @@
-import { Card, Grid, Typography } from "@mui/material"
 import React from "react"
+import { Card, Grid, Typography, useMediaQuery, useTheme } from "@mui/material"
 
 type Props = {
   title: string
@@ -7,35 +7,39 @@ type Props = {
 }
 
 export default function SessionStatDisplay({ title, stat }: Props) {
+  const theme = useTheme()
+  const xsScreen = useMediaQuery(theme.breakpoints.only("xs"))
+
   return (
-    <Card sx={{ padding: 1, margin: 1 }}>
-      <Grid
-        container
-        direction={"column"}
-        gridAutoRows={"auto"}
-        alignItems={"center"}
+    <Grid
+      // container
+      item
+      // direction={"column"}
+      gridAutoRows={"auto"}
+      alignItems={"center"}
+      // display={"flex"}
+    >
+      <Typography
+        gridRow={1}
+        variant={xsScreen ? "body2" : "subtitle1"}
+        sx={{
+          fontFamily: "poppins",
+          textAlign: "center",
+        }}
       >
-        <Typography
-          gridRow={2}
-          variant="h5"
-          sx={{
-            fontFamily: "poppins",
-            textAlign: "center",
-          }}
-        >
-          {stat}
-        </Typography>
-        <Typography
-          gridRow={1}
-          sx={{
-            fontFamily: "poppins",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          {title}
-        </Typography>
-      </Grid>
-    </Card>
+        {title}
+      </Typography>
+      <Typography
+        gridRow={2}
+        variant={xsScreen ? "subtitle2" : "h5"}
+        sx={{
+          fontFamily: "poppins",
+          textAlign: "center",
+          fontWeight: xsScreen ? "bold" : "",
+        }}
+      >
+        {stat}
+      </Typography>
+    </Grid>
   )
 }

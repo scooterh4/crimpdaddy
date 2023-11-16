@@ -12,6 +12,7 @@ import {
 import {
   BoulderGradePyramidGraphData,
   ClimbLog,
+  ClimbingSessionData,
   RouteGradePyramidGraphData,
 } from "../../../static/types"
 import { GraphColors } from "../../../static/styles"
@@ -30,14 +31,16 @@ import { Square } from "@mui/icons-material"
 
 type Props = {
   climbType: number
-  tickFilter: number
-  dateFilter: number
+  tickFilter?: number
+  dateFilter?: number
+  sessionData?: ClimbLog[]
 }
 
 export default function GradePyramid({
   climbType,
   tickFilter,
   dateFilter,
+  sessionData,
 }: Props) {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramidGraph,
@@ -52,18 +55,31 @@ export default function GradePyramid({
   const graphAspectRatio = lgScreenAndUp ? 4 : mdScreen ? 3 : 2
 
   useEffect(() => {
-    const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
-      [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
-      [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
-      [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
-    }
+    let formattedData:
+      | BoulderGradePyramidGraphData[]
+      | RouteGradePyramidGraphData[] = []
 
-    const formattedData = assembleGradePyramidGraphData(
-      logsMapping[climbType as GYM_CLIMB_TYPES],
-      climbType,
-      tickFilter,
-      dateFilter
-    )
+    if (sessionData) {
+      formattedData = assembleGradePyramidGraphData(
+        sessionData,
+        climbType,
+        tickFilter,
+        dateFilter
+      )
+    } else {
+      const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
+        [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
+        [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
+        [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
+      }
+
+      formattedData = assembleGradePyramidGraphData(
+        logsMapping[climbType as GYM_CLIMB_TYPES],
+        climbType,
+        tickFilter,
+        dateFilter
+      )
+    }
 
     climbType === GYM_CLIMB_TYPES.Boulder
       ? setGraphData(formattedData as BoulderGradePyramidGraphData[])
@@ -186,33 +202,24 @@ export default function GradePyramid({
     )
   }
   return (
-    <Grid
-      container
-      item
-      direction={"row"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      marginLeft={-5}
-    >
-      <ResponsiveContainer aspect={graphAspectRatio}>
-        <BarChart layout="vertical" data={graphData} barSize={30}>
-          <XAxis type="number" allowDecimals={false} tickLine={false} />
-          <YAxis
-            type="category"
-            tickCount={graphData.length}
-            dataKey="grade"
-            tickLine={false}
-            fontSize={12}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-          <Bar dataKey="onsight" stackId="a" fill={GraphColors.Onsight} />
-          <Bar dataKey="flash" stackId="a" fill={GraphColors.Flash} />
-          <Bar dataKey="sends" stackId="a" fill={GraphColors.Sends} />
-          <Bar dataKey="redpoint" stackId="a" fill={GraphColors.Redpoint} />
-          <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
-        </BarChart>
-      </ResponsiveContainer>
-    </Grid>
+    <ResponsiveContainer aspect={graphAspectRatio}>
+      <BarChart layout="vertical" data={graphData} barSize={30}>
+        <XAxis type="number" allowDecimals={false} tickLine={false} />
+        <YAxis
+          type="category"
+          tickCount={graphData.length}
+          dataKey="grade"
+          tickLine={false}
+          fontSize={12}
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+        <Bar dataKey="onsight" stackId="a" fill={GraphColors.Onsight} />
+        <Bar dataKey="flash" stackId="a" fill={GraphColors.Flash} />
+        <Bar dataKey="sends" stackId="a" fill={GraphColors.Sends} />
+        <Bar dataKey="redpoint" stackId="a" fill={GraphColors.Redpoint} />
+        <Bar dataKey="attempts" stackId="a" fill={GraphColors.Attempts} />
+      </BarChart>
+    </ResponsiveContainer>
   )
 }

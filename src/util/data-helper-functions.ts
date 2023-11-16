@@ -210,23 +210,29 @@ const getGradeOrder = (climbType: number) => {
 export function assembleGradePyramidGraphData(
   rawData: ClimbLog[],
   climbType: number,
-  gradePyramidFilter: number,
-  dateFilter: number
+  gradePyramidFilter?: number,
+  dateFilter?: number
 ): BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[] {
   const gradeAttemptMap =
     climbType === GYM_CLIMB_TYPES.Boulder
       ? new Map<string, BoulderTickTypes>()
       : new Map<string, RouteTickTypes>()
-  const minMoment = getMinimumMoment(dateFilter)
+  const minMoment: Moment | null = dateFilter
+    ? getMinimumMoment(dateFilter)
+    : null
 
   rawData.forEach((climb) => {
+    // check the climb type (this is for the session logs)
+    if (climb.climbType !== GYM_CLIMB_TYPES[climbType]) return
+
     // Check the date filter
-    if (climb.unixTime < minMoment.unix()) {
-      return
-    }
+    if (minMoment && climb.unixTime < minMoment.unix()) return
 
     // check the gradePyramidFilter
-    if (gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts) {
+    if (
+      gradePyramidFilter !== null &&
+      gradePyramidFilter !== GradePyramidFilter.ClimbsAndAttempts
+    ) {
       if (
         (gradePyramidFilter === GradePyramidFilter.ClimbsOnly &&
           climb.tick === ROUTE_TICK_TYPES.Attempt) ||
@@ -269,12 +275,15 @@ export function addGradePyramidDataToMap(
       case BOULDER_TICK_TYPES.Flash:
         ticks.flash += climb.count
         break
+
       case BOULDER_TICK_TYPES.Send:
         ticks.sends += climb.count
         break
+
       case BOULDER_TICK_TYPES.Attempt:
         ticks.attempts += climb.count
         break
+
       default:
         break
     }
@@ -293,15 +302,19 @@ export function addGradePyramidDataToMap(
       case ROUTE_TICK_TYPES.Onsight:
         ticks.onsight += climb.count
         break
+
       case ROUTE_TICK_TYPES.Flash:
         ticks.flash += climb.count
         break
+
       case ROUTE_TICK_TYPES.Redpoint:
         ticks.redpoint += climb.count
         break
+
       case ROUTE_TICK_TYPES.Attempt:
         ticks.attempts += climb.count
         break
+
       default:
         break
     }
