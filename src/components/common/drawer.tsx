@@ -16,7 +16,7 @@ import EqualizerIcon from "@mui/icons-material/Equalizer"
 import LogoutIcon from "@mui/icons-material/Logout"
 import ShowChartIcon from "@mui/icons-material/ShowChart"
 import { useNavigate } from "react-router-dom"
-import { useAuthContext } from "../app/auth-context"
+import { useAuthContext } from "../app/context/auth-context"
 import { Routes } from "../../router"
 
 export default function AppDrawer() {

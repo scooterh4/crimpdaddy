@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./grade-pyramid-graph"
 import { ThemeColors } from "../../../static/styles"
-import { useProtectedContext } from "../protected-context"
+import { useProtectedContext } from "../context/protected-context"
 import AppLoading from "../../common/loading"
 import {
   DateFilters,

@@ -15,7 +15,7 @@ import Dashboard from "./components/protected/dashboard/index"
 import SessionLogger from "./components/protected/session-logger"
 import GradePyramids from "./components/protected/grade-pyramids/index"
 import ProgressionPage from "./components/protected/progression"
-import { AuthLayout } from "./components/app/auth-layout"
+import { AuthLayout } from "./components/app/context/auth-layout"
 import SessionLogsPage from "./components/protected/session-logs"
 
 const protectedLayout = "/user"

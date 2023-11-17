@@ -6,7 +6,7 @@ import {
   getUserClimbingSessions,
   getUserClimbingSessionsIds,
 } from "../../../util/db"
-import { useAuthContext } from "../../app/auth-context"
+import { useAuthContext } from "../../app/context/auth-context"
 import AppLoading from "../../common/loading"
 import {
   ClimbingSessionData,

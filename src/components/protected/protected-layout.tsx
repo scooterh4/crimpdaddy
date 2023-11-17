@@ -1,6 +1,6 @@
 import React from "react"
 import { useLocation, useOutlet } from "react-router-dom"
-import { ProtectedDataProvider } from "./protected-context"
+import { ProtectedDataProvider } from "./context/protected-context"
 import { Box, styled, useMediaQuery } from "@mui/material"
 import AppToolbar from "../common/toolbar"
 import AppFooter from "../common/footer"

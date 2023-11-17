@@ -1,7 +1,7 @@
 import React, { useMemo } from "react"
 import { createContext, useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { AppUser } from "../../static/types"
+import { AppUser } from "../../../static/types"
 import {
   Unsubscribe,
   onAuthStateChanged,
@@ -9,9 +9,9 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth"
-import { auth, provider } from "../../firebase"
+import { auth, provider } from "../../../firebase"
 import { toast } from "react-toastify"
-import { Routes } from "../../router"
+import { Routes } from "../../../router"
 
 interface IAuthContext {
   user: AppUser | null

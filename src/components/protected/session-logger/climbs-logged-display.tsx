@@ -21,7 +21,7 @@ import {
   useBoulderData,
   useRouteData,
   useSessionAPI,
-} from "./session-logger-context"
+} from "./context/session-logger-context"
 import { EditSessionClimb, SessionClimb } from "../../../static/types"
 import ConfirmDeleteClimbDialog from "./confirm-delete-climb-dialog"
 import { GYM_CLIMB_TYPES, ROUTE_TICK_TYPES } from "../../../static/constants"

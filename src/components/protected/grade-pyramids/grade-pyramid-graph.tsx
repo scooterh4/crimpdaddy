@@ -18,7 +18,7 @@ import {
 import { GraphColors } from "../../../static/styles"
 import { Card, Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-import { useProtectedContext } from "../protected-context"
+import { useProtectedContext } from "../context/protected-context"
 import {
   GYM_CLIMB_TYPES,
   GradePyramidFilter,

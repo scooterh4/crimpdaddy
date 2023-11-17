@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useProtectedContext } from "../protected-context"
+import { useProtectedContext } from "../context/protected-context"
 import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import AppLoading from "../../common/loading"

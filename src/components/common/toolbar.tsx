@@ -13,7 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./drawer"
 import { AppColors, drawerWidth } from "../../static/styles"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useAuthContext } from "../app/auth-context"
+import { useAuthContext } from "../app/context/auth-context"
 import { Routes } from "../../router"
 
 type Props = {

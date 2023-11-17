@@ -13,7 +13,7 @@ import {
   useClimbToDeleteContext,
   useDeleteClimbDialogVisibilityContext,
   useSessionAPI,
-} from "./session-logger-context"
+} from "./context/session-logger-context"
 import { SessionClimb } from "../../../static/types"
 
 type Props = {

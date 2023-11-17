@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { AppColors } from "../../../static/styles"
-import { useClimbTypeContext } from "./session-logger-context"
+import { useClimbTypeContext } from "./context/session-logger-context"
 import {
   BOULDER_TICK_TYPES,
   GYM_CLIMB_TYPES,

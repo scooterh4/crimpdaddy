@@ -12,12 +12,12 @@ import {
   useRouteData,
   useSessionAPI,
   useSessionStart,
-} from "./session-logger-context"
-import { useAuthContext } from "../../app/auth-context"
+} from "./context/session-logger-context"
+import { useAuthContext } from "../../app/context/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { assembleUserSessionData } from "../../../util/data-helper-functions"
-import { useProtectedContext } from "../protected-context"
+import { useProtectedContext } from "../context/protected-context"
 
 export default function SessionLoggerPage() {
   return (

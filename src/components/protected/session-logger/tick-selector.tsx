@@ -19,7 +19,7 @@ import ReplayIcon from "@mui/icons-material/Replay"
 import CancelIcon from "@mui/icons-material/Cancel"
 import CheckIcon from "@mui/icons-material/Check"
 import { AppColors, GraphColors, ThemeColors } from "../../../static/styles"
-import { useClimbTypeContext } from "./session-logger-context"
+import { useClimbTypeContext } from "./context/session-logger-context"
 import { OverridableComponent } from "@mui/material/OverridableComponent"
 
 const boulderIcons = [BoltIcon, CheckIcon, ReplayIcon, CancelIcon]

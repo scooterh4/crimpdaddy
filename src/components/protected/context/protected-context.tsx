@@ -5,22 +5,22 @@ import {
   GradePyramidGraphData,
   UserIndoorRedpointGradesDoc,
   ClimbingSessionData,
-} from "../../static/types"
+} from "../../../static/types"
 import {
   getAllUserClimbingData,
   updateUserIndoorRedpointGrades,
-} from "../../util/db"
+} from "../../../util/db"
 import {
   DateFilters,
   GYM_CLIMB_TYPES,
   GradePyramidFilter,
-} from "../../static/constants"
+} from "../../../static/constants"
 import {
   assembleGradePyramidGraphData,
   findNewRedpointGrades,
-} from "../../util/data-helper-functions"
+} from "../../../util/data-helper-functions"
 import { trackPromise } from "react-promise-tracker"
-import { useAuthContext } from "../app/auth-context"
+import { useAuthContext } from "../../app/context/auth-context"
 
 interface IProtectedContext {
   userSessions: ClimbingSessionData[] | null

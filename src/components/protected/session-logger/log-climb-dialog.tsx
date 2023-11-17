@@ -20,7 +20,7 @@ import {
   useOpenAddClimbDialog,
   useOpenEditClimbDialogContext,
   useSessionAPI,
-} from "./session-logger-context"
+} from "./context/session-logger-context"
 import TickSelector from "./tick-selector"
 import { ThemeColors } from "../../../static/styles"
 import TickDescription from "./tick-description"

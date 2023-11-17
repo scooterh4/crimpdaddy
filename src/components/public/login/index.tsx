@@ -11,7 +11,7 @@ import {
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate } from "react-router-dom"
 import { AppColors, ThemeColors } from "../../../static/styles"
-import { useAuthContext } from "../../app/auth-context"
+import { useAuthContext } from "../../app/context/auth-context"
 import { Routes } from "../../../router"
 
 export default function SignIn() {

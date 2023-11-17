@@ -9,10 +9,10 @@ import {
   ClimbingSessionData,
   EditSessionClimb,
   SessionClimb,
-} from "../../../static/types"
+} from "../../../../static/types"
 import { Moment } from "moment"
-import { logClimbingSession } from "../../../util/db"
-import { GYM_CLIMB_TYPES } from "../../../static/constants"
+import { logClimbingSession } from "../../../../util/db"
+import { GYM_CLIMB_TYPES } from "../../../../static/constants"
 import moment from "moment"
 
 type State = {

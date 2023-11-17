@@ -20,7 +20,7 @@ import {
 } from "../../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { GraphColors } from "../../../static/styles"
-import { useProtectedContext } from "../protected-context"
+import { useProtectedContext } from "../context/protected-context"
 import {
   NameType,
   ValueType,
