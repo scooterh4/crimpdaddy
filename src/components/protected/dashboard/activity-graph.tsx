@@ -199,10 +199,10 @@ export default function ActivityGraph({ filter }: Props) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis type="category" dataKey="Date" />
+        <XAxis type="category" dataKey="date" />
         <YAxis
           type="number"
-          dataKey="Attempts"
+          dataKey="attempts"
           domain={[0, graphMaxRange]}
           allowDecimals={false}
         />
