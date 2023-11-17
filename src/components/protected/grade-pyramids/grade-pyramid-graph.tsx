@@ -18,7 +18,7 @@ import {
 import { GraphColors } from "../../../static/styles"
 import { Card, Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import {
   GYM_CLIMB_TYPES,
   GradePyramidFilter,
@@ -51,7 +51,11 @@ export default function GradePyramid({
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramidGraph,
   })
-  const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
+  const {
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
+  } = useProtectedContext()
   const [graphData, setGraphData] = useState<
     BoulderGradePyramidGraphData[] | RouteGradePyramidGraphData[]
   >([])

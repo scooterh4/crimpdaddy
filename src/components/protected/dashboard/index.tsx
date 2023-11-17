@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
 import { Button, FormControl, Grid, Typography } from "@mui/material"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import AppLoading from "../../common/loading"
 import HardestGradeDisplay from "./redpoint-grade-display"
 import SelectFilter from "../common/select-filter"
@@ -13,7 +13,7 @@ import { ThemeColors } from "../../../static/styles"
 import { Routes } from "../../../router"
 
 export default function Dashboard() {
-  const { userClimbingLogs } = useUserContext()
+  const { userClimbingLogs } = useProtectedContext()
   const navigate = useNavigate()
   const [activityFilter, setActivityFilter] = useState<string>(
     DateFilters.ThisWeek

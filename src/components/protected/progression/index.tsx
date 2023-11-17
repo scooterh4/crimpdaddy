@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import AppLoading from "../../common/loading"
@@ -10,12 +10,17 @@ import { usePromiseTracker } from "react-promise-tracker"
 import SectionLegend from "../common/section-legend"
 
 export default function ProgressionPage() {
-  const { dataDateRange, updateDateRange } = useUserContext()
+  const {
+    dataDateRange,
+    updateDateRange,
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
+  } = useProtectedContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Progression,
   })
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
-  const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
 
   // setup titles for displaying data
   const titles: string[] = []

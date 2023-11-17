@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./grade-pyramid-graph"
 import { ThemeColors } from "../../../static/styles"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import AppLoading from "../../common/loading"
 import {
   DateFilters,
@@ -14,7 +14,13 @@ import SelectFilter from "../common/select-filter"
 import { usePromiseTracker } from "react-promise-tracker"
 
 export default function GradePyramidPage() {
-  const { dataDateRange, updateDateRange } = useUserContext()
+  const {
+    dataDateRange,
+    updateDateRange,
+    userBoulderLogs,
+    userLeadLogs,
+    userTopRopeLogs,
+  } = useProtectedContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
   })
@@ -22,7 +28,6 @@ export default function GradePyramidPage() {
   const [gradePyramidFilter, setGradePyramidFilter] = useState<string>(
     GradePyramidFilter.ClimbsOnly
   )
-  const { userBoulderLogs, userLeadLogs, userTopRopeLogs } = useUserContext()
 
   // setup titles for displaying data
   const titles: string[] = []

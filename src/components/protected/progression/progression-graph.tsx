@@ -20,7 +20,7 @@ import {
 } from "../../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { GraphColors } from "../../../static/styles"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import {
   NameType,
   ValueType,
@@ -44,7 +44,7 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
     userBoulderLogs,
     userLeadLogs,
     userTopRopeLogs,
-  } = useUserContext()
+  } = useProtectedContext()
   const [graphData, setGraphData] = useState<ProgressionGraphData[]>([])
   const [gradeRange, setGradeRange] = useState<number[]>([])
   const [graphXAxis, setGraphXAxis] = useState<string[]>([])

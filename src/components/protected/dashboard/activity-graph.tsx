@@ -13,7 +13,7 @@ import { Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment, { Moment } from "moment"
 import { GraphColors } from "../../../static/styles"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import AppLoading from "../../common/loading"
 import { ClimbLog } from "../../../static/types"
 import { PromiseTrackerArea } from "../../../static/constants"
@@ -37,7 +37,7 @@ type ClimbsByDate = {
 }
 
 export default function ActivityGraph({ filter }: Props) {
-  const { userClimbingLogs } = useUserContext()
+  const { userClimbingLogs } = useProtectedContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Activity,
   })

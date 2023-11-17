@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { Grid, Typography } from "@mui/material"
-import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 
 type Props = {
   climbType: string
 }
 
 export default function HardestGradeDisplay({ climbType }: Props) {
-  const { userIndoorRedpointGrades } = useUserContext()
+  const { userIndoorRedpointGrades } = useProtectedContext()
   const [hardestGrade, setHardestGrade] = useState("--")
-  const gradingSystem =
-    climbType === "Boulder" ? BOULDER_GRADES : INDOOR_SPORT_GRADES
   const title = climbType === "TopRope" ? "Top Rope" : climbType
 
   useEffect(() => {

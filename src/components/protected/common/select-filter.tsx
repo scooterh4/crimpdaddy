@@ -1,6 +1,6 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 import {
   DateFilters,
   GradePyramidFilter,
@@ -19,7 +19,7 @@ type filterObj = {
 }
 
 export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
-  const { dataDateRange, updateDateRange } = useUserContext()
+  const { dataDateRange, updateDateRange } = useProtectedContext()
 
   const activityDateList = [
     { value: DateFilters.ThisWeek, label: "Last week" },

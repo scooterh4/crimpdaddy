@@ -17,7 +17,7 @@ import { useAuthContext } from "../../app/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { assembleUserSessionData } from "../../../util/data-helper-functions"
-import { useUserContext } from "../protected-context"
+import { useProtectedContext } from "../protected-context"
 
 export default function SessionLoggerPage() {
   return (
@@ -30,7 +30,7 @@ export default function SessionLoggerPage() {
 function SessionLogger() {
   const { onLogSession } = useSessionAPI()
   const sessionStart = useSessionStart()
-  const { updateSessionStorageData } = useUserContext()
+  const { updateSessionStorageData } = useProtectedContext()
   const navigate = useNavigate()
   const { user } = useAuthContext()
   const boulderClimbs = useBoulderData()

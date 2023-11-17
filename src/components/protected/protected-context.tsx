@@ -22,7 +22,7 @@ import {
 import { trackPromise } from "react-promise-tracker"
 import { useAuthContext } from "../app/auth-context"
 
-interface IUserContext {
+interface IProtectedContext {
   userSessions: ClimbingSessionData[] | null
   userClimbingLogs: ClimbLog[] | null
   userBoulderLogs: ClimbLog[] | null
@@ -40,7 +40,7 @@ interface IUserContext {
   userIndoorRedpointGrades: UserIndoorRedpointGradesDoc | null
 }
 
-const userDefaultState: IUserContext = {
+const protectedDefaultState: IProtectedContext = {
   userSessions: null,
   userClimbingLogs: null,
   userBoulderLogs: null,
@@ -58,7 +58,9 @@ const userDefaultState: IUserContext = {
   userIndoorRedpointGrades: null,
 }
 
-export const ProtectedContext = createContext<IUserContext>(userDefaultState)
+export const ProtectedContext = createContext<IProtectedContext>(
+  protectedDefaultState
+)
 
 const sessionDataKey = "climbingData"
 
@@ -279,7 +281,7 @@ export const ProtectedDataProvider = ({
     }
   }
 
-  const authUserContextValue: IUserContext = {
+  const authUserContextValue: IProtectedContext = {
     userSessions,
     userClimbingLogs,
     userBoulderLogs,
@@ -304,4 +306,4 @@ export const ProtectedDataProvider = ({
   )
 }
 
-export const useUserContext = () => useContext(ProtectedContext)
+export const useProtectedContext = () => useContext(ProtectedContext)
