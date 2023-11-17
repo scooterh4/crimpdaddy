@@ -13,6 +13,7 @@ import {
   orderBy,
   QuerySnapshot,
   DocumentData,
+  runTransaction,
 } from "firebase/firestore"
 import {
   ClimbLog,
@@ -22,18 +23,11 @@ import {
   ClimbingSessionData,
   ClimbingSessionMetadata,
 } from "../static/types"
-import {
-  DateFilters,
-  GYM_CLIMB_TYPES,
-  GradePyramidFilter,
-} from "../static/constants"
-import moment from "moment"
+import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../static/constants"
 import {
   assembleGradePyramidGraphData,
   getMinimumMoment,
 } from "./data-helper-functions"
-import { count } from "console"
-import { Session } from "inspector"
 
 const collectionName = "climbingLogs"
 
@@ -157,63 +151,64 @@ export const getAllUserClimbingData = async (
 
   try {
     console.log("FIRESTORE READ CALL")
-
-    const sessionQuery = query(
-      collection(firestore, collectionPath).withConverter(converter()),
-      where("sessionStart", ">=", Timestamp.fromDate(minMoment.toDate()))
-    )
-
-    const sessions = await getDocs(sessionQuery)
-
-    sessions.forEach((session) => {
-      const seshData: ClimbingSessionMetadata = session.data() as ClimbingSessionMetadata
-      sessionData.push({
-        sessionMetadata: {
-          sessionId: session.id,
-          hardestBoulderClimbed: seshData.hardestBoulderClimbed,
-          hardestRouteClimbed: seshData.hardestRouteClimbed,
-          numberOfBoulders: seshData.numberOfBoulders,
-          numberOfRoutes: seshData.numberOfRoutes,
-          failedAttempts: seshData.failedAttempts,
-          sessionStart: seshData.sessionStart,
-          sessionEnd: seshData.sessionEnd,
-        },
-        climbs: [],
-      })
-      const sessionClimbsPath = collectionPath + `/${session.id}/climbs`
-      const docQuery = query(
-        collection(firestore, sessionClimbsPath).withConverter(converter())
+    await runTransaction(firestore, async (t) => {
+      const sessionQuery = query(
+        collection(firestore, collectionPath).withConverter(converter()),
+        where("sessionStart", ">=", Timestamp.fromDate(minMoment.toDate()))
       )
 
-      getDocs(docQuery).then((docs) => {
-        docs.forEach((doc) => {
-          const data = doc.data() as ClimbLog
-          rawClimbingData.push(data)
-          const sesh = sessionData.filter((s) => {
-            return s.sessionMetadata.sessionId === session.id
-          })
-          if (sesh) {
-            sesh[0].climbs
-              ? sesh[0].climbs.push(data)
-              : (sesh[0].climbs = [data])
-          }
+      const sessions = await getDocs(sessionQuery)
 
-          switch (data.climbType) {
-            case GYM_CLIMB_TYPES[0]:
-              rawBoulderData.push(data)
-              break
-            case GYM_CLIMB_TYPES[1]:
-              rawLeadData.push(data)
-              break
-            case GYM_CLIMB_TYPES[2]:
-              rawTrData.push(data)
-              break
-          }
+      sessions.forEach((session) => {
+        const seshData: ClimbingSessionMetadata = session.data() as ClimbingSessionMetadata
+        sessionData.push({
+          sessionMetadata: {
+            sessionId: session.id,
+            hardestBoulderClimbed: seshData.hardestBoulderClimbed,
+            hardestRouteClimbed: seshData.hardestRouteClimbed,
+            numberOfBoulders: seshData.numberOfBoulders,
+            numberOfRoutes: seshData.numberOfRoutes,
+            failedAttempts: seshData.failedAttempts,
+            sessionStart: seshData.sessionStart,
+            sessionEnd: seshData.sessionEnd,
+          },
+          climbs: [],
+        })
+        const sessionClimbsPath = collectionPath + `/${session.id}/climbs`
+        const docQuery = query(
+          collection(firestore, sessionClimbsPath).withConverter(converter())
+        )
+
+        getDocs(docQuery).then((docs) => {
+          docs.forEach((doc) => {
+            const data = doc.data() as ClimbLog
+            rawClimbingData.push(data)
+            const sesh = sessionData.filter((s) => {
+              return s.sessionMetadata.sessionId === session.id
+            })
+            if (sesh) {
+              sesh[0].climbs
+                ? sesh[0].climbs.push(data)
+                : (sesh[0].climbs = [data])
+            }
+
+            switch (data.climbType) {
+              case GYM_CLIMB_TYPES[0]:
+                rawBoulderData.push(data)
+                break
+              case GYM_CLIMB_TYPES[1]:
+                rawLeadData.push(data)
+                break
+              case GYM_CLIMB_TYPES[2]:
+                rawTrData.push(data)
+                break
+            }
+          })
         })
       })
     })
   } catch (error) {
-    console.log(`FIRESTORE Error retreiving session data:`, error)
+    console.log(`FIRESTORE Transaction Error retreiving session data:`, error)
   }
 
   const indoorRedpointGrades = await getUserIndoorRedpointGrades(userId)
