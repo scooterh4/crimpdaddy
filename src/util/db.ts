@@ -17,17 +17,13 @@ import {
 } from "firebase/firestore"
 import {
   ClimbLog,
-  GradePyramidGraphData,
-  UserClimbingData,
+  UserSessionStorageData,
   UserIndoorRedpointGradesDoc,
   ClimbingSessionData,
   ClimbingSessionMetadata,
 } from "../static/types"
-import { GYM_CLIMB_TYPES, GradePyramidFilter } from "../static/constants"
-import {
-  assembleGradePyramidGraphData,
-  getMinimumMoment,
-} from "./data-helper-functions"
+import { GYM_CLIMB_TYPES } from "../static/constants"
+import { getMinimumMoment } from "./data-helper-functions"
 
 const collectionName = "climbingLogs"
 
@@ -140,12 +136,12 @@ export const logClimbingSession = async (
 export const getAllUserClimbingData = async (
   userId: string,
   filterRange: string
-): Promise<UserClimbingData> => {
+): Promise<UserSessionStorageData> => {
   const rawClimbingData: ClimbLog[] = []
   const rawBoulderData: ClimbLog[] = []
   const rawLeadData: ClimbLog[] = []
   const rawTrData: ClimbLog[] = []
-  const sessionData: ClimbingSessionData[] = []
+  const climbingSessions: ClimbingSessionData[] = []
   const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
   const minMoment = getMinimumMoment(filterRange)
 
@@ -161,7 +157,7 @@ export const getAllUserClimbingData = async (
 
       sessions.forEach((session) => {
         const seshData: ClimbingSessionMetadata = session.data() as ClimbingSessionMetadata
-        sessionData.push({
+        climbingSessions.push({
           sessionMetadata: {
             sessionId: session.id,
             hardestBoulderClimbed: seshData.hardestBoulderClimbed,
@@ -183,7 +179,7 @@ export const getAllUserClimbingData = async (
           docs.forEach((doc) => {
             const data = doc.data() as ClimbLog
             rawClimbingData.push(data)
-            const sesh = sessionData.filter((s) => {
+            const sesh = climbingSessions.filter((s) => {
               return s.sessionMetadata.sessionId === session.id
             })
             if (sesh) {
@@ -213,49 +209,18 @@ export const getAllUserClimbingData = async (
 
   const indoorRedpointGrades = await getUserIndoorRedpointGrades(userId)
 
-  let boulderPyramidData: GradePyramidGraphData[] = []
-  let leadPyramidData: GradePyramidGraphData[] = []
-  let trPyramidData: GradePyramidGraphData[] = []
-
-  boulderPyramidData = assembleGradePyramidGraphData(
-    rawBoulderData,
-    GYM_CLIMB_TYPES.Boulder,
-    GradePyramidFilter.ClimbsAndAttempts,
-    filterRange
-  )
-  leadPyramidData = assembleGradePyramidGraphData(
-    rawLeadData,
-    GYM_CLIMB_TYPES.Lead,
-    GradePyramidFilter.ClimbsAndAttempts,
-    filterRange
-  )
-  trPyramidData = assembleGradePyramidGraphData(
-    rawTrData,
-    GYM_CLIMB_TYPES.TopRope,
-    GradePyramidFilter.ClimbsAndAttempts,
-    filterRange
-  )
-
-  sessionData.sort(
+  climbingSessions.sort(
     (a, b) => b.sessionMetadata.sessionStart - a.sessionMetadata.sessionStart
   )
-  // .reverse()
 
   return {
-    climbingLogs: {
-      allClimbs: rawClimbingData,
-      boulderLogs: rawBoulderData,
-      leadLogs: rawLeadData,
-      topRopeLogs: rawTrData,
-      sessions: sessionData,
-    },
-    gradePyramidData: {
-      boulderData: boulderPyramidData,
-      leadData: leadPyramidData,
-      trData: trPyramidData,
-    },
-    summaryStats: { indoorRedpointGrades: indoorRedpointGrades },
-  } as UserClimbingData
+    sessions: climbingSessions,
+    allClimbs: rawClimbingData,
+    boulderLogs: rawBoulderData,
+    leadLogs: rawLeadData,
+    topRopeLogs: rawTrData,
+    indoorRedpointGrades: indoorRedpointGrades,
+  } as UserSessionStorageData
 }
 
 export const getUserClimbingSessionsIds = async (

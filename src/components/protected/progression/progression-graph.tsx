@@ -13,14 +13,9 @@ import {
 import { ClimbLog, ProgressionGraphData } from "../../../static/types"
 import { Box, Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import {
-  CLIMB_TYPES,
-  GYM_CLIMB_TYPES,
-  PromiseTrackerArea,
-} from "../../../static/constants"
+import { CLIMB_TYPES, PromiseTrackerArea } from "../../../static/constants"
 import { BOULDER_GRADES, INDOOR_SPORT_GRADES } from "../../../static/constants"
 import { GraphColors } from "../../../static/styles"
-import { useProtectedContext } from "../context/protected-context"
 import {
   NameType,
   ValueType,
@@ -31,20 +26,15 @@ import { formatDataForProgressionGraph } from "../../../util/data-helper-functio
 import { Square } from "@mui/icons-material"
 
 type Props = {
+  data: ClimbLog[]
   climbType: number
   filter: string
 }
 
-export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
+export default function MonthlyClimbsGraph({ data, climbType, filter }: Props) {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.ProgressionGraph,
   })
-  const {
-    userClimbingLogs,
-    userBoulderLogs,
-    userLeadLogs,
-    userTopRopeLogs,
-  } = useProtectedContext()
   const [graphData, setGraphData] = useState<ProgressionGraphData[]>([])
   const [gradeRange, setGradeRange] = useState<number[]>([])
   const [graphXAxis, setGraphXAxis] = useState<string[]>([])
@@ -61,24 +51,12 @@ export default function MonthlyClimbsGraph({ climbType, filter }: Props) {
   const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11
 
   useEffect(() => {
-    const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
-      [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
-      [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
-      [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
-    }
-
-    if (logsMapping[climbType as GYM_CLIMB_TYPES].length > 0) {
-      formatDataForProgressionGraph(
-        logsMapping[climbType as GYM_CLIMB_TYPES],
-        filter,
-        gradeSystem
-      ).then((res) => {
-        setGradeRange(res.gradeRange)
-        setGraphData(res.graphData)
-        setGraphXAxis(res.xAxis)
-      })
-    }
-  }, [userClimbingLogs, filter])
+    formatDataForProgressionGraph(data, filter, gradeSystem).then((res) => {
+      setGradeRange(res.gradeRange)
+      setGraphData(res.graphData)
+      setGraphXAxis(res.xAxis)
+    })
+  }, [])
 
   const CustomTooltip = ({
     active,

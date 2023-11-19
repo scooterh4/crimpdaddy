@@ -13,7 +13,6 @@ import { Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment, { Moment } from "moment"
 import { GraphColors } from "../../../static/styles"
-import { useProtectedContext } from "../context/protected-context"
 import AppLoading from "../../common/loading"
 import { ClimbLog } from "../../../static/types"
 import { PromiseTrackerArea } from "../../../static/constants"
@@ -26,6 +25,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent"
 
 type Props = {
+  data: ClimbLog[]
   filter: string
 }
 
@@ -36,8 +36,7 @@ type ClimbsByDate = {
   timestamp: number
 }
 
-export default function ActivityGraph({ filter }: Props) {
-  const { userClimbingLogs } = useProtectedContext()
+export default function ActivityGraph({ filter, data }: Props) {
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Activity,
   })
@@ -51,16 +50,16 @@ export default function ActivityGraph({ filter }: Props) {
 
   // sets the graph data from the initial data passed in by the dashboard
   useEffect(() => {
-    if (userClimbingLogs) {
-      filterRawClimbingData(userClimbingLogs, filter)
+    if (data) {
+      filterRawClimbingData(data, filter)
     }
   }, [filter])
 
   useEffect(() => {
-    if (userClimbingLogs && userClimbingLogs.length > 0) {
-      filterRawClimbingData(userClimbingLogs, filter)
+    if (data && data.length > 0) {
+      filterRawClimbingData(data, filter)
     }
-  }, [userClimbingLogs])
+  }, [data])
 
   function filterRawClimbingData(data: ClimbLog[], range: string): void {
     const minMoment = getMinimumMoment(range)

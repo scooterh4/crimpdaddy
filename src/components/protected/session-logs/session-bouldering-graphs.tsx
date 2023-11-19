@@ -22,10 +22,7 @@ export default function SessionBoulderingGraphs({ data }: Props) {
       </Typography>
 
       <Grid item marginLeft={-3} paddingRight={2}>
-        <GradePyramid
-          climbType={GYM_CLIMB_TYPES.Boulder}
-          sessionData={data.climbs}
-        />
+        <GradePyramid data={data.climbs} climbType={GYM_CLIMB_TYPES.Boulder} />
       </Grid>
 
       <Grid item>

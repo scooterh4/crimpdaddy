@@ -1,6 +1,5 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useProtectedContext } from "../context/protected-context"
 import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import AppLoading from "../../common/loading"
@@ -8,37 +7,60 @@ import SelectFilter from "../common/select-filter"
 import ProgressionGraph from "./progression-graph"
 import { usePromiseTracker } from "react-promise-tracker"
 import SectionLegend from "../common/section-legend"
+import {
+  useDataDateRangeContext,
+  useProtectedAPI,
+  useUserClimbingDataContext,
+} from "../context/protected-context"
+import { useAuthContext } from "../../app/context/auth-context"
+import { ClimbLog } from "../../../static/types"
+import { getAllUserClimbingData } from "../../../util/db"
+import moment from "moment"
 
 export default function ProgressionPage() {
+  const { user } = useAuthContext()
   const {
-    dataDateRange,
-    updateDateRange,
-    userBoulderLogs,
-    userLeadLogs,
-    userTopRopeLogs,
-  } = useProtectedContext()
+    onUpdateUserClimbingData,
+    onUpdateDataLastRead,
+    onUpdateDataDateRange,
+  } = useProtectedAPI()
+  const climbingData = useUserClimbingDataContext()
+  const dataDateRange = useDataDateRangeContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.Progression,
   })
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
 
-  // setup titles for displaying data
-  const titles: string[] = []
-  if (userBoulderLogs && userBoulderLogs.length > 0) titles.push("Bouldering")
-  if (userLeadLogs && userLeadLogs.length > 0) titles.push("Lead")
-  if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
+  // setup data to display
+  const progressionData: { title: string; data: ClimbLog[] }[] = []
+
+  if (climbingData && climbingData.boulderLogs.length > 0)
+    progressionData.push({
+      title: "Bouldering",
+      data: climbingData.boulderLogs,
+    })
+  if (climbingData && climbingData.leadLogs.length > 0)
+    progressionData.push({ title: "Lead", data: climbingData.leadLogs })
+  if (climbingData && climbingData.topRopeLogs.length > 0)
+    progressionData.push({ title: "Top Rope", data: climbingData.topRopeLogs })
 
   useEffect(() => {
-    if (
-      !dataDateRange ||
-      Object.keys(DateFilters).indexOf(dataDateRange) <
-        Object.keys(DateFilters).indexOf(DateFilters.Last6Months)
-    ) {
-      updateDateRange(DateFilters.Last6Months, PromiseTrackerArea.Progression)
+    if (user) {
+      if (
+        !dataDateRange ||
+        Object.keys(DateFilters).indexOf(dateFilter) >
+          Object.keys(DateFilters).indexOf(dataDateRange)
+      ) {
+        getAllUserClimbingData(user.id, dateFilter).then((res) => {
+          onUpdateUserClimbingData(res)
+          onUpdateDataDateRange(dateFilter)
+          onUpdateDataLastRead(moment().unix())
+        })
+      }
     }
-  }, [])
+  }, [user])
 
-  return promiseInProgress ? (
+  return !user || promiseInProgress ? (
     <AppLoading />
   ) : (
     <>
@@ -59,9 +81,11 @@ export default function ProgressionPage() {
           </Typography>
         </Grid>
 
-        {titles.length === 0 && <Typography>No data to display.</Typography>}
+        {progressionData.length === 0 && (
+          <Typography>No data to display.</Typography>
+        )}
 
-        {titles.length > 0 && (
+        {progressionData.length > 0 && (
           <>
             <Grid
               container
@@ -77,7 +101,7 @@ export default function ProgressionPage() {
               />
             </Grid>
 
-            {titles.map((title, index) => (
+            {progressionData.map((graph, index) => (
               <Grid
                 alignItems={"center"}
                 border={1}
@@ -86,7 +110,7 @@ export default function ProgressionPage() {
                 container
                 direction={"column"}
                 gridAutoRows="auto"
-                key={title}
+                key={graph.title}
                 marginBottom={1}
                 marginTop={1}
                 padding={2}
@@ -98,10 +122,14 @@ export default function ProgressionPage() {
                   variant="h5"
                   sx={{ textAlign: "center" }}
                 >
-                  {title}
+                  {graph.title}
                 </Typography>
 
-                <ProgressionGraph climbType={index} filter={dateFilter} />
+                <ProgressionGraph
+                  data={graph.data}
+                  climbType={index}
+                  filter={dateFilter}
+                />
 
                 <SectionLegend section="progression" />
               </Grid>

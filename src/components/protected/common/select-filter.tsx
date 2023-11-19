@@ -1,6 +1,5 @@
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { useProtectedContext } from "../context/protected-context"
 import {
   DateFilters,
   GradePyramidFilter,
@@ -19,8 +18,6 @@ type filterObj = {
 }
 
 export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
-  const { dataDateRange, updateDateRange } = useProtectedContext()
-
   const activityDateList = [
     { value: DateFilters.ThisWeek, label: "Last week" },
     { value: DateFilters.ThisMonth, label: "Last month" },
@@ -83,16 +80,6 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
   const handleFilterChange = (event: SelectChangeEvent) => {
     const value = event.target.value.toString()
     if (value !== undefined && value !== null) {
-      if (dateFilter) {
-        // the graph needs data that's farther back in time than the data available
-        if (
-          !dataDateRange ||
-          Object.keys(DateFilters).indexOf(value) >
-            Object.keys(DateFilters).indexOf(dataDateRange)
-        ) {
-          updateDateRange(value, graph)
-        }
-      }
       setFilter(value)
     }
   }

@@ -16,8 +16,16 @@ import {
 import { useAuthContext } from "../../app/context/auth-context"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { assembleUserSessionData } from "../../../util/data-helper-functions"
-import { useProtectedContext } from "../context/protected-context"
+import {
+  assembleUserSessionData,
+  findNewRedpointGrades,
+} from "../../../util/data-helper-functions"
+import {
+  useProtectedAPI,
+  useUserClimbingDataContext,
+} from "../context/protected-context"
+import moment from "moment"
+import { updateUserIndoorRedpointGrades } from "../../../util/db"
 
 export default function SessionLoggerPage() {
   return (
@@ -30,9 +38,10 @@ export default function SessionLoggerPage() {
 function SessionLogger() {
   const { onLogSession } = useSessionAPI()
   const sessionStart = useSessionStart()
-  const { updateSessionStorageData } = useProtectedContext()
+  const { onUpdateDataUpdated } = useProtectedAPI()
   const navigate = useNavigate()
   const { user } = useAuthContext()
+  const userClimbingData = useUserClimbingDataContext()
   const boulderClimbs = useBoulderData()
   const routeClimbs = useRouteData()
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
@@ -46,10 +55,17 @@ function SessionLogger() {
         : routeClimbs
 
       const data = assembleUserSessionData(sessionStart, sessionData)
-      onLogSession(data, user.id)
 
-      // We are assuming the climbs got logged properly in the db
-      updateSessionStorageData(data)
+      if (userClimbingData) {
+        const redpointGrades = findNewRedpointGrades(
+          userClimbingData.indoorRedpointGrades,
+          data.climbs
+        )
+        updateUserIndoorRedpointGrades(user.id, redpointGrades)
+      }
+
+      onLogSession(data, user.id)
+      onUpdateDataUpdated(moment().unix())
       toast.success("Session logged!")
       navigate(Routes.dashboard)
     }

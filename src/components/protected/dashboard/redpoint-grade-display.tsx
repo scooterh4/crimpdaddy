@@ -1,41 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { Grid, Typography } from "@mui/material"
-import { useProtectedContext } from "../context/protected-context"
+import { UserIndoorRedpointGradesDoc } from "../../../static/types"
 
 type Props = {
+  data: string
   climbType: string
 }
 
-export default function HardestGradeDisplay({ climbType }: Props) {
-  const { userIndoorRedpointGrades } = useProtectedContext()
-  const [hardestGrade, setHardestGrade] = useState("--")
+export default function HardestGradeDisplay({ data, climbType }: Props) {
   const title = climbType === "TopRope" ? "Top Rope" : climbType
-
-  useEffect(() => {
-    if (userIndoorRedpointGrades) {
-      switch (climbType) {
-        case "Boulder":
-          setHardestGrade(
-            userIndoorRedpointGrades.boulder
-              ? userIndoorRedpointGrades.boulder
-              : "--"
-          )
-          break
-        case "Lead":
-          setHardestGrade(
-            userIndoorRedpointGrades.lead ? userIndoorRedpointGrades.lead : "--"
-          )
-          break
-        case "TopRope":
-          setHardestGrade(
-            userIndoorRedpointGrades.topRope
-              ? userIndoorRedpointGrades.topRope
-              : "--"
-          )
-          break
-      }
-    }
-  }, [userIndoorRedpointGrades])
 
   return (
     <Grid container direction={"column"} gridAutoRows={"auto"}>
@@ -48,7 +21,7 @@ export default function HardestGradeDisplay({ climbType }: Props) {
           fontWeight: "bold",
         }}
       >
-        {hardestGrade}
+        {data}
       </Typography>
       <Typography
         gridRow={2}

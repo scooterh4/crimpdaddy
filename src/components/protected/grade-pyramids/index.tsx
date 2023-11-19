@@ -1,9 +1,8 @@
 import { Grid, Typography } from "@mui/material"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./grade-pyramid-graph"
 import { ThemeColors } from "../../../static/styles"
-import { useProtectedContext } from "../context/protected-context"
 import AppLoading from "../../common/loading"
 import {
   DateFilters,
@@ -12,15 +11,25 @@ import {
 } from "../../../static/constants"
 import SelectFilter from "../common/select-filter"
 import { usePromiseTracker } from "react-promise-tracker"
+import {
+  useDataDateRangeContext,
+  useProtectedAPI,
+  useUserClimbingDataContext,
+} from "../context/protected-context"
+import { useAuthContext } from "../../app/context/auth-context"
+import { getAllUserClimbingData } from "../../../util/db"
+import moment from "moment"
+import { ClimbLog } from "../../../static/types"
 
 export default function GradePyramidPage() {
+  const { user } = useAuthContext()
   const {
-    dataDateRange,
-    updateDateRange,
-    userBoulderLogs,
-    userLeadLogs,
-    userTopRopeLogs,
-  } = useProtectedContext()
+    onUpdateUserClimbingData,
+    onUpdateDataLastRead,
+    onUpdateDataDateRange,
+  } = useProtectedAPI()
+  const climbingData = useUserClimbingDataContext()
+  const dataDateRange = useDataDateRangeContext()
   const { promiseInProgress } = usePromiseTracker({
     area: PromiseTrackerArea.GradePyramids,
   })
@@ -29,23 +38,36 @@ export default function GradePyramidPage() {
     GradePyramidFilter.ClimbsOnly
   )
 
-  // setup titles for displaying data
-  const titles: string[] = []
-  if (userBoulderLogs && userBoulderLogs.length > 0) titles.push("Bouldering")
-  if (userLeadLogs && userLeadLogs.length > 0) titles.push("Lead")
-  if (userTopRopeLogs && userTopRopeLogs.length > 0) titles.push("Top Rope")
+  // setup data to display
+  const gradePyramidData: { title: string; data: ClimbLog[] }[] = []
 
-  useMemo(() => {
-    if (
-      !dataDateRange ||
-      Object.keys(DateFilters).indexOf(dataDateRange) <
-        Object.keys(DateFilters).indexOf(dateFilter)
-    ) {
-      updateDateRange(dateFilter, PromiseTrackerArea.GradePyramids)
+  if (climbingData && climbingData.boulderLogs.length > 0)
+    gradePyramidData.push({
+      title: "Bouldering",
+      data: climbingData.boulderLogs,
+    })
+  if (climbingData && climbingData.leadLogs.length > 0)
+    gradePyramidData.push({ title: "Lead", data: climbingData.leadLogs })
+  if (climbingData && climbingData.topRopeLogs.length > 0)
+    gradePyramidData.push({ title: "Top Rope", data: climbingData.topRopeLogs })
+
+  useEffect(() => {
+    if (user) {
+      if (
+        !dataDateRange ||
+        Object.keys(DateFilters).indexOf(dateFilter) >
+          Object.keys(DateFilters).indexOf(dataDateRange)
+      ) {
+        getAllUserClimbingData(user.id, dateFilter).then((res) => {
+          onUpdateUserClimbingData(res)
+          onUpdateDataDateRange(dateFilter)
+          onUpdateDataLastRead(moment().unix())
+        })
+      }
     }
-  }, [])
+  }, [user])
 
-  return promiseInProgress ? (
+  return !user || promiseInProgress ? (
     <AppLoading />
   ) : (
     <>
@@ -64,9 +86,11 @@ export default function GradePyramidPage() {
           </Typography>
         </Grid>
 
-        {titles.length === 0 && <Typography>No data to display.</Typography>}
+        {gradePyramidData.length === 0 && (
+          <Typography>No data to display.</Typography>
+        )}
 
-        {titles.length > 0 && (
+        {gradePyramidData.length > 0 && (
           <>
             <Grid
               container
@@ -87,7 +111,7 @@ export default function GradePyramidPage() {
               />
             </Grid>
 
-            {titles.map((title, index) => (
+            {gradePyramidData.map((pyramid, index) => (
               <Grid
                 alignItems={"center"}
                 border={1}
@@ -96,7 +120,7 @@ export default function GradePyramidPage() {
                 container
                 direction={"column"}
                 gridAutoRows="auto"
-                key={title}
+                key={pyramid.title}
                 marginBottom={1}
                 marginTop={1}
                 paddingBottom={2}
@@ -109,7 +133,7 @@ export default function GradePyramidPage() {
                   variant="h5"
                   sx={{ textAlign: "center" }}
                 >
-                  {title}
+                  {pyramid.title}
                 </Typography>
 
                 <Grid
@@ -123,6 +147,7 @@ export default function GradePyramidPage() {
                   marginTop={2}
                 >
                   <GradePyramid
+                    data={pyramid.data}
                     climbType={index}
                     tickFilter={gradePyramidFilter}
                     dateFilter={dateFilter}

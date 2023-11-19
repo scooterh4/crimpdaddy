@@ -1,8 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "react-toastify/dist/ReactToastify.css"
 import { useNavigate } from "react-router-dom"
 import { Button, FormControl, Grid, Typography } from "@mui/material"
-import { useProtectedContext } from "../context/protected-context"
 import AppLoading from "../../common/loading"
 import HardestGradeDisplay from "./redpoint-grade-display"
 import SelectFilter from "../common/select-filter"
@@ -11,15 +10,59 @@ import SectionLegend from "../common/section-legend"
 import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import { Routes } from "../../../router"
+import { getAllUserClimbingData } from "../../../util/db"
+import {
+  useDataDateRangeContext,
+  useDataLastReadContext,
+  useDataUpdatedContext,
+  useProtectedAPI,
+  useUserClimbingDataContext,
+} from "../context/protected-context"
+import { useAuthContext } from "../../app/context/auth-context"
+import moment from "moment"
 
 export default function Dashboard() {
-  const { userClimbingLogs } = useProtectedContext()
+  const { user } = useAuthContext()
+  const {
+    onUpdateUserClimbingData,
+    onUpdateDataLastRead,
+    onUpdateDataDateRange,
+  } = useProtectedAPI()
+  const climbingData = useUserClimbingDataContext()
+  const dataDateRange = useDataDateRangeContext()
+  const dataLastRead = useDataLastReadContext()
+  const dataLastUpdated = useDataUpdatedContext()
   const navigate = useNavigate()
   const [activityFilter, setActivityFilter] = useState<string>(
     DateFilters.ThisWeek
   )
 
-  return !userClimbingLogs ? (
+  useEffect(() => {
+    if (user) {
+      // initial log in
+      if (
+        !dataDateRange ||
+        Object.keys(DateFilters).indexOf(activityFilter) >
+          Object.keys(DateFilters).indexOf(dataDateRange)
+      ) {
+        getAllUserClimbingData(user.id, activityFilter).then((res) => {
+          onUpdateUserClimbingData(res)
+          onUpdateDataDateRange(activityFilter)
+          onUpdateDataLastRead(moment().unix())
+        })
+      }
+      // data was logged, so need fresh data
+      else if (dataLastUpdated && dataLastUpdated > dataLastRead) {
+        getAllUserClimbingData(user.id, activityFilter).then((res) => {
+          onUpdateUserClimbingData(res)
+          onUpdateDataDateRange(activityFilter)
+          onUpdateDataLastRead(moment().unix())
+        })
+      }
+    }
+  }, [user, dataLastUpdated])
+
+  return !user || !climbingData ? (
     <AppLoading />
   ) : (
     <>
@@ -71,13 +114,22 @@ export default function Dashboard() {
         </Typography>
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item xs>
-            <HardestGradeDisplay climbType="Boulder" />
+            <HardestGradeDisplay
+              data={climbingData.indoorRedpointGrades.boulder}
+              climbType="Boulder"
+            />
           </Grid>
           <Grid item md={2} xs={4}>
-            <HardestGradeDisplay climbType="Lead" />
+            <HardestGradeDisplay
+              data={climbingData.indoorRedpointGrades.lead}
+              climbType="Lead"
+            />
           </Grid>
           <Grid item xs>
-            <HardestGradeDisplay climbType="TopRope" />
+            <HardestGradeDisplay
+              data={climbingData.indoorRedpointGrades.topRope}
+              climbType="TopRope"
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -122,7 +174,10 @@ export default function Dashboard() {
         </Grid>
 
         <Grid container item direction={"row"} alignItems={"center"}>
-          <ActivityGraph filter={activityFilter} />
+          <ActivityGraph
+            data={climbingData.allClimbs}
+            filter={activityFilter}
+          />
         </Grid>
 
         <SectionLegend section="activity" />

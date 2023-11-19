@@ -36,8 +36,8 @@ export default function SessionRouteGraphs({ data }: Props) {
 
       <Grid item marginLeft={-3} paddingRight={2}>
         <GradePyramid
+          data={data.climbs}
           climbType={GYM_CLIMB_TYPES.Lead}
-          sessionData={data.climbs}
           climbTypeFilter={gradePyramidFilter}
         />
       </Grid>

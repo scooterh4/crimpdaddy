@@ -5,22 +5,13 @@ export type AppUser = {
   email: string
 }
 
-export type UserClimbingData = {
-  climbingLogs: {
-    allClimbs: ClimbLog[]
-    boulderLogs: ClimbLog[]
-    leadLogs: ClimbLog[]
-    topRopeLogs: ClimbLog[]
-    sessions: ClimbingSessionData[]
-  }
-  gradePyramidData: {
-    boulderData: ClimbGraphData[]
-    leadData: ClimbGraphData[]
-    trData: ClimbGraphData[]
-  }
-  summaryStats: {
-    indoorRedpointGrades: UserIndoorRedpointGradesDoc
-  }
+export type UserSessionStorageData = {
+  sessions: ClimbingSessionData[]
+  allClimbs: ClimbLog[]
+  boulderLogs: ClimbLog[]
+  leadLogs: ClimbLog[]
+  topRopeLogs: ClimbLog[]
+  indoorRedpointGrades: UserIndoorRedpointGradesDoc
 }
 
 // export type ClimbLogDocument = {
