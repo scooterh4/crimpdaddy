@@ -10,7 +10,7 @@ import {
   PromiseTrackerArea,
 } from "../../../static/constants"
 import SelectFilter from "../common/select-filter"
-import { usePromiseTracker } from "react-promise-tracker"
+import { trackPromise, usePromiseTracker } from "react-promise-tracker"
 import {
   useDataDateRangeContext,
   useProtectedAPI,
@@ -58,11 +58,14 @@ export default function GradePyramidPage() {
         Object.keys(DateFilters).indexOf(dateFilter) >
           Object.keys(DateFilters).indexOf(dataDateRange)
       ) {
-        getAllUserClimbingData(user.id, dateFilter).then((res) => {
-          onUpdateUserClimbingData(res)
-          onUpdateDataDateRange(dateFilter)
-          onUpdateDataLastRead(moment().unix())
-        })
+        trackPromise(
+          getAllUserClimbingData(user.id, dateFilter).then((res) => {
+            onUpdateUserClimbingData(res)
+            onUpdateDataDateRange(dateFilter)
+            onUpdateDataLastRead(moment().unix())
+          }),
+          PromiseTrackerArea.GradePyramids
+        )
       }
     }
   }, [user])

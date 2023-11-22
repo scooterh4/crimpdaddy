@@ -5,7 +5,7 @@ import { ThemeColors } from "../../../static/styles"
 import AppLoading from "../../common/loading"
 import SelectFilter from "../common/select-filter"
 import ProgressionGraph from "./progression-graph"
-import { usePromiseTracker } from "react-promise-tracker"
+import { trackPromise, usePromiseTracker } from "react-promise-tracker"
 import SectionLegend from "../common/section-legend"
 import {
   useDataDateRangeContext,
@@ -30,9 +30,48 @@ export default function ProgressionPage() {
     area: PromiseTrackerArea.Progression,
   })
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
+  // const [progressionData, setProgressionData] = useState<
+  //   { title: string; data: ClimbLog[] }[]
+  // >([])
 
-  // setup data to display
-  const progressionData: { title: string; data: ClimbLog[] }[] = []
+  function updateProgressionData() {
+    // let data = []
+    // // if (climbingData && climbingData.boulderLogs.length > 0)
+    // //   data.push({
+    // //     title: "Bouldering",
+    // //     data: climbingData.boulderLogs,
+    // //   })
+    // // if (climbingData && climbingData.leadLogs.length > 0)
+    // //   data.push({ title: "Lead", data: climbingData.leadLogs })
+    // // if (climbingData && climbingData.topRopeLogs.length > 0)
+    // //   data.push({ title: "Top Rope", data: climbingData.topRopeLogs })
+    // setProgressionData(data)
+  }
+
+  useEffect(() => {
+    if (user) {
+      if (
+        !dataDateRange ||
+        Object.keys(DateFilters).indexOf(dateFilter) >
+          Object.keys(DateFilters).indexOf(dataDateRange)
+      ) {
+        trackPromise(
+          getAllUserClimbingData(user.id, dateFilter).then((res) => {
+            onUpdateUserClimbingData(res)
+            onUpdateDataDateRange(dateFilter)
+            onUpdateDataLastRead(moment().unix())
+            updateProgressionData()
+          }),
+          PromiseTrackerArea.Progression
+        )
+      } else {
+        console.log("updating prog data")
+        updateProgressionData
+      }
+    }
+  }, [user, dateFilter])
+
+  let progressionData = []
 
   if (climbingData && climbingData.boulderLogs.length > 0)
     progressionData.push({
@@ -44,23 +83,9 @@ export default function ProgressionPage() {
   if (climbingData && climbingData.topRopeLogs.length > 0)
     progressionData.push({ title: "Top Rope", data: climbingData.topRopeLogs })
 
-  useEffect(() => {
-    if (user) {
-      if (
-        !dataDateRange ||
-        Object.keys(DateFilters).indexOf(dateFilter) >
-          Object.keys(DateFilters).indexOf(dataDateRange)
-      ) {
-        getAllUserClimbingData(user.id, dateFilter).then((res) => {
-          onUpdateUserClimbingData(res)
-          onUpdateDataDateRange(dateFilter)
-          onUpdateDataLastRead(moment().unix())
-        })
-      }
-    }
-  }, [user])
+  console.log("progressionData on render", progressionData)
 
-  return !user || promiseInProgress ? (
+  return !user && promiseInProgress ? (
     <AppLoading />
   ) : (
     <>
@@ -81,7 +106,7 @@ export default function ProgressionPage() {
           </Typography>
         </Grid>
 
-        {progressionData.length === 0 && (
+        {!promiseInProgress && progressionData.length === 0 && (
           <Typography>No data to display.</Typography>
         )}
 

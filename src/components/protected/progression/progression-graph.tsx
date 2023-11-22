@@ -56,7 +56,7 @@ export default function MonthlyClimbsGraph({ data, climbType, filter }: Props) {
       setGraphData(res.graphData)
       setGraphXAxis(res.xAxis)
     })
-  }, [])
+  }, [filter])
 
   const CustomTooltip = ({
     active,
