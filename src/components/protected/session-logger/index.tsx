@@ -26,6 +26,7 @@ import {
 } from "../context/protected-context"
 import moment from "moment"
 import { updateUserIndoorRedpointGrades } from "../../../util/db"
+import { UserIndoorRedpointGradesDoc } from "../../../static/types"
 
 export default function SessionLoggerPage() {
   return (
@@ -38,7 +39,7 @@ export default function SessionLoggerPage() {
 function SessionLogger() {
   const { onLogSession } = useSessionAPI()
   const sessionStart = useSessionStart()
-  const { onUpdateDataUpdated } = useProtectedAPI()
+  const { onUpdateDataUpdated, onAddUserClimbingData } = useProtectedAPI()
   const navigate = useNavigate()
   const { user } = useAuthContext()
   const userClimbingData = useUserClimbingDataContext()
@@ -55,17 +56,29 @@ function SessionLogger() {
         : routeClimbs
 
       const data = assembleUserSessionData(sessionStart, sessionData)
+      let redpointGrades: UserIndoorRedpointGradesDoc
 
       if (userClimbingData) {
-        const redpointGrades = findNewRedpointGrades(
+        redpointGrades = findNewRedpointGrades(
           userClimbingData.indoorRedpointGrades,
           data.climbs
         )
-        updateUserIndoorRedpointGrades(user.id, redpointGrades)
+      } else {
+        redpointGrades = {
+          boulder: "",
+          lead: "",
+          topRope: "",
+        }
       }
 
-      onLogSession(data, user.id)
-      onUpdateDataUpdated(moment().unix())
+      data.newRedpointGrades = redpointGrades
+      const climbSession = {
+        sessionMetadata: data.sessionMetadata,
+        climbs: data.climbs,
+      }
+
+      onLogSession(user.id, climbSession, redpointGrades)
+      onAddUserClimbingData(data) // we assume the data got added to the db successfully
       toast.success("Session logged!")
       navigate(Routes.dashboard)
     }

@@ -68,24 +68,24 @@ export type ProgressionGraphData = {
   progressionLine: number
 }
 
-export type SessionStorageData = {
-  timeRange: string
-  climbingData: {
-    allClimbs: ClimbLog[]
-    boulderLogs: ClimbLog[]
-    leadLogs: ClimbLog[]
-    topRopeLogs: ClimbLog[]
-    sessions: ClimbingSessionData[]
-  }
-  gradePyramidData: {
-    boulderData: ClimbGraphData[]
-    leadData: ClimbGraphData[]
-    trData: ClimbGraphData[]
-  }
-  summaryStats: {
-    indoorRedpointGrades: UserIndoorRedpointGradesDoc
-  }
-}
+// export type SessionStorageData = {
+//   timeRange: string
+//   climbingData: {
+//     allClimbs: ClimbLog[]
+//     boulderLogs: ClimbLog[]
+//     leadLogs: ClimbLog[]
+//     topRopeLogs: ClimbLog[]
+//     sessions: ClimbingSessionData[]
+//   }
+//   gradePyramidData: {
+//     boulderData: ClimbGraphData[]
+//     leadData: ClimbGraphData[]
+//     trData: ClimbGraphData[]
+//   }
+//   summaryStats: {
+//     indoorRedpointGrades: UserIndoorRedpointGradesDoc
+//   }
+// }
 
 export type UserIndoorRedpointGradesDoc = {
   boulder: string
@@ -124,4 +124,13 @@ export type ClimbingSessionMetadata = {
 export type ClimbingSessionData = {
   sessionMetadata: ClimbingSessionMetaData
   climbs: ClimbLog[]
+}
+
+export type ClimbingDataToAdd = {
+  sessionMetadata: ClimbingSessionMetadata
+  climbs: ClimbLog[]
+  boulders: ClimbLog[]
+  lead: ClimbLog[]
+  topRope: ClimbLog[]
+  newRedpointGrades: UserIndoorRedpointGradesDoc
 }

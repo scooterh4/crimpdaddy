@@ -9,11 +9,13 @@ import {
   ClimbingSessionData,
   EditSessionClimb,
   SessionClimb,
+  UserIndoorRedpointGradesDoc,
 } from "../../../../static/types"
 import { Moment } from "moment"
 import { logClimbingSession } from "../../../../util/db"
 import { GYM_CLIMB_TYPES } from "../../../../static/constants"
 import moment from "moment"
+import { useProtectedAPI } from "../../context/protected-context"
 
 type State = {
   sessionStart: Moment
@@ -38,7 +40,11 @@ type API = {
   onOpenDeleteClimbDialog: (climb: SessionClimb, index: number) => void
   onCloseDeleteClimbDialog: () => void
   onRemoveClimb: (climbType: number, index: number) => void
-  onLogSession: (climbs: ClimbingSessionData, userId: string) => void
+  onLogSession: (
+    userId: string,
+    climbs: ClimbingSessionData,
+    redpointGrades: UserIndoorRedpointGradesDoc
+  ) => void
 }
 
 const SessionStartContext = createContext<State["sessionStart"]>(
@@ -192,6 +198,7 @@ export const SessionLoggerProvider = ({
   children: ReactNode
 }) => {
   const [state, dispatch] = useReducer(reducer, {} as State)
+  const { onAddUserClimbingData, onUpdateDataUpdated } = useProtectedAPI()
 
   const api = useMemo(() => {
     // start the session
@@ -243,8 +250,17 @@ export const SessionLoggerProvider = ({
       dispatch({ type: "removeClimb", climbType, index })
     }
 
-    const onLogSession = (climbs: ClimbingSessionData, userId: string) => {
-      logClimbingSession(climbs, userId)
+    const onLogSession = (
+      userId: string,
+      climbs: ClimbingSessionData,
+      redpointGrades: UserIndoorRedpointGradesDoc
+    ) => {
+      // updateUserIndoorRedpointGrades(user.id, newRedpointGrades)
+
+      logClimbingSession(userId, climbs, redpointGrades).then(() => {
+        console.log("session-logger context climbs logged")
+        // onUpdateDataUpdated(moment().unix())
+      })
     }
 
     return {

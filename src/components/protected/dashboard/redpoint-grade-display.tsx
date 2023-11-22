@@ -21,7 +21,7 @@ export default function HardestGradeDisplay({ data, climbType }: Props) {
           fontWeight: "bold",
         }}
       >
-        {data}
+        {!data || data === "" ? "--" : data}
       </Typography>
       <Typography
         gridRow={2}

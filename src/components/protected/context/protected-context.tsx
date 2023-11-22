@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useReducer } from "react"
 import {
+  ClimbingDataToAdd,
   ClimbingSessionData,
   UserSessionStorageData,
 } from "../../../static/types"
@@ -15,7 +16,7 @@ type API = {
   onUpdateDataDateRange: (range: string) => void
   onUpdateDataLastRead: (unixTime: number) => void
   onUpdateDataUpdated: (unixTime: number) => void
-  // onAddUserClimbingData: (data: ClimbingSessionData) => void
+  onAddUserClimbingData: (data: ClimbingDataToAdd) => void
   onUpdateUserClimbingData: (
     userClimbingData: UserSessionStorageData | null
   ) => void
@@ -40,10 +41,10 @@ type Actions =
   | { type: "updateDataDateRange"; range: string }
   | { type: "updateDataLastRead"; unixTime: number }
   | { type: "updateDataUpdated"; unixTime: number }
-  // | {
-  //   type: "addUserClimbingData"
-  //   data: ClimbingSessionData
-  // }
+  | {
+      type: "addUserClimbingData"
+      data: ClimbingDataToAdd
+    }
   | {
       type: "updateUserClimbingData"
       userClimbingData: UserSessionStorageData | null
@@ -59,6 +60,36 @@ const reducer = (state: State, action: Actions): State => {
 
     case "updateDataUpdated":
       return { ...state, dataUpdated: action.unixTime }
+
+    case "addUserClimbingData":
+      let allClimbs = action.data.climbs
+      let boulders = action.data.boulders
+      let lead = action.data.lead
+      let topRope = action.data.topRope
+      let session = [
+        {
+          sessionMetadata: action.data.sessionMetadata,
+          climbs: action.data.climbs,
+        },
+      ]
+
+      if (state.userClimbingData) {
+        allClimbs = allClimbs.concat(state.userClimbingData.allClimbs)
+        boulders = boulders.concat(state.userClimbingData.boulderLogs)
+        lead = lead.concat(state.userClimbingData.leadLogs)
+        topRope = topRope.concat(state.userClimbingData.topRopeLogs)
+        session = session.concat(state.userClimbingData.sessions)
+      }
+
+      const climbingData: UserSessionStorageData = {
+        allClimbs: allClimbs,
+        boulderLogs: boulders,
+        leadLogs: lead,
+        topRopeLogs: topRope,
+        sessions: session,
+        indoorRedpointGrades: action.data.newRedpointGrades,
+      }
+      return { ...state, userClimbingData: climbingData }
 
     case "updateUserClimbingData":
       return { ...state, userClimbingData: action.userClimbingData }
@@ -86,10 +117,9 @@ export const ProtectedDataProvider = ({
       dispatch({ type: "updateDataUpdated", unixTime })
     }
 
-    // const onAddUserClimbingData = (data: ClimbingSessionData) => {
-    //   const oldData = state.userClimbingData
-    //   const newData = {}
-    // }
+    const onAddUserClimbingData = (data: ClimbingDataToAdd) => {
+      dispatch({ type: "addUserClimbingData", data })
+    }
 
     const onUpdateUserClimbingData = (
       userClimbingData: UserSessionStorageData | null
@@ -101,6 +131,7 @@ export const ProtectedDataProvider = ({
       onUpdateDataDateRange,
       onUpdateDataLastRead,
       onUpdateDataUpdated,
+      onAddUserClimbingData,
       onUpdateUserClimbingData,
     }
   }, [])

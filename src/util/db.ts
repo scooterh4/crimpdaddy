@@ -65,7 +65,7 @@ export const getUserIndoorRedpointGrades = async (
 export const updateUserIndoorRedpointGrades = async (
   userId: string,
   updateGrades: UserIndoorRedpointGradesDoc
-): Promise<void> => {
+): Promise<UserIndoorRedpointGradesDoc> => {
   const docPath = `/${collectionName}/${userId}/indoor_summary_stats/redpoint_grades`
 
   try {
@@ -80,6 +80,8 @@ export const updateUserIndoorRedpointGrades = async (
       error
     )
   }
+
+  return updateGrades
 }
 
 // log an indoor climb
@@ -112,19 +114,24 @@ export const logClimb = async (
 }
 
 export const logClimbingSession = async (
+  userId: string,
   climbData: ClimbingSessionData,
-  userId: string
+  redpointGrades: UserIndoorRedpointGradesDoc
 ): Promise<void> => {
   const collectionPath = `/${collectionName}/${userId}/indoor_sessions`
 
   try {
-    await addDoc(
-      collection(firestore, collectionPath),
-      climbData.sessionMetadata
-    ).then((res) => {
-      const climbsPath = collectionPath + `/${res.id}/climbs`
-      climbData.climbs.forEach((climb) => {
-        addDoc(collection(firestore, climbsPath), climb)
+    await runTransaction(firestore, async (t) => {
+      updateUserIndoorRedpointGrades(userId, redpointGrades)
+
+      addDoc(
+        collection(firestore, collectionPath),
+        climbData.sessionMetadata
+      ).then((res) => {
+        const climbsPath = collectionPath + `/${res.id}/climbs`
+        climbData.climbs.forEach((climb) => {
+          addDoc(collection(firestore, climbsPath), climb)
+        })
       })
     })
   } catch (error) {

@@ -13,11 +13,11 @@ import {
   RouteGradePyramidGraphData,
   ClimbLog,
   UserIndoorRedpointGradesDoc,
-  ClimbingSessionData,
   SessionClimb,
   BoulderTickTypes,
   RouteTickTypes,
   ProgressionGraphData,
+  ClimbingDataToAdd,
 } from "../static/types"
 import { Timestamp } from "firebase/firestore"
 
@@ -117,9 +117,10 @@ export function findNewRedpointGrades(
 export function assembleUserSessionData(
   sessionStart: Moment,
   sessionClimbs: SessionClimb[]
-): ClimbingSessionData {
+): ClimbingDataToAdd {
   let data = {
     sessionMetadata: {
+      sessionId: "",
       numberOfBoulders: 0,
       numberOfRoutes: 0,
       failedAttempts: 0,
@@ -129,7 +130,11 @@ export function assembleUserSessionData(
       sessionEnd: Timestamp.fromMillis(moment().unix() * 1000),
     },
     climbs: [],
-  } as ClimbingSessionData
+    boulders: [],
+    lead: [],
+    topRope: [],
+    newRedpointGrades: { boulder: "", lead: "", topRope: "" },
+  } as ClimbingDataToAdd
 
   sessionClimbs.forEach((climb) => {
     if (climb.attemptCount > 1 || climb.tick === "Attempt") {
@@ -139,6 +144,7 @@ export function assembleUserSessionData(
         data.sessionMetadata.failedAttempts += climb.attemptCount
       }
     }
+
     switch (climb.climbType) {
       case GYM_CLIMB_TYPES[0]:
         if (climb.tick !== "Attempt") {
@@ -149,9 +155,34 @@ export function assembleUserSessionData(
               ? climb.grade
               : data.sessionMetadata.hardestBoulderClimbed
         }
+        data.boulders.push({
+          climbType: climb.climbType,
+          grade: climb.grade,
+          tick: climb.tick,
+          count: climb.climbType === "Attempt" ? climb.attemptCount : 1,
+          unixTime: climb.unixTime,
+        })
         break
 
-      default:
+      case GYM_CLIMB_TYPES[1]:
+        if (climb.tick !== "Attempt") {
+          data.sessionMetadata.numberOfBoulders += 1
+          data.sessionMetadata.hardestBoulderClimbed =
+            BOULDER_GRADES.indexOf(data.sessionMetadata.hardestBoulderClimbed) <
+            BOULDER_GRADES.indexOf(climb.grade)
+              ? climb.grade
+              : data.sessionMetadata.hardestBoulderClimbed
+        }
+        data.lead.push({
+          climbType: climb.climbType,
+          grade: climb.grade,
+          tick: climb.tick,
+          count: climb.climbType === "Attempt" ? climb.attemptCount : 1,
+          unixTime: climb.unixTime,
+        })
+        break
+
+      case GYM_CLIMB_TYPES[2]:
         if (climb.tick !== "Attempt") {
           data.sessionMetadata.numberOfRoutes += 1
           data.sessionMetadata.hardestRouteClimbed =
@@ -161,6 +192,13 @@ export function assembleUserSessionData(
               ? climb.grade
               : data.sessionMetadata.hardestRouteClimbed
         }
+        data.topRope.push({
+          climbType: climb.climbType,
+          grade: climb.grade,
+          tick: climb.tick,
+          count: climb.climbType === "Attempt" ? climb.attemptCount : 1,
+          unixTime: climb.unixTime,
+        })
         break
     }
 
@@ -180,18 +218,6 @@ export function assembleUserSessionData(
         count: 1,
         unixTime: climb.unixTime,
       })
-      if (
-        climb.attemptCount > 1 &&
-        (climb.tick === "Redpoint" || climb.tick === "Repeat")
-      ) {
-        data.climbs.push({
-          climbType: climb.climbType,
-          grade: climb.grade,
-          tick: "Attempt",
-          count: climb.attemptCount - 1,
-          unixTime: climb.unixTime,
-        })
-      }
     }
   })
 
@@ -402,7 +428,6 @@ export function assembleGradePyramidData(
 // ---------------------------
 // Progression page functions
 // ---------------------------
-
 function getProgressionGraphDataAndXAxis(startMoment: Moment) {
   let graphData: ProgressionGraphData[] = []
   let xAxis: string[] = []

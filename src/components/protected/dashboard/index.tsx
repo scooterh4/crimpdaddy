@@ -110,7 +110,7 @@ export default function Dashboard() {
           textAlign={"center"}
           variant="h5"
         >
-          Redpoint Grades
+          Hardest Grades
         </Typography>
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item xs>
