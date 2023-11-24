@@ -12,13 +12,11 @@ import {
 import {
   BoulderGradePyramidGraphData,
   ClimbLog,
-  ClimbingSessionData,
   RouteGradePyramidGraphData,
 } from "../../../static/types"
 import { GraphColors } from "../../../static/styles"
 import { Card, Grid, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
-// import { useProtectedContext } from "../context/protected-context"
 import {
   GYM_CLIMB_TYPES,
   GradePyramidFilter,
@@ -60,11 +58,6 @@ export default function GradePyramid({
   const graphAspectRatio = lgScreenAndUp ? 4 : mdScreen ? 3 : 2
 
   useEffect(() => {
-    // let formattedData:
-    //   | BoulderGradePyramidGraphData[]
-    //   | RouteGradePyramidGraphData[] = []
-
-    // if (sessionData) {
     let formattedData = assembleGradePyramidGraphData(
       data,
       climbType,
@@ -75,20 +68,6 @@ export default function GradePyramid({
         : GradePyramidFilter.ClimbsAndAttempts,
       dateFilter
     )
-    // } else {
-    //   const logsMapping: Record<GYM_CLIMB_TYPES, ClimbLog[]> = {
-    //     [GYM_CLIMB_TYPES.Boulder]: userBoulderLogs || [],
-    //     [GYM_CLIMB_TYPES.Lead]: userLeadLogs || [],
-    //     [GYM_CLIMB_TYPES.TopRope]: userTopRopeLogs || [],
-    //   }
-
-    //   formattedData = assembleGradePyramidGraphData(
-    //     logsMapping[climbType as GYM_CLIMB_TYPES],
-    //     climbType,
-    //     tickFilter,
-    //     dateFilter
-    //   )
-    // }
 
     climbType === GYM_CLIMB_TYPES.Boulder
       ? setGraphData(formattedData as BoulderGradePyramidGraphData[])

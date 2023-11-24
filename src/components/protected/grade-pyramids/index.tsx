@@ -64,11 +64,11 @@ export default function GradePyramidPage() {
             onUpdateDataDateRange(dateFilter)
             onUpdateDataLastRead(moment().unix())
           }),
-          PromiseTrackerArea.GradePyramids
+          PromiseTrackerArea.GradePyramidGraph
         )
       }
     }
-  }, [user])
+  }, [user, dateFilter])
 
   return !user || promiseInProgress ? (
     <AppLoading />

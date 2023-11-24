@@ -13,7 +13,6 @@ import {
   useUserClimbingDataContext,
 } from "../context/protected-context"
 import { useAuthContext } from "../../app/context/auth-context"
-import { ClimbLog } from "../../../static/types"
 import { getAllUserClimbingData } from "../../../util/db"
 import moment from "moment"
 
@@ -30,23 +29,6 @@ export default function ProgressionPage() {
     area: PromiseTrackerArea.Progression,
   })
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
-  // const [progressionData, setProgressionData] = useState<
-  //   { title: string; data: ClimbLog[] }[]
-  // >([])
-
-  function updateProgressionData() {
-    // let data = []
-    // // if (climbingData && climbingData.boulderLogs.length > 0)
-    // //   data.push({
-    // //     title: "Bouldering",
-    // //     data: climbingData.boulderLogs,
-    // //   })
-    // // if (climbingData && climbingData.leadLogs.length > 0)
-    // //   data.push({ title: "Lead", data: climbingData.leadLogs })
-    // // if (climbingData && climbingData.topRopeLogs.length > 0)
-    // //   data.push({ title: "Top Rope", data: climbingData.topRopeLogs })
-    // setProgressionData(data)
-  }
 
   useEffect(() => {
     if (user) {
@@ -60,13 +42,9 @@ export default function ProgressionPage() {
             onUpdateUserClimbingData(res)
             onUpdateDataDateRange(dateFilter)
             onUpdateDataLastRead(moment().unix())
-            updateProgressionData()
           }),
           PromiseTrackerArea.Progression
         )
-      } else {
-        console.log("updating prog data")
-        updateProgressionData
       }
     }
   }, [user, dateFilter])
@@ -82,8 +60,6 @@ export default function ProgressionPage() {
     progressionData.push({ title: "Lead", data: climbingData.leadLogs })
   if (climbingData && climbingData.topRopeLogs.length > 0)
     progressionData.push({ title: "Top Rope", data: climbingData.topRopeLogs })
-
-  console.log("progressionData on render", progressionData)
 
   return !user && promiseInProgress ? (
     <AppLoading />
