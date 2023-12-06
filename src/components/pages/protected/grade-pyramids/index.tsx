@@ -30,9 +30,7 @@ export default function GradePyramidPage() {
   } = useProtectedAPI()
   const climbingData = useUserClimbingDataContext()
   const dataDateRange = useDataDateRangeContext()
-  const { promiseInProgress } = usePromiseTracker({
-    area: PromiseTrackerArea.GradePyramids,
-  })
+  const [loading, setLoading] = useState<boolean>(!user)
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.ThisMonth)
   const [gradePyramidFilter, setGradePyramidFilter] = useState<string>(
     GradePyramidFilter.ClimbsOnly
@@ -63,6 +61,7 @@ export default function GradePyramidPage() {
             onUpdateUserClimbingData(res)
             onUpdateDataDateRange(dateFilter)
             onUpdateDataLastRead(moment().unix())
+            setLoading(false)
           }),
           PromiseTrackerArea.GradePyramidGraph
         )
@@ -70,7 +69,7 @@ export default function GradePyramidPage() {
     }
   }, [user, dateFilter])
 
-  return !user || promiseInProgress ? (
+  return loading ? (
     <AppLoading />
   ) : (
     <>

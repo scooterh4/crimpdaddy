@@ -25,8 +25,9 @@ export default function ProgressionPage() {
   } = useProtectedAPI()
   const climbingData = useUserClimbingDataContext()
   const dataDateRange = useDataDateRangeContext()
+  const [loading, setLoading] = useState<boolean>(!user)
   const { promiseInProgress } = usePromiseTracker({
-    area: PromiseTrackerArea.Progression,
+    area: PromiseTrackerArea.ProgressionGraph,
   })
   const [dateFilter, setDateFilter] = useState<string>(DateFilters.Last6Months)
 
@@ -42,6 +43,7 @@ export default function ProgressionPage() {
             onUpdateUserClimbingData(res)
             onUpdateDataDateRange(dateFilter)
             onUpdateDataLastRead(moment().unix())
+            setLoading(false)
           }),
           PromiseTrackerArea.Progression
         )
@@ -61,7 +63,7 @@ export default function ProgressionPage() {
   if (climbingData && climbingData.topRopeLogs.length > 0)
     progressionData.push({ title: "Top Rope", data: climbingData.topRopeLogs })
 
-  return !user && promiseInProgress ? (
+  return loading ? (
     <AppLoading />
   ) : (
     <>

@@ -9,8 +9,6 @@ function getProgressionGraphDataAndXAxis(startMoment: Moment) {
   let now = moment()
 
   while (startMoment.month() < now.month() || startMoment.year() < now.year()) {
-    console.log("getProgressionGraphDataAndXAxis loop")
-
     const monthToAdd = startMoment.format("MMM YYYY").toString()
     xAxis.push(monthToAdd)
 
@@ -51,7 +49,6 @@ export async function formatDataForProgressionGraph(
   filter: string,
   gradeSystem: string[]
 ) {
-  console.log("formatDataForProgressionGraph start")
   const startTime =
     filter === DateFilters.Last6Months
       ? moment().subtract(5, "months")
