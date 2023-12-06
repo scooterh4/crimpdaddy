@@ -8,6 +8,7 @@ import {
 import { ClimbingSessionData } from "../../../../../static/types"
 import SelectFilter from "../../common/select-filter"
 import SectionLegend from "../../common/section-legend"
+import { AppFont } from "../../../../../static/styles"
 
 type Props = {
   data: ClimbingSessionData
@@ -21,7 +22,7 @@ export default function SessionRouteGraphs({ data }: Props) {
   return (
     <Grid container direction={"column"} marginTop={2}>
       <Typography
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         marginLeft={2}
         marginRight={2}
         variant="h6"

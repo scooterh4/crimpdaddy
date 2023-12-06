@@ -21,13 +21,13 @@ import {
   BOULDER_GRADES,
   INDOOR_SPORT_GRADES,
 } from "../../../../../static/constants"
-import { GraphColors } from "../../../../../static/styles"
+import { AppFont, GraphColors } from "../../../../../static/styles"
 import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent"
 import AppLoading from "../../../../common/loading"
-import { usePromiseTracker } from "react-promise-tracker"
+import { trackPromise, usePromiseTracker } from "react-promise-tracker"
 import { Square } from "@mui/icons-material"
 import { formatDataForProgressionGraph } from "../utils/data-helper-functions"
 
@@ -57,11 +57,14 @@ export default function MonthlyClimbsGraph({ data, climbType, filter }: Props) {
   const graphFontSize = mdScreenAndUp || smScreenOnly ? 14 : 11
 
   useEffect(() => {
-    formatDataForProgressionGraph(data, filter, gradeSystem).then((res) => {
-      setGradeRange(res.gradeRange)
-      setGraphData(res.graphData)
-      setGraphXAxis(res.xAxis)
-    })
+    trackPromise(
+      formatDataForProgressionGraph(data, filter, gradeSystem).then((res) => {
+        setGradeRange(res.gradeRange)
+        setGraphData(res.graphData)
+        setGraphXAxis(res.xAxis)
+      }),
+      PromiseTrackerArea.ProgressionGraph
+    )
   }, [filter])
 
   const CustomTooltip = ({
@@ -78,7 +81,7 @@ export default function MonthlyClimbsGraph({ data, climbType, filter }: Props) {
     }
 
     return (
-      <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+      <Card sx={{ fontFamily: AppFont, padding: 2 }}>
         <Typography
           component="div"
           fontWeight={"bold"}
@@ -139,7 +142,11 @@ export default function MonthlyClimbsGraph({ data, climbType, filter }: Props) {
   }
 
   if (promiseInProgress) {
-    return <AppLoading />
+    return (
+      <Grid container direction={"column"} justifyContent={"center"}>
+        <AppLoading />
+      </Grid>
+    )
   }
   return (
     <Grid

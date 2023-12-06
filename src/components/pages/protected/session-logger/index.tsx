@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Button, Grid, Typography } from "@mui/material"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import { AppColors, ThemeColors } from "../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../static/styles"
 import { Routes } from "../../../../router"
 import { ConfirmDialog } from "../../../common/confirm-dialog"
 import { ClimbsLoggedDisplay } from "./components/climbs-logged-display"
@@ -106,7 +106,7 @@ function SessionLogger() {
           background: "none",
           border: "none",
           color: AppColors.danger,
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           marginTop: 2,
           textTransform: "none",
         }}
@@ -117,7 +117,7 @@ function SessionLogger() {
 
       <Typography
         color={ThemeColors.darkShade}
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         gutterBottom
         marginTop={2}
         variant="h3"
@@ -138,7 +138,7 @@ function SessionLogger() {
           backgroundColor: ThemeColors.darkAccent,
           color: "white",
           ":hover": { backgroundColor: ThemeColors.darkShade },
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           marginBottom: 5,
           marginTop: 3,
           textTransform: "none",

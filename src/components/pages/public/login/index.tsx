@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../static/styles"
 import { useAuthContext } from "../../../app/context/auth-context"
 import { Routes } from "../../../../router"
 
@@ -40,7 +40,7 @@ export default function SignIn() {
       >
         <Button
           sx={{
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             background: "none",
             border: "none",
             textTransform: "none",
@@ -49,7 +49,7 @@ export default function SignIn() {
         >
           <Typography
             variant="h4"
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             marginTop={1}
             component="div"
             gutterBottom
@@ -96,7 +96,7 @@ export default function SignIn() {
               ":hover": { backgroundColor: AppColors.info },
               mt: 3,
               mb: 2,
-              fontFamily: "poppins",
+              fontFamily: AppFont,
               textTransform: "none",
             }}
             onClick={() => loginUser(email, password)}
@@ -104,7 +104,7 @@ export default function SignIn() {
             Login
           </Button>
         </Box>
-        <Divider flexItem sx={{ fontFamily: "poppins", fontSize: 12 }}>
+        <Divider flexItem sx={{ fontFamily: AppFont, fontSize: 12 }}>
           OR
         </Divider>
         <Button
@@ -112,7 +112,7 @@ export default function SignIn() {
           sx={{
             background: "none",
             border: "none",
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             marginTop: 3,
             marginBottom: 2,
             textTransform: "none",
@@ -127,7 +127,7 @@ export default function SignIn() {
             background: "none",
             border: "none",
             color: "black",
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             fontSize: 12,
           }}
         >
@@ -143,7 +143,7 @@ export default function SignIn() {
         textAlign={"center"}
         sx={{
           flexDirection: "column",
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           fontSize: 14,
         }}
       >

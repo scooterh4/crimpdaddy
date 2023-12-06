@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material"
 import Divider from "@mui/material/Divider"
 import React from "react"
-import { ThemeColors } from "../../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../../static/styles"
 import { ClimbingSessionData } from "../../../../../static/types"
 import moment from "moment"
 import SessionStatDisplay from "./session-stat-display"
@@ -55,7 +55,7 @@ export default function SessionDisplay({ data }: Props) {
           marginTop={2}
           marginLeft={2}
           color={ThemeColors.darkShade}
-          fontFamily={"poppins"}
+          fontFamily={AppFont}
           variant="h5"
         >
           {moment
@@ -67,7 +67,7 @@ export default function SessionDisplay({ data }: Props) {
         <Typography
           marginLeft={2}
           color={ThemeColors.darkShade}
-          fontFamily={"poppins"}
+          fontFamily={AppFont}
           variant="h6"
         >
           {moment

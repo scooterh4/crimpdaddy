@@ -2,7 +2,7 @@ import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import SectionLegend from "../common/section-legend"
 import GradePyramid from "./components/grade-pyramid-graph"
-import { ThemeColors } from "../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../static/styles"
 import AppLoading from "../../../common/loading"
 import {
   DateFilters,
@@ -10,7 +10,7 @@ import {
   PromiseTrackerArea,
 } from "../../../../static/constants"
 import SelectFilter from "../common/select-filter"
-import { trackPromise, usePromiseTracker } from "react-promise-tracker"
+import { trackPromise } from "react-promise-tracker"
 import {
   useDataDateRangeContext,
   useProtectedAPI,
@@ -77,7 +77,7 @@ export default function GradePyramidPage() {
         <Grid container item direction={"row"}>
           <Typography
             color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             gutterBottom
             gridColumn={"1"}
             justifySelf={"start"}
@@ -130,7 +130,7 @@ export default function GradePyramidPage() {
                 sx={{ backgroundColor: "white" }}
               >
                 <Typography
-                  fontFamily={"poppins"}
+                  fontFamily={AppFont}
                   gridRow={1}
                   variant="h5"
                   sx={{ textAlign: "center" }}

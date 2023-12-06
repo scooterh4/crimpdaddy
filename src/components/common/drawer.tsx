@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material"
-import { AppColors } from "../../static/styles"
+import { AppColors, AppFont } from "../../static/styles"
 import DashboardIcon from "@mui/icons-material/Dashboard"
 import BallotIcon from "@mui/icons-material/Ballot"
 import EqualizerIcon from "@mui/icons-material/Equalizer"
@@ -26,7 +26,7 @@ export default function AppDrawer() {
   return (
     <div>
       <Toolbar sx={{ background: "white", color: AppColors.primary }}>
-        <Typography fontFamily={"poppins"} textAlign={"center"} variant={"h6"}>
+        <Typography fontFamily={AppFont} textAlign={"center"} variant={"h6"}>
           CrimpDaddy
         </Typography>
       </Toolbar>
@@ -41,10 +41,7 @@ export default function AppDrawer() {
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText
-              primary={"Dashboard"}
-              sx={{ fontFamily: "poppins" }}
-            />
+            <ListItemText primary={"Dashboard"} sx={{ fontFamily: AppFont }} />
           </ListItemButton>
         </ListItem>
         <ListItem
@@ -58,7 +55,7 @@ export default function AppDrawer() {
             </ListItemIcon>
             <ListItemText
               primary={"Session Logs"}
-              sx={{ fontFamily: "poppins" }}
+              sx={{ fontFamily: AppFont }}
             />
           </ListItemButton>
         </ListItem>
@@ -73,7 +70,7 @@ export default function AppDrawer() {
             </ListItemIcon>
             <ListItemText
               primary={"Grade Pyramids"}
-              sx={{ fontFamily: "poppins" }}
+              sx={{ fontFamily: AppFont }}
             />
           </ListItemButton>
         </ListItem>
@@ -88,7 +85,7 @@ export default function AppDrawer() {
             </ListItemIcon>
             <ListItemText
               primary={"Progression"}
-              sx={{ fontFamily: "poppins" }}
+              sx={{ fontFamily: AppFont }}
             />
           </ListItemButton>
         </ListItem>
@@ -100,13 +97,13 @@ export default function AppDrawer() {
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary={"Logout"} sx={{ fontFamily: "poppins" }} />
+            <ListItemText primary={"Logout"} sx={{ fontFamily: AppFont }} />
           </ListItemButton>
         </ListItem>
       </List>
       {user && (
         <Typography
-          fontFamily={"poppins"}
+          fontFamily={AppFont}
           paddingLeft={1}
           sx={{
             background: "white",

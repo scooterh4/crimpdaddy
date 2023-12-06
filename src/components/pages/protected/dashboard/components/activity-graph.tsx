@@ -12,7 +12,7 @@ import {
 import { Card, Grid, Typography, useTheme } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import moment, { Moment } from "moment"
-import { GraphColors } from "../../../../../static/styles"
+import { AppFont, GraphColors } from "../../../../../static/styles"
 import AppLoading from "../../../../common/loading"
 import { ClimbLog } from "../../../../../static/types"
 import { PromiseTrackerArea } from "../../../../../static/constants"
@@ -133,7 +133,7 @@ export default function ActivityGraph({ filter, data }: Props) {
     const attempts = payload.find((p) => p.dataKey === "attempts")
 
     return (
-      <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+      <Card sx={{ fontFamily: AppFont, padding: 2 }}>
         <Typography
           component="div"
           fontWeight={"bold"}

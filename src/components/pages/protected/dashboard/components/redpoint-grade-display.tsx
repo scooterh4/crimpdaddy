@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Grid, Typography } from "@mui/material"
-import { UserIndoorRedpointGradesDoc } from "../../../../../static/types"
+import { AppFont } from "../../../../../static/styles"
 
 type Props = {
   data: string
@@ -16,17 +16,14 @@ export default function HardestGradeDisplay({ data, climbType }: Props) {
         gridRow={1}
         variant="h5"
         sx={{
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           textAlign: "center",
           fontWeight: "bold",
         }}
       >
         {!data || data === "" ? "--" : data}
       </Typography>
-      <Typography
-        gridRow={2}
-        sx={{ fontFamily: "poppins", textAlign: "center" }}
-      >
+      <Typography gridRow={2} sx={{ fontFamily: AppFont, textAlign: "center" }}>
         {title}
       </Typography>
     </Grid>

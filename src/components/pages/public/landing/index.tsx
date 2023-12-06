@@ -12,7 +12,7 @@ import CheckIcon from "@mui/icons-material/Check"
 import TrendingUpIcon from "@mui/icons-material/TrendingUp"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import { useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../static/styles"
 import AppFooter from "../../../common/footer"
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
 
@@ -129,7 +129,7 @@ export default function Landing() {
             <Typography
               variant={headerSize}
               color={"white"}
-              fontFamily={"poppins"}
+              fontFamily={AppFont}
               textAlign={"center"}
               padding={2}
             >
@@ -161,7 +161,7 @@ export default function Landing() {
 
       <Typography
         gridRow={"1"}
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         marginTop={10}
         textAlign={"center"}
         padding={2}
@@ -201,7 +201,7 @@ export default function Landing() {
             >
               {item.icon}
               <Typography
-                fontFamily="poppins"
+                fontFamily={AppFont}
                 marginBottom={2}
                 paddingLeft={{ sm: 0, xs: 2 }}
                 paddingRight={{ sm: 0, xs: 2 }}
@@ -212,7 +212,7 @@ export default function Landing() {
                 {item.title}
               </Typography>
               <Typography
-                fontFamily="poppins"
+                fontFamily={AppFont}
                 variant="h6"
                 color={AppColors.primary}
                 textAlign={{ lg: "start", xs: "center" }}

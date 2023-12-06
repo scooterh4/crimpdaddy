@@ -16,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import AddIcon from "@mui/icons-material/Add"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
-import { ThemeColors } from "../../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../../static/styles"
 import {
   useBoulderData,
   useRouteData,
@@ -131,7 +131,7 @@ export function ClimbsLoggedDisplay({ title }: Props) {
           }}
         >
           <Grid item gridColumn={"1"} justifySelf={"start"}>
-            <Typography component="div" fontFamily={"poppins"} variant="h6">
+            <Typography component="div" fontFamily={AppFont} variant="h6">
               {title} ({sessionData ? sessionData.length : 0})
             </Typography>
           </Grid>
@@ -150,7 +150,7 @@ export function ClimbsLoggedDisplay({ title }: Props) {
                   <ListItemText
                     primary={getPrimaryText(climb)}
                     secondary={getSecondaryText(climb)}
-                    sx={{ fontFamily: "poppins" }}
+                    sx={{ fontFamily: AppFont }}
                   />
                 </ListItemButton>
                 <IconButton

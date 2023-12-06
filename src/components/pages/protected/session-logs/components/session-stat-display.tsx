@@ -1,5 +1,6 @@
 import React from "react"
 import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { AppFont } from "../../../../../static/styles"
 
 type Props = {
   title: string
@@ -23,7 +24,7 @@ export default function SessionStatDisplay({ title, stat }: Props) {
         gridRow={1}
         variant={xsScreen ? "body2" : "subtitle1"}
         sx={{
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           textAlign: "center",
         }}
       >
@@ -33,7 +34,7 @@ export default function SessionStatDisplay({ title, stat }: Props) {
         gridRow={2}
         variant={xsScreen ? "subtitle2" : "h5"}
         sx={{
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           textAlign: "center",
           fontWeight: xsScreen ? "bold" : "",
         }}

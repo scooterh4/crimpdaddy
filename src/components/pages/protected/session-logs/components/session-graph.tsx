@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { GraphColors } from "../../../../../static/styles"
+import { AppFont, GraphColors } from "../../../../../static/styles"
 import { ClimbLog, ClimbingSessionData } from "../../../../../static/types"
 import { Box, Card, Typography, useTheme } from "@mui/material"
 import { useMediaQuery } from "@mui/material"
@@ -69,7 +69,7 @@ export default function SessionGraph({ data, climbType }: Props) {
           return (
             <Card
               sx={{
-                fontFamily: "poppins",
+                fontFamily: AppFont,
                 padding: 2,
               }}
             >
@@ -88,7 +88,7 @@ export default function SessionGraph({ data, climbType }: Props) {
         }
         if (payload) {
           return (
-            <Card sx={{ fontFamily: "poppins", padding: 2 }}>
+            <Card sx={{ fontFamily: AppFont, padding: 2 }}>
               <Typography
                 component="div"
                 fontWeight={"bold"}

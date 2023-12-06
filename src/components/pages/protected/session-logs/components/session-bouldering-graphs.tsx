@@ -4,6 +4,7 @@ import GradePyramid from "../../grade-pyramids/components/grade-pyramid-graph"
 import { GYM_CLIMB_TYPES } from "../../../../../static/constants"
 import { ClimbingSessionData } from "../../../../../static/types"
 import SectionLegend from "../../common/section-legend"
+import { AppFont } from "../../../../../static/styles"
 
 type Props = {
   data: ClimbingSessionData
@@ -13,7 +14,7 @@ export default function SessionBoulderingGraphs({ data }: Props) {
   return (
     <Grid container direction={"column"} marginTop={2}>
       <Typography
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         marginLeft={2}
         marginRight={2}
         variant="h6"

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Box, Button, Container, Divider, TextField } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
-import { AppColors, ThemeColors } from "../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../static/styles"
 import { auth } from "../../../../firebase"
 import { sendPasswordResetEmail } from "firebase/auth"
 import { toast } from "react-toastify"
@@ -71,7 +71,7 @@ export default function PasswordReset() {
               ":hover": { backgroundColor: AppColors.info },
               mt: 3,
               mb: 2,
-              fontFamily: "poppins",
+              fontFamily: AppFont,
               textTransform: "none",
             }}
             onClick={Submit}
@@ -79,7 +79,7 @@ export default function PasswordReset() {
             Send reset email
           </Button>
         </Box>
-        <Divider flexItem sx={{ fontFamily: "poppins", fontSize: 12 }}>
+        <Divider flexItem sx={{ fontFamily: AppFont, fontSize: 12 }}>
           OR
         </Divider>
         <div style={{ marginTop: 15 }}>
@@ -89,7 +89,7 @@ export default function PasswordReset() {
               background: "none",
               border: "none",
               color: "black",
-              fontFamily: "poppins",
+              fontFamily: AppFont,
               fontSize: 12,
             }}
           >
@@ -106,7 +106,7 @@ export default function PasswordReset() {
           borderRadius: 0,
           backgroundColor: "#eff2f2",
           color: "black",
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           fontSize: 14,
           textTransform: "none",
           ":hover": { backgroundColor: "#eff2f2", color: "white" },

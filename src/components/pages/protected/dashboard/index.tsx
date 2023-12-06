@@ -8,7 +8,7 @@ import SelectFilter from "../common/select-filter"
 import ActivityGraph from "./components/activity-graph"
 import SectionLegend from "../common/section-legend"
 import { DateFilters, PromiseTrackerArea } from "../../../../static/constants"
-import { ThemeColors } from "../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../static/styles"
 import { Routes } from "../../../../router"
 import { getAllUserClimbingData } from "../../../../utils/db"
 import {
@@ -68,7 +68,7 @@ export default function Dashboard() {
     <>
       <Typography
         color={ThemeColors.darkShade}
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         gutterBottom
         paddingTop={2}
         variant="h3"
@@ -83,7 +83,7 @@ export default function Dashboard() {
           variant="contained"
           sx={{
             background: ThemeColors.darkAccent,
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             ":hover": { backgroundColor: ThemeColors.darkShade },
             textTransform: "none",
             fontSize: "14pt",
@@ -106,7 +106,7 @@ export default function Dashboard() {
         >
           <Typography
             color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             gutterBottom
             textAlign={"center"}
             variant="h5"
@@ -168,7 +168,7 @@ export default function Dashboard() {
         >
           <Typography
             color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             gutterBottom
             gridColumn={{ sm: "2", xs: "1" }}
             justifySelf={{ sm: "center", xs: "start" }}

@@ -22,7 +22,7 @@ import {
   useSessionAPI,
 } from "../context/session-logger-context"
 import TickSelector from "./tick-selector"
-import { ThemeColors } from "../../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../../static/styles"
 import TickDescription from "./tick-description"
 import AttemptInput from "./attempt-input"
 import { EditSessionClimb, SessionClimb } from "../../../../../static/types"
@@ -107,7 +107,7 @@ export function LogClimbDialog() {
     <>
       {climbType !== null && (
         <Dialog open={add || edit ? add || edit : false}>
-          <DialogTitle fontFamily={"poppins"} fontWeight={"bold"}>
+          <DialogTitle fontFamily={AppFont} fontWeight={"bold"}>
             {add ? "Add " : "Edit "} {climbType > 0 ? "route" : "boulder"}
           </DialogTitle>
           <DialogContent>

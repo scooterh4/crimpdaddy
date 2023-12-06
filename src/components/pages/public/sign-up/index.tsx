@@ -12,7 +12,7 @@ import {
 import GoogleIcon from "@mui/icons-material/Google"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
-import { AppColors, ThemeColors } from "../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../static/styles"
 import { useAuthContext } from "../../../app/context/auth-context"
 import { Routes } from "../../../../router"
 
@@ -146,7 +146,7 @@ export default function SignUp() {
       >
         <Button
           sx={{
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             background: "none",
             border: "none",
             textTransform: "none",
@@ -155,7 +155,7 @@ export default function SignUp() {
         >
           <Typography
             variant="h4"
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             marginTop={1}
             component="div"
             gutterBottom
@@ -225,7 +225,7 @@ export default function SignUp() {
               ":hover": { backgroundColor: AppColors.info },
               mt: 3,
               mb: 2,
-              fontFamily: "poppins",
+              fontFamily: AppFont,
               textTransform: "none",
             }}
             onClick={Submit}
@@ -233,7 +233,7 @@ export default function SignUp() {
             Sign up
           </Button>
         </Box>
-        <Divider flexItem sx={{ fontFamily: "poppins", fontSize: 12 }}>
+        <Divider flexItem sx={{ fontFamily: AppFont, fontSize: 12 }}>
           OR
         </Divider>
         <Button
@@ -241,7 +241,7 @@ export default function SignUp() {
           sx={{
             background: "none",
             border: "none",
-            fontFamily: "poppins",
+            fontFamily: AppFont,
             marginTop: 2,
             textTransform: "none",
           }}
@@ -259,7 +259,7 @@ export default function SignUp() {
         textAlign={"center"}
         sx={{
           flexDirection: "column",
-          fontFamily: "poppins",
+          fontFamily: AppFont,
           fontSize: 14,
         }}
       >

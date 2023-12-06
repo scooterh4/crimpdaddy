@@ -8,7 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material"
-import { AppColors, ThemeColors } from "../../../../../static/styles"
+import { AppColors, AppFont, ThemeColors } from "../../../../../static/styles"
 import {
   useClimbToDeleteContext,
   useDeleteClimbDialogVisibilityContext,
@@ -45,7 +45,7 @@ export default function ConfirmDeleteClimbDialog() {
     <Dialog
       open={open ? open : false}
       onClose={handleClose}
-      sx={{ fontFamily: "poppins" }}
+      sx={{ fontFamily: AppFont }}
     >
       <DialogTitle
         color={"white"}

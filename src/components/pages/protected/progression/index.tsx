@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { DateFilters, PromiseTrackerArea } from "../../../../static/constants"
-import { ThemeColors } from "../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../static/styles"
 import AppLoading from "../../../common/loading"
 import SelectFilter from "../common/select-filter"
 import ProgressionGraph from "./components/progression-graph"
@@ -71,7 +71,7 @@ export default function ProgressionPage() {
         <Grid container item direction={"row"}>
           <Typography
             color={ThemeColors.darkShade}
-            fontFamily={"poppins"}
+            fontFamily={AppFont}
             gutterBottom
             gridColumn={"1"}
             justifySelf={"start"}
@@ -120,7 +120,7 @@ export default function ProgressionPage() {
                 sx={{ backgroundColor: "white" }}
               >
                 <Typography
-                  fontFamily={"poppins"}
+                  fontFamily={AppFont}
                   gridRow={1}
                   variant="h5"
                   sx={{ textAlign: "center" }}

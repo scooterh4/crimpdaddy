@@ -1,3 +1,4 @@
+import React from "react"
 import {
   Button,
   Dialog,
@@ -6,13 +7,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material"
-import React, { useCallback, useEffect, useRef } from "react"
-import {
-  useNavigate,
-  unstable_useBlocker as useBlocker,
-  useBeforeUnload,
-} from "react-router-dom"
-import { AppColors, ThemeColors } from "../../static/styles"
+import { useNavigate } from "react-router-dom"
+import { AppColors, AppFont, ThemeColors } from "../../static/styles"
 
 type Props = {
   open: boolean
@@ -20,67 +16,20 @@ type Props = {
   confirmRoute: string
 }
 
-// function usePrompt(
-//   onLocationChange: CallableFunction,
-//   hasUnsavedChanges: boolean
-// ) {
-//   const blocker = useBlocker(true)
-//   const prevState = useRef(blocker.state)
-
-//   useEffect(() => {
-//     if (blocker.state === "blocked") {
-//       blocker.reset()
-//     }
-//     prevState.current = blocker.state
-//   }, [blocker])
-// }
-
-// function FormPrompt(hasUnsavedChanges: boolean) {
-//   const onLocationChange = useCallback(() => {
-//     return !window.confirm(
-//       "You have unsaved changes, are you sure you want to leave?"
-//     )
-//   }, [hasUnsavedChanges])
-
-//   usePrompt(onLocationChange, hasUnsavedChanges)
-//   useBeforeUnload(
-//     useCallback(
-//       (event) => {
-//         if (hasUnsavedChanges) {
-//           event.preventDefault()
-//           event.returnValue = ""
-//         }
-//       },
-//       [hasUnsavedChanges]
-//     ),
-//     { capture: true }
-//   )
-
-//   return null
-// }
-
 export function ConfirmDialog({ open, setOpen, confirmRoute }: Props) {
   const navigate = useNavigate()
-  const hasUnsavedChanges = true
-
   const handleClose = () => {
     setOpen(false)
   }
-
   const handleConfirm = () => {
-    // const confirm = window.confirm(
-    //   "You have unsaved changes, are you sure you want to leave?"
-    // )
-    // if (confirm) {
     navigate(confirmRoute)
-    // }
   }
 
   return (
     <Dialog
       open={open ? open : false}
       onClose={handleClose}
-      sx={{ fontFamily: "poppins" }}
+      sx={{ fontFamily: AppFont }}
     >
       <DialogTitle
         color={"white"}

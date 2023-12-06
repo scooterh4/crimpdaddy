@@ -11,7 +11,7 @@ import {
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import AppDrawer from "./drawer"
-import { AppColors, drawerWidth } from "../../static/styles"
+import { AppColors, AppFont, drawerWidth } from "../../static/styles"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAuthContext } from "../app/context/auth-context"
 import { Routes } from "../../router"
@@ -83,7 +83,7 @@ export default function ToolBar({ title }: Props) {
           <Box alignItems={"center"} sx={{ flexGrow: 1, textAlign: "center" }}>
             <Typography
               variant="h5"
-              fontFamily={"poppins"}
+              fontFamily={AppFont}
               marginTop={1}
               component="div"
               gutterBottom

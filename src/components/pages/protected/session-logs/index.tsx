@@ -1,6 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { ThemeColors } from "../../../../static/styles"
+import { AppFont, ThemeColors } from "../../../../static/styles"
 import SessionDisplay from "./components/session-display"
 import {
   getUserClimbingSessions,
@@ -95,7 +95,7 @@ export default function SessionLogsPage() {
       <>
         <Typography
           color={ThemeColors.darkShade}
-          fontFamily={"poppins"}
+          fontFamily={AppFont}
           gutterBottom
           marginTop={2}
           variant="h3"
@@ -111,7 +111,7 @@ export default function SessionLogsPage() {
     <>
       <Typography
         color={ThemeColors.darkShade}
-        fontFamily={"poppins"}
+        fontFamily={AppFont}
         gutterBottom
         marginTop={2}
         variant="h3"
@@ -141,7 +141,7 @@ export default function SessionLogsPage() {
             sx={{
               backgroundColor: ThemeColors.darkAccent,
               color: "white",
-              fontFamily: "poppins",
+              fontFamily: AppFont,
               textTransform: "none",
             }}
           >

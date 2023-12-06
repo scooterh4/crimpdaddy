@@ -1,7 +1,7 @@
 import * as React from "react"
 import BottomNavigation from "@mui/material/BottomNavigation"
 import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { AppColors, drawerWidth } from "../../static/styles"
+import { AppColors, AppFont, drawerWidth } from "../../static/styles"
 import { useLocation } from "react-router-dom"
 import { Routes } from "../../router"
 
@@ -50,10 +50,10 @@ export default function LabelBottomNavigation({ isAuthenticated }: Props) {
         alignItems={"center"}
         padding={1}
       >
-        <Typography color={"white"} fontFamily={"poppins"} variant="body1">
+        <Typography color={"white"} fontFamily={AppFont} variant="body1">
           CrimpDaddy
         </Typography>
-        <Typography color={"white"} fontFamily={"poppins"} variant="body2">
+        <Typography color={"white"} fontFamily={AppFont} variant="body2">
           2023
         </Typography>
         {/* <a href="https://www.flaticon.com/free-icons/rock" title="rock icons">

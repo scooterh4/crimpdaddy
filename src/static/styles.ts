@@ -23,3 +23,5 @@ export const GraphColors = {
 }
 
 export const drawerWidth = 250
+
+export const AppFont = "Rubik, sans-serif"

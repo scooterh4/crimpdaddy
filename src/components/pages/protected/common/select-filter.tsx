@@ -5,6 +5,7 @@ import {
   GradePyramidFilter,
   PromiseTrackerArea,
 } from "../../../../static/constants"
+import { AppFont } from "../../../../static/styles"
 
 type Props = {
   graph: string
@@ -99,13 +100,13 @@ export default function SelectFilter({ graph, dateFilter, setFilter }: Props) {
             : GradePyramidFilter.AllRoutes.toString()
         }
         onChange={handleFilterChange}
-        sx={{ fontFamily: "poppins" }}
+        sx={{ fontFamily: AppFont }}
       >
         {selectList.map((select) => (
           <MenuItem
             key={select.value}
             value={select.value}
-            sx={{ fontFamily: "poppins" }}
+            sx={{ fontFamily: AppFont }}
           >
             {select.label}
           </MenuItem>
