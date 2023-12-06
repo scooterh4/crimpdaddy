@@ -12,7 +12,7 @@ import {
   UserIndoorRedpointGradesDoc,
 } from "../../../../static/types"
 import { Moment } from "moment"
-import { logClimbingSession } from "../../../../util/db"
+import { logClimbingSession } from "../../../../utils/db"
 import { GYM_CLIMB_TYPES } from "../../../../static/constants"
 import moment from "moment"
 import { useProtectedAPI } from "../../context/protected-context"

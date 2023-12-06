@@ -22,7 +22,7 @@ import {
   GradePyramidFilter,
   PromiseTrackerArea,
 } from "../../../static/constants"
-import { assembleGradePyramidGraphData } from "../../../util/data-helper-functions"
+import { assembleGradePyramidGraphData } from "./utils/data-helper-functions"
 import { usePromiseTracker } from "react-promise-tracker"
 import AppLoading from "../../common/loading"
 import {

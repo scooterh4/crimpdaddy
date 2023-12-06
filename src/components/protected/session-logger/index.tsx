@@ -19,13 +19,13 @@ import { toast } from "react-toastify"
 import {
   assembleUserSessionData,
   findNewRedpointGrades,
-} from "../../../util/data-helper-functions"
+} from "./utils/data-helper-functions"
 import {
   useProtectedAPI,
   useUserClimbingDataContext,
 } from "../context/protected-context"
 import moment from "moment"
-import { updateUserIndoorRedpointGrades } from "../../../util/db"
+import { updateUserIndoorRedpointGrades } from "../../../utils/db"
 import { UserIndoorRedpointGradesDoc } from "../../../static/types"
 
 export default function SessionLoggerPage() {

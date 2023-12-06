@@ -17,7 +17,7 @@ import AppLoading from "../../common/loading"
 import { ClimbLog } from "../../../static/types"
 import { PromiseTrackerArea } from "../../../static/constants"
 import { usePromiseTracker } from "react-promise-tracker"
-import { getMinimumMoment } from "../../../util/data-helper-functions"
+import { getMinimumMoment } from "../../../utils/data-helper-functions"
 import { Square } from "@mui/icons-material"
 import {
   NameType,

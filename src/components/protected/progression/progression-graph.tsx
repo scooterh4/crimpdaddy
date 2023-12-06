@@ -22,8 +22,8 @@ import {
 } from "recharts/types/component/DefaultTooltipContent"
 import AppLoading from "../../common/loading"
 import { usePromiseTracker } from "react-promise-tracker"
-import { formatDataForProgressionGraph } from "../../../util/data-helper-functions"
 import { Square } from "@mui/icons-material"
+import { formatDataForProgressionGraph } from "./utils/data-helper-functions"
 
 type Props = {
   data: ClimbLog[]

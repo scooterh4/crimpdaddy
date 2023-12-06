@@ -13,8 +13,8 @@ import {
   useUserClimbingDataContext,
 } from "../context/protected-context"
 import { useAuthContext } from "../../app/context/auth-context"
-import { getAllUserClimbingData } from "../../../util/db"
 import moment from "moment"
+import { getAllUserClimbingData } from "../../../utils/db"
 
 export default function ProgressionPage() {
   const { user } = useAuthContext()

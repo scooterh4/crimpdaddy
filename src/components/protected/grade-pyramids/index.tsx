@@ -17,7 +17,7 @@ import {
   useUserClimbingDataContext,
 } from "../context/protected-context"
 import { useAuthContext } from "../../app/context/auth-context"
-import { getAllUserClimbingData } from "../../../util/db"
+import { getAllUserClimbingData } from "../../../utils/db"
 import moment from "moment"
 import { ClimbLog } from "../../../static/types"
 

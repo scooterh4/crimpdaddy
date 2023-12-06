@@ -5,7 +5,7 @@ import SessionDisplay from "./session-display"
 import {
   getUserClimbingSessions,
   getUserClimbingSessionsIds,
-} from "../../../util/db"
+} from "../../../utils/db"
 import { useAuthContext } from "../../app/context/auth-context"
 import AppLoading from "../../common/loading"
 import {

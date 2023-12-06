@@ -10,7 +10,7 @@ import SectionLegend from "../common/section-legend"
 import { DateFilters, PromiseTrackerArea } from "../../../static/constants"
 import { ThemeColors } from "../../../static/styles"
 import { Routes } from "../../../router"
-import { getAllUserClimbingData } from "../../../util/db"
+import { getAllUserClimbingData } from "../../../utils/db"
 import {
   useDataDateRangeContext,
   useDataLastReadContext,
