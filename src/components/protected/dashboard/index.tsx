@@ -93,46 +93,60 @@ export default function Dashboard() {
         </Button>
       </FormControl>
 
-      <Grid
-        container
-        direction={"row"}
-        justifyContent={"center"}
-        justifySelf={{ md: "center" }}
-        padding={2}
-        border={1}
-        borderColor={ThemeColors.darkShade}
-        sx={{ backgroundColor: "white", borderRadius: 2 }}
-      >
-        <Typography
-          color={ThemeColors.darkShade}
-          fontFamily={"poppins"}
-          gutterBottom
-          textAlign={"center"}
-          variant="h5"
+      {climbingData.indoorRedpointGrades && (
+        <Grid
+          container
+          direction={"row"}
+          justifyContent={"center"}
+          justifySelf={{ md: "center" }}
+          padding={2}
+          border={1}
+          borderColor={ThemeColors.darkShade}
+          sx={{ backgroundColor: "white", borderRadius: 2 }}
         >
-          Hardest Grades
-        </Typography>
-        <Grid container direction={"row"} justifyContent={"center"}>
-          <Grid item xs>
-            <HardestGradeDisplay
-              data={climbingData.indoorRedpointGrades.boulder}
-              climbType="Boulder"
-            />
-          </Grid>
-          <Grid item md={2} xs={4}>
-            <HardestGradeDisplay
-              data={climbingData.indoorRedpointGrades.lead}
-              climbType="Lead"
-            />
-          </Grid>
-          <Grid item xs>
-            <HardestGradeDisplay
-              data={climbingData.indoorRedpointGrades.topRope}
-              climbType="TopRope"
-            />
+          <Typography
+            color={ThemeColors.darkShade}
+            fontFamily={"poppins"}
+            gutterBottom
+            textAlign={"center"}
+            variant="h5"
+          >
+            Hardest Grades
+          </Typography>
+          <Grid container direction={"row"} justifyContent={"center"}>
+            <Grid item xs>
+              <HardestGradeDisplay
+                data={
+                  climbingData.indoorRedpointGrades.boulder
+                    ? climbingData.indoorRedpointGrades.boulder
+                    : "--"
+                }
+                climbType="Boulder"
+              />
+            </Grid>
+            <Grid item md={2} xs={4}>
+              <HardestGradeDisplay
+                data={
+                  climbingData.indoorRedpointGrades.lead
+                    ? climbingData.indoorRedpointGrades.lead
+                    : "--"
+                }
+                climbType="Lead"
+              />
+            </Grid>
+            <Grid item xs>
+              <HardestGradeDisplay
+                data={
+                  climbingData.indoorRedpointGrades.topRope
+                    ? climbingData.indoorRedpointGrades.topRope
+                    : "--"
+                }
+                climbType="TopRope"
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
 
       <Grid
         container
