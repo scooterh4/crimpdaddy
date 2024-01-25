@@ -112,7 +112,6 @@ export const ProtectedDataProvider = ({
     }
 
     const onUpdateDataUpdated = (unixTime: number) => {
-      console.log("onUpdateDataUpdated", unixTime)
       dispatch({ type: "updateDataUpdated", unixTime })
     }
 

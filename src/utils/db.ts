@@ -44,8 +44,6 @@ export const getUserIndoorRedpointGrades = async (
   const collectionPath = `/${collectionName}/${userId}/indoor_summary_stats`
 
   try {
-    console.log("FIRESTORE READ CALL")
-
     const docRef = doc(firestore, collectionPath, "redpoint_grades")
     const docSnap = await getDoc(docRef)
 
@@ -69,8 +67,6 @@ export const updateUserIndoorRedpointGrades = async (
   const docPath = `/${collectionName}/${userId}/indoor_summary_stats/redpoint_grades`
 
   try {
-    console.log("FIRESTORE WRITE CALL")
-
     const docRef = doc(firestore, docPath)
 
     await setDoc(docRef, updateGrades)
@@ -153,7 +149,6 @@ export const getAllUserClimbingData = async (
   const minMoment = getMinimumMoment(filterRange)
 
   try {
-    console.log("FIRESTORE READ CALL")
     await runTransaction(firestore, async (t) => {
       const sessionQuery = query(
         collection(firestore, collectionPath).withConverter(converter()),
@@ -241,7 +236,6 @@ export const getUserClimbingSessionsIds = async (
   )
 
   try {
-    console.log("FIRESTORE READ CALL")
     const res = await getDocs(sessionQuery)
     res.forEach((r) => {
       const data = r.data() as ClimbingSessionMetadata
@@ -273,7 +267,6 @@ export const getUserClimbingSessions = async (
   })
 
   try {
-    console.log("FIRESTORE READ CALL")
     await Promise.all(promises).then((results) => {
       // the docs claim that: Returned values will be in order of the Promises passed, regardless of completion order.
       results.forEach((result, index) => {
@@ -302,8 +295,6 @@ export const getUserClimbingSessions = async (
 //   const minMoment = getMinimumMoment(filter)
 
 //   try {
-//     console.log("FIRESTORE READ CALL")
-
 //     const q = query(
 //       collection(firestore, collectionPath).withConverter(converter()),
 //       where("Timestamp", ">=", Timestamp.fromDate(minMoment.toDate())),
