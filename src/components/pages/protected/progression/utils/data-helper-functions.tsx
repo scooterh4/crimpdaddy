@@ -8,7 +8,10 @@ function getProgressionGraphDataAndXAxis(startMoment: Moment) {
   let month = 0
   let now = moment()
 
-  while (startMoment.month() < now.month() || startMoment.year() < now.year()) {
+  while (
+    startMoment.month() <= now.month() ||
+    startMoment.year() < now.year()
+  ) {
     const monthToAdd = startMoment.format("MMM YYYY").toString()
     xAxis.push(monthToAdd)
 
@@ -21,9 +24,6 @@ function getProgressionGraphDataAndXAxis(startMoment: Moment) {
     } as ProgressionGraphData)
 
     startMoment = startMoment.add(1, "month")
-    if (startMoment.month() === 0) {
-      startMoment.add(1, "year")
-    }
     month++
   }
 
