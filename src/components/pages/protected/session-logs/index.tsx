@@ -37,6 +37,7 @@ export default function SessionLogsPage() {
           sessionIds.slice(0, result.length > 3 ? 3 : result.length)
         ).then((res) => {
           res.forEach((sesh) => {
+            // metaData in the db
             const metaData = result.find((r) => r.sessionId === sesh.sessionId)
 
             if (metaData) {

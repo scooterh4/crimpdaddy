@@ -80,15 +80,10 @@ export default function SessionDisplay({ data }: Props) {
       <Grid container direction={"row"} justifyContent={"center"}>
         {statsToDisplay.map((stat, index) => (
           <Grid display={"flex"} key={index}>
-            <SessionStatDisplay
-              // key={stat.title}
-              title={stat.title}
-              stat={stat.stat}
-            />
+            <SessionStatDisplay title={stat.title} stat={stat.stat} />
             {index < statsToDisplay.length - 1 ? (
               <Divider
                 orientation="vertical"
-                // variant="middle"
                 flexItem
                 sx={{ marginLeft: 2, marginRight: 2 }}
               />

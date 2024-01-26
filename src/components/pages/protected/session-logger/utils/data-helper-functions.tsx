@@ -130,12 +130,13 @@ export function assembleUserSessionData(
 
       case GYM_CLIMB_TYPES[1]:
         if (climb.tick !== "Attempt") {
-          data.sessionMetadata.numberOfBoulders += 1
-          data.sessionMetadata.hardestBoulderClimbed =
-            BOULDER_GRADES.indexOf(data.sessionMetadata.hardestBoulderClimbed) <
-            BOULDER_GRADES.indexOf(climb.grade)
+          data.sessionMetadata.numberOfRoutes += 1
+          data.sessionMetadata.hardestRouteClimbed =
+            INDOOR_SPORT_GRADES.indexOf(
+              data.sessionMetadata.hardestRouteClimbed
+            ) < INDOOR_SPORT_GRADES.indexOf(climb.grade)
               ? climb.grade
-              : data.sessionMetadata.hardestBoulderClimbed
+              : data.sessionMetadata.hardestRouteClimbed
         }
         data.lead.push({
           climbType: climb.climbType,
